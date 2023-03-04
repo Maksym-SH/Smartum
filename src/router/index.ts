@@ -1,25 +1,38 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-
-const routes: Array<RouteRecordRaw> = [
+import { createRouter, createWebHistory } from 'vue-router'
+import store from "@/store";
+import { notify } from '@kyvg/vue3-notification';
+const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    name: "Login",
+    path: "/login",
+    component: () => import("@/views/auth/index.vue")
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    name: "Forgot",
+    path: "/forgot-password",
+    component: () => import("@/views/forgot/index.vue")
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.protected) {
+    if (store.getters.getUserToken) {
+      next()
+    } 
+    else {
+      next('/login');
+      notify({
+        title: "Срок вашей сессии истек, повторите вход."
+      })
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

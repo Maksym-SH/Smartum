@@ -1,0 +1,112 @@
+.auth {
+  width: 100%;
+  min-height: 100vh;
+  background: url(@/assets/img/login-background.jpg) center center no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &__swap-entry-type {
+    text-align: center;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+    .c-button {
+      padding: 0;
+      color: $color-info;
+      width: fit-content;
+      margin: 0 auto;
+      &:hover {
+        color: $color-info;
+      }
+    }
+    .auth__description {
+      color: $color-background;
+    }
+  }
+  &__window {
+    min-width: 400px;
+    padding: 10px 20px 30px;
+    margin: 30px;
+    background-color: rgba($color-grey, 0.8);
+    box-shadow: 0 30px 10px rgba($color-grey, 0.3);
+    position: relative;
+    &-type { 
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-size: 11px;
+      color: $color-white1;
+    }
+    &--image {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+    &--title {
+      color: $color-info;
+      font-weight: 500;
+      margin-bottom: 45px;
+      line-height: 10px;
+      text-align: center;
+    }
+  }
+  &-form {
+    .form-inputs {
+      &__toggle-content {
+        height: 60.6px;
+      }
+      &__send {
+        text-align: center;
+        margin-top: 40px;
+        .c-button {
+          width: 150px;
+        }
+      }
+    } 
+    &__forgot {
+      font-size: 12px;
+      text-align: end;
+      color: $color-white1;
+      &--link {
+        color: $color-info;
+      }
+    }
+  }
+
+  @media screen and (max-width: $sm) {
+    &__window {
+      margin: 0;
+      min-width: 100%;
+      height: 100vh;
+      min-height: 467px;
+      .auth-form {
+        height: calc(100vh - 100px);
+        display: flex;
+        flex-direction: column;
+        min-height: 300px;
+        form {
+          width: 100%;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 100%;
+          .c-input {
+            width: 100%;
+          }
+        }
+        &__actions {
+          margin-top: auto;
+        }
+        .form-inputs__send {
+          .c-button {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

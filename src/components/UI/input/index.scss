@@ -1,0 +1,60 @@
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 15px;
+  .c-input {
+    padding: 10px;
+    border: 1px solid transparent;
+    outline: none;
+    width: 100%;
+    background-color: $color-input;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    &::placeholder {
+      color: $color-input-placeholder;
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+    &--error {
+      border-color: $color-danger; 
+      background-color: $color-error;
+    }
+    &--transparent {
+      background-color: transparent;
+      color: $color-input;
+      border: none;
+      border-bottom: 2px solid $color-input;
+      border-radius:  0;
+      &.c-input--error {
+        border-color: $color-danger;
+      }
+      + .c-input__required {
+        width: 5px;
+        height: 5px;
+        right: 5px;
+        top: 5px;
+        border-radius: 50%;
+      }
+      &::placeholder {
+        color: $color-text;
+      }
+    }
+    &__required {
+      display: inline-block;
+      width: 3px;
+      height: calc(100% - 15px);
+      border-radius: 0 4px 4px 0;
+      position: absolute;
+      right: 0;
+      background-color: red;
+    }
+    &__error-text {
+      color: $color-danger;
+      position: absolute;
+      bottom: -2px;
+      font-size: 12px;
+      left: 0;
+    }
+  }
+} 

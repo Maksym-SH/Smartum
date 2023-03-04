@@ -1,0 +1,50 @@
+.text-ellipsis {
+  width: 100%;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.desktop-only {
+  @media (max-width: $lg) {
+    display: none;
+  }
+}
+.mobile-only {
+  @media (min-width: $lg) {
+    display: none;
+  }
+}
+
+h1 {
+  font-size: 26px;
+  @media (max-width: $sm) {
+    font-size: 21px;
+  }
+}
+
+h2 {
+  font-size: 18px;
+}
+
+p {
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: $RobotoRG;
+}
+// Link
+a {
+  &:link {
+    text-decoration: none;
+  }
+  &:visited {
+    text-decoration: none;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+  &:active {
+    text-decoration: underline;
+  }
+}

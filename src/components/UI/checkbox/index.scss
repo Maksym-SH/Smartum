@@ -1,0 +1,36 @@
+.c-checkbox {
+  label {
+    padding-left: 20px;
+    color: $color-white1;
+    position: relative;
+    cursor: pointer;
+    font-size: 12px;
+    user-select: none;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translate(0, -50%);
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border-radius: 3px;
+      background-color: $color-background;
+      border: 1px solid $color-dark-grey;
+    }
+  }
+  input {
+    display: none;
+    &:checked {
+      + label {
+        color: $color-text;
+        &::before {
+          background-color: $color-success;
+          background-image: url(~@/assets/img/icons/check.svg);
+          background-position: center center;
+        }
+      }
+    }
+  }
+}

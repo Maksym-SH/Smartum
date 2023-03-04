@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "Roboto-regular";
+  src: url(~@/assets/fonts/Poppins-Regular.ttf) format(ttf);
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Roboto-medium";
+  src: url(~@/assets/fonts/Poppins-Medium.ttf) format(ttf);
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Roboto-bold";
+  src: url(~@/assets/fonts/Poppins-Bold.ttf) format(ttf);
+  font-weight: 700;
+}
+
+$RobotoRG: "Roboto-regular", sans-serif;
+$RobotoMD: "Roboto-medium", sans-serif;
+$RobotoBD: "Roboto-bold", sans-serif;
