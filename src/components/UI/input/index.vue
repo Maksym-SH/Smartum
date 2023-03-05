@@ -22,6 +22,25 @@
     <Transition name="error-message">
       <span v-if="errorText" class="c-input__error-text">{{ errorText }}</span>
     </Transition>
+    <span 
+      v-if="type == 'password'" 
+      class="c-input__toggle-password" 
+      @click="togglePasswordType"
+    >
+      <transition mode="out-in" name="toggle-content"> 
+        <img 
+          :key="showPassword" 
+          v-if="!showPassword"
+          src="@/assets/img/icons/eye.svg" alt="Eye"
+        >
+        <img 
+          v-else
+          :key="showPassword" 
+          src="@/assets/img/icons/eye-slash.svg" 
+          alt=""
+        >
+      </transition>
+    </span>
   </div>
 </template>
 
@@ -29,6 +48,7 @@
 import { defineComponent, watch, ref, computed } from "vue";
 import { emailValidator } from "@/main";
 import { useInputProps } from "../use/props";
+import { RefInput } from "@/types";
 
 export default defineComponent({
   props: useInputProps,
@@ -38,6 +58,10 @@ export default defineComponent({
     const errorText = ref("");
     const isRequired = ref(false);
 
+    const input = ref<RefInput>(null);
+
+    const showPassword = ref(false);
+
     const validator = (value: string) => {
       if (props.isEmail && !emailValidator.validate(value)) {
         errorText.value = "Введите корректную почту.";
@@ -45,9 +69,19 @@ export default defineComponent({
         errorText.value = `Введите не менее ${props.min} символов.`;
       }
     }
+    const togglePasswordType = () => {
+      if(input.value?.type == "password") {
+        input.value!.type = "text";
+        showPassword.value = true;
+      } 
+      else {
+        input.value!.type = "password";
+        showPassword.value = false;
+      } 
+    }
     watch(() => props.modelValue, () => errorText.value = "")
-    watch(() => errorText, (value) => {
-      if(value) emit('invalid');
+    watch(() => errorText.value, (value) => {
+      if(value) emit('invalid'); 
     })
 
     const isAutoComplete = computed(() => props.autoComplete ? "on" : "off")
@@ -56,7 +90,10 @@ export default defineComponent({
       errorText,
       isRequired,
       isAutoComplete,
-      validator
+      input,
+      showPassword,
+      validator,
+      togglePasswordType
     }
   }
 })

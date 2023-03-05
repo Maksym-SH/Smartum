@@ -19,6 +19,9 @@
     &--error {
       border-color: $color-danger; 
       background-color: $color-error;
+      &::placeholder {
+        color: $color-grey;
+      }
     }
     &--transparent {
       background-color: transparent;
@@ -55,6 +58,12 @@
       bottom: -2px;
       font-size: 12px;
       left: 0;
+    }
+    &__toggle-password {
+      position: absolute;
+      top: 40%;
+      right: 10px;
+      transform: translate(0, -45%);
     }
   }
 } 

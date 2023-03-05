@@ -79,11 +79,11 @@
 
 <script lang="ts">
 import { defineComponent, ref, reactive, computed } from "vue";
-import { User } from "@/interfaces/common";
+import { IUser } from "@/interfaces";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 export default defineComponent({
   setup() {
-    const userData: User = reactive({
+    const userData: IUser = reactive({
       email: "",
       password: "",
       repeatPassword: ""

@@ -2,7 +2,7 @@
   <notifications />
   <c-loader v-if="loadingStatus"></c-loader>
   <router-view v-slot="{ Component }">
-    <transition name="toggle-content">
+    <transition name="router-nav" mode="out-in">
       <component :is="Component" />
     </transition>
   </router-view>
@@ -28,6 +28,7 @@ export default defineComponent({
 }
 body {
   min-width: 320px;
+  background-color: $color-grey;
   font-family: $RobotoRG;
   &::-webkit-scrollbar {
     width: 5px;

@@ -5,12 +5,14 @@ import {
 } from "firebase/auth";
 
 import { notify } from "@kyvg/vue3-notification";
-import { ErrorCode, User } from "@/interfaces/common";
+import { IUser } from "@/interfaces";
+import { ErrorCode } from "@/types";
 import store from "@/store";
+import router from "@/router";
 
 const firebaseAuth = () => {
   const useAuth = {
-    signUp: (userData: User) => {
+    signUp: (userData: IUser) => {
       if(userData.password.length < 8) return;
         if(userData.password !== userData.repeatPassword) {
 
@@ -30,24 +32,26 @@ const firebaseAuth = () => {
               title: "Вы успешно вошли в аккаунт.",
               type:"success"
             })
+            router.push({ name: "Home" });
           })
           .catch((error) => showErrorMessage(error))
           .finally(() => store.dispatch('setLoadingStatus', false))
-      }, 
+      },
 
-    signIn: (userData: User) => {
+    signIn: (userData: IUser) => {
       if(userData.password.length < 8) return;
       
       store.dispatch("setLoadingStatus", true);
       signInWithEmailAndPassword(getAuth(), userData.email, userData.password)
         .then((response) => {
+
           const user: any = response.user;
           store.dispatch("setUserToken", user.accessToken);
-          console.log(user)
           notify({
             title: "Вы успешно вошли в аккаунт.",
             type:"success"
           })
+          router.push({ name: "Home" });
         })
         .catch((error) => showErrorMessage(error))
         .finally(() => store.dispatch('setLoadingStatus', false));
@@ -66,18 +70,17 @@ const firebaseAuth = () => {
           errorText = "Введённая почта уже используется!";
           break;
         case "auth/wrong-password": 
-          errorText = "Введённый пароль неправильный, повторите попытку!";
+          errorText = "Введён неправильный логин или пароль, повторите попытку!";
           break
         case "auth/user-not-found": 
           errorText = "Такого пользователя не существует!";
           break;
-        case "auth/wrong-password": 
-          errorText = "Неправильный логин или пароль!"
         default: errorText = errorCode.code;
           break;
       }
     }
     else errorText = errorCode;
+
     notify({
       title: errorText,
       type:"error"

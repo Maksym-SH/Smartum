@@ -1,12 +1,6 @@
+@import "@/assets/scss/mixins";
 .auth {
-  width: 100%;
-  min-height: 100vh;
-  background: url(@/assets/img/login-background.jpg) center center no-repeat;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @include auth-window;
   &__swap-entry-type {
     text-align: center;
     margin-top: 40px;
@@ -44,6 +38,7 @@
       display: flex;
       justify-content: center;
       margin-bottom: 50px;
+      height: 40px;
     }
     &--title {
       color: $color-info;
