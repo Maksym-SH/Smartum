@@ -7,11 +7,11 @@
     border: 1px solid transparent;
     outline: none;
     width: 100%;
-    background-color: $color-input;
+    background-color: $color-white4;
     border-radius: 4px;
     transition: all 0.3s ease;
     &::placeholder {
-      color: $color-input-placeholder;
+      color: $color-brown;
       &::first-letter {
         text-transform: uppercase;
       }
@@ -25,9 +25,9 @@
     }
     &--transparent {
       background-color: transparent;
-      color: $color-input;
+      color: $color-white4;
       border: none;
-      border-bottom: 2px solid $color-input;
+      border-bottom: 2px solid $color-white4;
       border-radius:  0;
       &.c-input--error {
         border-color: $color-danger;

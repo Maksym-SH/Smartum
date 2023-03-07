@@ -3,7 +3,8 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     loadingStatus: false,
-    userToken: ""
+    userToken: "",
+    currentUser: {},
   },
   getters: {
     getLoadingStatus(state) {
@@ -11,6 +12,9 @@ export default createStore({
     },
     getUserToken(state) {
       return state.userToken
+    },
+    getCurrentUser(state) {
+      return state.currentUser;
     }
   },
   mutations: {
@@ -19,6 +23,9 @@ export default createStore({
     },
     SET_USER_TOKEN(state, token: string) {
       state.userToken = token;
+    },
+    SET_CURRENT_USER(state, user: object) {
+      state.currentUser = user;
     }
   },
   actions: {
@@ -27,6 +34,9 @@ export default createStore({
     },
     setUserToken({ commit }, token: string) {
       commit('SET_USER_TOKEN', token);
+    },
+    setCurrentUser({ commit }, user: object) {
+      commit('SET_CURRENT_USER', user);
     }
   },
   modules: {

@@ -1,0 +1,51 @@
+.date {
+  &-wrapper {
+    position: relative;
+    height: 43.2px;
+    .c-loader {
+      &__spinner {
+        svg {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+  }
+  width: fit-content;
+  color: $color-grey;
+  &__title {
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    letter-spacing: 0.3px;
+    line-height: 24px;
+  }
+  &__icon {
+    margin-right: 10px;
+  }
+  &__time { 
+    font-size: 12px;
+    &--time-text {
+      margin-right: 10px;
+      position: relative;
+      padding-right: 2px;
+      &::after {
+        content: "";
+        position: absolute;
+        display: inline-block;
+        width: 2px;
+        height: 2px;
+        border-radius: 50%;
+        background-color: $color-warning;
+        top: 50%;
+        right: -5px;
+      }
+    }
+    &--date-text {
+      display: inline-block;
+      &:first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
+}

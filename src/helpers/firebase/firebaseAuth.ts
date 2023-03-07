@@ -27,11 +27,11 @@ const firebaseAuth = () => {
           .then((response) => {
             const user: any = response.user;
             store.dispatch('setUserToken', user.accessToken);
-
             notify({
               title: "Вы успешно вошли в аккаунт.",
               type:"success"
             })
+            store.dispatch('setCurrentUser', getAuth().currentUser);
             router.push({ name: "Home" });
           })
           .catch((error) => showErrorMessage(error))
@@ -47,6 +47,7 @@ const firebaseAuth = () => {
 
           const user: any = response.user;
           store.dispatch("setUserToken", user.accessToken);
+          store.dispatch('setCurrentUser', getAuth().currentUser);
           notify({
             title: "Вы успешно вошли в аккаунт.",
             type:"success"

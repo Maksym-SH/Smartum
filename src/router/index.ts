@@ -12,11 +12,11 @@ const routes = [
     path: "/forgot-password",
     component: () => import("@/views/forgot/index.vue")
   },
-/*   {
-    name: "Dashboard",
+  {
+    name: "Home",
     path: "/dashboard",
-    component: () => import("@/views/")
-  } */
+    component: () => import("@/views/home/index.vue")
+  }
 ]
 
 const router = createRouter({

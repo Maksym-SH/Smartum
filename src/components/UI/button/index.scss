@@ -2,11 +2,11 @@
   outline: none;
   border: none;
   border-radius: 4px;
-  color: $color-white1;
+  color: $color-white2;
   border-bottom: 1px solid transparent;
   transition: all 0.2s ease-in-out;
   &:hover {
-    color: $color-white1-hover;
+    color: $color-white3;
   }
   &:disabled {
     pointer-events: none;

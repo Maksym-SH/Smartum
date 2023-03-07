@@ -1,6 +1,9 @@
 <template>
-  <div class="loading">
-    <div class="loading__spinner">
+  <div 
+    class="c-loader"
+    :class="{ 'inline-transparent': inline }"
+  >
+    <div class="c-loader__spinner">
       <svg viewBox="-3 -4 39 39">
         <polygon
           fill="transparent"
@@ -11,5 +14,17 @@
     </div>
   </div>
 </template>
+
+<script>
+import { defineComponent } from "vue";
+export default defineComponent({
+  props: {
+    inline: {
+      type: Boolean,
+      default: false,
+    }
+  }
+})
+</script>
 
 <style lang="scss" src="./index.scss"></style>

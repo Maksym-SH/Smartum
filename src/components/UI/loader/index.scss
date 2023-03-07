@@ -1,5 +1,5 @@
 @import "@/assets/scss/animations";
-.loading {
+.c-loader {
   position: fixed;
   top: 0;
   left: 0;
@@ -9,7 +9,7 @@
   justify-content: center;
   align-items: center;
   z-index: 100;
-  background-color: $color-loader-bg;
+  background-color: $color-black-opacity;
   &__spinner {
     svg {
       width: 60px;
@@ -22,5 +22,10 @@
         animation: dash 2.5s cubic-bezier(0.35, 0.04, 0.63, 0.95) infinite;
       }
     }
+  }
+  &.inline-transparent {
+    position: static;
+    background-color: transparent;
+    display: inline;
   }
 }
