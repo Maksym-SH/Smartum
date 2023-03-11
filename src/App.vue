@@ -1,6 +1,6 @@
 <template>
   <notifications />
-  <c-loader v-if="loadingStatus"></c-loader>
+  <Loader v-if="loadingStatus" />
   <router-view v-slot="{ Component }">
     <transition name="router-nav" mode="out-in">
       <component :is="Component" />
@@ -37,8 +37,19 @@ body {
     background: $color-grey;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: $color-success;
+    background-color: $color-green;
   }
+}
+
+.router-nav-enter-active,
+.router-nav-leave-active {
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.router-nav-enter-from,
+.router-nav-leave-to {
+  opacity: 0;
 }
 
 </style>

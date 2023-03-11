@@ -1,4 +1,7 @@
 import { createStore } from 'vuex'
+import axiosInstance from "@/helpers/axios/instance";
+import { IAxiosData, IError } from "@/interfaces/interfaces";
+import { notify } from '@kyvg/vue3-notification';
 
 export default createStore({
   state: {
@@ -37,6 +40,32 @@ export default createStore({
     },
     setCurrentUser({ commit }, user: object) {
       commit('SET_CURRENT_USER', user);
+    },
+    $http({ commit, getters }, params: IAxiosData) {
+      return new Promise((resolve, reject) => {
+        const axios: any = axiosInstance();
+        const { url, data, method, auth } = params;
+        console.log(getters.getUserToken);
+        axios({
+          url: process.env.VUE_APP_API_URL + url, 
+          data,
+          method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + getters.getUserToken
+          },
+        })
+        .then((response: any) => resolve(response))
+        .catch((error: IError) => {
+          notify({
+            title: "Внимание",
+            type: "error",
+            text:  `${ error.code }`
+          })
+          reject(error);
+        }) 
+        .finally(commit("SET_LOADING_STATUS", false))
+      })
     }
   },
   modules: {

@@ -49,6 +49,10 @@ export const useButtonProps = {
     default: "info",
     validator: (variant: string) => ["info", "danger", "success"].includes(variant),
   },
+  round :{
+    type: Boolean,
+    default: false,
+  },
   transparent: {
     type: Boolean,
     default: false,

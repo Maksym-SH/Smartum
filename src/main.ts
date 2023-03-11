@@ -9,10 +9,10 @@ import { getAnalytics } from "firebase/analytics";
 import { firebaseConfig } from './helpers/firebase/firebaseConfig';
 
 // Components
-import customButton from "./components/UI/button/index.vue";
-import customInput from "./components/UI/input/index.vue";
-import customCheckbox from "./components/UI/checkbox/index.vue";
-import customLoader from "./components/UI/loader/index.vue";
+import Button from "./components/ui/Button.vue";
+import Input from "./components/ui/Input.vue";
+import Checkbox from "./components/ui/Checkbox.vue";
+import Loader from "./components/ui/Loader.vue";
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -40,10 +40,10 @@ const vuetify = createVuetify({
 const app = createApp(App);
 
 // Global components
-app.component("c-input", customInput);
-app.component("c-button", customButton);
-app.component("c-checkbox", customCheckbox);
-app.component("c-loader", customLoader);
+app.component("Input", Input);
+app.component("Button", Button);
+app.component("Checkbox", Checkbox);
+app.component("Loader", Loader);
 
 // Plugins
 app.use(router);

@@ -1,3 +1,33 @@
+<template>
+  <span class="c-checkbox">
+    <input @change="checkboxToggle" type="checkbox" :id="name">
+    <label v-if="label" :for="name">{{ label }}</label>
+  </span>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import { useCheckboxProps } from  "./use/props";
+
+export default defineComponent({
+  props: useCheckboxProps,
+  emits: ["update:modelValue"],
+
+  setup(_, { emit }) {
+    const check = ref(false)
+    const checkboxToggle = () => {
+      check.value = !check.value;
+      emit('update:modelValue', check.value);
+    };
+    return {
+      check, 
+      checkboxToggle
+    }
+  }
+})
+</script>
+
+<style lang="scss" scoped>
 .c-checkbox {
   label {
     padding-left: 20px;
@@ -26,7 +56,7 @@
       + label {
         color: $color-text;
         &::before {
-          background-color: $color-success;
+          background-color: $color-green;
           background-image: url(~@/assets/img/icons/check.svg);
           background-position: center center;
         }
@@ -34,3 +64,4 @@
     }
   }
 }
+</style>

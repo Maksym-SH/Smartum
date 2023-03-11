@@ -1,4 +1,41 @@
-// Base
-@import "./colors";
-@import "./responsive";
 @import "./fonts";
+
+$color-info: #21A8F4;
+$color-info-hover: #2ca0e2;
+
+$color-danger: #F0483E;
+$color-danger-hover: #d5463e;
+
+$color-error: #f1a7a7;
+$color-yellow: #FED600;
+
+$color-yellow-hover: #e4c40f;
+$color-green: #2ED47A;
+$color-green-hover: #1497a0;
+
+$color-dark-grey: #1D242E;
+$color-black: #000000;
+$color-grey: #283342;
+$color-light-brown: #7e7575;
+$color-white1: #acacac;
+$color-white2: #F7FAFD;
+$color-white3: #f2f2f2;
+$color-white4: #E3EBF3;
+$color-white5: #EDF1F5;
+$color-transp-black: rgba(29, 36, 46, 0.5);
+$color-cyan: #03A9F5;
+$color-text: #DAD4D4;
+$color-brown: #918787;
+
+// Fonts
+$RobotoRG: "Roboto-regular", sans-serif;
+$RobotoMD: "Roboto-medium", sans-serif;
+$RobotoBD: "Roboto-bold", sans-serif;
+
+// Breakpoints
+$us: 480px;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1400px;

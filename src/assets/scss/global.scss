@@ -35,6 +35,8 @@ p {
 }
 // Link
 a {
+  color: $color-cyan;
+
   &:link {
     text-decoration: none;
   }
@@ -47,4 +49,14 @@ a {
   &:active {
     text-decoration: underline;
   }
+}
+// Transition
+.toggle-content-enter-active,
+.toggle-content-leave-active {
+  transition: all 0.2s ease;
+}
+.toggle-content-enter-from,
+.toggle-content-leave-to {
+  opacity: 0;
+  transform: scale(1.1);
 }
