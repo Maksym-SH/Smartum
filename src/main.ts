@@ -13,11 +13,12 @@ import Button from "./components/ui/Button.vue";
 import Input from "./components/ui/Input.vue";
 import Checkbox from "./components/ui/Checkbox.vue";
 import Loader from "./components/ui/Loader.vue";
+import Select from "./components/ui/Select.vue";
+
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 import RefreshToken from "@/helpers/firebase/firebaseRefresh";
-
 RefreshToken();
 // Global export
 export let emailValidator = require("email-validator");
@@ -45,6 +46,7 @@ app.component("Input", Input);
 app.component("Button", Button);
 app.component("Checkbox", Checkbox);
 app.component("Loader", Loader);
+app.component("Select", Select);
 
 // Plugins
 app.use(router);

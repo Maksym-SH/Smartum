@@ -36,12 +36,12 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   &__logo {
-    padding: 9px 25px;
+    padding: 4.76px 25px;
     background-color: $color-dark-grey;
     width: 100%;
     text-align: center;
     img {
-      width: 115px;
+      width: 140px;
     }
   }
   &__user {

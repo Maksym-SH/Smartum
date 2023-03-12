@@ -28,6 +28,11 @@ export interface ISize {
   height: string;
 }
 
+export interface ISelectElem {
+  title: string;
+  callback: () => void;
+}
+
 // Store
 export interface IUserStore {
   userToken: string;

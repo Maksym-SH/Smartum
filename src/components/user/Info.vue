@@ -24,7 +24,7 @@ export default defineComponent({
 
 <style lang="scss">
 .user-info__name {
-  max-width: 140px;
+  max-width: 130px;
   &--first-name {
     color: $color-white4;
     font-size: 14px;
