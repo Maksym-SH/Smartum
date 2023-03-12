@@ -29,7 +29,7 @@ export default defineComponent({
 body {
   min-width: 320px;
   background-color: $color-grey;
-  font-family: $RobotoRG;
+  font-family: $PoppinsRG;
   &::-webkit-scrollbar {
     width: 5px;
   }
