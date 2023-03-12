@@ -21,6 +21,7 @@ export default {
       state.userToken = token;
     },
     SET_CURRENT_USER(state: IUserStore, user: object): void {
+      console.log(user)
       state.currentUser = user;
     }
   },
@@ -37,7 +38,7 @@ export default {
       .then(() => {
         commit("setUserToken", "");
         commit("setCurrentUser", {});
-        router.push({ name: "Login" })
+        router.push({ name: "SignIn" })
 
         notify({
           text: "До скорого!",

@@ -6,7 +6,7 @@
         'c-input--error': errorText,
         'c-input--required': required,
         'c-input--transparent': transparent,
-        'c-input--search': type === 'search'
+        'c-input--search': type === 'search',
       }"
       ref="input"
       :autocomplete="isAutoComplete"
@@ -18,28 +18,28 @@
       :required="required"
       :min="min"
     />
-    <span
-      v-if="required" class="c-input__required"></span>
+    <span v-if="required" class="c-input__required"></span>
     <Transition name="error-message">
       <span v-if="errorText" class="c-input__error-text">{{ errorText }}</span>
     </Transition>
-    <span 
-      v-if="type == 'password'" 
-      class="c-input__toggle-password" 
+    <span
+      v-if="type == 'password'"
+      class="c-input__toggle-password"
       @click="togglePasswordType"
     >
-      <transition mode="out-in" name="toggle-content"> 
-        <img 
-          :key="showPassword" 
+      <transition mode="out-in" name="toggle-content">
+        <img
+          :key="showPassword"
           v-if="!showPassword"
-          src="@/assets/img/icons/eye.svg" alt="Eye"
-        >
-        <img 
+          src="@/assets/img/icons/eye.svg"
+          alt="Eye"
+        />
+        <img
           v-else
-          :key="showPassword" 
-          src="@/assets/img/icons/eye-slash.svg" 
+          :key="showPassword"
+          src="@/assets/img/icons/eye-slash.svg"
           alt=""
-        >
+        />
       </transition>
     </span>
     <Button
@@ -49,7 +49,7 @@
       transparent
       round
     >
-      <img src="@/assets/img/icons/search.svg" alt="">
+      <img src="@/assets/img/icons/search.svg" alt="" />
     </Button>
   </div>
 </template>
@@ -58,43 +58,49 @@
 import { defineComponent, watch, ref, computed } from "vue";
 import { emailValidator } from "@/main";
 import { useInputProps } from "./use/props";
-import { RefInput } from "@/types";
+import { RefElement } from "@/types";
 
 export default defineComponent({
   props: useInputProps,
-  emits: ["invalid", "update:modelValue", 'click'],
+  emits: ["invalid", "update:modelValue", "click"],
 
   setup(props, { emit }) {
     const errorText = ref("");
     const isRequired = ref(false);
 
-    const input = ref<RefInput>(null);
+    const input = ref<RefElement>(null);
 
     const showPassword = ref(false);
-
     const validator = (value: string) => {
       if (props.isEmail && !emailValidator.validate(value)) {
         errorText.value = "Введите корректную почту.";
       } else if (props.min && value.length < props.min) {
         errorText.value = `Введите не менее ${props.min} символов.`;
+      } else if (props.type === "password" && value.match(" ")) {
+        errorText.value = "Пробелы не допускаются.";
       }
-    }
+    };
     const togglePasswordType = () => {
-      if(input.value?.type == "password") {
+      if (input.value?.type == "password") {
         input.value!.type = "text";
         showPassword.value = true;
-      } 
-      else {
+      } else {
         input.value!.type = "password";
         showPassword.value = false;
-      } 
-    }
-    watch(() => props.modelValue, () => errorText.value = "")
-    watch(() => errorText.value, (value) => {
-      if(value) emit('invalid'); 
-    })
+      }
+    };
+    watch(
+      () => props.modelValue,
+      () => (errorText.value = "")
+    );
+    watch(
+      () => errorText.value,
+      (value) => {
+        if (value) emit("invalid");
+      }
+    );
 
-    const isAutoComplete = computed(() => props.autoComplete ? "on" : "off")
+    const isAutoComplete = computed(() => (props.autoComplete ? "on" : "off"));
 
     return {
       errorText,
@@ -103,10 +109,10 @@ export default defineComponent({
       input,
       showPassword,
       validator,
-      togglePasswordType
-    }
-  }
-})
+      togglePasswordType,
+    };
+  },
+});
 </script>
 
 <style lang="scss">
@@ -119,7 +125,7 @@ export default defineComponent({
     border: 1px solid transparent;
     outline: none;
     width: 100%;
-    background-color: $color-white4;
+    background-color: $color-white5;
     border-radius: 4px;
     transition: all 0.3s ease;
     &::placeholder {
@@ -129,7 +135,7 @@ export default defineComponent({
       }
     }
     &--error {
-      border-color: $color-danger; 
+      border-color: $color-danger;
       background-color: $color-error;
       &::placeholder {
         color: $color-grey;
@@ -143,7 +149,7 @@ export default defineComponent({
       color: $color-white4;
       border: none;
       border-bottom: 2px solid $color-white4;
-      border-radius:  0;
+      border-radius: 0;
       &.c-input--error {
         border-color: $color-danger;
       }
@@ -178,6 +184,7 @@ export default defineComponent({
       position: absolute;
       top: 40%;
       right: 10px;
+      cursor: pointer;
       transform: translate(0, -45%);
     }
     + &__search-btn {
@@ -187,7 +194,7 @@ export default defineComponent({
       right: 10px;
     }
   }
-} 
+}
 
 .error-message-enter-active,
 .error-message-leave-active {

@@ -1,35 +1,38 @@
 import { ApiMethod } from "@/types/index";
 
-export interface IUser {
-  email: string,
-  password: string,
-  repeatPassword?: string,
+export interface IUserLogin {
+  email: string;
+  password: string;
+}
+
+export interface IUserReg extends IUserLogin {
+  firstName: string;
+  lastName: string;
 }
 
 export interface IError {
-  config?: object,
-  status?: number,
-  code?: number,
+  config?: object;
+  status?: number;
+  code?: number;
 }
 
 export interface IAxiosData {
-  url: string,
-  data: any,
-  method: ApiMethod,
-  auth?: boolean
+  url: string;
+  data: any;
+  method: ApiMethod;
+  auth?: boolean;
 }
 
-export interface ISize 
-{
-  width: string,
-  height: string
+export interface ISize {
+  width: string;
+  height: string;
 }
 
 // Store
 export interface IUserStore {
-  userToken: string,
-  currentUser: object
+  userToken: string;
+  currentUser: object;
 }
 export interface ICommonStore {
-  loadingStatus: boolean
+  loadingStatus: boolean;
 }

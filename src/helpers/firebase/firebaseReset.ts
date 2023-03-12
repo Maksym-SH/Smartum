@@ -15,7 +15,7 @@ const firebaseReset = (email: string) => {
         text: "Сообщение восстановления пароля отправлено вам на почту!",
         type: "success",
       });
-      router.push({ name: "Login" })
+      router.push({ name: "SignIn" })
     })
     .catch(error => {
       let errorTextNotify = ""

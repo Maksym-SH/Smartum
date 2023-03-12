@@ -27,7 +27,7 @@
           size="sm"
         />
       </form>
-      <router-link class="forgot-page__window--go-back" :to="{ name: 'Login' }">
+      <router-link class="forgot-page__window--go-back" :to="{ name: 'SignIn' }">
           Вернуться на страницу авторизации 
           <v-icon icon="mdi mdi-login"></v-icon>
       </router-link>

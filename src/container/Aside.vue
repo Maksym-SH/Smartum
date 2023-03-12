@@ -1,23 +1,30 @@
 <template>
   <aside class="aside">
-      <div class="aside__logo">
-          <img src="@/assets/img/logo.svg" alt="Logo">
-      </div>
-      <div class="aside__user">
-        <User />
-      </div>
+    <div class="aside__logo">
+      <img src="@/assets/img/logo.svg" alt="Logo" />
+    </div>
+    <div class="aside__user">
+      <User :name="userName" :avatar="userAvatar" />
+    </div>
   </aside>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-
+import { defineComponent, computed } from "vue";
+import { useStore } from "vuex";
 import User from "@/components/user/Container.vue";
 export default defineComponent({
   components: {
-    User
-  }
-})
+    User,
+  },
+  setup() {
+    const store = useStore();
+    return {
+      userName: computed(() => store.getters.getCurrentUser.displayName),
+      userAvatar: computed(() => store.getters.getCurrentUser.photo),
+    };
+  },
+});
 </script>
 
 <style lang="scss">
@@ -45,5 +52,4 @@ export default defineComponent({
     }
   }
 }
-
 </style>

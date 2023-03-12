@@ -2,12 +2,12 @@
   <div class="auth">
     <div class="auth__window">
       <div class="auth__window--image">
-        <img src="@/assets/img/logo.svg" alt="Logo">
+        <img src="@/assets/img/logo.svg" alt="Logo" />
       </div>
       <div class="auth-form">
         <form @submit.prevent="submitForm">
           <div class="form-inputs">
-            <Input 
+            <Input
               required
               isEmail
               placeholder="Почта"
@@ -15,7 +15,7 @@
               transparent
               autocomplete
             />
-            <Input 
+            <Input
               required
               type="password"
               placeholder="Пароль"
@@ -24,59 +24,26 @@
               :min="minLength"
               autocomplete
             />
-            <div class="form-inputs__toggle-content">
-              <transition
-                mode="out-in"
-                name="toggle-content"
+            <div class="auth-form__forgot">
+              Забыли пароль?
+              <router-link
+                :to="{ name: 'Forgot' }"
+                class="auth-form__forgot--link"
               >
-                <Input 
-                  v-if="signUpType"
-                  required
-                  type="password"
-                  placeholder="Повторите пароль"
-                  v-model="userData.repeatPassword"
-                  transparent
-                  :min="minLength"
-                />
-                <div v-else class="auth-form__forgot">
-                  Забыли пароль?
-                  <router-link
-                    :to="{name: 'Forgot' }"
-                    class="auth-form__forgot--link"
-                  >
-                    Восстановить
-                  </router-link>
-                </div>
-              </transition>
+                Восстановить
+              </router-link>
             </div>
           </div>
           <div class="form-inputs__send">
-              <transition
-                mode="out-in" 
-                name="swap-buttons"
-              >
-                <Button v-if="signUpType"  title="Регистрация"/>
-                <Button v-else  title="Войти" />
-              </transition>
-            </div>
+            <Button title="Войти" />
+          </div>
         </form>
         <div class="auth-form__actions">
           <div class="auth__swap-entry-type">
-            <transition mode="out-in" name="toggle-content">
-              <span 
-                class="auth__description" 
-                :key="authType"
-              >
-                {{ signUpType ? 'Есть аккаунт?' : "Нет аккаунта?" }}
-              </span> 
-            </transition>
-
-            <Button 
-              key="button"
-              @click="changeAuthType"
-              transparent 
-              :title="authButtonText"
-            /> 
+            <span class="auth__description" :key="authType">
+              Нет аккаунта?
+              <router-link :to="{ name: 'SignUp' }"> Регистрация </router-link>
+            </span>
           </div>
         </div>
       </div>
@@ -84,46 +51,41 @@
   </div>
 </template>
 
-<script lang ="ts">
+<script lang="ts">
 import { defineComponent, ref, reactive, computed } from "vue";
-import { IUser } from "@/interfaces";
+import { IUserLogin } from "@/interfaces";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
+import { emailValidator } from "@/main";
+
 export default defineComponent({
   setup() {
-    const userData: IUser = reactive({
+    const userData: IUserLogin = reactive({
       email: "",
       password: "",
-      repeatPassword: ""
-    })
-    const authType = ref('signIn');
+    });
+    const authType = ref("signIn");
     const minLength = 8;
 
-    const changeAuthType = () => {
-      if(signUpType.value) authType.value = "signIn";
-      else authType.value = "signUp";
-    }
+    const { signIn } = FirebaseAuth();
 
-    const signUpType = computed(() => authType.value === "signUp")
-    const authButtonText = computed(() => signUpType.value ? "Авторизация": "Регистрация")
+    const valid = computed(() => {
+      return (
+        emailValidator.validate(userData.email) &&
+        userData.password.length >= minLength
+      );
+    });
 
-    const {signIn, signUp } = FirebaseAuth();
-
-    const submitForm = () => {
-      signUpType.value ? signUp(userData) : signIn(userData);
-    }
+    const submitForm = () => signIn(userData, valid.value);
 
     return {
       userData,
       authType,
       minLength,
-      signUpType,
-      authButtonText,
       submitForm,
-      changeAuthType,
-    }
-  }
-})
-</script> 
+    };
+  },
+});
+</script>
 
 <style lang="scss">
 @import "@/assets/scss/mixins";
@@ -155,7 +117,7 @@ export default defineComponent({
     background-color: rgba($color-grey, 0.8);
     box-shadow: 0 30px 10px rgba($color-grey, 0.3);
     position: relative;
-    &-type { 
+    &-type {
       position: absolute;
       top: 2px;
       left: 2px;
@@ -183,12 +145,12 @@ export default defineComponent({
       }
       &__send {
         text-align: center;
-        margin-top: 40px;
+        margin-top: 80px;
         .c-button {
           width: 150px;
         }
       }
-    } 
+    }
     &__forgot {
       font-size: 12px;
       text-align: end;
@@ -201,12 +163,12 @@ export default defineComponent({
       margin: 0;
       min-width: 100%;
       height: 100vh;
-      min-height: 467px;
+      min-height: 428px;
       .auth-form {
         height: calc(100vh - 100px);
         display: flex;
         flex-direction: column;
-        min-height: 300px;
+        min-height: 250px;
         form {
           width: 100%;
           margin: 0 auto;
@@ -231,10 +193,12 @@ export default defineComponent({
   }
 }
 
-.swap-buttons-enter-active, .swap-buttons-leave-active {
-  transition: opacity .3s ease;
+.swap-buttons-enter-active,
+.swap-buttons-leave-active {
+  transition: opacity 0.3s ease;
 }
-.swap-buttons-enter, .swap-buttons-leave-to {
+.swap-buttons-enter,
+.swap-buttons-leave-to {
   opacity: 0;
 }
 </style>

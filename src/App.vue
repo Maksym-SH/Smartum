@@ -11,14 +11,15 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
+
 export default defineComponent({
   setup() {
     const store = useStore();
     return {
-      loadingStatus: computed(() => store.getters.getLoadingStatus)
-    }
-  }
-})
+      loadingStatus: computed(() => store.getters.getLoadingStatus),
+    };
+  },
+});
 </script>
 
 <style lang="scss">
@@ -51,5 +52,4 @@ body {
 .router-nav-leave-to {
   opacity: 0;
 }
-
 </style>

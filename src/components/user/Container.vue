@@ -1,24 +1,40 @@
 <template>
   <div class="user-info">
-    <Avatar 
-      online
-      name="Steve Jobs"
-      :image="'https://avatars.mds.yandex.net/i?id=884edb525425300d10ba53dd8b1ee02e98861e27-7765566-images-thumbs&n=13&exp=1'"
-    />
-  </div><!--  image="" -->
+    <Avatar online :name="name" :image="avatar" />
+    <div class="user-info--name">
+      <Info :name="name" />
+    </div>
+  </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 
 import Avatar from "@/components/user/Avatar.vue";
+import Info from "@/components/user/Info.vue";
 export default defineComponent({
   components: {
-    Avatar
-  }
-})
+    Avatar,
+    Info,
+  },
+  props: {
+    name: {
+      type: String,
+      default: "",
+    },
+    avatar: {
+      type: String,
+      default: null,
+    },
+  },
+});
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.user-info {
+  display: flex;
+  .user-avatar {
+    margin-right: 16px;
+  }
+}
 </style>

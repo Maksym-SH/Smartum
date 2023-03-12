@@ -2,12 +2,20 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
-    name: "Login",
-    path: "/login",
+    name: "SignIn",
+    path: "/sign-in",
     meta: {
       notAuthorized: true,
     },
-    component: () => import("@/views/EntryPage.vue")
+    component: () => import("@/views/SignInPage.vue")
+  },
+  {
+    name: "SignUp",
+    path: "/sign-up",
+    meta: {
+      notAuthorized: true
+    },
+    component: () => import ("@/views/SignUpPage.vue")
   },
   {
     name: "Forgot",
@@ -39,7 +47,7 @@ router.beforeEach(async(to, from, next) => {
 
   if(to.meta.protected) {
     if (protectedRoute) {
-      token ? next() : next("/login");
+      token ? next() : next("/sign-in");
     } else {
       next();
     }
