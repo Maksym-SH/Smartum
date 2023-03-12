@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// Refresh token
-import RefreshToken from "@/helpers/firebase/firebaseRefresh";
 
 const routes = [
   {
@@ -34,15 +32,22 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  let requiresAuth: unknown = to.meta.protected;
-  let token = localStorage.getItem('smartumToken');
+router.beforeEach(async(to, from, next) => {
+  const token = localStorage.getItem('smartumToken');
+  const protectedRoute = to.meta.protected;
+  const notAuthorizedRoute = to.meta.notAuthorized;
 
-  if (requiresAuth) {
-    token ? next() : next("/login");
-  } else {
-    next();
+  if(to.meta.protected) {
+    if (protectedRoute) {
+      token ? next() : next("/login");
+    } else {
+      next();
+    }
   }
+  else if(notAuthorizedRoute && token) {
+    next("/dashboard")
+  }
+  else next();
 });
 
 export default router
