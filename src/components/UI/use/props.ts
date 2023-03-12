@@ -1,3 +1,5 @@
+import { ButtonSize, Variant } from "@/types/index";
+import { PropType } from "vue";
 // Custom input
 export const useInputProps = {
   modelValue: {
@@ -45,9 +47,8 @@ export const useButtonProps = {
     default: ""
   },
   variant: {
-    type: String,
+    type: String as PropType<Variant>,
     default: "info",
-    validator: (variant: string) => ["info", "danger", "success"].includes(variant),
   },
   round :{
     type: Boolean,
@@ -62,9 +63,8 @@ export const useButtonProps = {
     default: false
   },  
   size: {
-    type: String,
+    type: String as PropType<ButtonSize>,
     default: "md",
-    validator: (variant: string) => ["sm", "md", "lg"].includes(variant)
   }
 }
 

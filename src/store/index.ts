@@ -1,47 +1,29 @@
-import { createStore } from 'vuex'
+import { createStore, ActionContext } from 'vuex'
 import axiosInstance from "@/helpers/axios/instance";
-import { IAxiosData, IError } from "@/interfaces/interfaces";
+import { IAxiosData, ICommonStore, IError } from "@/interfaces/index";
 import { notify } from '@kyvg/vue3-notification';
+// Stores
+import User from "./user";
 
 export default createStore({
   state: {
     loadingStatus: false,
-    userToken: "",
-    currentUser: {},
   },
   getters: {
-    getLoadingStatus(state) {
+    getLoadingStatus(state: ICommonStore): boolean {
       return state.loadingStatus
     },
-    getUserToken(state) {
-      return state.userToken
-    },
-    getCurrentUser(state) {
-      return state.currentUser;
-    }
   },
   mutations: {
-    SET_LOADING_STATUS(state, status: boolean) {
+    SET_LOADING_STATUS(state: ICommonStore, status: boolean): void {
       state.loadingStatus = status;
     },
-    SET_USER_TOKEN(state, token: string) {
-      state.userToken = token;
-    },
-    SET_CURRENT_USER(state, user: object) {
-      state.currentUser = user;
-    }
   },
   actions: {
-    setLoadingStatus({ commit }, status: boolean) {
+    setLoadingStatus({ commit }: ActionContext<ICommonStore, any>, status: boolean): void {
       commit('SET_LOADING_STATUS', status);
     },
-    setUserToken({ commit }, token: string) {
-      commit('SET_USER_TOKEN', token);
-    },
-    setCurrentUser({ commit }, user: object) {
-      commit('SET_CURRENT_USER', user);
-    },
-    $http({ commit, getters }, params: IAxiosData) {
+    $http({ commit, getters }: ActionContext<ICommonStore, any>, params: IAxiosData): Promise<any> {
       return new Promise((resolve, reject) => {
         const axios: any = axiosInstance();
         const { url, data, method, auth } = params;
@@ -69,5 +51,6 @@ export default createStore({
     }
   },
   modules: {
+    User
   }
 })

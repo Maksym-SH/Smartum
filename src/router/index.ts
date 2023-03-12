@@ -1,20 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from "@/store";
-import { notify } from '@kyvg/vue3-notification';
+// Refresh token
+import RefreshToken from "@/helpers/firebase/firebaseRefresh";
+
 const routes = [
   {
     name: "Login",
     path: "/login",
+    meta: {
+      notAuthorized: true,
+    },
     component: () => import("@/views/EntryPage.vue")
   },
   {
     name: "Forgot",
     path: "/forgot-password",
+    meta: {
+      notAuthorized: true,
+    },
     component: () => import("@/views/ForgotPasswordPage.vue")
   },
   {
     name: "Home",
     path: "/dashboard",
+    meta: {
+      protected: true,
+    },
     component: () => import("@/views/Home.vue")
   }
 ]
@@ -25,19 +35,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.protected) {
-    if (store.getters.getUserToken) {
-      next()
-    } 
-    else {
-      next('/login');
-      notify({
-        title: "Срок вашей сессии истек, повторите вход."
-      })
-    }
+  let requiresAuth: unknown = to.meta.protected;
+  let token = localStorage.getItem('smartumToken');
+
+  if (requiresAuth) {
+    token ? next() : next("/login");
   } else {
-    next()
+    next();
   }
-})
+});
 
 export default router

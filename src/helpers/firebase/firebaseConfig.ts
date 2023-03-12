@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyAIj891XQtVtKIkFwNj6EP-wfbuoZgWYzM",
-  authDomain: "smartum-68bba.firebaseapp.com",
-  projectId: "smartum-68bba",
-  storageBucket: "smartum-68bba.appspot.com",
-  messagingSenderId: "314878890769",
-  appId: "1:314878890769:web:1d61dafb5e57230a48f2b0",
-  measurementId: "G-ZJM9SX7GJD"
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_ID,
+  measurementId: process.env.VUE_APP_MEASUREMENT_ID
 };

@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, computed } from "vue";
-import { ISize } from "@/interfaces/interfaces";
+import { ISize } from "@/interfaces";
 
 export default defineComponent({
   props: {

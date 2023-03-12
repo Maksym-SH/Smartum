@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 
 import { notify } from "@kyvg/vue3-notification";
-import { IUser } from "@/interfaces/interfaces";
+import { IUser } from "@/interfaces/index";
 import { ErrorCode } from "@/types/index";
 import store from "@/store";
 import router from "@/router";
@@ -26,13 +26,16 @@ const firebaseAuth = () => {
         createUserWithEmailAndPassword(getAuth(), userData.email, userData.password)
           .then((response) => {
             const user: any = response.user;
+            localStorage.setItem('smartumToken', user.accessToken);
+
             store.dispatch('setUserToken', user.accessToken);
             notify({
               title: "Вы успешно вошли в аккаунт.",
               type:"success"
             })
+            localStorage.setItem('smartumLogin', userData.email)
             store.dispatch('setCurrentUser', getAuth().currentUser);
-            router.push({ name: "Home" });
+            router.push({ name: "Home" })
           })
           .catch((error) => showErrorMessage(error))
           .finally(() => store.dispatch('setLoadingStatus', false))
@@ -46,6 +49,8 @@ const firebaseAuth = () => {
         .then((response) => {
 
           const user: any = response.user;
+          localStorage.setItem('smartumToken', user.accessToken);
+
           store.dispatch("setUserToken", user.accessToken);
           store.dispatch('setCurrentUser', getAuth().currentUser);
           notify({

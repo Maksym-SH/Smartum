@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { notify } from '@kyvg/vue3-notification';
 import { getAuth } from 'firebase/auth';
-import { IError } from '@/interfaces/interfaces';
+import { IError } from '@/interfaces/index';
 import store from '@/store';
 
 export default function axiosInstance(): object {

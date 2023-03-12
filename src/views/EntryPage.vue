@@ -86,7 +86,7 @@
 
 <script lang ="ts">
 import { defineComponent, ref, reactive, computed } from "vue";
-import { IUser } from "@/interfaces/interfaces";
+import { IUser } from "@/interfaces";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 export default defineComponent({
   setup() {

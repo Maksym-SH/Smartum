@@ -24,3 +24,12 @@ export interface ISize
   width: string,
   height: string
 }
+
+// Store
+export interface IUserStore {
+  userToken: string,
+  currentUser: object
+}
+export interface ICommonStore {
+  loadingStatus: boolean
+}
