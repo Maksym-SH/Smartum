@@ -1,6 +1,7 @@
 import { ButtonSize, Variant } from "@/types/index";
 import { PropType } from "vue";
-// Custom input
+
+// Input
 export const useInputProps = {
   modelValue: {
     type: [String, Number],
@@ -34,23 +35,23 @@ export const useInputProps = {
     type: Boolean,
     default: true,
   },
-}
+};
 
-// Custom button
+// Button
 export const useButtonProps = {
   title: {
-    type:String,
-    default: ""
+    type: String,
+    default: "",
   },
   icon: {
     type: String,
-    default: ""
+    default: "",
   },
   variant: {
     type: String as PropType<Variant>,
     default: "info",
   },
-  round :{
+  round: {
     type: Boolean,
     default: false,
   },
@@ -60,26 +61,26 @@ export const useButtonProps = {
   },
   disabled: {
     type: Boolean,
-    default: false
-  },  
+    default: false,
+  },
   size: {
     type: String as PropType<ButtonSize>,
     default: "md",
-  }
-}
+  },
+};
 
-// Custom checkbox
+// Checkbox
 export const useCheckboxProps = {
   modelValue: {
     type: Boolean,
-    required: true
-  },  
+    required: true,
+  },
   name: {
     type: String,
     required: true,
   },
   label: {
     type: String,
-    default: ""
-  }
+    default: "",
+  },
 };

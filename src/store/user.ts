@@ -3,6 +3,7 @@ import { ActionContext } from "vuex";
 import { getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 import router from "@/router";
+
 export default {
   state: {
     userToken: "",

@@ -1,19 +1,15 @@
 <template>
   <span class="user-avatar" :style="avatarSize">
     <img
-      v-show="imgLoaded && image" 
-      :src="image" 
+      v-show="imgLoaded && image"
+      :src="image"
       @load="imgLoad"
       alt="Avatar"
     />
     <span class="user-avatar--initials" v-show="!imgLoaded || !image">
-        {{initials}}
+      {{ initials }}
     </span>
-    <span
-      v-if="online" 
-      class="user-avatar--online"
-    >
-    </span>
+    <span v-if="online" class="user-avatar--online"> </span>
   </span>
 </template>
 
@@ -25,7 +21,7 @@ export default defineComponent({
   props: {
     image: {
       type: String,
-      default: ""
+      default: "",
     },
     online: {
       type: Boolean,
@@ -33,31 +29,35 @@ export default defineComponent({
     },
     size: {
       type: Number,
-      default: 42
+      default: 42,
     },
     name: {
       type: String,
-    }
+    },
   },
   setup(props) {
-    
     const avatarSize: ISize = reactive({
-      width: `${ props.size }px`,
-      height: `${ props.size }px`,
-    })
-    const initials = computed(() => props.name?.split(' ').map((item) => item[0]).join(''))
+      width: `${props.size}px`,
+      height: `${props.size}px`,
+    });
+    const initials = computed(() =>
+      props.name
+        ?.split(" ")
+        .map((item) => item[0])
+        .join("")
+    );
 
-    const imgLoad = () => imgLoaded.value = true;
+    const imgLoad = () => (imgLoaded.value = true);
     const imgLoaded = ref(false);
 
     return {
       avatarSize,
       imgLoaded,
       initials,
-      imgLoad
-    }
-  }
-})
+      imgLoad,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -78,7 +78,6 @@ export default defineComponent({
   }
   &--initials {
     font-size: 22px;
-
   }
   &--online {
     position: absolute;

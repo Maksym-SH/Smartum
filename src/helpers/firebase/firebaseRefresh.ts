@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { notify } from "@kyvg/vue3-notification";
+// import { notify } from "@kyvg/vue3-notification";
 import store from "@/store";
 import router from "@/router";
 

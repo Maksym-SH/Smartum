@@ -115,7 +115,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .input-wrapper {
   position: relative;
   width: 100%;

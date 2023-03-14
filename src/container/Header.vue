@@ -1,32 +1,28 @@
 <template>
   <header class="c-header">
     <div class="c-header__wrapper">
-      <Input 
-        type="search"
-        placeholder="Поиск"
-        v-model="searchInput"
-      />
+      <Input type="search" placeholder="Поиск" v-model="searchInput" />
       <Date />
     </div>
-  </header> 
+  </header>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-
 import Date from "@/components/date/DateTime.vue";
+
 export default defineComponent({
   components: {
-    Date
+    Date,
   },
   setup() {
     const searchInput = ref("");
 
     return {
-      searchInput
-    }
-  }
-})
+      searchInput,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -46,6 +42,6 @@ export default defineComponent({
       max-width: 440px;
       padding: 0;
     }
-  } 
+  }
 }
 </style>

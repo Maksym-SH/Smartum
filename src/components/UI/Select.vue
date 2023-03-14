@@ -23,8 +23,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
 import { SelectElements, MenuLocation } from "@/types/index";
+
 export default defineComponent({
   props: {
     items: {

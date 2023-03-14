@@ -1,21 +1,17 @@
 <template>
   <div class="image-upload" @click="upload.click()">
-    <input 
-      type="file"
-      ref="upload"
-      class="image-upload--input"
-    >
-    <img 
-      v-if="imgPath && loaded" 
-      @load="imgLoad" 
+    <input type="file" ref="upload" class="image-upload--input" />
+    <img
+      v-if="imgPath && loaded"
+      @load="imgLoad"
       class="image-upload--pucture"
     />
-    <img 
+    <img
       v-else
       svg-inline
-      class="image-upload--icon" 
-      src="@/assets/img/icons/upload.svg" 
-      alt="Upload" 
+      class="image-upload--icon"
+      src="@/assets/img/icons/upload.svg"
+      alt="Upload"
     />
   </div>
 </template>
@@ -28,23 +24,23 @@ export default defineComponent({
   props: {
     imgPath: {
       type: String,
-      default: ""
+      default: "",
     },
-  },  
-  setup(props) { 
-    const upload = ref<RefElement>(null)
+  },
+  setup(props) {
+    const upload = ref<RefElement>(null);
 
-    const loaded =  ref(false);
-    
-    const imgLoad = () => loaded.value = true;
-    
+    const loaded = ref(false);
+
+    const imgLoad = () => (loaded.value = true);
+
     return {
       loaded,
+      upload,
       imgLoad,
-      upload
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

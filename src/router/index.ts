@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
@@ -7,15 +7,15 @@ const routes = [
     meta: {
       notAuthorized: true,
     },
-    component: () => import("@/views/SignInPage.vue")
+    component: () => import("@/views/SignInPage.vue"),
   },
   {
     name: "SignUp",
     path: "/sign-up",
     meta: {
-      notAuthorized: true
+      notAuthorized: true,
     },
-    component: () => import ("@/views/SignUpPage.vue")
+    component: () => import("@/views/SignUpPage.vue"),
   },
   {
     name: "Forgot",
@@ -23,7 +23,7 @@ const routes = [
     meta: {
       notAuthorized: true,
     },
-    component: () => import("@/views/ForgotPasswordPage.vue")
+    component: () => import("@/views/ForgotPasswordPage.vue"),
   },
   {
     name: "Home",
@@ -31,31 +31,29 @@ const routes = [
     meta: {
       protected: true,
     },
-    component: () => import("@/views/Home.vue")
-  }
-]
+    component: () => import("@/views/Home.vue"),
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-router.beforeEach(async(to, from, next) => {
-  const token = localStorage.getItem('smartumToken');
+router.beforeEach(async (to, from, next) => {
+  const token = localStorage.getItem("smartumToken");
   const protectedRoute = to.meta.protected;
   const notAuthorizedRoute = to.meta.notAuthorized;
 
-  if(to.meta.protected) {
+  if (to.meta.protected) {
     if (protectedRoute) {
       token ? next() : next("/sign-in");
     } else {
       next();
     }
-  }
-  else if(notAuthorizedRoute && token) {
-    next("/dashboard")
-  }
-  else next();
+  } else if (notAuthorizedRoute && token) {
+    next("/dashboard");
+  } else next();
 });
 
-export default router
+export default router;

@@ -1,7 +1,7 @@
 <template>
   <div class="home-page">
     <div class="home-page__navigation">
-      <c-aside/>
+      <c-aside />
       <c-header />
     </div>
   </div>
@@ -12,17 +12,16 @@ import { defineComponent } from "vue";
 import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
 
-export default  defineComponent({
-  components: { 
+export default defineComponent({
+  components: {
     cHeader,
-    cAside
+    cAside,
   },
-  setup() {
-  }
-})
+  setup() {},
+});
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .home-page {
   min-height: 100vh;
   background-color: $color-white5;
