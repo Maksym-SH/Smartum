@@ -13,8 +13,8 @@
       :type="type"
       :value="modelValue"
       :placeholder="placeholder"
-      @input="$emit('update:modelValue', $event.target.value)"
-      @blur="validator($event.target.value)"
+      v-model="model"
+      @blur="validator()"
       :required="required"
       :min="min"
     />
@@ -29,14 +29,14 @@
     >
       <transition mode="out-in" name="toggle-content">
         <img
-          :key="showPassword"
+          key="open"
           v-if="!showPassword"
           src="@/assets/img/icons/eye.svg"
           alt="Eye"
         />
         <img
           v-else
-          :key="showPassword"
+          key="close"
           src="@/assets/img/icons/eye-slash.svg"
           alt=""
         />
@@ -68,15 +68,22 @@ export default defineComponent({
     const errorText = ref("");
     const isRequired = ref(false);
 
+    const model = computed({
+      get: () => props.modelValue,
+      set: (newValue) => emit("update:modelValue", newValue),
+    });
+
     const input = ref<RefElement>(null);
 
     const showPassword = ref(false);
-    const validator = (value: string) => {
-      if (props.isEmail && !emailValidator.validate(value)) {
+    const validator = () => {
+      if (props.isEmail && !emailValidator.validate(model)) {
         errorText.value = "Введите корректную почту.";
-      } else if (props.min && value.length < props.min) {
+      } 
+      else if (props.min && String(model.value).length < props.min) {
         errorText.value = `Введите не менее ${props.min} символов.`;
-      } else if (props.type === "password" && value.match(" ")) {
+      } 
+      else if (props.type === "password" && String(model.value).match(" ")) {
         errorText.value = "Пробелы не допускаются.";
       }
     };
@@ -107,6 +114,7 @@ export default defineComponent({
       isRequired,
       isAutoComplete,
       input,
+      model,
       showPassword,
       validator,
       togglePasswordType,
@@ -161,7 +169,7 @@ export default defineComponent({
         border-radius: 50%;
       }
       &::placeholder {
-        color: $color-text;
+        color: rgba($color-grey, 0.7);
       }
     }
     &__required {
