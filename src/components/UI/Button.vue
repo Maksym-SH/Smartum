@@ -41,10 +41,24 @@ export default defineComponent({
     filter: grayscale(60%);
   }
   // Variant
+  &--default {
+    &.c-button--transparent {
+      color: $color-dark-grey;
+      &:hover {
+        color: $color-grey;
+      }
+    }
+  }
   &--info {
     background-color: $color-info;
     &:hover {
       background-color: $color-info-hover;
+    }
+    &.c-button--transparent {
+      color: $color-info;
+      &:hover {
+        color: $color-info-hover;
+      }
     }
   }
   &--danger {
@@ -52,17 +66,35 @@ export default defineComponent({
     &:hover {
       background-color: $color-danger-hover;
     }
+    &.c-button--transparent {
+      color: $color-danger;
+      &:hover {
+        color: $color-danger-hover;
+      }
+    }
   }
   &--warning {
     background-color: $color-yellow;
     &:hover {
       background-color: $color-yellow-hover;
     }
+    &.c-button--transparent {
+      color: $color-yellow;
+      &:hover {
+        color: $color-yellow-hover;
+      }
+    }
   }
   &--success {
     background-color: $color-green;
     &:hover {
       background-color: $color-green-hover;
+    }
+    &.c-button--transparent {
+      color: $color-green;
+      &:hover {
+        color: $color-green-hover;
+      }
     }
   }
   &--transparent {
@@ -72,7 +104,6 @@ export default defineComponent({
     color: $color-text;
     &.active {
       color: $color-white2;
-      border-color: $color-yellow;
     }
     &:hover {
       background-color: transparent;
