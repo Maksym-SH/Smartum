@@ -27,11 +27,25 @@ const routes = [
   },
   {
     name: "Home",
-    path: "/dashboard",
+    path: "/",
     meta: {
       protected: true,
     },
-    component: () => import("@/views/Home.vue"),
+    component: () => import("@/views/HomePage.vue"),
+    children: [
+      {
+        name: "Profile",
+        path: "/profile",
+        meta: {
+          tabName: {
+            eng: "Profile",
+            ru: "Профиль",
+          },
+          protected: true,
+        },
+        component: () => import("@/views/tabs/ProfileTab.vue"),
+      },
+    ],
   },
 ];
 
@@ -47,12 +61,12 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.meta.protected) {
     if (protectedRoute) {
-      token ? next() : next("/sign-in");
+      token ? next() : next({ name: "SignIn" });
     } else {
       next();
     }
   } else if (notAuthorizedRoute && token) {
-    next("/dashboard");
+    next({ name: "Home" });
   } else next();
 });
 

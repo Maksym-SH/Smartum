@@ -18,9 +18,9 @@
 }
 
 h1 {
-  font-size: 26px;
+  font-size: 24px !important;
   @media (max-width: $sm) {
-    font-size: 21px;
+    font-size: 21px !important;
   }
 }
 

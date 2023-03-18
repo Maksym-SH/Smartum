@@ -9,9 +9,9 @@
         {{ dayType }}
       </h3>
       <div class="date__time">
-        <span class="date__time--time-text">
+        <time class="date__time--time-text">
           {{ time }}
-        </span>
+        </time>
         <span class="date__time--date-text">
           {{ date }}
         </span>

@@ -6,7 +6,11 @@
       @load="imgLoad"
       alt="Avatar"
     />
-    <span class="user-avatar--initials" v-show="!imgLoaded || !image">
+    <span
+      class="user-avatar--initials"
+      v-show="!imgLoaded || !image"
+      :style="`font-size: ${size / 2.2}px;`"
+    >
       {{ initials }}
     </span>
     <span v-if="online" class="user-avatar--online"> </span>
@@ -15,7 +19,6 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, computed } from "vue";
-import { ISize } from "@/interfaces";
 
 export default defineComponent({
   props: {
@@ -36,7 +39,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const avatarSize: ISize = reactive({
+    const avatarSize = reactive({
       width: `${props.size}px`,
       height: `${props.size}px`,
     });
@@ -76,9 +79,7 @@ export default defineComponent({
     border-radius: 4px;
     user-select: none;
   }
-  &--initials {
-    font-size: 22px;
-  }
+
   &--online {
     position: absolute;
     display: inline-block;

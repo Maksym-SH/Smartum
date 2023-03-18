@@ -30,8 +30,6 @@ export default defineComponent({
   padding: 10px 40px;
   background-color: $color-white2;
   border-bottom: 1px solid $color-black;
-  box-sizing: 20px 2px 12px $color-transp-black;
-  height: fit-content;
   width: 100%;
   &__wrapper {
     display: flex;

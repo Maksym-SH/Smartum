@@ -15,7 +15,6 @@ export default async function refreshToken(): Promise<any> {
       //  store.dispatch('setUserToken', token)
       store.dispatch("setCurrentUser", user);
 
-      router.push({ name: "Home" });
       // })
       // .catch((error) => {
       //   notify({

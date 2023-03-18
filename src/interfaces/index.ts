@@ -23,14 +23,16 @@ export interface IAxiosData {
   auth?: boolean;
 }
 
-export interface ISize {
-  width: string;
-  height: string;
-}
-
 export interface ISelectElem {
   title: string;
   callback: () => void;
+  icon?: string;
+  variant?: "info" | string;
+}
+
+export interface ILanguage {
+  eng: string;
+  ru: string;
 }
 
 // Store
@@ -40,4 +42,9 @@ export interface IUserStore {
 }
 export interface ICommonStore {
   loadingStatus: boolean;
+}
+// TimeStamp
+export interface IFormatDate {
+  time: string,
+  date: string,
 }

@@ -35,12 +35,16 @@ export default defineComponent({
   setup() {
     const actions: SelectElements = reactive([
       {
-        title: "Редактировать аккаунт",
+        title: "Мой профиль",
         callback: () => router.push("/profile"),
+        icon: require("@/assets/img/icons/account.svg"),
+        variant: "default",
       },
       {
         title: "Выйти с аккаунта",
         callback: () => store.dispatch("userLogout"),
+        icon: require("@/assets/img/icons/logout.svg"),
+        variant: "danger",
       },
     ]);
 

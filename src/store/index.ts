@@ -1,5 +1,5 @@
 import { createStore, ActionContext } from "vuex";
-import axiosInstance from "@/helpers/axios/instance";
+import axiosInstance from "@/helpers/axios/axiosInstance";
 import { IAxiosData, ICommonStore, IError } from "@/interfaces/index";
 import { notify } from "@kyvg/vue3-notification";
 import User from "./user";

@@ -1,4 +1,4 @@
-import { ISelectElem } from "@/interfaces/index";
+import { ISelectElem, ILanguage } from "@/interfaces/index";
 
 export type ErrorCode = { code: string } | string;
 
@@ -19,3 +19,5 @@ export type Variant = "info" | "danger" | "success";
 export type SelectElements = Array<ISelectElem>;
 
 export type MenuLocation = "top" | "bottom" | "start" | "end" | "center";
+
+export type DynamicDescription = { [key: string]: ILanguage };
