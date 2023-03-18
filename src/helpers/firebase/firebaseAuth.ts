@@ -4,18 +4,17 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-
 import { notify } from "@kyvg/vue3-notification";
-import { IUserLogin, IUserReg } from "@/interfaces/index";
+import { IError, IUserLogin, IUserReg } from "@/interfaces/index";
 import { ErrorCode } from "@/types/index";
 import store from "@/store";
 import router from "@/router";
 
 const firebaseAuth = () => {
   const useAuth = {
-    signUp: (userData: IUserReg, validate: boolean) => {
+    signUp: (userData: IUserReg, validate: boolean): void => {
       if (!validate) return;
-      console.log(validate);
+
       store.dispatch("setLoadingStatus", true);
 
       createUserWithEmailAndPassword(
@@ -26,6 +25,7 @@ const firebaseAuth = () => {
         .then(async (response) => {
           const responseUser: any = response.user;
           const currentUser = getAuth().currentUser;
+
           localStorage.setItem("smartumToken", responseUser.accessToken);
           store.dispatch("setUserToken", responseUser.accessToken);
 
@@ -46,7 +46,7 @@ const firebaseAuth = () => {
         .finally(() => store.dispatch("setLoadingStatus", false));
     },
 
-    signIn: (userData: IUserLogin, validate: boolean) => {
+    signIn: (userData: IUserLogin, validate: boolean): void => {
       if (!validate) return;
 
       store.dispatch("setLoadingStatus", true);

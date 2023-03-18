@@ -14,13 +14,15 @@ export default defineComponent({
   emits: ["update:modelValue"],
 
   setup(_, { emit }) {
-    const check = ref(false)
+    const checked = ref(false)
+
     const checkboxToggle = () => {
-      check.value = !check.value;
-      emit('update:modelValue', check.value);
+      checked.value = !checked.value;
+      emit('update:modelValue', checked.value);
     };
+
     return {
-      check, 
+      checked, 
       checkboxToggle
     }
   }
@@ -36,6 +38,7 @@ export default defineComponent({
     cursor: pointer;
     font-size: 12px;
     user-select: none;
+
     &::before {
       content: "";
       position: absolute;
@@ -52,9 +55,11 @@ export default defineComponent({
   }
   input {
     display: none;
+
     &:checked {
       + label {
         color: $color-text;
+ 
         &::before {
           background-color: $color-green;
           background-image: url(~@/assets/img/icons/check.svg);

@@ -10,7 +10,6 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-
 import { SelectElements } from "@/types/index";
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";

@@ -38,10 +38,13 @@ export default defineComponent({
   },
   setup() {
     const router = useRoute();
-    const tabName: ILanguage = reactive({ eng: "", ru: "" });
-    const Description: DynamicDescription = DescriptionJSON;
-    const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
     const store = useStore();
+
+    const tabName: ILanguage = reactive({ eng: "", ru: "" });
+
+    const Description: DynamicDescription = DescriptionJSON;
+
+    const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
 
     // Aside
     const minimizeAside = ref(true);
@@ -81,32 +84,38 @@ export default defineComponent({
 .home-page {
   min-height: 100vh;
   background-color: $color-white5;
+
   &__wrapper {
     display: grid;
     height: 100vh;
     grid-template-rows: auto 1fr;
     padding-left: 260px;
     transition: padding-left 0.5s ease;
+
     &.minimize-info {
       padding-left: 0 !important;
     }
   }
+
   &__tab-info {
     position: absolute;
     top: 70px;
     font-size: 24px;
     padding-left: 40px;
+
     .page {
       &-title {
         font-size: 24px;
         line-height: 24px;
       }
+
       &-description {
         font-size: 14px;
         margin-top: 11px;
       }
     }
   }
+
   &__content {
     margin-top: 80px;
     width: 100%;

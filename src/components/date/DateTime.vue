@@ -6,7 +6,7 @@
         <span class="date__icon">
           <img :src="require(`@/assets/img/icons/${imageType}.svg`)" alt="" />
         </span>
-        {{ dayType }}
+        {{ welcomeType }}
       </h3>
       <div class="date__time">
         <time class="date__time--time-text">
@@ -21,21 +21,13 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  onMounted,
-  onUnmounted,
-  watch,
-} from "vue";
-
-import { DayTime } from "@/types";
+import { defineComponent, ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { WelcomeType } from "@/types";
 import timeStamp from "@/helpers/date/timeStamp";
 
 export default defineComponent({
   setup() {
-    const dayType = ref<DayTime>("Добрый вечер");
+    const welcomeType = ref<WelcomeType>("Добрый вечер");
 
     const intervalTime: any = ref(null);
 
@@ -44,7 +36,7 @@ export default defineComponent({
     const date = ref("");
 
     const imageType = computed(() => {
-      if (dayType.value !== "Добрый вечер") return "sun";
+      if (welcomeType.value !== "Добрый вечер") return "sun";
 
       return "moon";
     });
@@ -53,13 +45,13 @@ export default defineComponent({
 
     const loadComponentTime = Date.now();
 
-    // 'ru-RU' only
+    // 'ru-RU' only.
     watch(
       () => time.value,
       () => {
         if (Number(time.value.split("").slice(0, 2).join("")) < 16) {
           // If the time is later than 16:00.
-          dayType.value = "Добрый день";
+          welcomeType.value = "Добрый день";
         }
       }
     );
@@ -76,7 +68,7 @@ export default defineComponent({
     return {
       time,
       date,
-      dayType,
+      welcomeType,
       imageType,
       showTemplate,
     };
@@ -90,6 +82,7 @@ export default defineComponent({
     position: relative;
     height: 43.2px;
     min-width: 130px;
+
     :deep(.c-loader) {
       .c-loader__spinner {
         svg {
@@ -101,6 +94,7 @@ export default defineComponent({
   }
   width: fit-content;
   color: $color-grey;
+
   &__title {
     font-size: 14px;
     display: flex;
@@ -108,15 +102,19 @@ export default defineComponent({
     letter-spacing: 0.3px;
     line-height: 24px;
   }
+
   &__icon {
     margin-right: 10px;
   }
+
   &__time {
     font-size: 12px;
+
     &--time-text {
       margin-right: 10px;
       position: relative;
       padding-right: 2px;
+
       &::after {
         content: "";
         position: absolute;
@@ -129,8 +127,10 @@ export default defineComponent({
         right: -5px;
       }
     }
+
     &--date-text {
       display: inline-block;
+
       &:first-letter {
         text-transform: uppercase;
       }

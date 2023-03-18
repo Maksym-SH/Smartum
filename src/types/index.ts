@@ -4,7 +4,7 @@ export type ErrorCode = { code: string } | string;
 
 export type RefElement = HTMLInputElement | null;
 
-export type DayTime = "Добрый день" | "Добрый вечер";
+export type WelcomeType = "Добрый день" | "Добрый вечер";
 
 export type LangFormat = "ru-Ru" | "en-EN";
 

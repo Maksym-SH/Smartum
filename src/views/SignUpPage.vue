@@ -30,13 +30,13 @@
             v-model.trim="userData.firstName"
             required
             placeholder="Имя"
-            :min="minLengthNames"
+            :min="LengthText"
             transparent
             autocomplete
           />
           <Input
             v-model.trim="userData.lastName"
-            :min="minLengthNames"
+            :min="LengthText"
             placeholder="Фамилия"
             transparent
             autocomplete
@@ -53,7 +53,7 @@
             required
             type="password"
             transparent
-            :min="minLengthPassword"
+            :min="LengthPassword"
             placeholder="Пароль"
             autocomplete
           />
@@ -78,6 +78,7 @@ import { defineComponent, reactive, computed } from "vue";
 import { IUserReg } from "@/interfaces/index";
 import { emailValidator } from "@/main";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
+import { ELength } from "@/enums/index";
 
 export default defineComponent({
   setup() {
@@ -87,15 +88,17 @@ export default defineComponent({
       email: "",
       password: "",
     });
-    const minLengthPassword = 8;
-    const minLengthNames = 3;
+
+    const LengthPassword = ELength.Password;
+
+    const LengthText = ELength.Text;
 
     const validPersonDate = computed(() => {
       return (
-        userData.firstName.length >= minLengthNames &&
+        userData.firstName.length >= LengthText &&
         (!userData.lastName.length ||
-          userData.lastName.length >= minLengthNames) &&
-        userData.password.length >= minLengthPassword
+          userData.lastName.length >= LengthText) &&
+        userData.password.length >= LengthPassword
       );
     });
 
@@ -106,10 +109,11 @@ export default defineComponent({
     });
 
     const submitForm = () => signUp(userData, valid.value);
+
     return {
       userData,
-      minLengthNames,
-      minLengthPassword,
+      LengthText,
+      LengthPassword,
       submitForm,
     };
   },
@@ -120,10 +124,12 @@ export default defineComponent({
 @import "@/assets/scss/mixins.scss";
 .sign-up {
   @include auth-window;
+
   &__window {
     margin: 30px;
     display: flex;
     box-shadow: 0 30px 10px rgba($color-grey, 0.3);
+
     &--welcome {
       height: 100%;
       background-color: $color-dark-blue;
@@ -132,6 +138,7 @@ export default defineComponent({
       height: 500px;
       padding: 55px 30px 20px 30px;
       color: $color-white4;
+
       .grid-image {
         outline: none;
         width: 70%;
@@ -140,6 +147,7 @@ export default defineComponent({
         left: -65px;
         opacity: 0.1;
       }
+
       .tasks-image {
         outline: none;
         width: 85%;
@@ -148,16 +156,19 @@ export default defineComponent({
         bottom: -88px;
         right: -100px;
       }
+
       .title {
         text-align: center;
         font-size: 25px;
       }
+
       .description {
         margin-top: 120px;
         font-weight: 500;
         font-size: 20px;
         text-align: center;
       }
+
       &-logo {
         position: absolute;
         bottom: 0;
@@ -170,21 +181,26 @@ export default defineComponent({
         }
       }
     }
+
     &--content {
       width: 60%;
       padding: 20px;
       color: $color-white4;
       background-color: rgba($color-grey, 0.8);
+
       .content__swap-type-entry {
         margin-top: 60px;
         text-align: center;
       }
+
       .title {
         margin-bottom: 30px;
       }
+
       .form-inputs {
         &__send {
           margin-top: 20px;
+
           :deep(.c-button) {
             width: 100%;
           }
@@ -195,9 +211,11 @@ export default defineComponent({
   @media (max-width: $md) {
     &__window {
       width: 400px;
+
       &--welcome {
         display: none;
       }
+
       &--content {
         width: 100%;
       }
@@ -209,17 +227,21 @@ export default defineComponent({
       width: 100%;
       height: 100vh;
       min-height: 475px;
+
       &--content {
         border-radius: 0;
+
         .form-inputs {
           display: flex;
           min-height: calc(100vh - 150px);
           flex-direction: column;
+
           &__send {
             margin-top: auto;
             padding-top: 40px;
           }
         }
+
         .content__swap-type-entry {
           margin: 40px 0 20px 0;
         }

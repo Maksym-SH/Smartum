@@ -8,6 +8,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { Status } from "@/types/index";
+
 export default defineComponent({
   props: {
     status: {

@@ -31,10 +31,12 @@ export default defineComponent({
   background-color: $color-white2;
   border-bottom: 1px solid $color-black;
   width: 100%;
+
   &__wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .input-wrapper {
       width: 50%;
       max-width: 440px;

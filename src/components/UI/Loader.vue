@@ -32,11 +32,13 @@ export default defineComponent({
   align-items: center;
   z-index: 100;
   background-color: rgba($color-black, 0.5);
+
   &__spinner {
     svg {
       width: 60px;
       height: 60px;
       transform-origin: 50% 65%;
+  
       polygon {
         stroke: $color-info;
         stroke-dasharray: 17;
@@ -46,6 +48,7 @@ export default defineComponent({
       }
     }
   }
+ 
   &.inline-transparent {
     position: static;
     background-color: transparent;

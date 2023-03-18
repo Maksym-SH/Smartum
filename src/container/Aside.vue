@@ -28,6 +28,7 @@ export default defineComponent({
   emits: ["toggleAside"],
   setup(_, { emit }) {
     const store = useStore();
+
     const minimize = ref(true);
 
     const collapseToggle = () => {
@@ -41,10 +42,10 @@ export default defineComponent({
         emit("toggleAside", minimize.value);
       }, 400);
     });
+
     return {
       userName: computed(() => store.getters.getCurrentUser.displayName),
       userAvatar: computed(() => store.getters.getCurrentUser.photo),
-
       minimize,
       collapseToggle,
     };
@@ -61,9 +62,11 @@ export default defineComponent({
   left: 0;
   background-color: $color-grey;
   transition: transform 0.5s ease;
+
   &.aside-minimize {
     transform: translateX(-260px);
   }
+
   &__content {
     min-height: 100vh;
     display: flex;
@@ -71,22 +74,28 @@ export default defineComponent({
     height: 100%;
     position: relative;
   }
+
   &__logo {
     padding: 4.76px 25px;
     background-color: $color-dark-grey;
     width: 100%;
     text-align: center;
+
     img {
       width: 140px;
     }
   }
+
+
   &__user {
     padding: 30px 24px;
+
     &--avatar {
       width: 42px;
       height: 24px;
     }
   }
+
   &__collapse {
     position: absolute;
     bottom: 34px;

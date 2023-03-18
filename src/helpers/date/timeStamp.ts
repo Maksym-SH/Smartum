@@ -1,21 +1,27 @@
 import { LangFormat } from "@/types/index";
+import { ELanguage, ELangFormat } from "@/enums/index";
+import RegExp from "@/helpers/regExp/regExp";
 
-const useTimeStamp = (differenceTime: number, lang = "ru", Time:number | null = null) => {
+const useTimeStamp = (differenceTime: number, lang = ELanguage.Russian, Time:number | null = null) => {
   let date = new Date();
   date.setSeconds(date.getSeconds() + differenceTime);
+
   if (Time != null) {
     date = new Date(Number(Time));
   }
-  const dateLanguage: LangFormat = lang === "ru" ? "ru-Ru" : "en-EN";
-  const RuFormatTime = date.toLocaleString("ru-EN").replace(",", "").match(/\d{2}:\d{2}:\d{2}/)![0];
-  const EngFormatTime = date.toLocaleString("en-EN").match(/\d{1,}:\d{2}:\d{2}\s[AP]M/)![0];
 
-  const dateString = new Intl.DateTimeFormat(dateLanguage, {
+  const datELang: LangFormat = lang === ELanguage.Russian ? ELangFormat.Ru : ELangFormat.Eng;
+
+  const RuFormatTime = date.toLocaleString(ELangFormat.Ru).replace(",", "").match(RegExp.RuFormatDate)![0];
+
+  const EngFormatTime = date.toLocaleString(ELangFormat.Eng).match(RegExp.RuFormatDate)![0];
+
+  const dateString = new Intl.DateTimeFormat(datELang, {
     dateStyle: "full",
   }).format(date);
 
   return {
-    time: lang === "ru" ? RuFormatTime : EngFormatTime,
+    time: lang === ELanguage.Russian ? RuFormatTime : EngFormatTime,
     date: dateString,
   };
 };

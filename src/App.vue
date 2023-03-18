@@ -27,16 +27,20 @@ export default defineComponent({
 * {
   box-sizing: border-box;
 }
+
 body {
   min-width: 320px;
   background-color: $color-grey;
   font-family: $PoppinsRG;
+
   &::-webkit-scrollbar {
     width: 5px;
   }
+
   &::-webkit-scrollbar-track {
     background: $color-grey;
   }
+
   &::-webkit-scrollbar-thumb {
     background-color: $color-green;
   }

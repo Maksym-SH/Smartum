@@ -39,16 +39,16 @@ import firebaseReset from "@/helpers/firebase/firebaseReset";
 export default defineComponent({
   setup() {
     const errorEmail = ref(false);
+
     const email = ref("");
 
     const submitForm = () => {
       if (errorEmail.value) return;
       else firebaseReset(email.value);
     };
-    watch(
-      () => email.value,
-      () => (errorEmail.value = false)
-    );
+
+    watch(() => email.value, () => errorEmail.value = false);
+
     return {
       email,
       errorEmail,
@@ -62,6 +62,7 @@ export default defineComponent({
 @import "@/assets/scss/mixins";
 .forgot-page {
   @include auth-window;
+ 
   &__window {
     position: relative;
     padding: 10px;
@@ -70,23 +71,29 @@ export default defineComponent({
     background-color: $color-grey;
     color: $color-text;
     max-width: 350px;
+
     &-header {
       margin-bottom: 20px;
+
       p {
         margin-top: 10px;
       }
     }
+
     &-content {
       text-align: end;
+
       .c-button {
         padding: 5px 20px;
       }
+
       .c-input {
         &::placeholder {
           font-size: 14px;
         }
       }
     }
+
     &--go-back {
       text-align: center;
       color: $color-info;
@@ -95,11 +102,13 @@ export default defineComponent({
       margin: 20px 0 10px 0;
       text-align: center;
       transform: color 0.3s ease;
+
       &:hover {
         color: $color-info-hover;
         text-decoration: none;
       }
     }
+
     @media (max-width: $sm) {
       height: 100vh;
       min-width: 100%;
@@ -108,6 +117,7 @@ export default defineComponent({
       flex-direction: column;
       justify-content: center;
       min-height: 330px;
+
       &-content {
         .c-button {
           position: absolute;

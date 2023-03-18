@@ -21,7 +21,7 @@
               placeholder="Пароль"
               v-model="userData.password"
               transparent
-              :min="minLength"
+              :min="LengthPassword"
               autocomplete
             />
             <div class="auth-form__forgot">
@@ -56,6 +56,7 @@ import { defineComponent, ref, reactive, computed } from "vue";
 import { IUserLogin } from "@/interfaces";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 import { emailValidator } from "@/main";
+import { ELength } from "@/enums/index";
 
 export default defineComponent({
   setup() {
@@ -64,7 +65,7 @@ export default defineComponent({
       password: "",
     });
     const authType = ref("signIn");
-    const minLength = 8;
+    const minLength = ELength.Password;
 
     const { signIn } = FirebaseAuth();
 
@@ -80,7 +81,7 @@ export default defineComponent({
     return {
       userData,
       authType,
-      minLength,
+      LengthPassword: ELength.Password,
       submitForm,
     };
   },

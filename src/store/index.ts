@@ -32,7 +32,7 @@ export default createStore({
       return new Promise((resolve, reject) => {
         const axios: any = axiosInstance();
         const { url, data, method, auth } = params;
-        console.log(getters.getUserToken);
+
         axios({
           url: process.env.VUE_APP_API_URL + url,
           data,

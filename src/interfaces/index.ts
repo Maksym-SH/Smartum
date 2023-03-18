@@ -40,9 +40,11 @@ export interface IUserStore {
   userToken: string;
   currentUser: object;
 }
+
 export interface ICommonStore {
   loadingStatus: boolean;
 }
+
 // TimeStamp
 export interface IFormatDate {
   time: string,

@@ -1,15 +1,15 @@
 <template>
-  <div class="image-upload" @click="upload.click()">
-    <input type="file" ref="upload" class="image-upload--input" />
+  <div class="file-upload" @click="upload?.click()">
+    <input type="file" ref="upload" class="file-upload--input" />
     <img
       v-if="imgPath && loaded"
       @load="imgLoad"
-      class="image-upload--pucture"
+      class="file-upload--image"
     />
     <img
       v-else
       svg-inline
-      class="image-upload--icon"
+      class="file-upload--icon"
       src="@/assets/img/icons/upload.svg"
       alt="Upload"
     />
@@ -28,7 +28,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const upload = ref<RefElement>(null);
+    const upload = ref<RefElement>();
 
     const loaded = ref(false);
 
@@ -44,7 +44,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.image-upload {
+.file-upload {
   border-radius: 8px;
   border: 3px dashed $color-info;
   width: 100px;
@@ -54,12 +54,13 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+
   &--input {
     position: fixed;
     top: -10000px;
   }
 
-  &--pucture {
+  &--image {
     position: absolute;
     margin: 2px;
     width: calc(100% - 4px);
@@ -67,14 +68,15 @@ export default defineComponent({
     border-radius: 8px;
     object-fit: cover;
   }
+
   &--icon {
     outline: none;
     animation: upload 0.5s infinite alternate-reverse;
-    font-size: 18px;
+    font-size: 1rem;
   }
 }
 
-// Upload icon animate
+// Upload icon animate.
 @keyframes upload {
   from {
     transform: translateY(-5px);

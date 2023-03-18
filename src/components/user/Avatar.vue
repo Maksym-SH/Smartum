@@ -43,12 +43,7 @@ export default defineComponent({
       width: `${props.size}px`,
       height: `${props.size}px`,
     });
-    const initials = computed(() =>
-      props.name
-        ?.split(" ")
-        .map((item) => item[0])
-        .join("")
-    );
+    const initials = computed(() => props.name?.split(" ").map((item) => item[0]).join(""));
 
     const imgLoad = () => (imgLoaded.value = true);
     const imgLoaded = ref(false);
