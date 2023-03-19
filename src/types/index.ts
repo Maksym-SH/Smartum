@@ -21,3 +21,5 @@ export type SelectElements = Array<ISelectElem>;
 export type MenuLocation = "top" | "bottom" | "start" | "end" | "center";
 
 export type DynamicDescription = { [key: string]: ILanguage };
+
+export type FileType = "image";

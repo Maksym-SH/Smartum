@@ -1,9 +1,11 @@
 <template>
   <div class="file-upload" @click="upload?.click()">
-    <input type="file" ref="upload" class="file-upload--input" />
+    <input type="file" ref="upload" class="file-upload--input" @change="fileUpload" />
     <img
-      v-if="imgPath && loaded"
+      v-if="loaded"
       @load="imgLoad"
+      ref="image"
+      :src="imageSource"
       class="file-upload--image"
     />
     <img
@@ -17,26 +19,54 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { RefElement } from "@/types/index";
+import { defineComponent, ref, PropType } from "vue";
+import { RefElement, FileType } from "@/types/index";
+import fileValidate from "@/helpers/file/validate";
 
 export default defineComponent({
   props: {
-    imgPath: {
-      type: String,
-      default: "",
-    },
+    fileType: {
+      type: String as PropType<FileType>,
+      required: true,
+    }
   },
-  setup(props) {
+  emits:["loaded"],
+  setup(props, {emit}) {
     const upload = ref<RefElement>();
 
     const loaded = ref(false);
 
     const imgLoad = () => (loaded.value = true);
 
+    const imageSource = ref();
+
+    const fileUpload = () => {
+      const reader = new FileReader();
+      const file = upload.value?.files?.[0];
+      if(file) {
+        if(props.fileType == 'image') reader.readAsDataURL(file);
+
+        reader.onload = () => {
+          if(fileValidate(file, props.fileType)) {
+
+            if(props.fileType == "image") {
+              imageSource.value = reader.result;
+              loaded.value = true;
+              emit('loaded', {
+                result: reader.result, 
+                type: file.type
+              });
+            }
+          }
+        }
+      }
+    }
+
     return {
       loaded,
       upload,
+      imageSource,
+      fileUpload,
       imgLoad,
     };
   },

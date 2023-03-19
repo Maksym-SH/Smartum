@@ -8,7 +8,7 @@
     />
     <span
       class="user-avatar--initials"
-      v-show="!imgLoaded || !image"
+      v-if="(!imgLoaded || !image) && name"
       :style="`font-size: ${size / 2.2}px;`"
     >
       {{ initials }}

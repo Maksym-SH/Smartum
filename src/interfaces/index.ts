@@ -39,6 +39,7 @@ export interface ILanguage {
 export interface IUserStore {
   userToken: string;
   currentUser: object;
+  userPhoto: string;
 }
 
 export interface ICommonStore {
@@ -49,4 +50,9 @@ export interface ICommonStore {
 export interface IFormatDate {
   time: string,
   date: string,
+}
+// File 
+export interface FileResult {
+  result: string,
+  type: string
 }

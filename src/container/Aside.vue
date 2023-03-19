@@ -44,8 +44,8 @@ export default defineComponent({
     });
 
     return {
-      userName: computed(() => store.getters.getCurrentUser.displayName),
-      userAvatar: computed(() => store.getters.getCurrentUser.photo),
+      userName: computed(() => store.getters.getCurrentUser?.displayName),
+      userAvatar: computed(() => store.getters.getUserPhoto),
       minimize,
       collapseToggle,
     };

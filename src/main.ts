@@ -18,8 +18,8 @@ import Select from "./components/ui/Select.vue";
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
-import RefreshToken from "@/helpers/firebase/firebaseRefresh";
-RefreshToken();
+import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
+refreshUserInfo();
 // Global export
 export let emailValidator = require("email-validator");
 

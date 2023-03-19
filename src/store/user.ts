@@ -8,6 +8,7 @@ export default {
   state: {
     userToken: "",
     currentUser: {},
+    userPhoto: ""
   },
   getters: {
     getUserToken(state: IUserStore): string {
@@ -16,28 +17,30 @@ export default {
     getCurrentUser(state: IUserStore): object {
       return state.currentUser;
     },
+    getUserPhoto(state: IUserStore): string {
+      return state.userPhoto;
+    }
   },
   mutations: {
     SET_USER_TOKEN(state: IUserStore, token: string): void {
       state.userToken = token;
     },
     SET_CURRENT_USER(state: IUserStore, user: object): void {
-      console.log(user);
       state.currentUser = user;
     },
+    SET_USER_PHOTO(state: IUserStore, photo: string): void {
+      state.userPhoto = photo;
+    }
   },
   actions: {
-    setUserToken(
-      { commit }: ActionContext<IUserStore, any>,
-      token: string
-    ): void {
+    setUserToken({ commit }: ActionContext<IUserStore, any>, token: string): void {
       commit("SET_USER_TOKEN", token);
     },
-    setCurrentUser(
-      { commit }: ActionContext<IUserStore, any>,
-      user: object
-    ): void {
+    setCurrentUser({ commit }: ActionContext<IUserStore, any>, user: any): void {
       commit("SET_CURRENT_USER", user);
+    },
+    setUserPhoto({commit}: ActionContext<IUserStore, any>, image: string): void {
+      commit("SET_USER_PHOTO", image);
     },
     userLogout({ commit }: ActionContext<IUserStore, any>): void {
       getAuth()

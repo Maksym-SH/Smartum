@@ -1,6 +1,6 @@
 <template>
   <div class="c-select" :class="{ active: picker }">
-    <Button transparent round @click="togglePicker" @blur="togglePicker">
+    <Button transparent round @click="togglePicker" @blur="picker = false">
       <img src="@/assets/img/icons/dots-vertical.svg" alt="" />
     </Button>
     <transition name="toggle-picker" mode="in-out">

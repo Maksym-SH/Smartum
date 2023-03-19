@@ -1,0 +1,37 @@
+import { /* FileFormat, */ Sizes } from "@/enums/index";
+import {FileType} from "@/types/index";
+import { notify } from "@kyvg/vue3-notification";
+
+/* const Format = [ 
+  FileFormat.APP_GZIP, 
+  FileFormat.APP_XML, 
+  FileFormat.APP_XPHP, 
+  FileFormat.App_ES, 
+  FileFormat.App_JS, 
+  FileFormat.App_JSON, 
+  FileFormat.App_XJS, 
+  FileFormat.App_ZIP, 
+  FileFormat.Text_XML, 
+  FileFormat.Text_XPython
+]; */
+
+
+
+const fileValidate = (file: any, needType: FileType): boolean => {
+  
+  const currentType:string = file.type.toLowerCase();
+
+  if(needType == "image") {
+    if(file.size < Sizes.ImageSize && currentType.startsWith("image")) {
+      return true;
+    }
+  }
+
+  notify({
+    title: "Выбранный файл не поддерживается.",
+    type: "warn"
+  })
+  return false;
+}
+
+export default fileValidate;

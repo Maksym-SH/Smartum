@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IError } from "@/interfaces/index";
-import RefreshToken from "@/helpers/firebase/firebaseRefresh";
+import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 
 export default function axiosInstance(): object {
   const instance = axios.create({
@@ -10,7 +10,7 @@ export default function axiosInstance(): object {
     (response) => response,
     (error: IError) => {
       const { status } = error;
-      if (status === 401) RefreshToken();
+      if (status === 401) refreshUserInfo();
     }
   );
 
