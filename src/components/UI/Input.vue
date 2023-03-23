@@ -82,7 +82,7 @@ export default defineComponent({
     const showPassword = ref(false);
 
     const validator = () => {
-      if (props.isEmail && !emailValidator.validate(model)) {
+      if (props.isEmail && !emailValidator.validate(model.value)) {
         errorText.value = "Введите корректную почту.";
       } 
       else if (props.min && String(model.value).length < props.min) {
@@ -182,7 +182,7 @@ export default defineComponent({
       }
  
       &::placeholder {
-        color: rgba($color-grey, 0.7);
+        color: $color-white4;
       }
     }
 
@@ -217,6 +217,9 @@ export default defineComponent({
       top: 50%;
       transform: translate(0, -50%);
       right: 10px;
+      &:active {
+        background-color: rgba($color-black, 0.3);
+      }
     }
   }
 }

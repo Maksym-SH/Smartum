@@ -3,7 +3,7 @@
     <div class="profile-tab__content">
       <Card>
         <template #descript>
-          <Avatar :name="fullName" :avatar="userAvatar" :size="150" />
+          <Avatar :name="fullName" :image="userAvatar" :size="150" />
         </template>
         <template #content>
           <h2>Имя: 
@@ -58,7 +58,7 @@
           </form>
         </template>
         <template #footer>
-          Редактироание данных
+          Редактирование данных
         </template>
       </Card>
       <div class="card edit">

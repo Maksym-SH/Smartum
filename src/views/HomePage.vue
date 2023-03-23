@@ -99,7 +99,7 @@ export default defineComponent({
 
   &__tab-info {
     position: absolute;
-    top: 70px;
+    top: 100px;
     font-size: 24px;
     padding-left: 40px;
 
@@ -117,7 +117,7 @@ export default defineComponent({
   }
 
   &__content {
-    margin-top: 80px;
+    margin-top: 120px;
     width: 100%;
     padding-left: 40px;
   }

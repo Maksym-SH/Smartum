@@ -64,7 +64,7 @@
         </form>
         <div class="content__swap-type-entry">
           <span>
-            Нет аккаунта?
+            Уже зарегистрированы?
             <router-link :to="{ name: 'SignIn' }"> Авторизация </router-link>
           </span>
         </div>
@@ -243,7 +243,7 @@ export default defineComponent({
         }
 
         .content__swap-type-entry {
-          margin: 40px 0 20px 0;
+          margin: 20px 0 20px 0;
         }
       }
     }
