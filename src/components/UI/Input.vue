@@ -57,9 +57,12 @@
 
 <script lang="ts">
 import { defineComponent, watch, ref, computed } from "vue";
+
 import { emailValidator } from "@/main";
+
 import { useInputProps } from "./use/props";
-import { RefElement } from "@/types";
+
+import { RefElement, ModelValue, AutoComplete } from "@/types";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -81,7 +84,7 @@ export default defineComponent({
 
     const showPassword = ref(false);
 
-    const validator = () => {
+    const validator = (): void => {
       if (props.isEmail && !emailValidator.validate(model.value)) {
         errorText.value = "Введите корректную почту.";
       } 
@@ -93,7 +96,7 @@ export default defineComponent({
       }
     };
 
-    const togglePasswordType = () => {
+    const togglePasswordType = (): void => {
       if (input.value?.type == "password") {
         input.value!.type = "text";
         showPassword.value = true;
@@ -103,14 +106,14 @@ export default defineComponent({
       }
     };
 
-    watch(() => props.modelValue, () => errorText.value = "");
+    watch((): ModelValue => props.modelValue, (): string => errorText.value = "");
 
-    watch(() => errorText.value, (value) => {
+    watch((): string => errorText.value, (value): void => {
         if (value) emit("invalid");
       }
     );
 
-    const isAutoComplete = computed(() => (props.autoComplete ? "on" : "off"));
+    const isAutoComplete = computed((): AutoComplete => (props.autoComplete ? "on" : "off"));
 
     return {
       errorText,
@@ -150,8 +153,8 @@ export default defineComponent({
     }
  
     &--error {
-      border-color: $color-danger;
-      background-color: $color-error;
+      border-color: $color-red;
+      background-color: $color-pink;
  
       &::placeholder {
         color: $color-grey;
@@ -170,7 +173,7 @@ export default defineComponent({
       border-radius: 0;
   
       &.c-input--error {
-        border-color: $color-danger;
+        border-color: $color-red;
       }
  
       + .c-input__required {
@@ -197,7 +200,7 @@ export default defineComponent({
     }
 
     &__error-text {
-      color: $color-danger;
+      color: $color-red;
       position: absolute;
       bottom: -2px;
       font-size: 12px;
@@ -214,7 +217,9 @@ export default defineComponent({
  
     + &__search-btn {
       position: absolute;
-      top: 50%;
+      top: 23px;
+      height: 30px;
+      min-width: 20px;
       transform: translate(0, -50%);
       right: 10px;
       &:active {

@@ -24,7 +24,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
-import { SelectElements, MenuLocation } from "@/types/index";
+
+import { SelectElements, MenuLocation } from "@/types";
 
 export default defineComponent({
   props: {
@@ -44,7 +45,7 @@ export default defineComponent({
   setup() {
     const picker = ref(false);
 
-    const togglePicker = () => {
+    const togglePicker = (): void => {
       picker.value = !picker.value;
     };
 

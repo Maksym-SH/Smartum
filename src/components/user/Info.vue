@@ -7,7 +7,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { Status } from "@/types/index";
+
+import { Status } from "@/types";
 
 export default defineComponent({
   props: {
@@ -23,15 +24,17 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .user-info__name {
   max-width: 130px;
+
   &--first-name {
     color: $color-white4;
     font-size: 14px;
     line-height: 21px;
     white-space: pre-wrap;
   }
+
   &--status {
     font-size: 11px;
     line-height: 16.5px;

@@ -35,6 +35,12 @@ export interface ILanguage {
   ru: string;
 }
 
+// User
+export interface IUserAuth {
+  signUp: (userData: IUserReg, validate: boolean) => void;
+  signIn: (userData: IUserLogin, validate: boolean) => void;
+}
+
 // Store
 export interface IUserStore {
   userToken: string;
@@ -51,8 +57,15 @@ export interface IFormatDate {
   time: string,
   date: string,
 }
+
 // File 
 export interface FileResult {
   result: string,
   type: string
+}
+
+//Router
+export interface IMetaName {
+  protected: boolean,
+  tabName: ILanguage
 }

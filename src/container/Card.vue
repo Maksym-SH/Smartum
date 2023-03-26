@@ -1,12 +1,12 @@
 <template>
   <div class="card" :class="`card-variant--${variant}`">
-    <div class="card__descript">
+    <div class="card__descript" v-if="$slots.descript">
       <slot name="descript" />
     </div>
-    <div class="card__wrapper">
+    <div class="card__wrapper" v-if="$slots.content">
       <slot name="content" />
     </div>
-    <div class="card__form">
+    <div class="card__form" v-if="$slots.form">
       <slot name="form" />
     </div>
     <div class="card__footer" v-if="$slots.footer">
@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
+
 import { Variant } from '@/types';
 
 export default defineComponent({
@@ -53,6 +54,7 @@ export default defineComponent({
     border-radius: 0 0 8px 8px;
     border-top: 2px solid transparent;
   }
+
   &-variant {
     &--info {
       border-color: $color-dark-blue;
@@ -62,6 +64,7 @@ export default defineComponent({
         background-color: $color-cyan;
       }
     }
+
     &--success {
       border-color: $color-green;
  
@@ -85,6 +88,8 @@ export default defineComponent({
     margin-left: auto;
     display: flex;
     flex-direction: column;
+    padding-right: 20px;
+    width: 50%;
 
     :deep(.c-input) {
       border-radius: 4px;
@@ -92,12 +97,42 @@ export default defineComponent({
       color: $color-black;
       margin: 5px 0;
     }
+
     :deep(.c-button) {
       width: 100%;
       margin-top: 20px;
     }
-    padding-right: 20px;
-    width: 50%;
+  }
+
+  @media (max-width: $xxl) {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-top: 20px;
+
+    &__wrapper {
+      display: flex;
+      margin-left: 20px;
+      flex-direction: column;
+    }
+  
+    &__form {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: $sm) {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px 40px 10px;
+
+    &__wrapper {
+      margin-left: 0;
+    }
+
+    &__form {
+      padding: 0;
+    }
   }
 }
 </style>

@@ -75,10 +75,13 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from "vue";
-import { IUserReg } from "@/interfaces/index";
-import { emailValidator } from "@/main";
+
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
-import { ELength } from "@/enums/index";
+
+import { emailValidator } from "@/main";
+
+import { IUserReg } from "@/interfaces";
+import { ELength } from "@/enums";
 
 export default defineComponent({
   setup() {

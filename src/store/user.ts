@@ -1,8 +1,10 @@
-import { IUserStore } from "@/interfaces/index";
 import { ActionContext } from "vuex";
+import router from "@/router";
+
 import { getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import router from "@/router";
+
+import { IUserStore } from "@/interfaces/index";
 
 export default {
   state: {

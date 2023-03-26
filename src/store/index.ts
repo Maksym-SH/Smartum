@@ -1,8 +1,11 @@
 import { createStore, ActionContext } from "vuex";
-import axiosInstance from "@/helpers/axios/axiosInstance";
-import { IAxiosData, ICommonStore, IError } from "@/interfaces/index";
-import { notify } from "@kyvg/vue3-notification";
 import User from "./user";
+
+import { notify } from "@kyvg/vue3-notification";
+
+import axiosInstance from "@/helpers/axios/axiosInstance";
+
+import { IAxiosData, ICommonStore, IError } from "@/interfaces";
 
 export default createStore({
   state: {
@@ -25,10 +28,7 @@ export default createStore({
     ): void {
       commit("SET_LOADING_STATUS", status);
     },
-    $http(
-      { commit, getters }: ActionContext<ICommonStore, any>,
-      params: IAxiosData
-    ): Promise<any> {
+    $http({ commit, getters }: ActionContext<ICommonStore, any>, params: IAxiosData): Promise<any> {
       return new Promise((resolve, reject) => {
         const axios: any = axiosInstance();
         const { url, data, method, auth } = params;

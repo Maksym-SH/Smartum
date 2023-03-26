@@ -6,13 +6,13 @@
   text-overflow: ellipsis;
 }
 
-.desktop-only {
-  @media (max-width: $lg) {
+.not-mobile {
+  @media (max-width: $sm) {
     display: none;
   }
 }
 .mobile-only {
-  @media (min-width: $lg) {
+  @media (min-width: $sm) {
     display: none;
   }
 }

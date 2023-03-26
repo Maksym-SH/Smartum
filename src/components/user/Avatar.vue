@@ -9,7 +9,7 @@
     <span
       class="user-avatar--initials"
       v-if="(!imgLoaded || !image) && name"
-      :style="`font-size: ${size / 2.2}px;`"
+      :style="sizeInitials"
     >
       {{ initials }}
     </span>
@@ -43,15 +43,19 @@ export default defineComponent({
       width: `${props.size}px`,
       height: `${props.size}px`,
     });
+
     const initials = computed(() => props.name?.split(" ").map((item) => item[0]).join(""));
 
     const imgLoad = () => (imgLoaded.value = true);
     const imgLoaded = ref(false);
 
+    const sizeInitials = computed(() => `font-size: ${props.size / 2.2}px;`);
+
     return {
       avatarSize,
       imgLoaded,
       initials,
+      sizeInitials,
       imgLoad,
     };
   },
@@ -67,6 +71,7 @@ export default defineComponent({
   background-color: $color-green-hover;
   border-radius: 4px;
   color: $color-black;
+
   img {
     width: 100%;
     height: 100%;

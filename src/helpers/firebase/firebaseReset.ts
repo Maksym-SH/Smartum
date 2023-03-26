@@ -1,6 +1,8 @@
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+
 import store from "@/store";
 import router from "@/router";
+
 import { notify } from "@kyvg/vue3-notification";
 
 const firebaseReset = (email: string) => {

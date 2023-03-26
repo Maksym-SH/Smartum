@@ -54,7 +54,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from, next): Promise<void> => {
   const token = localStorage.getItem("smartumToken");
   const protectedRoute = to.meta.protected;
   const notAuthorizedRoute = to.meta.notAuthorized;
@@ -62,7 +62,8 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta.protected) {
     if (protectedRoute) {
       token ? next() : next({ name: "SignIn" });
-    } else {
+    } 
+    else {
       next();
     }
   } else if (notAuthorizedRoute && token) {

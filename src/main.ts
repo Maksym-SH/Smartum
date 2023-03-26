@@ -20,6 +20,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 refreshUserInfo();
+
 // Global export
 export let emailValidator = require("email-validator");
 

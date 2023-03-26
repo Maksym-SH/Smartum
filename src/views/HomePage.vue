@@ -1,11 +1,11 @@
 <template>
   <div class="home-page">
-    <c-aside @toggleAside="toggleAside" />
+    <c-aside @toggleAsideShow="toggleAsideShow" />
     <div class="home-page__wrapper" :class="{ 'minimize-info': minimizeAside }">
       <c-header class="home-page__header" />
       <div class="home-page__tab-info">
-        <h1 class="page-title">{{ tabName.ru }}</h1>
-        <p class="page-description" v-if="true">{{ tabDescription.ru }}</p>
+        <h1 class="page-title" v-if="showTabName">{{ tabName.ru }}</h1>
+        <p class="page-description" v-if="showTabDescription">{{ tabDescription.ru }}</p>
       </div>
       <router-view v-slot="{ Component }">
         <transition
@@ -23,13 +23,17 @@
 
 <script lang="ts">
 import { defineComponent, watch, reactive, ref, computed } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
+import * as DescriptionJSON from "@/helpers/content/tabs.json";
+import { ObjectFull } from "@/helpers/methods";
+
+import { ILanguage, IMetaName } from "@/interfaces/index";
+import { RouterMeta, DynamicDescription } from "@/types";
+
 import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
-import { RouteLocation, useRoute } from "vue-router";
-import * as DescriptionJSON from "@/helpers/content/tabs.json";
-import { ILanguage } from "@/interfaces/index";
-import { DynamicDescription } from "@/types/index";
-import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
@@ -46,24 +50,32 @@ export default defineComponent({
 
     const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
 
+    // Note: ObjectFull - custom method.
+    const showTabName = computed(() => ObjectFull(tabName));
+    const showTabDescription = computed(() => showTabName.value && ObjectFull(tabDescription))
+
     // Aside
     const minimizeAside = ref(true);
-    const toggleAside = (value: boolean) => {
+    const toggleAsideShow = (value: boolean) => {
       minimizeAside.value = value;
     };
 
     watch(
-      (): RouteLocation => router,
-      (router) => {
-        const tabRouterName: any = router.meta.tabName;
-        const routerName: any = router.name;
+      (): IMetaName | RouterMeta => router.meta,
+      (meta) => {
+        const metaName: ILanguage = meta.tabName as ILanguage;
 
-        if (tabRouterName) {
-          tabName.eng = tabRouterName.eng;
-          tabName.ru = tabRouterName.ru;
+        if (metaName) {
+          tabName.eng = metaName.eng;
+          tabName.ru = metaName.ru;
 
-          tabDescription.ru = Description[routerName].ru;
-          tabDescription.eng = Description[routerName].eng;
+          tabDescription.ru = Description[metaName.eng].ru;
+          tabDescription.eng = Description[metaName.eng].eng;
+        }
+        else {
+          tabName.ru = tabName.eng = "";
+          tabDescription.eng = tabDescription.ru = "";
+
         }
       },
       { immediate: true }
@@ -73,7 +85,9 @@ export default defineComponent({
       tabName,
       tabDescription,
       minimizeAside,
-      toggleAside,
+      showTabName,
+      showTabDescription,
+      toggleAsideShow,
       showLoading: computed(() => store.getters.getLoadingStatus),
     };
   },
@@ -87,13 +101,16 @@ export default defineComponent({
 
   &__wrapper {
     display: grid;
-    height: 100vh;
+    min-height: 100vh;
     grid-template-rows: auto 1fr;
     padding-left: 260px;
     transition: padding-left 0.5s ease;
 
     &.minimize-info {
       padding-left: 0 !important;
+    }
+    @media (max-width: $md) {
+      padding-left: 0;
     }
   }
 
@@ -112,6 +129,8 @@ export default defineComponent({
       &-description {
         font-size: 14px;
         margin-top: 11px;
+        padding-right: 10px;
+        line-height: 17px;
       }
     }
   }
@@ -120,6 +139,18 @@ export default defineComponent({
     margin-top: 120px;
     width: 100%;
     padding-left: 40px;
+  }
+
+  @media (max-width: $sm) {
+    &__tab-info {
+      top: 70px;
+      padding-left: 10px;
+    }
+
+    &__content {
+      padding: 10px;
+      margin-top: 110px;
+    }
   }
 }
 </style>

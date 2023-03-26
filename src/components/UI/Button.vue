@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+
 import { useButtonProps } from "./use/props";
 
 export default defineComponent({
@@ -55,33 +56,33 @@ export default defineComponent({
   }
 
   &--info {
-    background-color: $color-info;
+    background-color: $color-blue;
 
     &:hover {
-      background-color: $color-info-hover;
+      background-color: $color-blue-hover;
     }
 
     &.c-button--transparent {
-      color: $color-info;
+      color: $color-blue;
 
       &:hover {
-        color: $color-info-hover;
+        color: $color-blue-hover;
       }
     }
   }
 
   &--danger {
-    background-color: $color-danger;
+    background-color: $color-red;
 
     &:hover {
-      background-color: $color-danger-hover;
+      background-color: $color-red-hover;
     }
 
     &.c-button--transparent {
-      color: $color-danger;
+      color: $color-red;
 
       &:hover {
-        color: $color-danger-hover;
+        color: $color-red-hover;
       }
     }
   }
@@ -132,6 +133,7 @@ export default defineComponent({
       background-color: transparent;
     }
   }
+
   &--round {
     width: 30px;
     height: 30px;

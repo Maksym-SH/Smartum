@@ -28,6 +28,14 @@ export const enum FileFormat {
   Text_XPython =  "text/x-script.python"
 }
 
-export const enum Sizes {
+export const enum Numbers {
   ImageSize = 10000000,
+  Second = 1000,
+  AppearElement = 400,
+}
+
+export const enum Layout {
+  Mobile = 576,
+  Tablet = 768,
+  Desktop = 1024
 }

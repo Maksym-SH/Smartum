@@ -4,13 +4,17 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { notify } from "@kyvg/vue3-notification";
-import { IError, IUserLogin, IUserReg } from "@/interfaces/index";
-import { ErrorCode } from "@/types/index";
+
 import store from "@/store";
 import router from "@/router";
 
-const firebaseAuth = () => {
+import { notify } from "@kyvg/vue3-notification";
+
+import { IUserAuth, IUserLogin, IUserReg } from "@/interfaces";
+import { ErrorCode } from "@/types";
+
+
+const firebaseAuth = (): IUserAuth => {
   const useAuth = {
     signUp: (userData: IUserReg, validate: boolean): void => {
       if (!validate) return;
@@ -31,7 +35,7 @@ const firebaseAuth = () => {
 
           if (currentUser) {
             updateProfile(currentUser, {
-              displayName: `${userData.firstName} ${userData.lastName}`,
+              displayName: `${ userData.firstName } ${ userData.lastName }`,
             });
           }
           notify({
@@ -42,8 +46,8 @@ const firebaseAuth = () => {
           store.dispatch("setCurrentUser", getAuth().currentUser);
           router.push({ name: "Home" });
         })
-        .catch((error) => showErrorMessage(error))
-        .finally(() => store.dispatch("setLoadingStatus", false));
+        .catch((error): void => showErrorMessage(error))
+        .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
     },
 
     signIn: (userData: IUserLogin, validate: boolean): void => {
@@ -63,13 +67,13 @@ const firebaseAuth = () => {
           });
           router.push({ name: "Home" });
         })
-        .catch((error) => showErrorMessage(error))
-        .finally(() => store.dispatch("setLoadingStatus", false));
+        .catch((error): void => showErrorMessage(error))
+        .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
     },
   };
 
   // Show notification
-  const showErrorMessage = (errorCode: ErrorCode) => {
+  const showErrorMessage = (errorCode: ErrorCode): void => {
     let errorText = "";
     if (typeof errorCode === "object") {
       switch (errorCode.code) {

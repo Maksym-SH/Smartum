@@ -96,7 +96,7 @@ export default defineComponent({
 
     &--go-back {
       text-align: center;
-      color: $color-info;
+      color: $color-blue;
       font-size: 12px;
       display: block;
       margin: 20px 0 10px 0;
@@ -104,7 +104,7 @@ export default defineComponent({
       transform: color 0.3s ease;
 
       &:hover {
-        color: $color-info-hover;
+        color: $color-blue-hover;
         text-decoration: none;
       }
     }

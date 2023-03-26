@@ -1,5 +1,6 @@
-import RegExp from "@/helpers/regExp/index";
-import store from "@/store/index";
+import store from "@/store";
+
+import RegExp from "@/helpers/regExp";
 
 const ResolveImageURL = (url: string | null, dispatchTarget: string): void => {
   if(typeof url == "string") 

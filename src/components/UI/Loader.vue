@@ -10,6 +10,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+
 export default defineComponent({
   props: {
     inline: {
@@ -40,7 +41,7 @@ export default defineComponent({
       transform-origin: 50% 65%;
   
       polygon {
-        stroke: $color-info;
+        stroke: $color-blue;
         stroke-dasharray: 17;
         -webkit-animation: dash 2.5s cubic-bezier(0.35, 0.04, 0.63, 0.95)
           infinite;

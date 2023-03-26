@@ -6,17 +6,20 @@
           <Avatar :name="fullName" :image="userAvatar" :size="150" />
         </template>
         <template #content>
-          <h2>Имя: 
+          <h2>
+            Имя: 
             <span class="text-ellipsis">
               {{ fullName }}
             </span>
           </h2>
-          <h2>Почта:
+          <h2>
+            Почта:
             <span class="text-ellipsis">
               {{ userInfo.email }}
             </span>
           </h2>
-          <h2>Дата регистрации:
+          <h2>
+            Дата регистрации:
             <span class="text-ellipsis">
               {{ createAccountDate.date }}
             </span> 
@@ -69,15 +72,19 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref } from "vue";
+import { useStore } from "vuex";
+
+import { ELanguage, ELength } from "@/enums";
+import { FileResult } from "@/interfaces";
+
+import { updateProfile } from "@firebase/auth";
+
+import GetDate from "@/helpers/date/useInfoTime";
+import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
+
+import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
-import { useStore } from "vuex";
-import FileUpload from "@/components/fileUpload/FileUpload.vue";
-import GetDate from "@/helpers/date/useInfoTime";
-import { ELanguage, ELength } from "@/enums/index";
-import { updateProfile } from "@firebase/auth";
-import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
-import { FileResult } from "@/interfaces/index";
 
 export default defineComponent({
   components: {
@@ -106,8 +113,10 @@ export default defineComponent({
                   (!editedFirstName.value && !editedLastName.value) && !imageURL.value)
 
     const setPhoto = (fileRes: FileResult) => {
-      imageURL.value = `${fileRes.type} ${ URL
-                          .createObjectURL(new Blob([fileRes.result], { type : fileRes.type })) }`;
+
+      // ToDo: save image in firebase.
+      const blob = URL.createObjectURL(new Blob([fileRes.result], { type : fileRes.type }));
+      imageURL.value = `${ fileRes.type } ${ blob }`; 
     }
 
     const saveChanges = () => {
@@ -137,9 +146,9 @@ export default defineComponent({
       imageURL,
       disableBtnSave,
       userAvatar: computed(() => store.getters.getUserPhoto),
+      TextLength: ELength.Text,
       setPhoto,
-      saveChanges,
-      TextLength: ELength.Text
+      saveChanges
     };
   },
 });
@@ -175,6 +184,28 @@ export default defineComponent({
           display: flex;
           width: 100%;
           justify-content: space-between;
+        }
+      }
+    }
+    
+    @media (max-width: $xxl) {
+      padding-right: 40px;
+      grid-template-columns: minmax(200px, 700px);
+      justify-content: center;
+
+      h2 {
+        margin-left: 20px;
+        display: flex !important;
+      }
+    }
+    
+    @media (max-width: $sm) {
+      padding: 0; 
+
+      h2, span {
+        &:not(.item-label) {
+          font-size: 14px;
+          margin: 0;
         }
       }
     }

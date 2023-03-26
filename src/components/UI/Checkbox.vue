@@ -7,6 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+
 import { useCheckboxProps } from  "./use/props";
 
 export default defineComponent({
@@ -16,7 +17,7 @@ export default defineComponent({
   setup(_, { emit }) {
     const checked = ref(false)
 
-    const checkboxToggle = () => {
+    const checkboxToggle = (): void => {
       checked.value = !checked.value;
       emit('update:modelValue', checked.value);
     };
@@ -53,6 +54,7 @@ export default defineComponent({
       border: 1px solid $color-dark-grey;
     }
   }
+
   input {
     display: none;
 

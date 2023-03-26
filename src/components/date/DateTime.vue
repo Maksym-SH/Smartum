@@ -22,7 +22,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted, watch } from "vue";
+
 import { WelcomeType } from "@/types";
+import { Numbers } from "@/enums";
+
 import timeStamp from "@/helpers/date/timeStamp";
 
 export default defineComponent({
@@ -46,25 +49,30 @@ export default defineComponent({
     const loadComponentTime = Date.now();
 
     // 'ru-RU' only.
-    watch(
-      () => time.value,
-      () => {
-        if (Number(time.value.split("").slice(0, 2).join("")) < 16) {
+    watch((): string  => time.value, (): void => {
+        const currentTime = Number(time.value.split("").slice(0, 2).join(""));
+
+        if (currentTime < 16) {
           // If the time is later than 16:00.
           welcomeType.value = "Добрый день";
+        }
+        else {
+          welcomeType.value = "Добрый вечер";
         }
       }
     );
 
-    onMounted(() => {
-      let loadedTime = Date.now() - loadComponentTime;
+    onMounted((): void => {
+      const loadedTimeComponent = Date.now() - loadComponentTime;
+
       intervalTime.value = setInterval(() => {
-        time.value = timeStamp(loadedTime).time;
-        date.value = timeStamp(loadedTime).date;
-      }, 1000);
+        time.value = timeStamp(loadedTimeComponent).time;
+        date.value = timeStamp(loadedTimeComponent).date;
+      }, Numbers.Second);
     });
 
-    onUnmounted(() => clearInterval(intervalTime.value));
+    onUnmounted((): void => clearInterval(intervalTime.value));
+
     return {
       time,
       date,
@@ -78,6 +86,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .date {
+
   &-wrapper {
     position: relative;
     height: 43.2px;

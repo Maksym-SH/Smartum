@@ -1,7 +1,13 @@
 <template>
   <header class="c-header">
     <div class="c-header__wrapper">
-      <Input type="search" placeholder="Поиск" v-model="searchInput" />
+      <div class="c-header__search-content not-mobile">
+        <Input 
+          type="search" 
+           placeholder="Поиск" 
+          v-model="searchInput"
+        />
+      </div>
       <Date />
     </div>
   </header>
@@ -9,6 +15,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+
 import Date from "@/components/date/DateTime.vue";
 
 export default defineComponent({
@@ -36,11 +43,26 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  &__search-content {
 
     .input-wrapper {
-      width: 50%;
+      width: 100%;
       max-width: 440px;
       padding: 0;
+    }
+  }
+
+  @media (max-width: $lg) {
+    padding: 10px 20px;
+  }
+
+  @media (max-width: $sm) {
+    padding:10px 15px;
+
+    &__wrapper {
+      justify-content: flex-end;
     }
   }
 }

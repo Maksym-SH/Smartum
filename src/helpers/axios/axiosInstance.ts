@@ -1,8 +1,10 @@
-import axios from "axios";
-import { IError } from "@/interfaces/index";
+import axios, { AxiosInstance } from "axios";
+
 import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 
-export default function axiosInstance(): object {
+import { IError } from "@/interfaces";
+
+export default function axiosInstance(): AxiosInstance {
   const instance = axios.create({
     baseURL: process.env.VUE_APP_API_URL,
   });

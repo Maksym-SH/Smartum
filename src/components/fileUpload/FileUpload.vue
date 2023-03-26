@@ -2,7 +2,7 @@
   <div class="file-upload" @click="upload?.click()">
     <input type="file" ref="upload" class="file-upload--input" @change="fileUpload" />
     <img
-      v-if="loaded"
+      v-if="imgLoaded"
       @load="imgLoad"
       ref="image"
       :src="imageSource"
@@ -20,8 +20,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
-import { RefElement, FileType } from "@/types/index";
+
 import fileValidate from "@/helpers/file/validate";
+
+import { RefElement, FileType } from "@/types";
 
 export default defineComponent({
   props: {
@@ -31,18 +33,19 @@ export default defineComponent({
     }
   },
   emits:["loaded"],
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const upload = ref<RefElement>();
 
-    const loaded = ref(false);
+    const imgLoaded = ref(false);
 
-    const imgLoad = () => (loaded.value = true);
+    const imgLoad = () => (imgLoaded.value = true);
 
     const imageSource = ref();
 
     const fileUpload = () => {
       const reader = new FileReader();
       const file = upload.value?.files?.[0];
+
       if(file) {
         if(props.fileType == 'image') reader.readAsDataURL(file);
 
@@ -51,7 +54,7 @@ export default defineComponent({
 
             if(props.fileType == "image") {
               imageSource.value = reader.result;
-              loaded.value = true;
+              imgLoaded.value = true;
               emit('loaded', {
                 result: reader.result, 
                 type: file.type
@@ -63,7 +66,7 @@ export default defineComponent({
     }
 
     return {
-      loaded,
+      imgLoaded,
       upload,
       imageSource,
       fileUpload,
@@ -76,7 +79,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .file-upload {
   border-radius: 8px;
-  border: 3px dashed $color-info;
+  border: 3px dashed $color-blue;
   width: 100px;
   height: 100px;
   position: relative;
@@ -111,6 +114,7 @@ export default defineComponent({
   from {
     transform: translateY(-5px);
   }
+
   to {
     transform: translateY(0);
   }

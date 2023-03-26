@@ -1,6 +1,8 @@
-import { /* FileFormat, */ Sizes } from "@/enums/index";
-import {FileType} from "@/types/index";
 import { notify } from "@kyvg/vue3-notification";
+
+import { /* FileFormat, */ Numbers } from "@/enums";
+import { FileType } from "@/types";
+
 
 /* const Format = [ 
   FileFormat.APP_GZIP, 
@@ -22,7 +24,7 @@ const fileValidate = (file: any, needType: FileType): boolean => {
   const currentType:string = file.type.toLowerCase();
 
   if(needType == "image") {
-    if(file.size < Sizes.ImageSize && currentType.startsWith("image")) {
+    if(file.size < Numbers.ImageSize && currentType.startsWith("image")) {
       return true;
     }
   }

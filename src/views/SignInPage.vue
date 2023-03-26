@@ -100,11 +100,11 @@ export default defineComponent({
     padding-bottom: 10px;
     .c-button {
       padding: 0;
-      color: $color-info;
+      color: $color-blue;
       width: fit-content;
       margin: 0 auto;
       &:hover {
-        color: $color-info;
+        color: $color-blue;
       }
     }
     .auth__description {
@@ -132,7 +132,7 @@ export default defineComponent({
       height: 40px;
     }
     &--title {
-      color: $color-info;
+      color: $color-blue;
       font-weight: 500;
       margin-bottom: 45px;
       line-height: 10px;

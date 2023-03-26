@@ -1,7 +1,10 @@
 import { getAuth, User } from "firebase/auth";
-// import { notify } from "@kyvg/vue3-notification";
+
 import store from "@/store";
-import router from "@/router";
+// import router from "@/router";
+
+// import { notify } from "@kyvg/vue3-notification";
+
 import ResolveImageURL from "@/helpers/file/photo";
 
 export default async function refreshUserInfo(): Promise<any> {
