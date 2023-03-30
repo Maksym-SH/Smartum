@@ -3,24 +3,21 @@ import RegExp from "@/helpers/regExp";
 import { LangFormat } from "@/types";
 import { ELanguage, ELangFormat } from "@/enums";
 
-const useTimeStamp = (differenceTime: number, lang = ELanguage.Russian, Time?:number) => {
-  let date = new Date();
-  date.setSeconds(date.getSeconds() + differenceTime);
+const useTimeStamp = (date: Date | null, lang = ELanguage.Russian, fixedTime?:number) => {
 
-  if (Time) {
-    date = new Date(Number(Time));
-  }
+  const dateStamp = date || new Date(Number(fixedTime)); 
+
   const dateLang: LangFormat = lang === ELanguage.Russian ? ELangFormat.Ru : ELangFormat.Eng;
 
-  const RuFormatTime = date.toLocaleString(ELangFormat.Ru).replace(",", "")
+  const RuFormatTime = dateStamp.toLocaleString(ELangFormat.Ru).replace(",", "")
                                                             .match(RegExp.RuFormatDate)![0];
 
-  const EngFormatTime = date.toLocaleString(ELangFormat.Eng)
+  const EngFormatTime = dateStamp.toLocaleString(ELangFormat.Eng)
                                 .match(RegExp.EngFormatDate)![0];
 
   const dateString = new Intl.DateTimeFormat(dateLang, {
     dateStyle: "full",
-  }).format(date);
+  }).format(dateStamp);
 
   return {
     time: lang === ELanguage.Russian ? RuFormatTime : EngFormatTime,

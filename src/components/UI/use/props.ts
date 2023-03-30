@@ -5,7 +5,7 @@ import { PropType } from "vue";
 export const useInputProps = {
   modelValue: {
     type: [String, Number],
-    required: true,
+    default: ""
   },
   type: {
     type: String,
@@ -19,6 +19,10 @@ export const useInputProps = {
     type: String,
     default: "",
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
   required: {
     type: Boolean,
     default: false,
@@ -27,15 +31,55 @@ export const useInputProps = {
     type: Boolean,
     default: false,
   },
+  isPhone: {
+    type: Boolean,
+    default: false
+  },
   min: {
     type: Number,
     default: 0,
+  },
+  label: {
+    type: String,
+    default: ""
   },
   autoComplete: {
     type: Boolean,
     default: true,
   },
 };
+
+// Textarea
+export const useTextareaProps = {
+  modelValue: {
+    type: String,
+    required: true,
+  },
+  placeholder: {
+    type: String,
+    default: "",
+  },
+  required: {
+    type: Boolean, 
+    default: false
+  },
+  max: {
+    type: Number,
+    default: 0
+  },
+  label: {
+    type: String,
+    default: "",
+  },
+  min: {
+    type: Number,
+    default: 0,
+  },
+  resize: {
+    type: Boolean,
+    default: false,
+  }
+}
 
 // Button
 export const useButtonProps = {
@@ -56,6 +100,10 @@ export const useButtonProps = {
     default: false,
   },
   transparent: {
+    type: Boolean,
+    default: false,
+  },
+  outline: {
     type: Boolean,
     default: false,
   },

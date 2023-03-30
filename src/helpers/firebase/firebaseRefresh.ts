@@ -1,4 +1,4 @@
-import { getAuth, User } from "firebase/auth";
+import { getAuth, User, sendEmailVerification } from "firebase/auth";
 
 import store from "@/store";
 // import router from "@/router";
@@ -20,7 +20,7 @@ export default async function refreshUserInfo(): Promise<any> {
       //  store.dispatch('setUserToken', token)
       ResolveImageURL(currentUser.photoURL, "setUserPhoto");
       store.dispatch("setCurrentUser", user);
-
+      console.log(user);
       // })
       // .catch((error) => {
       //   notify({

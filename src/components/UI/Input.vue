@@ -1,16 +1,25 @@
 <template>
   <div class="input-wrapper">
+    <label 
+      v-if="label" 
+      :for="inputName" 
+      :class="{'label-disable': disabled }"
+    >
+      {{ label }}
+    </label>
     <input
       class="c-input"
       :class="{
         'c-input--error': errorText,
-        'c-input--required': required,
         'c-input--transparent': transparent,
         'c-input--search': type === 'search',
+        'c-input--phone': isPhone
       }"
       ref="input"
+      :name="inputName"
       :autocomplete="isAutoComplete"
       :type="type"
+      :disabled="disabled"
       :value="modelValue"
       :placeholder="placeholder"
       v-model="model"
@@ -20,6 +29,7 @@
       :min="min"
     />
     <span v-if="required" class="c-input__required"></span>
+    <span v-if="isPhone" class="phone mdi mdi-phone"></span>
     <Transition name="error-message">
       <span v-if="errorText" class="c-input__error-text">{{ errorText }}</span>
     </Transition>
@@ -62,6 +72,7 @@ import { emailValidator } from "@/main";
 
 import { useInputProps } from "./use/props";
 
+import RegExp from "@/helpers/regExp";
 import { RefElement, ModelValue, AutoComplete } from "@/types";
 
 export default defineComponent({
@@ -73,7 +84,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const errorText = ref("");
 
-    const isRequired = ref(false);
+    const inputName: string = String(Date.now());
 
     const model = computed({
       get: () => props.modelValue,
@@ -87,6 +98,9 @@ export default defineComponent({
     const validator = (): void => {
       if (props.isEmail && !emailValidator.validate(model.value)) {
         errorText.value = "Введите корректную почту.";
+      }
+      else if (props.isPhone && !String(model.value).match(RegExp.Phone)) {
+        errorText.value = "Введите в формате: +X-123-456-7890"
       } 
       else if (props.min && String(model.value).length < props.min) {
         errorText.value = `Введите не менее ${props.min} символов.`;
@@ -117,10 +131,10 @@ export default defineComponent({
 
     return {
       errorText,
-      isRequired,
       isAutoComplete,
       input,
       model,
+      inputName,
       showPassword,
       validator,
       togglePasswordType,
@@ -134,13 +148,13 @@ export default defineComponent({
   position: relative;
   width: 100%;
   padding-bottom: 15px;
-
+  height: fit-content;
   .c-input {
     padding: 10px;
-    border: 1px solid transparent;
+    border: 1px solid $color-dark-grey;
     outline: none;
     width: 100%;
-    background-color: $color-white5;
+    background-color: $color-white1;
     border-radius: 4px;
     transition: all 0.3s ease;
 
@@ -149,6 +163,27 @@ export default defineComponent({
 
       &::first-letter {
         text-transform: uppercase;
+      }
+    }
+
+    &:disabled {
+      border-color: $color-brown;
+      color: $color-brown;
+      ::placeholder {
+        color: $color-brown;
+      }
+    }
+
+    &--phone {
+      padding-left: 30px;
+      & + .phone {
+        position: absolute;
+        top: 12px;
+        left: 10px;
+        
+        + .c-input__error-text {
+          font-size: 11px;
+        }
       }
     }
  
@@ -162,6 +197,7 @@ export default defineComponent({
     }
  
     &--search {
+      border-color:  transparent;
       padding-right: 45px;
     }
   
@@ -196,7 +232,7 @@ export default defineComponent({
       border-radius: 0 4px 4px 0;
       position: absolute;
       right: 0;
-      background-color: red;
+      background-color: $color-red;
     }
 
     &__error-text {
@@ -206,7 +242,7 @@ export default defineComponent({
       font-size: 12px;
       left: 0;
     }
-  
+
     &__toggle-password {
       position: absolute;
       top: 40%;
@@ -227,6 +263,20 @@ export default defineComponent({
       }
     }
   }
+
+  label {
+    &.label-disable {
+      color: $color-light-brown;
+    }
+
+    & ~ .phone {
+      top: 35px !important;
+    }
+
+    & ~ .c-input__required {
+      height: 100% !important;
+    }
+  } 
 }
 
 .error-message-enter-active,

@@ -1,5 +1,6 @@
 <template>
-  <div class="user-info">
+  <Loader v-if="!showTemplate" inline />
+  <div class="user-info" v-else>
     <Avatar online :name="name" :image="avatar" />
     <div class="user-info__content">
       <Info :name="name" />
@@ -10,14 +11,16 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-
+import { useStore } from "vuex";
 import router from "@/router";
-import store from "@/store";
 
 import { SelectElements } from "@/types";
 
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";
+
+import { ObjectNotEmpty } from "@/helpers/methods";
+import { computed } from "@vue/reactivity";
 
 export default defineComponent({
   components: {
@@ -35,6 +38,10 @@ export default defineComponent({
     },
   },
   setup() {
+    const store = useStore();
+
+    const showTemplate = computed(() => ObjectNotEmpty(store.getters.getCurrentUser));
+
     const actions: SelectElements = reactive([
       {
         title: "Мой профиль",
@@ -54,6 +61,7 @@ export default defineComponent({
 
     return {
       actions,
+      showTemplate,
       selected,
     };
   },
@@ -61,6 +69,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.c-loader {
+  display: block !important;
+  text-align: center;
+  :deep(svg) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 .user-info {
   display: flex;
 
@@ -71,7 +88,7 @@ export default defineComponent({
   &__content {
 
     position: relative;
-    min-width: 130px;
+    min-width: 135px;
 
     :deep(.c-select) {
       position: absolute;

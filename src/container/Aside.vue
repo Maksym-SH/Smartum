@@ -49,14 +49,15 @@ export default defineComponent({
     }
 
     onMounted((): void => {
-      if(window.innerWidth > Layout.Mobile) {
+      if(window.innerWidth >= Layout.Desktop) {
         setTimeout((): void => {
           setMinimizeValue(false);
         }, Numbers.AppearElement);
       }
 
       window.onresize = (): void => {
-        setMinimizeValue(true);
+        if(window.innerWidth <= Layout.Desktop)
+          setMinimizeValue(true);
       }
     });
 
@@ -78,6 +79,7 @@ export default defineComponent({
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 2;
   background-color: $color-grey;
   transition: transform 0.5s ease;
 
@@ -131,13 +133,13 @@ export default defineComponent({
     clip-path: polygon(0 0, 100% 21%, 100% 76%, 0% 100%);
   }
 
-  @media (max-width: $md) {
+  @media (max-width: $xs) {
     transform: translateX(0);
     z-index: 5;
 
     &__collapse {
       position: absolute;
-      top: 50%;
+      top: 0%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -147,7 +149,7 @@ export default defineComponent({
       clip-path: none;
       border-radius: 0 10px 10px 0;
       width: 30px;
-      height: 80px;
+      height: 63px;
 
       &--toggle {
         img {

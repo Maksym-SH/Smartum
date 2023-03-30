@@ -14,7 +14,7 @@
           mode="out-in"
           class="home-page__content"
         >
-          <component v-if="!showLoading" :is="Component" />
+          <component v-if="showTabContent" :is="Component" />
         </transition>
       </router-view>
     </div>
@@ -27,7 +27,7 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
 import * as DescriptionJSON from "@/helpers/content/tabs.json";
-import { ObjectFull } from "@/helpers/methods";
+import { ObjectFull, ObjectNotEmpty } from "@/helpers/methods";
 
 import { ILanguage, IMetaName } from "@/interfaces/index";
 import { RouterMeta, DynamicDescription } from "@/types";
@@ -54,15 +54,14 @@ export default defineComponent({
     const showTabName = computed(() => ObjectFull(tabName));
     const showTabDescription = computed(() => showTabName.value && ObjectFull(tabDescription))
 
+    const showTabContent = computed(() => ObjectNotEmpty(store.getters.getCurrentUser))
     // Aside
     const minimizeAside = ref(true);
     const toggleAsideShow = (value: boolean) => {
       minimizeAside.value = value;
     };
 
-    watch(
-      (): IMetaName | RouterMeta => router.meta,
-      (meta) => {
+    watch((): IMetaName | RouterMeta => router.meta, (meta) => {
         const metaName: ILanguage = meta.tabName as ILanguage;
 
         if (metaName) {
@@ -87,6 +86,7 @@ export default defineComponent({
       minimizeAside,
       showTabName,
       showTabDescription,
+      showTabContent,
       toggleAsideShow,
       showLoading: computed(() => store.getters.getLoadingStatus),
     };
@@ -109,7 +109,7 @@ export default defineComponent({
     &.minimize-info {
       padding-left: 0 !important;
     }
-    @media (max-width: $md) {
+    @media (max-width: $lg) {
       padding-left: 0;
     }
   }

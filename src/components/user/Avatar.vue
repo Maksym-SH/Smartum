@@ -49,7 +49,7 @@ export default defineComponent({
     const imgLoad = () => (imgLoaded.value = true);
     const imgLoaded = ref(false);
 
-    const sizeInitials = computed(() => `font-size: ${props.size / 2.2}px;`);
+    const sizeInitials = computed(() => `font-size: ${props.size / 1.7}px;`);
 
     return {
       avatarSize,

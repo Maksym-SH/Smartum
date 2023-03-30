@@ -11,6 +11,7 @@ import { firebaseConfig } from "./helpers/firebase/firebaseConfig";
 // Components
 import Button from "./components/ui/Button.vue";
 import Input from "./components/ui/Input.vue";
+import Textarea from "./components/ui/Textarea.vue";
 import Checkbox from "./components/ui/Checkbox.vue";
 import Loader from "./components/ui/Loader.vue";
 import Select from "./components/ui/Select.vue";
@@ -44,6 +45,7 @@ const app = createApp(App);
 
 // Global components
 app.component("Input", Input);
+app.component("Textarea", Textarea);
 app.component("Button", Button);
 app.component("Checkbox", Checkbox);
 app.component("Loader", Loader);

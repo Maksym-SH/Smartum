@@ -41,6 +41,19 @@ export interface IUserAuth {
   signIn: (userData: IUserLogin, validate: boolean) => void;
 }
 
+export interface IUserInfo {
+  editedFirstName?: string,
+  editedLastName?: string,
+  firstName: string,
+  lastName: string,
+  fullName: string,
+  phone: string,
+  about?: string,
+  email: string,
+  imageURL: string,
+  emailVerified?: boolean
+}
+
 // Store
 export interface IUserStore {
   userToken: string;
@@ -50,6 +63,34 @@ export interface IUserStore {
 
 export interface ICommonStore {
   loadingStatus: boolean;
+  popupParams: boolean
+}
+
+export interface IPopupParams {
+  title?: string,
+  text?: string,
+  buttons: {
+    no?: {
+      variant?: string
+      text?: string
+    },
+    yes?: {
+      variant?: string,
+      text?: string
+    }
+  },
+  callback: () => any
+}
+
+export interface IPopupButtons {
+  yes: {
+    variant?: string,
+    text: string
+  },
+  no: {
+    variant?: string,
+    text: string
+  }
 }
 
 // TimeStamp

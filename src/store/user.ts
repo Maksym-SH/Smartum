@@ -40,6 +40,7 @@ export default {
     },
     setCurrentUser({ commit }: ActionContext<IUserStore, any>, user: any): void {
       commit("SET_CURRENT_USER", user);
+      console.log(user);
     },
     setUserPhoto({commit}: ActionContext<IUserStore, any>, image: string): void {
       commit("SET_USER_PHOTO", image);

@@ -5,30 +5,37 @@ import { notify } from "@kyvg/vue3-notification";
 
 import axiosInstance from "@/helpers/axios/axiosInstance";
 
-import { IAxiosData, ICommonStore, IError } from "@/interfaces";
+import { IAxiosData, ICommonStore, IError, IPopupParams } from "@/interfaces";
 
 export default createStore({
   state: {
     loadingStatus: false,
+    popupParams: {}
   },
   getters: {
     getLoadingStatus(state: ICommonStore): boolean {
       return state.loadingStatus;
     },
+    getPopupParams(state: ICommonStore) : boolean {
+      return state.popupParams;
+    }
   },
   mutations: {
     SET_LOADING_STATUS(state: ICommonStore, status: boolean): void {
       state.loadingStatus = status;
     },
+    SET_POPUP_PARAMS(state: ICommonStore, value: boolean): void {
+      state.popupParams = value;
+    }
   },
   actions: {
-    setLoadingStatus(
-      { commit }: ActionContext<ICommonStore, any>,
-      status: boolean
-    ): void {
+    setLoadingStatus({ commit }: ActionContext<ICommonStore, any>, status: boolean): void {
       commit("SET_LOADING_STATUS", status);
     },
-    $http({ commit, getters }: ActionContext<ICommonStore, any>, params: IAxiosData): Promise<any> {
+    setPopupParams({ commit }: ActionContext<ICommonStore, IPopupParams>, value: IPopupParams) : void {
+      commit('SET_POPUP_PARAMS', value);
+    },
+    $http({ commit, getters }: ActionContext<ICommonStore, IAxiosData>, params: IAxiosData): Promise<any> {
       return new Promise((resolve, reject) => {
         const axios: any = axiosInstance();
         const { url, data, method, auth } = params;

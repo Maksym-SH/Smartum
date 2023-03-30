@@ -55,7 +55,7 @@ export default defineComponent({
   }
 
   @media (max-width: $lg) {
-    padding: 10px 20px;
+    padding: 10px 40px;
   }
 
   @media (max-width: $sm) {

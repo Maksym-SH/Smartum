@@ -63,11 +63,11 @@ export default defineComponent({
     );
 
     onMounted((): void => {
-      const loadedTimeComponent = Date.now() - loadComponentTime;
-
       intervalTime.value = setInterval(() => {
-        time.value = timeStamp(loadedTimeComponent).time;
-        date.value = timeStamp(loadedTimeComponent).date;
+        const currentDate = new Date();
+
+        time.value = timeStamp(currentDate).time;
+        date.value = timeStamp(currentDate).date;
       }, Numbers.Second);
     });
 

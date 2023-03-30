@@ -21,11 +21,7 @@ const firebaseAuth = (): IUserAuth => {
 
       store.dispatch("setLoadingStatus", true);
 
-      createUserWithEmailAndPassword(
-        getAuth(),
-        userData.email,
-        userData.password
-      )
+      createUserWithEmailAndPassword(getAuth(), userData.email, userData.password)
         .then(async (response) => {
           const responseUser: any = response.user;
           const currentUser = getAuth().currentUser;

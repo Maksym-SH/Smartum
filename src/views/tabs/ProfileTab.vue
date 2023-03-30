@@ -1,90 +1,103 @@
 <template>
   <div class="profile-tab">
-    <div class="profile-tab__content">
-      <Card>
-        <template #descript>
-          <Avatar :name="fullName" :image="userAvatar" :size="150" />
-        </template>
-        <template #content>
-          <h2>
-            Имя: 
-            <span class="text-ellipsis">
-              {{ fullName }}
-            </span>
-          </h2>
-          <h2>
-            Почта:
-            <span class="text-ellipsis">
-              {{ userInfo.email }}
-            </span>
-          </h2>
-          <h2>
-            Дата регистрации:
-            <span class="text-ellipsis">
-              {{ createAccountDate.date }}
-            </span> 
-          </h2>
-        </template>
-        <template #footer>
-          Ваши данные
-        </template>
-      </Card>
-      <Card class="edit" variant="success">
-        <template #descript>
-          <div class="card__image">
-            <span class="item-label">Обновить фото профиля</span>
-            <ImageUpload fileType="image"  @loaded="setPhoto"/>
-          </div>
-        </template>
-        <template #form>
-          <form @submit.prevent="saveChanges">
-            <label for="firtName">Имя:</label>
-            <Input
-              name="firstName" 
-              transparent 
-              :min="TextLength" 
-              :placeholder="firstName"
-              v-model="editedFirstName"
-            />
-
-            <label for="firtName">Фамилия:</label>
-            <Input 
-              name="lastName" 
-              transparent 
-              :min="TextLength" 
-              :placeholder="lastName"
-              v-model="editedLastName"
-            />
-            <Button :disabled="disableBtnSave"> 
-              Сохранить <span class="mdi mdi-content-save-outline"></span>
-            </Button> 
-          </form>
-        </template>
-        <template #footer>
-          Редактирование данных
-        </template>
-      </Card>
-      <div class="card edit">
+    <form class="profile-tab__form" @submit.prevent>
+      <div class="profile-tab__form--upload">
+        <span class="label">Обновить фото профиля</span>
+        <ImageUpload :fileType="'image'" />
       </div>
-    </div>
+      <div class="form-item first-name">
+        <Input 
+          v-model.trim="userInfo.editedFirstName"
+          @invalid="invalid = true"
+          :min="userInfo.editedFirstName ? 3 : 0"
+          :placeholder="userInfo.firstName"
+          label="Имя"
+        />
+      </div>
+      <div class="form-item last-name">
+        <Input 
+          v-model.trim="userInfo.editedLastName" 
+          :min="userInfo.editedFirstName ? 3 : 0" 
+          @invalid="invalid = true"
+          :placeholder="userInfo.lastName" 
+          label="Фамилия"
+        />
+      </div>
+      <div class="form-item textarea">
+        <Textarea 
+          v-model.trim="userInfo.about" 
+          :max="255"
+          label="Дополнительная информация"
+          placeholder="Расскажите о себе (не обязательно)"
+        />
+      </div>
+      <div class="form-item phone">
+        <Input 
+          @invalid="invalid = true"
+          class="phone"
+          v-model.trim="userInfo.phone" 
+          :placeholder="userInfo.phone"
+          isPhone
+          label="Телефон"
+        />
+      </div>
+      <div class="form-item email">
+        <Input 
+          disabled
+          :value="userInfo.email" 
+          :placeholder="userInfo.email" 
+          label="Почта"
+        />
+      </div>
+      <div class="form-item dd">
+        <Input 
+          v-model="userInfo.email" 
+          :placeholder="userInfo.email" 
+          label="Фамилия"
+        />
+      </div>
+      <Button 
+        :disabled="disableBtnSave"
+        variant="info"
+        @click="saveChanges"
+        title="Сохранить"
+      />
+      <Button 
+        @click="deleteConfirm"
+        class="btn-delete"
+        variant="danger"
+        title="Удалить аккаунт"
+      />
+    </form>
+    <Button
+      v-if="!userInfo.emailVerified"
+      class="verify-email-btn"
+      variant="success"
+      @click="verify"
+    >
+      <span class="mdi mdi-email-open-multiple-outline"></span>
+      Подтвердить почту
+    </Button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, reactive, watch } from "vue";
 import { useStore } from "vuex";
+  
+import { ELength } from "@/enums";
+import { FileResult, IUserInfo } from "@/interfaces";
 
-import { ELanguage, ELength } from "@/enums";
-import { FileResult } from "@/interfaces";
+import { updateProfile, getAuth } from "@firebase/auth";
 
-import { updateProfile } from "@firebase/auth";
-
-import GetDate from "@/helpers/date/useInfoTime";
 import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
+import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
+
+import { OpenPopup } from "@/helpers/methods";
 
 export default defineComponent({
   components: {
@@ -95,39 +108,53 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    // Edit
-    const editedFirstName = ref("");
-    const editedLastName = ref("");
+    // User info.
+    const currentUser = store.getters.getCurrentUser;
 
     const [firstName, lastName] = store.getters.getCurrentUser?.displayName?.split(" ");
-  
-    const fullName = computed(() => `${firstName} ${lastName}`);
 
-    const userInfo = store.getters.getCurrentUser;
-  
-    const createAccountDate = GetDate(userInfo.reloadUserInfo.createdAt, ELanguage.Russian, true);
+    const userInfo: IUserInfo = reactive({
+      editedFirstName: "",
+      editedLastName: "",
+      firstName, lastName,
+      fullName: `${firstName} ${lastName}`,
+      phone: "",
+      about: "",
+      email: currentUser.email,
+      imageURL: "",
+      emailVerified: currentUser.emailVerified
+    })
 
-    const imageURL = ref("");
+    const disableBtnSave = ref(true);
 
-    const disableBtnSave = computed(() => 
-                  (!editedFirstName.value && !editedLastName.value) && !imageURL.value)
+    const invalid = ref(false);
+
+    watch([userInfo, invalid], (newInfo, newStatus) => {
+      if (newInfo) {
+        invalid.value = false;
+      }  
+      if (newStatus) {
+        disableBtnSave.value = false;
+      }
+    });
 
     const setPhoto = (fileRes: FileResult) => {
-
       // ToDo: save image in firebase.
       const blob = URL.createObjectURL(new Blob([fileRes.result], { type : fileRes.type }));
-      imageURL.value = `${ fileRes.type } ${ blob }`; 
+      userInfo.imageURL = `${ fileRes.type } ${ blob }`; 
     }
 
-    const saveChanges = () => {
-      const userFirstName = editedFirstName.value || firstName;
-      const userLastName = editedLastName.value || lastName;
-      const photo = imageURL.value;
+    // Actions
+    const saveChanges = (): void => {
+      if(invalid.value) return;
+
+      const userFirstName = userInfo.editedFirstName || firstName;
+      const userLastName = userInfo.editedLastName || lastName;
+     /*  const photo = imageURL.value; */
 
       store.dispatch("setLoadingStatus", true);
 
-      updateProfile(userInfo, {
-        photoURL: photo,
+      updateProfile(currentUser, {
         displayName: `${userFirstName} ${userLastName}`,
       }).then(() => {
           refreshUserInfo()
@@ -135,20 +162,35 @@ export default defineComponent({
       .finally(() => store.dispatch("setLoadingStatus", false));
     }
 
+    const verify = (): void => verifyEmail(currentUser);
+
+    const deleteConfirm = (): void => {
+      OpenPopup({
+        title: "Удалить аккаунт?",
+        text: "Это действие необратимо!",
+        buttons: {
+          yes: {
+            text: "Удалить аккаунт",
+            variant: "danger"
+          },
+        },
+        callback: () => {
+          getAuth().currentUser?.delete()
+          .then(() => store.dispatch("userLogout"));
+        }
+      })
+    };
+
     return {
-      firstName,
-      lastName,
-      fullName,
       userInfo,
-      editedFirstName,
-      editedLastName,
-      createAccountDate,
-      imageURL,
       disableBtnSave,
+      invalid,
       userAvatar: computed(() => store.getters.getUserPhoto),
       TextLength: ELength.Text,
       setPhoto,
-      saveChanges
+      saveChanges,
+      deleteConfirm,
+      verify,
     };
   },
 });
@@ -157,58 +199,114 @@ export default defineComponent({
 <style lang="scss" scoped>
 .profile-tab {
   padding-top: 20px;
+  position: relative;
 
-  &__content {
+  &__form {
     display: grid;
-    grid-template-columns: minmax(auto, 400px) minmax(auto, 600px);
-    gap: 40px;
-    
-    .card {
-      h2 {
-        max-width: 100%;
-        display: inline-flex;
-        white-space: nowrap;
-      }
+    grid-template-columns: minmax(auto, 200px) repeat(2, 0.4fr);
+    gap: 25px;
+    padding-bottom: 20px;
+    max-width: 1200px;
+    row-gap: 10px;
 
-      &.edit {
-        padding-top: 15px;
+    &--upload {
+      grid-area: 1/1/3/1;
+
+      .file-upload {
+        width: 100%;
+        height: 100%;
+        max-height: 200px;
+        max-width: 200px;
+      }
+    }
+
+    .textarea {
+      grid-area: 2/2/3/4;
+      
+      .textarea-wrapper {
+        height: 123px;
+      }
+    }
+
+    .btn-delete {
+      grid-column-start: 3;
+      max-width: 200px;
+      justify-self: end;
+    }
+
+    @media (max-width: $lg) {
+      max-width: 100%;
+      padding-right: 40px;
+      grid-template-columns: 200px 0.5fr 0.5fr;
+    }
+
+    @media (max-width: $md) {
+      grid-template-columns: 170px 1fr 1fr;
+      gap: 13px 15px;
+
+      &--upload {
+        .label {
+          font-size: 14px;
+        }
 
         .file-upload {
-          margin-top: 20px;
-          width: 200px;
-          height: 200px;
-        }
-
-        .card__content {
-          padding: 0;
-          display: flex;
-          width: 100%;
-          justify-content: space-between;
+          max-width: 170px;
+          max-height: 170px; 
         }
       }
-    }
-    
-    @media (max-width: $xxl) {
-      padding-right: 40px;
-      grid-template-columns: minmax(200px, 700px);
-      justify-content: center;
-
-      h2 {
-        margin-left: 20px;
-        display: flex !important;
+      .textarea-wrapper {
+        height: auto !important; 
       }
     }
-    
+
     @media (max-width: $sm) {
-      padding: 0; 
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      
+      &--upload {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-      h2, span {
-        &:not(.item-label) {
-          font-size: 14px;
-          margin: 0;
+        .label {
+          font-size: 16px;
         }
+
+        .file-upload {
+          max-width: none;
+          max-height: none;
+          height: 200px;
+          width: 200px;
+        }
+      }
+
+      .form-item {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 330px;
+      }
+
+      .c-button {
+        width: 45%;
+        margin: 0 auto;
+        max-width: none;
       }
     }
   }
+
+  .verify-email-btn {
+    position: absolute;
+    top: -80px;
+    right: 10px;
+
+    @media (max-width: $sm) {
+      position: static;
+      display: block;
+      margin: 0 auto;
+      margin: 20px auto;
+    }
+  } 
 }
 </style>

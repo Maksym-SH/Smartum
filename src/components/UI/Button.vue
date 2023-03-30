@@ -7,6 +7,7 @@
         'c-button--disabled': disabled,
         'c-button--transparent': transparent,
         'c-button--round': round,
+        'c-button--outline': outline
       },
     ]"
     :disabled="disabled"
@@ -44,6 +45,46 @@ export default defineComponent({
     filter: grayscale(60%);
   }
 
+  &--outline {
+    background-color: transparent !important;
+    border: 1.5px solid transparent;
+    &.c-button--info {
+      color: $color-blue;
+      border-color:$color-blue;
+      &:hover {
+        border-color: $color-blue-hover;
+        background-color: $color-blue-hover !important;
+        color: $color-white1;
+      }
+    }
+    &.c-button--danger {
+      color: $color-red;
+      border-color: $color-red;
+      &:hover {
+        border-color: $color-red-hover;
+        background-color: $color-red-hover !important;
+        color: $color-white1;
+      }
+    }
+    &.c-button--warning {
+      color: $color-yellow;
+      border-color: $color-yellow-hover;
+      &:hover {
+        border-color: $color-yellow-hover;
+        background-color: $color-yellow-hover !important;
+        color: $color-white1;
+      }
+    }
+    &.c-button--success {
+      color: $color-green;
+      border-color: $color-green;
+      &:hover {
+        border-color: $color-green-hover;
+        background-color: $color-green-hover !important;
+        color: $color-white1;
+      }
+    }
+  }
   // Variant
   &--default {
     &.c-button--transparent {
@@ -155,8 +196,8 @@ export default defineComponent({
 
   // Size
   &--sm {
-    padding: 5px;
-    font-size: 12px;
+    padding: 5px 7px;
+    font-size: 14px;
   }
 
   &--md {

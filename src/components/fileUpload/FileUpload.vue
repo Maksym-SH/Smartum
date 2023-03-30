@@ -9,7 +9,6 @@
       class="file-upload--image"
     />
     <img
-      v-else
       svg-inline
       class="file-upload--icon"
       src="@/assets/img/icons/upload.svg"

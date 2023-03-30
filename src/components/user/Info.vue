@@ -1,12 +1,16 @@
 <template>
   <div class="user-info__name">
     <h5 class="user-info__name--first-name text-ellipsis">{{ name }}</h5>
-    <small class="user-info__name--status">Super admin</small>
+    <small class="user-info__name--status" :class="{ 'verified': emailVerified }">
+      <span :class="['mdi', statusIcon]"></span> 
+      {{ userStatusText }}  
+    </small>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, computed } from "vue";
+import { useStore } from "vuex";
 
 import { Status } from "@/types";
 
@@ -21,12 +25,30 @@ export default defineComponent({
       required: true,
     },
   },
+  setup() {
+    const store = useStore();
+
+    const emailVerified = store.getters.getCurrentUser.emailVerified;
+
+    const userStatusText = computed(() => {
+      if (emailVerified) return "Почта подтверждена"
+      return "Почта не подтверждена"
+    })
+
+    const statusIcon = emailVerified ? "mdi-email-check" : "mdi-email-alert"
+
+    return {
+      statusIcon,
+      emailVerified,
+      userStatusText,
+    }
+  }
 });
 </script>
 
 <style lang="scss" scoped>
 .user-info__name {
-  max-width: 130px;
+  max-width: 140px;
 
   &--first-name {
     color: $color-white4;
@@ -39,6 +61,10 @@ export default defineComponent({
     font-size: 11px;
     line-height: 16.5px;
     color: $color-yellow;
+
+    &.verified {
+      color: $color-green;
+    }
   }
 }
 </style>

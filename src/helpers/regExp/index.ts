@@ -4,7 +4,8 @@ const RegExp = {
   TimeRegisteredEng: /\w+\s\w+,\s\d+/gm,
   TimeRegisteredRu: /\d+\w+.+/gm,
   FileFormat: /\w+\/\w+/gm,
-  BlobFormat: /blob:.+/gm
+  BlobFormat: /blob:.+/gm,
+  Phone: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
 } as const;
 
 export default RegExp;
