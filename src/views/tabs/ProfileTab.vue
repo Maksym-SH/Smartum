@@ -8,8 +8,7 @@
       <div class="form-item first-name">
         <Input 
           v-model.trim="userInfo.editedFirstName"
-          @invalid="invalid = true"
-          :min="userInfo.editedFirstName ? 3 : 0"
+          :min="userInfo.editedFirstName ? TextLength : 0"
           :placeholder="userInfo.firstName"
           label="Имя"
         />
@@ -17,8 +16,7 @@
       <div class="form-item last-name">
         <Input 
           v-model.trim="userInfo.editedLastName" 
-          :min="userInfo.editedFirstName ? 3 : 0" 
-          @invalid="invalid = true"
+          :min="userInfo.editedFirstName ? TextLength : 0" 
           :placeholder="userInfo.lastName" 
           label="Фамилия"
         />
@@ -33,7 +31,6 @@
       </div>
       <div class="form-item phone">
         <Input 
-          @invalid="invalid = true"
           class="phone"
           v-model.trim="userInfo.phone" 
           :placeholder="userInfo.phone"
@@ -43,21 +40,20 @@
       </div>
       <div class="form-item email">
         <Input 
-          disabled
-          :value="userInfo.email" 
-          :placeholder="userInfo.email" 
+          isEmail
+          v-model="userInfo.email" 
           label="Почта"
         />
       </div>
-      <div class="form-item dd">
+      <div class="form-item new-password">
         <Input 
-          v-model="userInfo.email" 
-          :placeholder="userInfo.email" 
-          label="Фамилия"
+          v-model.trim="userInfo.newPassword" 
+          placeholder="Изменить пароль" 
+          :min="PasswordLength"
+          label="Новый пароль"
         />
       </div>
       <Button 
-        :disabled="disableBtnSave"
         variant="info"
         @click="saveChanges"
         title="Сохранить"
@@ -82,22 +78,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, reactive, watch } from "vue";
+import { defineComponent, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
-  
+import { getAuth } from "@firebase/auth";
+
 import { ELength } from "@/enums";
 import { FileResult, IUserInfo } from "@/interfaces";
 
-import { updateProfile, getAuth } from "@firebase/auth";
-
-import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
+import RegExp from "@/helpers/regExp";
+import { Confirmation, OpenPopup } from "@/helpers/methods";
+import { emailValidator } from "@/main";
 
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
 
-import { OpenPopup } from "@/helpers/methods";
+import { ProfileUpdate, EmailUpdate, PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
+import user from "@/store/user";
 
 export default defineComponent({
   components: {
@@ -122,21 +120,23 @@ export default defineComponent({
       about: "",
       email: currentUser.email,
       imageURL: "",
-      emailVerified: currentUser.emailVerified
+      emailVerified: currentUser.emailVerified,
+      newPassword: ""
     })
 
-    const disableBtnSave = ref(true);
 
-    const invalid = ref(false);
-
-    watch([userInfo, invalid], (newInfo, newStatus) => {
-      if (newInfo) {
-        invalid.value = false;
-      }  
-      if (newStatus) {
-        disableBtnSave.value = false;
+    const validForm = computed((): boolean => {
+      if ((userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
+          (!userInfo.editedFirstName || userInfo.editedFirstName.length >= ELength.Text) && 
+            (!userInfo.editedLastName || userInfo.editedLastName.length >= ELength.Text) &&
+             emailValidator.validate(userInfo.email) &&
+              (!userInfo.newPassword || userInfo.newPassword.length > ELength.Password))
+      {
+        return true;
       }
-    });
+
+      return false;
+    })
 
     const setPhoto = (fileRes: FileResult) => {
       // ToDo: save image in firebase.
@@ -145,26 +145,43 @@ export default defineComponent({
     }
 
     // Actions
+    const showConfirmation = ref(true);
+
+    const updatePassword = (): void => {
+      PasswordUpdate(currentUser, userInfo.newPassword);
+      showConfirmation.value = false;
+    }
+    const updateEmail = () => {
+      EmailUpdate(currentUser, userInfo.email);
+      showConfirmation.value = false;
+    }
+    
     const saveChanges = (): void => {
-      if(invalid.value) return;
+      if(!validForm.value) return;
 
       const userFirstName = userInfo.editedFirstName || firstName;
       const userLastName = userInfo.editedLastName || lastName;
-     /*  const photo = imageURL.value; */
 
-      store.dispatch("setLoadingStatus", true);
+      if (userInfo.newPassword) {
+        if(showConfirmation.value) {
+          Confirmation(true, updatePassword);
+        }
+        else updatePassword();
+      }
 
-      updateProfile(currentUser, {
-        displayName: `${userFirstName} ${userLastName}`,
-      }).then(() => {
-          refreshUserInfo()
-        })
-      .finally(() => store.dispatch("setLoadingStatus", false));
+      if (userInfo.email != currentUser.email) { // Email changed.
+        if(showConfirmation.value) {
+          Confirmation(showConfirmation.value, updateEmail);
+        }
+        else updateEmail();
+      }
     }
 
     const verify = (): void => verifyEmail(currentUser);
 
-    const deleteConfirm = (): void => {
+    const deleteAccountPopup = () => {
+      showConfirmation.value = false;
+
       OpenPopup({
         title: "Удалить аккаунт?",
         text: "Это действие необратимо!",
@@ -178,16 +195,20 @@ export default defineComponent({
           getAuth().currentUser?.delete()
           .then(() => store.dispatch("userLogout"));
         }
-      })
-    };
+      });
+    }
+
+    const deleteConfirm = (): void => {
+      Confirmation(showConfirmation.value, deleteAccountPopup);
+    }
 
     return {
       userInfo,
-      disableBtnSave,
-      invalid,
       userAvatar: computed(() => store.getters.getUserPhoto),
       TextLength: ELength.Text,
+      PasswordLength: ELength.Password,
       setPhoto,
+      validForm,
       saveChanges,
       deleteConfirm,
       verify,

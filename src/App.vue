@@ -3,6 +3,10 @@
   <transition name="toggle-popup" mode="out-in">
     <Popup v-if="showPopup" />
   </transition>
+  <transition name="toggle-popup" mode="out-in">
+    <ConfirmationPopup v-if="showConfirmPopup" />
+  </transition>
+
   <Loader v-if="loadingStatus" />
   <router-view v-slot="{ Component }">
     <transition name="router-nav" mode="out-in">
@@ -16,17 +20,22 @@ import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 
 import Popup from "@/container/Popup.vue";
+import ConfirmationPopup from "@/container/Confirmation.vue";
+
 import { ObjectNotEmpty } from "./helpers/methods";
 
 export default defineComponent({
   components: {
-    Popup
-  },
+    Popup,
+    ConfirmationPopup
+},
   setup() {
     const store = useStore();
+
     return {
       loadingStatus: computed(() => store.getters.getLoadingStatus),
-      showPopup: computed(() => ObjectNotEmpty(store.getters.getPopupParams))
+      showPopup: computed(() => ObjectNotEmpty(store.getters.getPopupParams)),
+      showConfirmPopup: computed(() => store.getters.getConfirmPopup)
     };
   },
 });

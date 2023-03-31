@@ -20,7 +20,7 @@ export type Variant = "info" | "danger" | "success";
 
 export type SelectElements = Array<ISelectElem>;
 
-export type MenuLocation = "top" | "bottom" | "start" | "end" | "center";
+export type Position = "top" | "bottom" | "start" | "end" | "center";
 
 export type DynamicDescription = { [key: string]: ILanguage };
 

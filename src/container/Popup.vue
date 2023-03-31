@@ -131,6 +131,7 @@ export default defineComponent({
     .popup {
       width: 100%;
       min-width: 100%;
+      border-radius: 10px 10px 0 0;
     
       &__button {
         .c-button {

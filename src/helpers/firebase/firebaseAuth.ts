@@ -11,7 +11,8 @@ import router from "@/router";
 import { notify } from "@kyvg/vue3-notification";
 
 import { IUserAuth, IUserLogin, IUserReg } from "@/interfaces";
-import { ErrorCode } from "@/types";
+
+import ShowErrorMessage from "./firebaseErrorMessage";
 
 
 const firebaseAuth = (): IUserAuth => {
@@ -42,7 +43,7 @@ const firebaseAuth = (): IUserAuth => {
           store.dispatch("setCurrentUser", getAuth().currentUser);
           router.push({ name: "Home" });
         })
-        .catch((error): void => showErrorMessage(error))
+        .catch((error): void => ShowErrorMessage(error))
         .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
     },
 
@@ -63,39 +64,9 @@ const firebaseAuth = (): IUserAuth => {
           });
           router.push({ name: "Home" });
         })
-        .catch((error): void => showErrorMessage(error))
+        .catch((error): void => ShowErrorMessage(error))
         .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
     },
-  };
-
-  // Show notification
-  const showErrorMessage = (errorCode: ErrorCode): void => {
-    let errorText = "";
-    if (typeof errorCode === "object") {
-      switch (errorCode.code) {
-        case "auth/invalid-email":
-          errorText = "Введённая почта невалидна!";
-          break;
-        case "auth/email-already-in-use":
-          errorText = "Введённая почта уже используется!";
-          break;
-        case "auth/wrong-password":
-          errorText =
-            "Введён неправильный логин или пароль, повторите попытку!";
-          break;
-        case "auth/user-not-found":
-          errorText = "Такого пользователя не существует!";
-          break;
-        default:
-          errorText = errorCode.code;
-          break;
-      }
-    } else errorText = errorCode;
-
-    notify({
-      title: errorText,
-      type: "error",
-    });
   };
 
   return useAuth;

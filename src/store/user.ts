@@ -10,7 +10,8 @@ export default {
   state: {
     userToken: "",
     currentUser: {},
-    userPhoto: ""
+    userPhoto: "",
+    openConfirmPopup: false
   },
   getters: {
     getUserToken(state: IUserStore): string {
@@ -21,6 +22,9 @@ export default {
     },
     getUserPhoto(state: IUserStore): string {
       return state.userPhoto;
+    },
+    getConfirmPopup(state: IUserStore): boolean {
+      return state.openConfirmPopup;
     }
   },
   mutations: {
@@ -32,6 +36,9 @@ export default {
     },
     SET_USER_PHOTO(state: IUserStore, photo: string): void {
       state.userPhoto = photo;
+    },
+    SET_CONFIRM_POPUP(state:IUserStore, show: boolean): void {
+      state.openConfirmPopup = show;
     }
   },
   actions: {
@@ -40,10 +47,12 @@ export default {
     },
     setCurrentUser({ commit }: ActionContext<IUserStore, any>, user: any): void {
       commit("SET_CURRENT_USER", user);
-      console.log(user);
     },
     setUserPhoto({commit}: ActionContext<IUserStore, any>, image: string): void {
       commit("SET_USER_PHOTO", image);
+    },
+    setConfirmPopup({ commit }: ActionContext<IUserStore, any>, show: boolean): void {
+      commit('SET_CONFIRM_POPUP', show);
     },
     userLogout({ commit }: ActionContext<IUserStore, any>): void {
       getAuth()

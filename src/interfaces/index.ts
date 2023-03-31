@@ -42,16 +42,17 @@ export interface IUserAuth {
 }
 
 export interface IUserInfo {
-  editedFirstName?: string,
-  editedLastName?: string,
-  firstName: string,
-  lastName: string,
-  fullName: string,
-  phone: string,
-  about?: string,
-  email: string,
-  imageURL: string,
-  emailVerified?: boolean
+  editedFirstName: string;
+  editedLastName: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  phone: string;
+  about?: string;
+  email: string;
+  imageURL: string;
+  emailVerified?: boolean;
+  newPassword: string;
 }
 
 // Store
@@ -59,6 +60,7 @@ export interface IUserStore {
   userToken: string;
   currentUser: object;
   userPhoto: string;
+  openConfirmPopup: boolean;
 }
 
 export interface ICommonStore {

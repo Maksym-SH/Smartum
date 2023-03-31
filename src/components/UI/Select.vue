@@ -25,7 +25,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
 
-import { SelectElements, MenuLocation } from "@/types";
+import { SelectElements, Position } from "@/types";
 
 export default defineComponent({
   props: {
@@ -34,7 +34,7 @@ export default defineComponent({
       default: () => [],
     },
     location: { //ToDo
-      type: String as PropType<MenuLocation>,
+      type: String as PropType<Position>,
       default: "end",
     },
     ellips: {

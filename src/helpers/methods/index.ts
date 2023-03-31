@@ -12,3 +12,14 @@ export const ObjectNotEmpty = (object: object): boolean => {
 export const OpenPopup = (params: IPopupParams): void => { 
   store.dispatch("setPopupParams", params);
 }
+
+let ConfirmCallback: Function;
+export const Confirmation = (toggle: boolean, callback?: Function): Promise<any> | void => {
+  store.dispatch("setConfirmPopup", toggle);
+  if (callback && toggle) {
+    ConfirmCallback = callback;
+  } 
+  else {
+    ConfirmCallback();
+  }
+}

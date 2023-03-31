@@ -13,7 +13,8 @@
         'c-input--error': errorText,
         'c-input--transparent': transparent,
         'c-input--search': type === 'search',
-        'c-input--phone': isPhone
+        'c-input--phone': isPhone,
+        'c-input--password': type === 'password'
       }"
       ref="input"
       :name="inputName"
@@ -41,12 +42,14 @@
       <transition mode="out-in" name="toggle-content">
         <img
           key="open"
+          svg-inline
           v-if="!showPassword"
           src="@/assets/img/icons/eye.svg"
           alt="Eye"
         />
         <img
           v-else
+          svg-inline
           key="close"
           src="@/assets/img/icons/eye-slash.svg"
           alt=""
@@ -165,6 +168,10 @@ export default defineComponent({
         text-transform: uppercase;
       }
     }
+    
+    &.c-input--password {
+      padding-right: 44px;
+    }
 
     &:disabled {
       border-color: $color-brown;
@@ -275,6 +282,15 @@ export default defineComponent({
 
     & ~ .c-input__required {
       height: 100% !important;
+    }
+    & ~ .c-input__toggle-password {
+      top: 43px;
+      right: 15px;
+
+      svg {
+        outline: none;
+        fill: $color-black;
+      }
     }
   } 
 }
