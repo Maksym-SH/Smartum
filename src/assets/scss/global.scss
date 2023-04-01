@@ -1,3 +1,5 @@
+@import "./mixins.scss";
+
 .text-ellipsis {
   width: 100%;
   display: block;
@@ -7,19 +9,19 @@
 }
 
 .not-mobile {
-  @media (max-width: $sm) {
+  @include mobile(max) {
     display: none;
   }
 }
 .mobile-only {
-  @media (min-width: $sm) {
+  @include mobile(min) {
     display: none;
   }
 }
 
 h1 {
   font-size: 24px !important;
-  @media (max-width: $sm) {
+  @include mobile(max) {
     font-size: 21px !important;
   }
 }

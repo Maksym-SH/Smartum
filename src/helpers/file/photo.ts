@@ -5,11 +5,11 @@ import RegExp from "@/helpers/regExp";
 const ResolveImageURL = (url: string | null, dispatchTarget: string): void => {
   if(typeof url == "string") 
   {
-    const fileFormat = url.match(RegExp.FileFormat)![0];
+    const EFileFormat = url.match(RegExp.FileFormat)![0];
     const imageURL = url.match(RegExp.BlobFormat)![0];
 
     const reader = new FileReader();
-    reader.readAsDataURL(new Blob([imageURL], { type: fileFormat }));
+    reader.readAsDataURL(new Blob([imageURL], { type: EFileFormat }));
     let result = null;
 
     reader.onload = () => {

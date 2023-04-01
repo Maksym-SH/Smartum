@@ -10,17 +10,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, computed } from "vue";
 import { useStore } from "vuex";
 import router from "@/router";
-
-import { SelectElements } from "@/types";
-
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";
-
 import { ObjectNotEmpty } from "@/helpers/methods";
-import { computed } from "@vue/reactivity";
+import { SelectElements } from "@/types";
 
 export default defineComponent({
   components: {
@@ -40,7 +36,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    const showTemplate = computed(() => ObjectNotEmpty(store.getters.getCurrentUser));
+    const showTemplate = computed((): boolean => ObjectNotEmpty(store.getters.getCurrentUser));
 
     const actions: SelectElements = reactive([
       {
@@ -57,7 +53,7 @@ export default defineComponent({
       },
     ]);
 
-    const selected = (callback: Function) => callback();
+    const selected = (callback: Function): Function => callback();
 
     return {
       actions,

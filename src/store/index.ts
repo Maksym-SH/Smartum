@@ -5,7 +5,8 @@ import { notify } from "@kyvg/vue3-notification";
 
 import axiosInstance from "@/helpers/axios/axiosInstance";
 
-import { IAxiosData, ICommonStore, IError, IPopupParams } from "@/interfaces";
+import { IAxiosData, ICommonStore, IPopupParams } from "@/interfaces";
+import { Error } from "@/types";
 
 export default createStore({
   state: {
@@ -50,7 +51,7 @@ export default createStore({
           },
         })
           .then((response: any) => resolve(response))
-          .catch((error: IError) => {
+          .catch((error: Error) => {
             notify({
               title: "Внимание",
               type: "error",

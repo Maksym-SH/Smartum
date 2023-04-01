@@ -5,7 +5,7 @@ import refreshUserInfo from "./firebaseRefresh";
 
 export const PasswordUpdate = (user: User, password: string): void => {
   store.dispatch("setLoadingStatus", true);
-  console.log('password')
+
   updatePassword(user, password).then(() => {
     notify({
       title:"Ваш пароль был изменен!"
@@ -15,7 +15,7 @@ export const PasswordUpdate = (user: User, password: string): void => {
 
 export const EmailUpdate = (user: User, email: string): void => {
   store.dispatch("setLoadingStatus", true);
-  console.log("email")
+
   updateEmail(user, email).then(() => {
     notify({
       title: "Ваш электронный адресс был изменен!"

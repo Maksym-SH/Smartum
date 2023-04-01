@@ -2,8 +2,9 @@ import RegExp from "@/helpers/regExp";
 
 import { LangFormat } from "@/types";
 import { ELanguage, ELangFormat } from "@/enums";
+import { IFormatDate } from "@/interfaces";
 
-const useTimeStamp = (date: Date | null, lang = ELanguage.Russian, fixedTime?:number) => {
+const useTimeStamp = (date: Date | null, lang = ELanguage.Russian, fixedTime?:number): IFormatDate => {
 
   const dateStamp = date || new Date(Number(fixedTime)); 
 

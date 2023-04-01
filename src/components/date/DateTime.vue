@@ -22,23 +22,21 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted, watch } from "vue";
-
-import { WelcomeType } from "@/types";
-import { Numbers } from "@/enums";
-
 import timeStamp from "@/helpers/date/timeStamp";
+import { WelcomeType, Icon } from "@/types";
+import { Numbers } from "@/enums";
 
 export default defineComponent({
   setup() {
     const welcomeType = ref<WelcomeType>("Добрый вечер");
 
-    const intervalTime: any = ref(null);
+    const intervalTime = ref<number | null>(null);
 
     const time = ref("");
 
     const date = ref("");
 
-    const imageType = computed(() => {
+    const imageType = computed((): Icon => {
       if (welcomeType.value !== "Добрый вечер") return "sun";
 
       return "moon";
@@ -46,13 +44,11 @@ export default defineComponent({
 
     const showTemplate = computed(() => time.value && date.value);
 
-    const loadComponentTime = Date.now();
-
     // 'ru-RU' only.
     watch((): string  => time.value, (): void => {
         const currentTime = Number(time.value.split("").slice(0, 2).join(""));
 
-        if (currentTime < 16) {
+        if (currentTime < Numbers.EveningRU) {
           // If the time is later than 16:00.
           welcomeType.value = "Добрый день";
         }
@@ -63,7 +59,7 @@ export default defineComponent({
     );
 
     onMounted((): void => {
-      intervalTime.value = setInterval(() => {
+      intervalTime.value = setInterval((): void => {
         const currentDate = new Date();
 
         time.value = timeStamp(currentDate).time;
@@ -71,7 +67,11 @@ export default defineComponent({
       }, Numbers.Second);
     });
 
-    onUnmounted((): void => clearInterval(intervalTime.value));
+    onUnmounted((): void => {
+      if(intervalTime.value) {
+        clearInterval(intervalTime.value)
+      }
+    });
 
     return {
       time,
@@ -86,12 +86,10 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .date {
-
   &-wrapper {
     position: relative;
     height: 43.2px;
     min-width: 130px;
-
     :deep(.c-loader) {
       .c-loader__spinner {
         svg {
@@ -103,7 +101,6 @@ export default defineComponent({
   }
   width: fit-content;
   color: $color-grey;
-
   &__title {
     font-size: 14px;
     display: flex;
@@ -111,19 +108,15 @@ export default defineComponent({
     letter-spacing: 0.3px;
     line-height: 24px;
   }
-
   &__icon {
     margin-right: 10px;
   }
-
   &__time {
     font-size: 12px;
-
     &--time-text {
       margin-right: 10px;
       position: relative;
       padding-right: 2px;
-
       &::after {
         content: "";
         position: absolute;
@@ -136,10 +129,8 @@ export default defineComponent({
         right: -5px;
       }
     }
-
     &--date-text {
       display: inline-block;
-
       &:first-letter {
         text-transform: uppercase;
       }

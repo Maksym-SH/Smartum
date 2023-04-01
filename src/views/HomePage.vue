@@ -98,34 +98,29 @@ export default defineComponent({
 .home-page {
   min-height: 100vh;
   background-color: $color-white5;
-
   &__wrapper {
     display: grid;
     min-height: 100vh;
     grid-template-rows: auto 1fr;
     padding-left: 260px;
     transition: padding-left 0.5s ease;
-
     &.minimize-info {
       padding-left: 0 !important;
     }
-    @media (max-width: $lg) {
+    @include respond($lg, max) {
       padding-left: 0;
     }
   }
-
   &__tab-info {
     position: absolute;
     top: 100px;
     font-size: 24px;
     padding-left: 40px;
-
     .page {
       &-title {
         font-size: 24px;
         line-height: 24px;
       }
-
       &-description {
         font-size: 14px;
         margin-top: 11px;
@@ -134,19 +129,16 @@ export default defineComponent({
       }
     }
   }
-
   &__content {
     margin-top: 120px;
     width: 100%;
     padding-left: 40px;
   }
-
-  @media (max-width: $sm) {
+  @include mobile(max) {
     &__tab-info {
       top: 70px;
       padding-left: 10px;
     }
-
     &__content {
       padding: 10px;
       margin-top: 110px;

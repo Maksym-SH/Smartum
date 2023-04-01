@@ -42,7 +42,7 @@
 import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
-import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import { EmailAuthCredential, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { notify } from '@kyvg/vue3-notification';
 import { ELength } from '@/enums';
 import { computed } from '@vue/reactivity';
@@ -61,7 +61,8 @@ export default defineComponent({
 
     const result = (value: boolean): void => {
       if (value) {
-        const credential = EmailAuthProvider.credential(currentUserEmail, password.value);
+        const credential: EmailAuthCredential =
+                  EmailAuthProvider.credential(currentUserEmail, password.value);
         
         store.dispatch("setLoadingStatus", true);
 
@@ -141,7 +142,7 @@ export default defineComponent({
     }
   }
 
-  @media (max-width: $sm) {
+  @include mobile(max) {
     align-items: flex-end;
     
     &__window {

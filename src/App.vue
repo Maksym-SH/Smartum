@@ -84,11 +84,11 @@ body {
 
 .toggle-popup-enter-from,
 .toggle-popup-leave-to {
-  @media (min-width: $sm) {
+  @include mobile(min) {
     transform: scale(1.1);
   }
 
-  @media (max-width: $sm) {
+  @include mobile(max) {
     opacity: 0;
   }
 }

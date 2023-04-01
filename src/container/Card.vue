@@ -104,7 +104,7 @@ export default defineComponent({
     }
   }
 
-  @media (max-width: $xxl) {
+  @include respond($xxl, max) {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -121,7 +121,7 @@ export default defineComponent({
     }
   }
 
-  @media (max-width: $sm) {
+  @include mobile(max) {
     display: flex;
     flex-direction: column;
     padding: 10px 10px 40px 10px;

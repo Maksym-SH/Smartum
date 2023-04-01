@@ -8,3 +8,85 @@
   justify-content: center;
   align-items: center;
 }
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin button-outline-color($color, $border, $hover-border, $hover-background, $hover-color) {
+  color: $color;
+  border-color: $border;
+  &:hover {
+    border-color: $hover-border;
+    background-color: $hover-background !important;
+    color: $hover-color;
+  }
+}
+
+@mixin button-color($color, $color-hover) {
+  background-color: $color;
+  &:hover {
+    background-color: $color-hover;
+  }
+  &.c-button--transparent {
+    color: $color;
+    &:hover {
+      color: $color-hover;
+    }
+  }
+}
+
+
+@mixin mobile($direction) {
+  @if($direction == min) {
+    @media screen and (min-width: $sm) {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (max-width: $sm) {
+      @content;
+    }
+  }
+}
+
+@mixin desktop($direction) {
+  @if($direction == min) {
+    @media screen and (min-width: $xl) {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (max-width: $xl) {
+      @content;
+    }
+  }
+}
+
+@mixin tablet($direction) {
+  @if($direction == min) {
+    @media screen and (min-width: $xs) {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (max-width: $xs) {
+      @content;
+    }
+  }
+}
+
+@mixin respond($responsive, $direction) {
+  @if($direction == min) {
+    @media screen and (min-width: $responsive) {
+      @content;
+    }
+  }
+  @else {
+    @media screen and (max-width: $responsive) {
+      @content;
+    }
+  }
+}

@@ -23,10 +23,8 @@
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-
-import { Numbers, Layout } from "@/enums";
-
 import User from "@/components/user/Container.vue";
+import { Numbers, Layout } from "@/enums";
 
 export default defineComponent({
   components: {
@@ -133,7 +131,7 @@ export default defineComponent({
     clip-path: polygon(0 0, 100% 21%, 100% 76%, 0% 100%);
   }
 
-  @media (max-width: $xs) {
+  @include respond($xs, max) {
     transform: translateX(0);
     z-index: 5;
 

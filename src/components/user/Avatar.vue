@@ -44,12 +44,18 @@ export default defineComponent({
       height: `${props.size}px`,
     });
 
-    const initials = computed(() => props.name?.split(" ").map((item) => item[0]).join(""));
+    const initials = computed((): string | null => {
+      if(props.name) {
+        return props.name?.split(" ").map((item) => item[0]).join("")
+      }
 
-    const imgLoad = () => (imgLoaded.value = true);
+      return null;
+    });
+
+    const imgLoad = (): boolean => imgLoaded.value = true;
     const imgLoaded = ref(false);
 
-    const sizeInitials = computed(() => `font-size: ${props.size / 1.7}px;`);
+    const sizeInitials = computed((): string => `font-size: ${props.size / 1.7}px;`);
 
     return {
       avatarSize,

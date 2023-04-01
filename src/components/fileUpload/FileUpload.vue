@@ -19,9 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
-
 import fileValidate from "@/helpers/file/validate";
-
 import { RefElement, FileType } from "@/types";
 
 export default defineComponent({
@@ -37,18 +35,18 @@ export default defineComponent({
 
     const imgLoaded = ref(false);
 
-    const imgLoad = () => (imgLoaded.value = true);
+    const imgLoad = (): boolean => imgLoaded.value = true;
 
     const imageSource = ref();
 
-    const fileUpload = () => {
+    const fileUpload = (): void => {
       const reader = new FileReader();
       const file = upload.value?.files?.[0];
 
       if(file) {
         if(props.fileType == 'image') reader.readAsDataURL(file);
 
-        reader.onload = () => {
+        reader.onload = (): void => {
           if(fileValidate(file, props.fileType)) {
 
             if(props.fileType == "image") {
@@ -83,9 +81,7 @@ export default defineComponent({
   height: 100px;
   position: relative;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
 
   &--input {
     position: fixed;

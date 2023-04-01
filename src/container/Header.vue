@@ -54,11 +54,11 @@ export default defineComponent({
     }
   }
 
-  @media (max-width: $lg) {
+  @include respond($lg, max) {
     padding: 10px 40px;
   }
 
-  @media (max-width: $sm) {
+  @include mobile(max) {
     padding:10px 15px;
 
     &__wrapper {

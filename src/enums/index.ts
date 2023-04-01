@@ -5,7 +5,9 @@ export const enum ELanguage {
 
 export const enum ELength {
   Text = 3,
-  Password = 8
+  Password = 8,
+  None = 0,
+  Textarea = 255
 }
 
 export const enum ELangFormat {
@@ -13,7 +15,7 @@ export const enum ELangFormat {
   Eng = "en-EN"
 }
 
-export const enum FileFormat {
+export const enum EFileFormat {
   App_JS = "application/javascript",
   App_XJS = "application/x-javascript",
   App_ES = "application/ecmascript",
@@ -32,6 +34,8 @@ export const enum Numbers {
   ImageSize = 10000000,
   Second = 1000,
   AppearElement = 400,
+  EveningRU = 16,
+  EveningENG = "4 am"
 }
 
 export const enum Layout {

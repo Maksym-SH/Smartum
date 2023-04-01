@@ -6,4 +6,4 @@ export const firebaseConfig = {
   messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
   appId: process.env.VUE_APP_ID,
   measurementId: process.env.VUE_APP_MEASUREMENT_ID,
-};
+} as const

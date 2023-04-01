@@ -5,7 +5,7 @@ import router from "@/router";
 
 import { notify } from "@kyvg/vue3-notification";
 
-const firebaseReset = (email: string) => {
+const firebaseReset = (email: string): void => {
   if (!email) return;
 
   store.dispatch("setLoadingStatus", true);

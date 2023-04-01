@@ -11,8 +11,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue";
 import { useStore } from "vuex";
-
-import { Status } from "@/types";
+import { Status, EmailVerify } from "@/types";
 
 export default defineComponent({
   props: {
@@ -28,14 +27,14 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    const emailVerified = store.getters.getCurrentUser.emailVerified;
+    const emailVerified: boolean = store.getters.getCurrentUser.emailVerified;
 
-    const userStatusText = computed(() => {
+    const userStatusText = computed((): EmailVerify => {
       if (emailVerified) return "Почта подтверждена"
       return "Почта не подтверждена"
     })
 
-    const statusIcon = emailVerified ? "mdi-email-check" : "mdi-email-alert"
+    const statusIcon: string = emailVerified ? "mdi-email-check" : "mdi-email-alert"
 
     return {
       statusIcon,

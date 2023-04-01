@@ -27,9 +27,7 @@
 
 <script lang="ts">
 import { defineComponent, watch, ref, computed } from "vue";
-
 import { useTextareaProps } from "./use/props";
-
 import { RefElement, ModelValue } from "@/types";
 
 export default defineComponent({
@@ -95,21 +93,16 @@ export default defineComponent({
     border-radius: 4px;
     transition: all 0.3s ease;
     resize: none;
-
-
     &::-webkit-scrollbar {
       width: 6px;
     }
-
     &::-webkit-scrollbar-track {
       background: transparent;
     }
-
     &::-webkit-scrollbar-thumb {
       border-radius: 3px;
       background-color: $color-green;
     }
- 
     &--error {
       border-color: $color-red;
       background-color: $color-pink;
@@ -118,7 +111,6 @@ export default defineComponent({
         color: $color-grey;
       }
     }
-  
     &__required {
       display: inline-block;
       width: 3px;
@@ -128,11 +120,9 @@ export default defineComponent({
       right: 0;
       background-color: red;
     }
-
     &--resize {
       resize: vertical;
     }
-
     &__error-text {
       color: $color-red;
       position: absolute;

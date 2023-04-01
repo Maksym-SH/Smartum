@@ -8,7 +8,7 @@
       <div class="form-item first-name">
         <Input 
           v-model.trim="userInfo.editedFirstName"
-          :min="userInfo.editedFirstName ? TextLength : 0"
+          :min="userInfo.editedFirstName ? TextLength : LengthNone"
           :placeholder="userInfo.firstName"
           label="Имя"
         />
@@ -16,7 +16,7 @@
       <div class="form-item last-name">
         <Input 
           v-model.trim="userInfo.editedLastName" 
-          :min="userInfo.editedFirstName ? TextLength : 0" 
+          :min="userInfo.editedFirstName ? TextLength : LengthNone" 
           :placeholder="userInfo.lastName" 
           label="Фамилия"
         />
@@ -24,7 +24,7 @@
       <div class="form-item textarea">
         <Textarea 
           v-model.trim="userInfo.about" 
-          :max="255"
+          :max="TextareaLength"
           label="Дополнительная информация"
           placeholder="Расскажите о себе (не обязательно)"
         />
@@ -95,7 +95,6 @@ import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
 
 import { ProfileUpdate, EmailUpdate, PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
-import user from "@/store/user";
 
 export default defineComponent({
   components: {
@@ -175,11 +174,13 @@ export default defineComponent({
         }
         else updateEmail();
       }
+
+      ProfileUpdate(currentUser, `${ userFirstName } ${ userLastName }`);
     }
 
     const verify = (): void => verifyEmail(currentUser);
 
-    const deleteAccountPopup = () => {
+    const deleteAccountPopup = (): void => {
       showConfirmation.value = false;
 
       OpenPopup({
@@ -207,6 +208,8 @@ export default defineComponent({
       userAvatar: computed(() => store.getters.getUserPhoto),
       TextLength: ELength.Text,
       PasswordLength: ELength.Password,
+      LengthNone: ELength.None,
+      TextareaLength: ELength.Textarea,
       setPhoto,
       validForm,
       saveChanges,
@@ -221,7 +224,6 @@ export default defineComponent({
 .profile-tab {
   padding-top: 20px;
   position: relative;
-
   &__form {
     display: grid;
     grid-template-columns: minmax(auto, 200px) repeat(2, 0.4fr);
@@ -229,10 +231,8 @@ export default defineComponent({
     padding-bottom: 20px;
     max-width: 1200px;
     row-gap: 10px;
-
     &--upload {
       grid-area: 1/1/3/1;
-
       .file-upload {
         width: 100%;
         height: 100%;
@@ -240,36 +240,29 @@ export default defineComponent({
         max-width: 200px;
       }
     }
-
     .textarea {
       grid-area: 2/2/3/4;
-      
       .textarea-wrapper {
         height: 123px;
       }
     }
-
     .btn-delete {
       grid-column-start: 3;
       max-width: 200px;
       justify-self: end;
     }
-
-    @media (max-width: $lg) {
+    @include respond($lg, max) {
       max-width: 100%;
       padding-right: 40px;
       grid-template-columns: 200px 0.5fr 0.5fr;
     }
-
-    @media (max-width: $md) {
+    @include respond($md, max) {
       grid-template-columns: 170px 1fr 1fr;
       gap: 13px 15px;
-
       &--upload {
         .label {
           font-size: 14px;
         }
-
         .file-upload {
           max-width: 170px;
           max-height: 170px; 
@@ -279,22 +272,18 @@ export default defineComponent({
         height: auto !important; 
       }
     }
-
-    @media (max-width: $sm) {
+    @include mobile(max) {
       padding: 0;
       display: flex;
       flex-wrap: wrap;
-      
       &--upload {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-
         .label {
           font-size: 16px;
         }
-
         .file-upload {
           max-width: none;
           max-height: none;
@@ -302,13 +291,11 @@ export default defineComponent({
           width: 200px;
         }
       }
-
       .form-item {
         margin: 0 auto;
         width: 100%;
         max-width: 330px;
       }
-
       .c-button {
         width: 45%;
         margin: 0 auto;
@@ -316,13 +303,11 @@ export default defineComponent({
       }
     }
   }
-
   .verify-email-btn {
     position: absolute;
     top: -80px;
     right: 10px;
-
-    @media (max-width: $sm) {
+    @include mobile(max) {
       position: static;
       display: block;
       margin: 0 auto;

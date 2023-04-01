@@ -89,7 +89,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/mixins";
 .auth {
   @include auth-window;
   &__swap-entry-type {
@@ -108,6 +107,7 @@ export default defineComponent({
       }
     }
     .auth__description {
+      margin-bottom: 20px;
       color: $color-white5;
     }
   }
@@ -158,8 +158,7 @@ export default defineComponent({
       color: $color-white1;
     }
   }
-
-  @media screen and (max-width: $sm) {
+  @include mobile(max) {
     &__window {
       margin: 0;
       min-width: 100%;
@@ -189,6 +188,9 @@ export default defineComponent({
             width: 100%;
           }
         }
+      }
+      .auth__swap-entry-type {
+        margin-top: 20px;
       }
     }
   }

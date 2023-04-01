@@ -7,7 +7,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-
 import { useCheckboxProps } from  "./use/props";
 
 export default defineComponent({
@@ -39,7 +38,6 @@ export default defineComponent({
     cursor: pointer;
     font-size: 12px;
     user-select: none;
-
     &::before {
       content: "";
       position: absolute;
@@ -54,14 +52,11 @@ export default defineComponent({
       border: 1px solid $color-dark-grey;
     }
   }
-
   input {
     display: none;
-
     &:checked {
       + label {
         color: $color-text;
- 
         &::before {
           background-color: $color-green;
           background-image: url(~@/assets/img/icons/check.svg);

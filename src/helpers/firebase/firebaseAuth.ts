@@ -2,7 +2,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
+  updateProfile
 } from "firebase/auth";
 
 import store from "@/store";
@@ -10,9 +10,10 @@ import router from "@/router";
 
 import { notify } from "@kyvg/vue3-notification";
 
-import { IUserAuth, IUserLogin, IUserReg } from "@/interfaces";
+import { IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
 
 import ShowErrorMessage from "./firebaseErrorMessage";
+import { ErrorCode } from "@/types";
 
 
 const firebaseAuth = (): IUserAuth => {
@@ -24,11 +25,13 @@ const firebaseAuth = (): IUserAuth => {
 
       createUserWithEmailAndPassword(getAuth(), userData.email, userData.password)
         .then(async (response) => {
-          const responseUser: any = response.user;
+          const responseUser: IUserResponse = response.user;
           const currentUser = getAuth().currentUser;
-
-          localStorage.setItem("smartumToken", responseUser.accessToken);
-          store.dispatch("setUserToken", responseUser.accessToken);
+         
+          if (responseUser.accessToken) {
+            localStorage.setItem("smartumToken", responseUser.accessToken);
+            store.dispatch("setUserToken", responseUser.accessToken);
+          }
 
           if (currentUser) {
             updateProfile(currentUser, {
@@ -43,7 +46,7 @@ const firebaseAuth = (): IUserAuth => {
           store.dispatch("setCurrentUser", getAuth().currentUser);
           router.push({ name: "Home" });
         })
-        .catch((error): void => ShowErrorMessage(error))
+        .catch((error: ErrorCode): void => ShowErrorMessage(error))
         .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
     },
 
@@ -53,10 +56,13 @@ const firebaseAuth = (): IUserAuth => {
       store.dispatch("setLoadingStatus", true);
       signInWithEmailAndPassword(getAuth(), userData.email, userData.password)
         .then((response) => {
-          const user: any = response.user;
-          localStorage.setItem("smartumToken", user.accessToken);
+          const user: IUserResponse = response.user;
 
-          store.dispatch("setUserToken", user.accessToken);
+          if(user.accessToken) {
+            localStorage.setItem("smartumToken", user.accessToken);
+            store.dispatch("setUserToken", user.accessToken);
+          }
+
           store.dispatch("setCurrentUser", getAuth().currentUser);
           notify({
             title: "Вы успешно вошли в аккаунт.",

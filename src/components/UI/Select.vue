@@ -24,7 +24,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
-
 import { SelectElements, Position } from "@/types";
 
 export default defineComponent({
@@ -60,13 +59,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 .c-select {
   position: relative;
- 
   &.active {
     > .c-button {
       background-color: $color-black;
     }
   }
-
   &__picker {
     position: absolute;
     background-color: $color-white2;
@@ -75,11 +72,9 @@ export default defineComponent({
     z-index: 3;
     right: 0;
     top: 50px;
-  
     .c-button {
       padding: 15px 17px;
       margin: 0;
-  
       &.no-icon {
         padding-left: 44px !important;
       }
@@ -87,23 +82,19 @@ export default defineComponent({
       text-align: start;
       border-bottom: 1px solid $color-black;
       white-space: nowrap;
-  
       &:last-child {
         border-bottom-color: transparent;
       }
-   
       &:hover {
         background-color: $color-white4;
         border-radius: 4px;
       }
     }
-
     .btn-icon {
       margin-right: 10px;
       width: 12px;
       height: 12px;
     }
-  
     &--caret {
       top: -10px;
       right: 12px;
@@ -123,7 +114,6 @@ export default defineComponent({
 .toggle-picker-leave-active {
   transition: all 0.2s ease;
 }
-
 .toggle-picker-enter-from,
 .toggle-picker-leave-to {
   opacity: 0;

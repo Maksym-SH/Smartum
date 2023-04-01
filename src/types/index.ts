@@ -1,10 +1,16 @@
-import { ISelectElem, ILanguage } from "@/interfaces/index";
+import { ISelectElem, ILanguage, IError } from "@/interfaces/index";
+
+export type Error = Awaited<Promise<IError>>;
 
 export type ErrorCode = { code: string } | string;
 
 export type RefElement = HTMLInputElement | null;
 
 export type WelcomeType = "Добрый день" | "Добрый вечер";
+
+export type EmailVerify = "Почта подтверждена" | "Почта не подтверждена"
+
+export type Icon = "moon" | "sun";
 
 export type LangFormat = "ru-Ru" | "en-EN";
 
@@ -24,7 +30,7 @@ export type Position = "top" | "bottom" | "start" | "end" | "center";
 
 export type DynamicDescription = { [key: string]: ILanguage };
 
-export type FileType = "image";
+export type FileType = "image" | "text";
 
 export type RouterMeta = Record<string | number | symbol, unknown>;
 

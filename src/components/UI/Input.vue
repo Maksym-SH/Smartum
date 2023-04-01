@@ -70,12 +70,9 @@
 
 <script lang="ts">
 import { defineComponent, watch, ref, computed } from "vue";
-
 import { emailValidator } from "@/main";
-
-import { useInputProps } from "./use/props";
-
 import RegExp from "@/helpers/regExp";
+import { useInputProps } from "./use/props";
 import { RefElement, ModelValue, AutoComplete } from "@/types";
 
 export default defineComponent({
@@ -130,7 +127,7 @@ export default defineComponent({
       }
     );
 
-    const isAutoComplete = computed((): AutoComplete => (props.autoComplete ? "on" : "off"));
+    const isAutoComplete = computed((): AutoComplete => props.autoComplete ? "on" : "off");
 
     return {
       errorText,
@@ -160,19 +157,15 @@ export default defineComponent({
     background-color: $color-white1;
     border-radius: 4px;
     transition: all 0.3s ease;
-
     &::placeholder {
       color: $color-brown;
-
       &::first-letter {
         text-transform: uppercase;
       }
     }
-    
     &.c-input--password {
       padding-right: 44px;
     }
-
     &:disabled {
       border-color: $color-brown;
       color: $color-brown;
@@ -180,45 +173,37 @@ export default defineComponent({
         color: $color-brown;
       }
     }
-
     &--phone {
       padding-left: 30px;
       & + .phone {
         position: absolute;
         top: 12px;
         left: 10px;
-        
         + .c-input__error-text {
           font-size: 11px;
         }
       }
     }
- 
     &--error {
       border-color: $color-red;
       background-color: $color-pink;
- 
       &::placeholder {
         color: $color-grey;
       }
     }
- 
     &--search {
       border-color:  transparent;
       padding-right: 45px;
     }
-  
     &--transparent {
       background-color: transparent;
       color: $color-white4;
       border: none;
       border-bottom: 2px solid $color-white4;
       border-radius: 0;
-  
       &.c-input--error {
         border-color: $color-red;
       }
- 
       + .c-input__required {
         width: 5px;
         height: 5px;
@@ -231,7 +216,6 @@ export default defineComponent({
         color: $color-white4;
       }
     }
-
     &__required {
       display: inline-block;
       width: 3px;
@@ -241,7 +225,6 @@ export default defineComponent({
       right: 0;
       background-color: $color-red;
     }
-
     &__error-text {
       color: $color-red;
       position: absolute;
@@ -249,7 +232,6 @@ export default defineComponent({
       font-size: 12px;
       left: 0;
     }
-
     &__toggle-password {
       position: absolute;
       top: 40%;
@@ -257,7 +239,6 @@ export default defineComponent({
       cursor: pointer;
       transform: translate(0, -45%);
     }
- 
     + &__search-btn {
       position: absolute;
       top: 23px;
@@ -270,23 +251,19 @@ export default defineComponent({
       }
     }
   }
-
   label {
     &.label-disable {
       color: $color-light-brown;
     }
-
     & ~ .phone {
       top: 35px !important;
     }
-
     & ~ .c-input__required {
       height: 100% !important;
     }
     & ~ .c-input__toggle-password {
       top: 43px;
       right: 15px;
-
       svg {
         outline: none;
         fill: $color-black;
@@ -299,7 +276,6 @@ export default defineComponent({
 .error-message-leave-active {
   transition: opacity 0.2s ease;
 }
-
 .error-message-enter-from,
 .error-message-leave-to {
   opacity: 0;

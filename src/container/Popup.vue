@@ -125,7 +125,7 @@ export default defineComponent({
     }
   }
 
-  @media (max-width: $sm) {
+  @include mobile(max) {
     align-items: flex-end;
     
     .popup {
