@@ -49,7 +49,7 @@
         <Input 
           v-model.trim="userInfo.newPassword" 
           placeholder="Изменить пароль" 
-          :min="PasswordLength"
+          :min="userInfo.newPassword ? PasswordLength : LengthNone"
           label="Новый пароль"
         />
       </div>

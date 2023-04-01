@@ -99,7 +99,7 @@ export default defineComponent({
       if (props.isEmail && !emailValidator.validate(model.value)) {
         errorText.value = "Введите корректную почту.";
       }
-      else if (props.isPhone && !String(model.value).match(RegExp.Phone)) {
+      else if (props.isPhone && !String(model.value).match(RegExp.Phone) && model.value) {
         errorText.value = "Введите в формате: +X-123-456-7890"
       } 
       else if (props.min && String(model.value).length < props.min) {

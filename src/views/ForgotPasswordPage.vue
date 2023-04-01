@@ -21,13 +21,13 @@
         />
         <Button class="submit-form" title="Отправить" size="sm" />
       </form>
-      <router-link
+      <a
         class="forgot-page__window--go-back"
-        :to="{ name: 'SignIn' }"
+        @click="goBack"
       >
-        Вернуться на страницу авторизации
-        <v-icon icon="mdi mdi-login"></v-icon>
-      </router-link>
+        <v-icon icon="mdi mdi-arrow-left"></v-icon>
+        Вернуться назад
+      </a>
     </div>
   </div>
 </template>
@@ -35,6 +35,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 import firebaseReset from "@/helpers/firebase/firebaseReset";
+import router from "@/router";
 
 export default defineComponent({
   setup() {
@@ -46,6 +47,15 @@ export default defineComponent({
       if (errorEmail.value) return;
       else firebaseReset(email.value);
     };
+    
+    const goBack = () => {
+      if (window.history.length >= 2) {
+        router.go(-1); // Navigate to previous page.
+      }
+      else {
+        router.push({ name : "Home" })
+      }
+    }
 
     watch((): string => email.value, (): boolean => errorEmail.value = false);
 
@@ -53,6 +63,7 @@ export default defineComponent({
       email,
       errorEmail,
       submitForm,
+      goBack,
     };
   },
 });
@@ -64,12 +75,12 @@ export default defineComponent({
   @include auth-window;
   &__window {
     position: relative;
-    padding: 10px;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 0 1px $color-grey;
     background-color: $color-grey;
     color: $color-text;
-    max-width: 350px;
+    max-width: 450px;
     &-header {
       margin-bottom: 20px;
       p {
@@ -81,7 +92,8 @@ export default defineComponent({
       .c-button {
         padding: 5px 20px;
       }
-      .c-input {
+      :deep(.c-input) {
+        border-color: $color-white1 !important;
         &::placeholder {
           font-size: 14px;
         }

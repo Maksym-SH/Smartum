@@ -21,6 +21,7 @@ const routes = [
     name: "Forgot",
     path: "/forgot-password",
     meta: {
+      free: true,
       notAuthorized: true,
     },
     component: () => import("@/views/ForgotPasswordPage.vue"),
@@ -59,7 +60,7 @@ router.beforeEach(async (to, from, next): Promise<void> => {
   const protectedRoute = to.meta.protected;
   const notAuthorizedRoute = to.meta.notAuthorized;
 
-  if (to.meta.protected) {
+  if (to.meta.protected || to.meta.free) {
     if (protectedRoute) {
       token ? next() : next({ name: "SignIn" });
     } 

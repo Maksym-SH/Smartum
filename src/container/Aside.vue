@@ -80,8 +80,10 @@ export default defineComponent({
   z-index: 2;
   background-color: $color-grey;
   transition: transform 0.5s ease;
+  box-shadow: 10px 0 10px rgba($color-light-grey, 0.25);
 
   &.aside-minimize {
+    box-shadow: none;
     transform: translateX(-260px);
   }
 

@@ -16,6 +16,13 @@
           v-model="password"
         />
       </form>
+      <router-link 
+        class="forgot-link"
+        :to="{name: 'Forgot'}" 
+        @click="result(false)"
+      >
+        Забыли пароль?
+      </router-link>
       <div class="confirmation__button">
         <Button 
           @click="result(false)"
@@ -129,7 +136,10 @@ export default defineComponent({
         font-size: 14px;
       }
     }
-
+    .forgot-link {
+      display: block;
+      text-align: end;
+    }
     .confirmation__button {
       margin-top: 30px;
       display: flex;
@@ -148,10 +158,16 @@ export default defineComponent({
     &__window {
       width: 100%;
       min-width: 100%;
+      padding: 15px 20px;
       border-radius: 10px 10px 0 0;
       &-input-field {
         width: 100%;
-        margin: 20px auto;
+        margin: 20px auto 0 auto;
+      }
+      .forgot-link {
+        display: block;
+        margin-bottom: 20px;
+        text-align: end;
       }
       .confirmation__button {
         margin-top: 0;

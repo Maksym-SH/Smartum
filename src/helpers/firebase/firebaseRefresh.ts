@@ -12,21 +12,11 @@ export default async function refreshUserInfo(): Promise<any> {
 
   await getAuth().onAuthStateChanged(async (user) => {
     if (user) {
-      const currentUser: User = user;
       user.getIdToken(true).then((newToken) => {
-        currentUser.getIdTokenResult().then((result) => {
-          const currentTime: number = Math.floor(Date.now() / 1000);
-          const expiredTime: number = Number(result.claims.exp);
-
-          if(currentTime > expiredTime) {
-            localStorage.setItem('smartumToken', currentUser.refreshToken);
-          }
-          else {
-            store.dispatch('setUserToken', newToken)
-            ResolveImageURL(currentUser.photoURL, "setUserPhoto");
-            store.dispatch("setCurrentUser", user);
-          }
-        })
+        store.dispatch('setUserToken', newToken)
+        const currentUser: User = user;
+        store.dispatch("setCurrentUser", user);
+        ResolveImageURL(currentUser.photoURL, "setUserPhoto");
       })
       .catch((error) => {
         notify({
