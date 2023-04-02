@@ -1,5 +1,5 @@
 <template>
-  <aside class="aside" :class="{ 'aside-minimize': minimize }">
+  <aside class="aside" :class="{ 'aside-minimize': minimizeAside }">
     <div class="aside__content">
       <div class="aside__logo">
         <img src="@/assets/img/logo.svg" alt="Logo" />
@@ -30,7 +30,13 @@ export default defineComponent({
   components: {
     User,
   },
-  emits: ["toggleAsideShow"],
+  props: {
+    minimizeAside: {
+      type: Boolean,
+      required: true,
+    }
+  },
+  emits: ["update:minimizeAside"],
   setup(_, { emit }) {
 
     const searchInput = ref("");
@@ -43,7 +49,7 @@ export default defineComponent({
 
     const setMinimizeValue = (value: boolean): void => {
       minimize.value = value;
-      emit("toggleAsideShow", minimize.value);
+      emit("update:minimizeAside", minimize.value);
     }
 
     onMounted((): void => {

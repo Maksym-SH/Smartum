@@ -10,9 +10,9 @@ import ResolveImageURL from "@/helpers/file/photo";
 export default async function refreshUserInfo(): Promise<any> {
   store.dispatch("setLoadingStatus", true);
 
-  await getAuth().onAuthStateChanged(async (user) => {
+  await getAuth().onAuthStateChanged((user) => {
     if (user) {
-      user.getIdToken(true).then((newToken) => {
+      getAuth().currentUser?.getIdToken(true).then((newToken) => {
         store.dispatch('setUserToken', newToken)
         const currentUser: User = user;
         store.dispatch("setCurrentUser", user);
@@ -24,7 +24,7 @@ export default async function refreshUserInfo(): Promise<any> {
        })
       });
     } else {
-      if (getAuth().currentUser) store.dispatch("userLogout");
+      store.dispatch("userLogout");
     }
     store.dispatch("setLoadingStatus", false);
   });

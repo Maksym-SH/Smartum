@@ -1,10 +1,13 @@
 <template>
   <div class="home-page">
-    <c-aside @toggleAsideShow="toggleAsideShow" />
-    <div class="home-page__wrapper" :class="{ 'minimize-info': minimizeAside }">
+    <c-aside v-model:minimizeAside="minimizeAside" />
+    <div class="home-page__wrapper"
+      @click.capture="toggleAsideShow(false, true)"
+      :class="{ 'minimize-info': minimizeAside }"
+    >
       <c-header class="home-page__header" />
       <div class="home-page__tab-info">
-        <h1 class="page-title" v-if="showTabName">{{ tabName.ru }}</h1>
+        <h1 class="page-title"  v-if="showTabName">{{ tabName.ru }}</h1>
         <p class="page-description" v-if="showTabDescription">{{ tabDescription.ru }}</p>
       </div>
       <router-view v-slot="{ Component }">
@@ -34,6 +37,7 @@ import { RouterMeta, DynamicDescription } from "@/types";
 
 import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
+import { Layout } from "@/enums";
 
 export default defineComponent({
   components: {
@@ -57,8 +61,13 @@ export default defineComponent({
     const showTabContent = computed(() => ObjectNotEmpty(store.getters.getCurrentUser))
     // Aside
     const minimizeAside = ref(true);
-    const toggleAsideShow = (value: boolean) => {
-      minimizeAside.value = value;
+    const toggleAsideShow = (value: boolean, capture: boolean = false) => {
+      if (!capture) {
+        minimizeAside.value = value;
+      }
+      else if (window.innerWidth <= Layout.Desktop) {
+        minimizeAside.value = capture;
+      }
     };
 
     watch((): IMetaName | RouterMeta => router.meta, (meta) => {
