@@ -269,6 +269,9 @@ export default defineComponent({
         fill: $color-black;
       }
     }
+    & ~ .c-input__error-text {
+      bottom: -18px;
+    }
   } 
 }
 

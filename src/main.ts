@@ -7,6 +7,7 @@ import store from "./store";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { firebaseConfig } from "./helpers/firebase/firebaseConfig";
+import { getFirestore } from "firebase/firestore";
 
 // Components
 import Button from "./components/ui/Button.vue";
@@ -19,6 +20,8 @@ import Select from "./components/ui/Select.vue";
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
+export const database = getFirestore(firebaseApp);
+
 import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 refreshUserInfo();
 

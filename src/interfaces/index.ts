@@ -51,8 +51,8 @@ export interface IUserInfo extends Omit<IUserReg, "password"> {
   editedLastName: string;
   fullName: string;
   phone: string;
-  about?: string;
-  imageURL: string;
+  about: string;
+  photoURL: string;
   emailVerified?: boolean;
   newPassword: string;
 }
@@ -63,6 +63,13 @@ export interface IUserStore {
   currentUser: object;
   userPhoto: string;
   openConfirmPopup: boolean;
+  additionalParams: IUserAdditional
+}
+
+export interface IUserAdditional {
+  about: string,
+  phone: string,
+  photoURL: string
 }
 
 export interface ICommonStore {

@@ -13,14 +13,21 @@ export const PasswordUpdate = (user: User, password: string): void => {
   }).finally(() => store.dispatch('setLoadingStatus', false))
 }
 
-export const EmailUpdate = (user: User, email: string): void => {
+
+
+export const EmailUpdate = (user: User, email: string): Promise<any> => {
   store.dispatch("setLoadingStatus", true);
 
-  updateEmail(user, email).then(() => {
-    notify({
-      title: "Ваш электронный адресс был изменен!"
-    })
-  }).finally(() => store.dispatch('setLoadingStatus', false))
+  return new Promise((resolve, reject) => {
+    updateEmail(user, email).then(() => {
+      notify({
+        title: "Ваш электронный адресс был изменен!"
+      })
+      resolve("resolve");
+
+    }).catch((e) => reject(e))
+    .finally(() => store.dispatch('setLoadingStatus', false))
+  })
 }
 
 export const ProfileUpdate = (user: User, displayName: string, photoURL?: string): void => {

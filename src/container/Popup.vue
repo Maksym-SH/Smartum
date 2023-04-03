@@ -126,13 +126,9 @@ export default defineComponent({
   }
 
   @include mobile(max) {
-    align-items: flex-end;
-    
     .popup {
-      width: 100%;
-      min-width: 100%;
-      border-radius: 10px 10px 0 0;
-    
+      min-width: 300px;
+      padding: 20px;
       &__button {
         .c-button {
           padding:  10px;

@@ -12,6 +12,10 @@ export type EmailVerify = "Почта подтверждена" | "Почта н
 
 export type Icon = "moon" | "sun";
 
+export type IImageSource = string | ArrayBuffer | null;
+
+export type IUserFieldsUpdate = Partial<{ about: string, phone: string, photoURL: string }>;
+
 export type LangFormat = "ru-Ru" | "en-EN";
 
 export type AutoComplete = "on" | "off";

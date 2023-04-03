@@ -3,7 +3,12 @@
     <form class="profile-tab__form" @submit.prevent>
       <div class="profile-tab__form--upload">
         <span class="label">Обновить фото профиля</span>
-        <ImageUpload :fileType="'image'" />
+        <ImageUpload 
+          :fileType="'image'" 
+          :photoURL="userInfo.photoURL" 
+          @loaded="updatePhoto"
+          @deleted="deletePhoto"
+        />
       </div>
       <div class="form-item first-name">
         <Input 
@@ -16,7 +21,7 @@
       <div class="form-item last-name">
         <Input 
           v-model.trim="userInfo.editedLastName" 
-          :min="userInfo.editedFirstName ? TextLength : LengthNone" 
+          :min="userInfo.editedLastName ? TextLength : LengthNone" 
           :placeholder="userInfo.lastName" 
           label="Фамилия"
         />
@@ -68,7 +73,7 @@
     <Button
       v-if="!userInfo.emailVerified"
       class="verify-email-btn"
-      variant="success"
+      variant="info"
       @click="verify"
     >
       <span class="mdi mdi-email-open-multiple-outline"></span>
@@ -78,7 +83,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, reactive } from "vue";
+import { defineComponent, computed, ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 import { getAuth } from "@firebase/auth";
 
@@ -89,6 +94,7 @@ import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import RegExp from "@/helpers/regExp";
 import { Confirmation, OpenPopup } from "@/helpers/methods";
 import { emailValidator } from "@/main";
+import { ProfileUpdateAdditional, GetUserInfo } from "@/database";
 
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
@@ -118,7 +124,7 @@ export default defineComponent({
       phone: "",
       about: "",
       email: currentUser.email,
-      imageURL: "",
+      photoURL: "",
       emailVerified: currentUser.emailVerified,
       newPassword: ""
     })
@@ -129,7 +135,7 @@ export default defineComponent({
           (!userInfo.editedFirstName || userInfo.editedFirstName.length >= ELength.Text) && 
             (!userInfo.editedLastName || userInfo.editedLastName.length >= ELength.Text) &&
              emailValidator.validate(userInfo.email) &&
-              (!userInfo.newPassword || userInfo.newPassword.length > ELength.Password))
+              (!userInfo.newPassword || userInfo.newPassword.length >= ELength.Password))
       {
         return true;
       }
@@ -137,45 +143,58 @@ export default defineComponent({
       return false;
     })
 
-    const setPhoto = (fileRes: FileResult) => {
-      // ToDo: save image in firebase.
-      const blob = URL.createObjectURL(new Blob([fileRes.result], { type : fileRes.type }));
-      userInfo.imageURL = `${ fileRes.type } ${ blob }`; 
+    // Actions
+    const imgChanged = ref(false);
+
+    const updatePhoto = ({ result }: FileResult) => {
+      userInfo.photoURL = JSON.stringify({ result });
+      imgChanged.value = true;
+    }
+    const deletePhoto = (): void => {
+      userInfo.photoURL = "";
+      imgChanged.value = true;
     }
 
-    // Actions
     const showConfirmation = ref(true);
 
-    const updatePassword = (): void => {
-      PasswordUpdate(currentUser, userInfo.newPassword);
+    const updateEmailAndPassword = () => {
+      const emailChanged = userInfo.email != currentUser.email;
+      const passwordChanged = userInfo.newPassword;
+
+      if (emailChanged && passwordChanged) {
+        EmailUpdate(currentUser, userInfo.email)
+          .then(() => PasswordUpdate(currentUser, userInfo.newPassword))
+      }
+      else if (emailChanged) {
+        EmailUpdate(currentUser, userInfo.email);
+      }
+      else if (passwordChanged) {
+        PasswordUpdate(currentUser, userInfo.newPassword);
+        
+         userInfo.newPassword = "";
+      }
+
       showConfirmation.value = false;
     }
-    const updateEmail = () => {
-      EmailUpdate(currentUser, userInfo.email);
-      showConfirmation.value = false;
-    }
-    
+
     const saveChanges = (): void => {
       if(!validForm.value) return;
 
+      if(showConfirmation.value) {
+        Confirmation(true, updateEmailAndPassword)?.then(() => profileUpdate());
+      }
+      else {
+        updateEmailAndPassword();
+        profileUpdate();
+      }
+    }
+
+    const profileUpdate = (): void => {
       const userFirstName = userInfo.editedFirstName || firstName;
       const userLastName = userInfo.editedLastName || lastName;
 
-      if (userInfo.newPassword) {
-        if(showConfirmation.value) {
-          Confirmation(true, updatePassword);
-        }
-        else updatePassword();
-      }
-
-      if (userInfo.email != currentUser.email) { // Email changed.
-        if(showConfirmation.value) {
-          Confirmation(showConfirmation.value, updateEmail);
-        }
-        else updateEmail();
-      }
-
       ProfileUpdate(currentUser, `${ userFirstName } ${ userLastName }`);
+      ProfileUpdateAdditional(userInfo, currentUser, imgChanged.value);
     }
 
     const verify = (): void => verifyEmail(currentUser);
@@ -203,6 +222,15 @@ export default defineComponent({
       Confirmation(showConfirmation.value, deleteAccountPopup);
     }
 
+    onMounted(() => {
+      GetUserInfo().then(() => {
+        const userAdditionalInfo = store.getters.getAdditionalUserInfo;
+        userInfo.about = userAdditionalInfo.about;
+        userInfo.phone = userAdditionalInfo.phone;
+        userInfo.photoURL = store.getters.getUserPhoto;
+      })
+    })
+
     return {
       userInfo,
       userAvatar: computed(() => store.getters.getUserPhoto),
@@ -210,8 +238,9 @@ export default defineComponent({
       PasswordLength: ELength.Password,
       LengthNone: ELength.None,
       TextareaLength: ELength.Textarea,
-      setPhoto,
       validForm,
+      updatePhoto,
+      deletePhoto,
       saveChanges,
       deleteConfirm,
       verify,
@@ -230,7 +259,7 @@ export default defineComponent({
     gap: 25px;
     padding-bottom: 20px;
     max-width: 1200px;
-    row-gap: 10px;
+    row-gap: 22px;
     &--upload {
       grid-area: 1/1/3/1;
       .file-upload {
@@ -240,10 +269,13 @@ export default defineComponent({
         max-width: 200px;
       }
     }
+    .input-wrapper {
+      padding-bottom: 0;
+    }
     .textarea {
       grid-area: 2/2/3/4;
       .textarea-wrapper {
-        height: 123px;
+        height: 130px;
       }
     }
     .btn-delete {

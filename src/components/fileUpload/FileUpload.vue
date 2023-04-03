@@ -1,11 +1,19 @@
 <template>
   <div class="file-upload" @click="upload?.click()">
     <input type="file" ref="upload" class="file-upload--input" @change="fileUpload" />
+    <Button 
+      v-if="imageShowed"
+      class="file-upload--delete"
+      variant="danger"
+      @click.stop="deleteImage"
+    >
+      <span class="mdi mdi-delete-outline"></span>
+    </Button>
     <img
-      v-if="imgLoaded"
+      v-if="imageShowed"
       @load="imgLoad"
       ref="image"
-      :src="imageSource"
+      :src="imagePath"
       class="file-upload--image"
     />
     <img
@@ -18,26 +26,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType } from "vue";
+import { defineComponent, ref, PropType, computed } from "vue";
 import fileValidate from "@/helpers/file/validate";
-import { RefElement, FileType } from "@/types";
+import { RefElement, FileType, IImageSource } from "@/types";
+import { OpenPopup } from "@/helpers/methods";
 
 export default defineComponent({
   props: {
     fileType: {
       type: String as PropType<FileType>,
       required: true,
+    },
+    photoURL: {
+      type: String,
+      default: "",
     }
   },
-  emits:["loaded"],
+  emits:["loaded", "deleted"],
   setup(props, { emit }) {
     const upload = ref<RefElement>();
 
     const imgLoaded = ref(false);
+    const imgDeleted = ref(false);
 
     const imgLoad = (): boolean => imgLoaded.value = true;
 
-    const imageSource = ref();
+    const imageSource = ref<IImageSource>(props.photoURL);
 
     const fileUpload = (): void => {
       const reader = new FileReader();
@@ -47,25 +61,52 @@ export default defineComponent({
         if(props.fileType == 'image') reader.readAsDataURL(file);
 
         reader.onload = (): void => {
+          
           if(fileValidate(file, props.fileType)) {
 
             if(props.fileType == "image") {
               imageSource.value = reader.result;
               imgLoaded.value = true;
+              imgDeleted.value = false;
+
               emit('loaded', {
                 result: reader.result, 
                 type: file.type
-              });
+              })
+
+              upload.value!.value = ""; // Clear input file after image load.
             }
           }
         }
       }
     }
 
+    const deleteImage = ():void => {
+      OpenPopup({
+        title: "Удалить фото?",
+        buttons: {
+          yes: {
+            text: "Удалить",
+          },
+        },
+        callback: () => {
+          emit("deleted");
+          imgDeleted.value = true;
+        }
+      });
+    };
+
+    const imagePath = computed(() => String(imageSource.value || props.photoURL));
+    const imageShowed = computed(() => (imgLoaded.value || props.photoURL) && !imgDeleted.value);
+
     return {
       imgLoaded,
       upload,
       imageSource,
+      imagePath,
+      imgDeleted,
+      imageShowed,
+      deleteImage,
       fileUpload,
       imgLoad,
     };
@@ -82,6 +123,24 @@ export default defineComponent({
   position: relative;
   cursor: pointer;
   @include flex-center;
+  
+  &--delete { 
+    position: absolute;
+    z-index: 2;
+    top: 2px;
+    right: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    border: 1px solid $color-black;
+    border-radius: 4px;
+    background-color: $color-red;
+    &:hover {
+      background-color: $color-red-hover;
+    }
+  }
 
   &--input {
     position: fixed;

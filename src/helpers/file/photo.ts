@@ -2,14 +2,14 @@ import store from "@/store";
 
 import RegExp from "@/helpers/regExp";
 
-const ResolveImageURL = (url: string | null, dispatchTarget: string): void => {
+const ResolvephotoURL = (url: string | null, dispatchTarget: string): void => {
   if(typeof url == "string") 
   {
     const EFileFormat = url.match(RegExp.FileFormat)![0];
-    const imageURL = url.match(RegExp.BlobFormat)![0];
+    const photoURL = url.match(RegExp.BlobFormat)![0];
 
     const reader = new FileReader();
-    reader.readAsDataURL(new Blob([imageURL], { type: EFileFormat }));
+    reader.readAsDataURL(new Blob([photoURL], { type: EFileFormat }));
     let result = null;
 
     reader.onload = () => {
@@ -20,4 +20,4 @@ const ResolveImageURL = (url: string | null, dispatchTarget: string): void => {
   else return;
 }
 
-export default ResolveImageURL;
+export default ResolvephotoURL;

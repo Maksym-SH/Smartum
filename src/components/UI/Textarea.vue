@@ -54,7 +54,7 @@ export default defineComponent({
       if (props.min && String(model.value).length < props.min) {
         errorText.value = `Введите не менее ${props.min} символов.`;
       } 
-      else if (String(model.value).match(" ")) {
+      else if (String(model.value).startsWith(" ")) {
         errorText.value = "Пустое значение недопустимо.";
       }
     };
@@ -130,6 +130,9 @@ export default defineComponent({
       font-size: 12px;
       left: 0;
     }
+  }
+  label + .c-textarea {
+    height: calc(100% - 23px);
   }
 }
 

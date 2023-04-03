@@ -14,6 +14,7 @@ import { IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
 
 import ShowErrorMessage from "./firebaseErrorMessage";
 import { ErrorCode } from "@/types";
+import { CreateUserAdditional } from "@/database";
 
 
 const firebaseAuth = (): IUserAuth => {
@@ -34,10 +35,13 @@ const firebaseAuth = (): IUserAuth => {
           }
 
           if (currentUser) {
+            CreateUserAdditional(currentUser);
+
             updateProfile(currentUser, {
               displayName: `${ userData.firstName } ${ userData.lastName }`,
             });
           }
+
           notify({
             title: "Вы успешно вошли в аккаунт.",
             type: "success",

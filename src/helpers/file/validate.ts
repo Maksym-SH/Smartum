@@ -30,8 +30,8 @@ const fileValidate = (file: any, needType: FileType): boolean => {
   }
 
   notify({
-    title: "Выбранный файл не поддерживается.",
-    type: "warn"
+    title: "Выбранный файл не поддерживается либо имеет слишком большой размер.",
+    type: "error"
   })
   return false;
 }

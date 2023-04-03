@@ -5,7 +5,7 @@ import store from "@/store";
 
 import { notify } from "@kyvg/vue3-notification";
 
-import ResolveImageURL from "@/helpers/file/photo";
+import ResolvephotoURL from "@/helpers/file/photo";
 
 export default async function refreshUserInfo(): Promise<any> {
   store.dispatch("setLoadingStatus", true);
@@ -16,7 +16,7 @@ export default async function refreshUserInfo(): Promise<any> {
         store.dispatch('setUserToken', newToken)
         const currentUser: User = user;
         store.dispatch("setCurrentUser", user);
-        ResolveImageURL(currentUser.photoURL, "setUserPhoto");
+        ResolvephotoURL(currentUser.photoURL, "setUserPhoto");
       })
       .catch((error) => {
         notify({

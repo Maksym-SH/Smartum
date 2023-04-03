@@ -152,14 +152,16 @@ export default defineComponent({
     }
   }
 
-  @include mobile(max) {
-    align-items: flex-end;
-    
+  @include respond($us, max) {
     &__window {
-      width: 100%;
-      min-width: 100%;
-      padding: 15px 20px;
-      border-radius: 10px 10px 0 0;
+      width: 310px;
+      padding: 15px 18px;
+      &-title {
+        font-size: 18px;
+      }
+      &-description {
+        font-size: 15px;
+      }
       &-input-field {
         width: 100%;
         margin: 20px auto 0 auto;
@@ -172,6 +174,7 @@ export default defineComponent({
       .confirmation__button {
         margin-top: 0;
         .c-button {
+          min-width: 48%;
           padding:  10px;
         }
       }

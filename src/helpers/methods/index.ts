@@ -19,7 +19,7 @@ export const Confirmation = (toggle: boolean, callback?: Function): Promise<any>
   if (callback && toggle) {
     ConfirmCallback = callback;
   } 
-  else {
-    ConfirmCallback();
-  }
+  else return new Promise((resolve) => {
+    resolve(ConfirmCallback());
+  })
 }

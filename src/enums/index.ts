@@ -31,7 +31,7 @@ export const enum EFileFormat {
 }
 
 export const enum Numbers {
-  ImageSize = 10000000,
+  ImageSize = 1048487,
   Second = 1000,
   AppearElement = 400,
   EveningRU = 16,
