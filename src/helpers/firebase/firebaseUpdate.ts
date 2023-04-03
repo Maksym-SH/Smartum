@@ -2,15 +2,24 @@ import { User, updatePassword, updateEmail, updateProfile } from "firebase/auth"
 import { notify } from "@kyvg/vue3-notification";
 import store from "@/store";
 import refreshUserInfo from "./firebaseRefresh";
+import ShowErrorMessage from "./firebaseErrorMessage";
 
-export const PasswordUpdate = (user: User, password: string): void => {
+export const PasswordUpdate = (user: User, password: string): Promise<any> => {
   store.dispatch("setLoadingStatus", true);
 
-  updatePassword(user, password).then(() => {
-    notify({
-      title:"Ваш пароль был изменен!"
+  return new Promise((resolve, reject) => {
+    updatePassword(user, password).then(() => {
+      notify({
+        title:"Ваш пароль был изменен!"
+      })
+      resolve("resolve");
     })
-  }).finally(() => store.dispatch('setLoadingStatus', false))
+    .catch((e) => {
+      ShowErrorMessage(e);
+      reject(e);
+    })
+    .finally(() => store.dispatch('setLoadingStatus', false))
+  })
 }
 
 
@@ -24,8 +33,10 @@ export const EmailUpdate = (user: User, email: string): Promise<any> => {
         title: "Ваш электронный адресс был изменен!"
       })
       resolve("resolve");
-
-    }).catch((e) => reject(e))
+    }).catch((e) => { 
+      ShowErrorMessage(e);
+      reject(e)
+    })
     .finally(() => store.dispatch('setLoadingStatus', false))
   })
 }
@@ -35,5 +46,6 @@ export const ProfileUpdate = (user: User, displayName: string, photoURL?: string
 
   updateProfile(user, { displayName, photoURL })
   .then(() => refreshUserInfo())
+  .catch((e) => ShowErrorMessage(e))
   .finally(() => store.dispatch("setLoadingStatus", false));
 }

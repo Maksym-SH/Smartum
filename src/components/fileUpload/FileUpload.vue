@@ -87,6 +87,7 @@ export default defineComponent({
         buttons: {
           yes: {
             text: "Удалить",
+            variant: "danger"
           },
         },
         callback: () => {

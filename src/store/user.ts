@@ -1,6 +1,5 @@
 import { ActionContext } from "vuex";
 import router from "@/router";
-
 import { getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 
@@ -70,13 +69,15 @@ export default {
         .then(() => {
           commit("SET_USER_TOKEN", "");
           commit("SET_CURRENT_USER", {});
-          router.push({ name: "SignIn" });
-
-          localStorage.removeItem("smartumToken");
-          notify({
-            text: "До скорого!",
-            type: "success",
-          });
+          if (!router.currentRoute.value.meta.notAuthorized) {
+            router.push({ name: "SignIn" });
+            localStorage.removeItem("smartumToken");
+            notify({
+              text: "До скорого!",
+              type: "success",
+              ignoreDuplicates: true
+            });
+          }
         })
         .catch((error) => {
           notify({

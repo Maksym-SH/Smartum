@@ -101,6 +101,7 @@ import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
 
 import { ProfileUpdate, EmailUpdate, PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
+import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
   components: {
@@ -129,7 +130,6 @@ export default defineComponent({
       newPassword: ""
     })
 
-
     const validForm = computed((): boolean => {
       if ((userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
           (!userInfo.editedFirstName || userInfo.editedFirstName.length >= ELength.Text) && 
@@ -144,8 +144,14 @@ export default defineComponent({
     })
 
     // Actions
+
     const imgChanged = ref(false);
 
+    const emailChanged = computed(() => userInfo.email != currentUser.email);
+
+    const passwordChanged = computed(() => userInfo.newPassword != "");
+
+    // Photo actions.
     const updatePhoto = ({ result }: FileResult) => {
       userInfo.photoURL = JSON.stringify({ result });
       imgChanged.value = true;
@@ -155,46 +161,50 @@ export default defineComponent({
       imgChanged.value = true;
     }
 
-    const showConfirmation = ref(true);
+    const showConfirmation = ref(false);
 
-    const updateEmailAndPassword = () => {
-      const emailChanged = userInfo.email != currentUser.email;
-      const passwordChanged = userInfo.newPassword;
-
-      if (emailChanged && passwordChanged) {
+    const updateEmailAndPassword = (): void => {
+      if (emailChanged.value && passwordChanged.value) {
         EmailUpdate(currentUser, userInfo.email)
-          .then(() => PasswordUpdate(currentUser, userInfo.newPassword))
-      }
-      else if (emailChanged) {
-        EmailUpdate(currentUser, userInfo.email);
-      }
-      else if (passwordChanged) {
-        PasswordUpdate(currentUser, userInfo.newPassword);
-        
-         userInfo.newPassword = "";
+        .then(() => {
+          PasswordUpdate(currentUser, userInfo.newPassword)
+        })
       }
 
+      else if (emailChanged.value) {
+        EmailUpdate(currentUser, userInfo.email)
+        .catch(() => userInfo.email = currentUser.email) // Reset email to default.
+      }
+
+      else if (passwordChanged.value) {
+        PasswordUpdate(currentUser, userInfo.newPassword).finally(() => userInfo.newPassword = "")
+      }
+      
       showConfirmation.value = false;
+    }
+
+    const profileUpdate = (): Promise<any> => {
+      const userFirstName = userInfo.editedFirstName || firstName;
+      const userLastName = userInfo.editedLastName || lastName;
+
+      return Promise.all([
+        ProfileUpdate(currentUser, `${ userFirstName } ${ userLastName }`),
+        ProfileUpdateAdditional(userInfo, currentUser, imgChanged.value)
+      ])
     }
 
     const saveChanges = (): void => {
       if(!validForm.value) return;
 
-      if(showConfirmation.value) {
+      if(emailChanged.value || passwordChanged.value) {
         Confirmation(true, updateEmailAndPassword)?.then(() => profileUpdate());
       }
       else {
         updateEmailAndPassword();
-        profileUpdate();
+        profileUpdate().then(() => notify({
+          title: "Ваши данные были успешно обновлены!"
+        }))
       }
-    }
-
-    const profileUpdate = (): void => {
-      const userFirstName = userInfo.editedFirstName || firstName;
-      const userLastName = userInfo.editedLastName || lastName;
-
-      ProfileUpdate(currentUser, `${ userFirstName } ${ userLastName }`);
-      ProfileUpdateAdditional(userInfo, currentUser, imgChanged.value);
     }
 
     const verify = (): void => verifyEmail(currentUser);
@@ -219,7 +229,10 @@ export default defineComponent({
     }
 
     const deleteConfirm = (): void => {
-      Confirmation(showConfirmation.value, deleteAccountPopup);
+      if (showConfirmation.value) {
+        Confirmation(true, deleteAccountPopup);
+      }
+      else deleteAccountPopup();
     }
 
     onMounted(() => {
