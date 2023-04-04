@@ -4,30 +4,31 @@
       <div class="forgot-page__window-header">
         <h2>
           Восстановление пароля
-          <v-icon icon="mdi mdi-form-textbox-password"></v-icon>
         </h2>
         <p>
-          Введите почту, которую вы использовали при регистрации а затем мы
+          Введите электронный адрес, который вы использовали при регистрации а затем мы
           отправим вам письмо с инструкциями.
         </p>
       </div>
       <form class="forgot-page__window-content" @submit.prevent="submitForm">
         <Input
-          placeholder="Ваша почта"
-          required
+          placeholder="Введите адрес электронной почты"
           v-model="email"
           isEmail
+          required
           @invalid="errorEmail = true"
         />
-        <Button class="submit-form" title="Отправить" size="sm" />
+        <Button class="submit-form" title="Отправить" size="lg" />
       </form>
-      <a
-        class="forgot-page__window--go-back"
-        @click="goBack"
-      >
-        <v-icon icon="mdi mdi-arrow-left"></v-icon>
-        Вернуться назад
-      </a>
+      <div class="forgot-page__window_link">
+        <a
+          class="forgot-page__window_link--go-back"
+          @click="goBack"
+        >
+          <v-icon icon="mdi mdi-arrow-left"></v-icon>
+          Вернуться назад
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -74,42 +75,48 @@ export default defineComponent({
 .forgot-page {
   @include auth-window;
   &__window {
-    position: relative;
+    margin: 20px;
+    background-color: rgba($color-dark-grey, 0.8);
+    box-shadow: 0 30px 10px rgba($color-grey, 0.3);
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 1px $color-grey;
-    background-color: $color-grey;
-    color: $color-text;
-    max-width: 450px;
+    max-width: 400px;
+    color: $color-white1;
+    border-radius: 20px;
     &-header {
-      margin-bottom: 20px;
+      margin-bottom: 40px;
+      h2 {
+        font-size: 25px;
+      }
       p {
-        margin-top: 10px;
+        line-height: 15px;
       }
     }
     &-content {
-      text-align: end;
-      .c-button {
-        padding: 5px 20px;
-      }
-      :deep(.c-input) {
-        border-color: $color-white1 !important;
-        &::placeholder {
-          font-size: 14px;
+      .input-wrapper {
+        :deep(.c-input) {
+          border-color: $color-white1;
         }
       }
+      .c-button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 7px 0;
+      }
     }
-    &--go-back {
+    &_link {
+      margin-top: 20px;
       text-align: center;
-      color: $color-blue;
-      font-size: 12px;
-      display: block;
-      margin: 20px 0 10px 0;
-      text-align: center;
-      transform: color 0.3s ease;
-      &:hover {
-        color: $color-blue-hover;
+      
+      &--go-back {
+        color: $color-blue;
         text-decoration: none;
+        cursor: pointer;
+        display: inline-block;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
+        &:hover {
+          border-color: inherit;
+        }
       }
     }
     @include mobile(max) {
@@ -117,17 +124,32 @@ export default defineComponent({
       min-width: 100%;
       border-radius: 0;
       display: flex;
+      padding: 15px;
+      margin: 0;
       flex-direction: column;
-      justify-content: center;
-      min-height: 330px;
+      &-header {
+        margin-bottom: 40px;
+        h2 {
+          font-size: 18px;
+        }
+        p {
+          line-height: 15px;
+        }
+      }
+      &_link {
+        margin-top: 0;
+        &--go-back {
+          font-size: 14px;
+        }
+      }
       &-content {
         .c-button {
           position: absolute;
-          bottom: 15px;
-          left: 10px;
+          bottom: 30px;
+          left: 15px;
+          width: calc(100% - 30px);
           padding: 10px;
           font-size: 14px;
-          width: calc(100% - 20px);
         }
       }
     }

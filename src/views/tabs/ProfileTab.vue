@@ -161,9 +161,9 @@ export default defineComponent({
       imgChanged.value = true;
     }
 
-    const showConfirmation = ref(false);
+    const showConfirmation = ref(true);
 
-    const updateEmailAndPassword = (): void => {
+    const updateEmailAndPassword = (hideConfirmation?: boolean): void => {
       if (emailChanged.value && passwordChanged.value) {
         EmailUpdate(currentUser, userInfo.email)
         .then(() => {
@@ -179,8 +179,10 @@ export default defineComponent({
       else if (passwordChanged.value) {
         PasswordUpdate(currentUser, userInfo.newPassword).finally(() => userInfo.newPassword = "")
       }
-      
-      showConfirmation.value = false;
+
+      if (hideConfirmation) {
+        showConfirmation.value = false;
+      }
     }
 
     const profileUpdate = (): Promise<any> => {
@@ -200,7 +202,7 @@ export default defineComponent({
         Confirmation(true, updateEmailAndPassword)?.then(() => profileUpdate());
       }
       else {
-        updateEmailAndPassword();
+        updateEmailAndPassword(true);
         profileUpdate().then(() => notify({
           title: "Ваши данные были успешно обновлены!"
         }))

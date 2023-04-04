@@ -97,7 +97,7 @@ export default defineComponent({
 
     const validator = (): void => {
       if (props.isEmail && !emailValidator.validate(model.value)) {
-        errorText.value = "Введите корректную почту.";
+        errorText.value = "Введите корректный адрес.";
       }
       else if (props.isPhone && !String(model.value).match(RegExp.Phone) && model.value) {
         errorText.value = "Введите в формате: +X-123-456-7890"
