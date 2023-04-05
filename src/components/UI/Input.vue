@@ -166,6 +166,9 @@ export default defineComponent({
     &.c-input--password {
       padding-right: 44px;
     }
+    &[type="password"] {
+      letter-spacing: 1px;
+    }
     &:disabled {
       border-color: $color-brown;
       color: $color-brown;

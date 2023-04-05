@@ -1,6 +1,6 @@
 <template>
   <div class="user-info__name">
-    <h5 class="user-info__name--first-name text-ellipsis">{{ name }}</h5>
+    <h5 class="user-info__name--first-name text-ellipsis">{{ firstName }} {{ lastName }}</h5>
     <small class="user-info__name--status" :class="{ 'verified': emailVerified }">
       <span :class="['mdi', statusIcon]"></span> 
       {{ userStatusText }}  
@@ -19,10 +19,14 @@ export default defineComponent({
       type: String as PropType<Status>,
       default: "User",
     },
-    name: {
+    firstName: {
       type: String,
       required: true,
     },
+    lastName: {
+      type: String,
+      default: ""
+    }
   },
   setup() {
     const store = useStore();

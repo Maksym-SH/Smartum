@@ -1,9 +1,18 @@
 <template>
   <Loader v-if="!showTemplate" inline />
   <div class="user-info" v-else>
-    <Avatar online :name="name" :image="avatar" />
+    <Avatar
+      rounded 
+      online 
+      :firstName="firstName"
+      :lastName="lastName" 
+      :avatar="avatar"
+    />
     <div class="user-info__content">
-      <Info :name="name" />
+      <Info  
+        :firstName="firstName" 
+        :lastName="lastName" 
+      />
       <Select :items="actions" @selected="selected" />
     </div>
   </div>
@@ -24,13 +33,17 @@ export default defineComponent({
     Info,
   },
   props: {
-    name: {
+    firstName: {
       type: String,
-      default: "",
+      required: true,
+    },
+    lastName: {
+      type: String,
+      default: ""
     },
     avatar: {
       type: String,
-      default: null,
+      default: "",
     },
   },
   setup() {

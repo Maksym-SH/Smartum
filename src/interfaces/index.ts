@@ -47,14 +47,20 @@ export interface IUserResponse {
 }
 
 export interface IUserInfo extends Omit<IUserReg, "password"> {
-  editedFirstName: string;
-  editedLastName: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   phone: string;
   about: string;
   photoURL: string;
   emailVerified?: boolean;
   newPassword: string;
+}
+
+// Expansion panel.
+export interface IExpPanelItem {
+  title: string;
+  icon?: string;
+  callback: () => void;
 }
 
 // Store
@@ -63,10 +69,12 @@ export interface IUserStore {
   currentUser: object;
   userPhoto: string;
   openConfirmPopup: boolean;
-  additionalParams: IUserAdditional
+  userInfo: IUserCreated
 }
 
-export interface IUserAdditional {
+export interface IUserCreated {
+  firstName: string,
+  lastName?: string,
   about: string,
   phone: string,
   photoURL: string

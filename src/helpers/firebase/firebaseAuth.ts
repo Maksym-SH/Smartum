@@ -1,21 +1,11 @@
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile
-} from "firebase/auth";
-
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import store from "@/store";
 import router from "@/router";
-
 import { notify } from "@kyvg/vue3-notification";
-
 import { IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
-
 import ShowErrorMessage from "./firebaseErrorMessage";
 import { ErrorCode } from "@/types";
-import { CreateUserAdditional } from "@/database";
-
+import { CreateUser } from "@/database";
 
 const firebaseAuth = (): IUserAuth => {
   const useAuth = {
@@ -35,11 +25,7 @@ const firebaseAuth = (): IUserAuth => {
           }
 
           if (currentUser) {
-            CreateUserAdditional(currentUser);
-
-            updateProfile(currentUser, {
-              displayName: `${ userData.firstName } ${ userData.lastName }`,
-            });
+            CreateUser(currentUser, userData.firstName, userData.lastName);
           }
 
           notify({

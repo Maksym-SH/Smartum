@@ -1,14 +1,14 @@
 <template>
-  <span class="user-avatar" :style="avatarSize">
-    <img
-      v-show="imgLoaded && image"
-      :src="image"
-      @load="imgLoad"
-      alt="Avatar"
-    />
+  <span class="user-avatar" :style="avatarSize" :class="{'user-avatar--rounded': rounded }">
+    <v-avatar 
+      v-if="avatar" 
+      :image="avatar" 
+      :rounded="rounded" 
+      :size="size"
+    ></v-avatar>
     <span
       class="user-avatar--initials"
-      v-if="(!imgLoaded || !image) && name"
+      v-else-if="firstName"
       :style="sizeInitials"
     >
       {{ initials }}
@@ -22,7 +22,7 @@ import { defineComponent, reactive, ref, computed } from "vue";
 
 export default defineComponent({
   props: {
-    image: {
+    avatar: {
       type: String,
       default: "",
     },
@@ -34,9 +34,18 @@ export default defineComponent({
       type: Number,
       default: 42,
     },
-    name: {
-      type: String,
+    rounded: {
+      type: Boolean,
+      default: false,
     },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      default: ""
+    }
   },
   setup(props) {
     const avatarSize = reactive({
@@ -45,8 +54,11 @@ export default defineComponent({
     });
 
     const initials = computed((): string | null => {
-      if(props.name) {
-        return props.name?.split(" ").map((item) => item[0]).join("")
+      if(props.firstName) {
+        const firstNameInitial = props.firstName[0];
+        const lastNameInitial = props.lastName[0] ?? "";
+        
+        return firstNameInitial + lastNameInitial;
       }
 
       return null;

@@ -12,17 +12,15 @@
       </div>
       <div class="form-item first-name">
         <Input 
-          v-model.trim="userInfo.editedFirstName"
-          :min="userInfo.editedFirstName ? TextLength : LengthNone"
-          :placeholder="userInfo.firstName"
+          v-model.trim="userInfo.firstName"
+          :min="userInfo.firstName ? TextLength : LengthNone"
           label="Имя"
         />
       </div>
       <div class="form-item last-name">
         <Input 
-          v-model.trim="userInfo.editedLastName" 
-          :min="userInfo.editedLastName ? TextLength : LengthNone" 
-          :placeholder="userInfo.lastName" 
+          v-model.trim="userInfo.lastName" 
+          :min="userInfo.lastName ? TextLength : LengthNone" 
           label="Фамилия"
         />
       </div>
@@ -85,20 +83,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, reactive, onMounted, watch } from "vue";
+import { defineComponent, computed, ref, reactive, watch, onMounted } from "vue";
 import { useStore } from "vuex";
-import { getAuth, User } from "@firebase/auth";
+import { getAuth } from "@firebase/auth";
 import { ELength } from "@/enums";
 import { FileResult, IUserInfo } from "@/interfaces";
+import { Confirmation, OpenPopup } from "@/helpers/methods";
+import { GetUserInfo, UserUpdate } from "@/database";
+import { PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
+import { notify } from "@kyvg/vue3-notification";
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import RegExp from "@/helpers/regExp";
-import { Confirmation, OpenPopup } from "@/helpers/methods";
-import { ProfileUpdateAdditional, GetUserInfo } from "@/database";
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
-import { ProfileUpdate, PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
-import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
   components: {
@@ -108,29 +106,26 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-
     // User info.
     const currentUser = store.getters.getCurrentUser;
 
-    const [firstName, lastName] = store.getters.getCurrentUser?.displayName?.split(" ");
-
     const userInfo: IUserInfo = reactive({
-      editedFirstName: "",
-      editedLastName: "",
-      firstName, lastName,
-      fullName: `${firstName} ${lastName}`,
+      firstName: "",
+      lastName: "",
       phone: "",
       about: "",
       email: currentUser.email,
       photoURL: "",
       emailVerified: currentUser.emailVerified,
-      newPassword: ""
+      newPassword: "",
     })
 
+
+    // Actions
     const validForm = computed((): boolean => {
       if ((userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
-          (!userInfo.editedFirstName || userInfo.editedFirstName.length >= ELength.Text) && 
-            (!userInfo.editedLastName || userInfo.editedLastName.length >= ELength.Text) &&
+          (!userInfo.firstName || userInfo.firstName.length >= ELength.Text) && 
+            (!userInfo.lastName || userInfo.lastName.length >= ELength.Text) &&
               (!userInfo.newPassword || userInfo.newPassword.length >= ELength.Password))
       {
         return true;
@@ -139,12 +134,8 @@ export default defineComponent({
       return false;
     })
 
-
-    // Actions
     const btnSaveDisable = ref(true);
-    const imgChanged = ref(false);
-
-    const passwordChanged = computed(() => userInfo.newPassword != "");
+    const passwordChanged = computed((): boolean => userInfo.newPassword != "");
 
     // Disable save changes button.
     watch(userInfo, () => {
@@ -153,15 +144,13 @@ export default defineComponent({
 
     // Update methods.
     const updatePhoto = ({ result }: FileResult) => {
-      userInfo.photoURL = JSON.stringify({ result });
-      imgChanged.value = true;
+      userInfo.photoURL = result;
     }
     const deletePhoto = (): void => {
       userInfo.photoURL = "";
-      imgChanged.value = true;
     }
     const updatePassword = (): void => {
-      PasswordUpdate(currentUser, userInfo.newPassword).then(() => {
+      PasswordUpdate(currentUser, userInfo.newPassword).then((): void => {
         userInfo.newPassword = ""; // After update password reset input value.
         profileUpdate();
       })
@@ -171,14 +160,8 @@ export default defineComponent({
 
     const showConfirmation = ref(true);
 
-    const profileUpdate = (): Promise<void> => {
-      const userFirstName = userInfo.editedFirstName || firstName;
-      const userLastName = userInfo.editedLastName || lastName;
-
-      return Promise.all([
-        ProfileUpdate(currentUser, `${ userFirstName } ${ userLastName }`),
-        ProfileUpdateAdditional(userInfo, currentUser, imgChanged.value)
-      ]).then(() => notify({
+    const profileUpdate = async(): Promise<any> => {
+      return UserUpdate(userInfo, currentUser).then((): void => notify({
         title: "Ваши данные были успешно обновлены!"
       }))
     }
@@ -213,7 +196,7 @@ export default defineComponent({
             variant: "danger"
           },
         },
-        callback: () => {
+        callback: (): void => {
           getAuth().currentUser?.delete()
           .then(() => store.dispatch("userLogout"));
         }
@@ -228,11 +211,14 @@ export default defineComponent({
     }
 
     onMounted(():void => {
-      GetUserInfo().then(():void => {
-        const userAdditionalInfo = store.getters.getAdditionalUserInfo;
-        userInfo.about = userAdditionalInfo.about;
-        userInfo.phone = userAdditionalInfo.phone;
-        userInfo.photoURL = store.getters.getUserPhoto;
+      GetUserInfo().then((): void => {
+        const field = store.getters.getUserInfo;  
+
+        userInfo.firstName = field.firstName;
+        userInfo.lastName = field.lastName;
+        userInfo.about = field.about;
+        userInfo.photoURL = field.photoURL;
+        userInfo.phone = field.phone;
 
       }).then(():boolean => btnSaveDisable.value = true)
     })
@@ -336,6 +322,7 @@ export default defineComponent({
       }
       .c-button {
         width: 45%;
+        font-size: 14px;
         margin: 0 auto;
         max-width: none;
       }
@@ -343,12 +330,13 @@ export default defineComponent({
   }
   .verify-email-btn {
     position: absolute;
-    top: -80px;
-    right: 10px;
+    top: -115px;
+    right: 5px;
     @include mobile(max) {
       position: static;
       display: block;
       margin: 0 auto;
+      font-size: 14px;
       margin: 20px auto;
     }
   } 

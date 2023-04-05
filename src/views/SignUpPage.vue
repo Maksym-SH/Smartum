@@ -36,7 +36,7 @@
           />
           <Input
             v-model.trim="userData.lastName"
-            :min="LengthText"
+            :min="userData.lastName ? LengthText : LengthNone"
             placeholder="Фамилия"
             transparent
             autocomplete
@@ -117,6 +117,7 @@ export default defineComponent({
       userData,
       LengthText,
       LengthPassword,
+      LengthNone: ELength.None,
       submitForm,
     };
   },

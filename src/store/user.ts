@@ -2,15 +2,16 @@ import { ActionContext } from "vuex";
 import router from "@/router";
 import { getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-
-import { IUserAdditional, IUserInfo, IUserStore } from "@/interfaces/index";
+import { IUserCreated, IUserInfo, IUserStore } from "@/interfaces/index";
 
 export default {
   state: {
     userToken: "",
     currentUser: {},
     openConfirmPopup: false,
-    additionalParams: {
+    userInfo: {
+      firstName: "",
+      lastName: "",
       about: "",
       phone: "",
       photoURL: ""
@@ -23,17 +24,11 @@ export default {
     getCurrentUser(state: IUserStore): object {
       return state.currentUser;
     },
-    getUserPhoto(state: IUserStore): string {
-      if(state.additionalParams.photoURL) {
-        return JSON.parse(state.additionalParams.photoURL).result;
-      }
-      return ""
-    },
     getConfirmPopup(state: IUserStore): boolean {
       return state.openConfirmPopup;
     },
-    getAdditionalUserInfo(state: IUserStore): IUserAdditional {
-      return state.additionalParams;
+    getUserInfo(state: IUserStore): IUserCreated {
+      return state.userInfo;
     }
   },
   mutations: {
@@ -46,8 +41,11 @@ export default {
     SET_CONFIRM_POPUP(state:IUserStore, show: boolean): void {
       state.openConfirmPopup = show;
     },
-    SET_ADDITIONAL_USER_PARAMS(state: IUserStore, params: IUserAdditional): void {
-      state.additionalParams =  params;
+    SET_USER_INFO(state: IUserStore, params: IUserCreated): void {
+      state.userInfo = params;
+    },
+    SET_USER_PHOTO(state: IUserStore, photo: string) : void {
+      state.userInfo.photoURL = photo;
     }
   },
   actions: {
@@ -60,8 +58,8 @@ export default {
     setConfirmPopup({ commit }: ActionContext<IUserStore, any>, show: boolean): void {
       commit('SET_CONFIRM_POPUP', show);
     },
-    setAdditionalParamsUser({ commit }: ActionContext<IUserInfo, any>, params: IUserAdditional): void {
-      commit("SET_ADDITIONAL_USER_PARAMS", params);
+    setUserInfo({ commit }: ActionContext<IUserInfo, any>, params: IUserCreated): void {
+      commit("SET_USER_INFO", params);
     },
     userLogout({ commit }: ActionContext<IUserStore, any>): void {
       getAuth()
@@ -69,6 +67,15 @@ export default {
         .then(() => {
           commit("SET_USER_TOKEN", "");
           commit("SET_CURRENT_USER", {});
+          commit("SET_CONFIRM_POPUP", false);
+          commit("SET_USER_INFO", {
+            firstName: "",
+            lastName: "",
+            about: "",
+            phone: "",
+            photoURL: ""
+          });
+
           if (!router.currentRoute.value.meta.notAuthorized) {
             router.push({ name: "SignIn" });
             localStorage.removeItem("smartumToken");

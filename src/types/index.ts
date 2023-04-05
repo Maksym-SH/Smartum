@@ -1,4 +1,4 @@
-import { ISelectElem, ILanguage, IError } from "@/interfaces/index";
+import { ISelectElem, ILanguage, IError, IExpPanelItem, IUserCreated } from "@/interfaces/index";
 
 export type Error = Awaited<Promise<IError>>;
 
@@ -14,7 +14,7 @@ export type Icon = "moon" | "sun";
 
 export type IImageSource = string | ArrayBuffer | null;
 
-export type IUserFieldsUpdate = Partial<{ about: string, phone: string, photoURL: string }>;
+export type IUserFieldsUpdate = Partial<IUserCreated>;
 
 export type LangFormat = "ru-Ru" | "en-EN";
 
@@ -25,6 +25,10 @@ export type ApiMethod = "POST" | "GET" | "PUT" | "DELETE";
 export type Status = "Admin" | "User";
 
 export type ButtonSize = "sm" | "md" | "lg";
+
+export type ExpansionPanelVariant = "accordion" | "default" | "inset" | "popout";
+
+export type ExpansionPanelItems = Array<IExpPanelItem>;
 
 export type Variant = "info" | "danger" | "success";
 

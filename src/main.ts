@@ -16,6 +16,7 @@ import Textarea from "./components/ui/Textarea.vue";
 import Checkbox from "./components/ui/Checkbox.vue";
 import Loader from "./components/ui/Loader.vue";
 import Select from "./components/ui/Select.vue";
+import ExpPanel from "./components/ui/ExpansionPanel.vue";
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -53,6 +54,7 @@ app.component("Button", Button);
 app.component("Checkbox", Checkbox);
 app.component("Loader", Loader);
 app.component("Select", Select);
+app.component("ExpPanel", ExpPanel);
 
 // Plugins
 app.use(router);

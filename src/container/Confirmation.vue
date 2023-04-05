@@ -52,7 +52,6 @@ import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import { EmailAuthCredential, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
-import { notify } from '@kyvg/vue3-notification';
 import { ELength } from '@/enums';
 import { computed } from '@vue/reactivity';
 import { Confirmation } from '@/helpers/methods';

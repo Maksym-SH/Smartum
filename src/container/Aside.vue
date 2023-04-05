@@ -1,24 +1,30 @@
 <template>
   <aside class="aside" :class="{ 'aside-minimize': minimizeAside }">
     <div class="aside__content">
-      <div class="aside__logo">
-        <img src="@/assets/img/logo.svg" alt="Logo" />
-      </div>
-      <div class="aside__search-content mobile-only">
-        <Input
-          type="search" 
-          placeholder="Поиск" 
-          v-model="searchInput"
-        />
-      </div>
-      <div class="aside__user">
-        <User :name="userName" :avatar="userAvatar" />
-      </div>
+      <div class="user">
+        <div class="aside__logo">
+          <img src="@/assets/img/logo.svg" alt="Logo" />
+        </div>
+        <div class="aside__search-content mobile-only">
+          <Input
+            type="search" 
+            placeholder="Поиск" 
+            v-model="searchInput"
+          />
+        </div>
+        <div class="aside__user">
+          <User 
+            :firstName="userInfo.firstName"
+            :lastName="userInfo.lastName" 
+            :avatar="userInfo.photoURL" 
+          />
+        </div>
 
-      <div class="aside__collapse" @click="collapseToggle">
-        <span class="aside__collapse--toggle"
-          ><img src="@/assets/img/icons/caret.svg" alt="" />
-        </span>
+        <div class="aside__collapse" @click="collapseToggle">
+          <span class="aside__collapse--toggle"
+            ><img src="@/assets/img/icons/caret.svg" alt="" />
+          </span>
+        </div>
       </div>
     </div>
   </aside>
@@ -29,6 +35,7 @@ import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import User from "@/components/user/Container.vue";
 import { Numbers, Layout } from "@/enums";
+import { IUserCreated } from "@/interfaces";
 
 export default defineComponent({
   components: {
@@ -48,6 +55,8 @@ export default defineComponent({
     const store = useStore();
 
     const minimize = ref(true);
+
+    const userInfo = computed((): IUserCreated => store.getters.getUserInfo);
 
     const collapseToggle = (): void => setMinimizeValue(!minimize.value);
 
@@ -70,8 +79,7 @@ export default defineComponent({
     });
 
     return {
-      userName: computed((): string => store.getters.getCurrentUser?.displayName),
-      userAvatar: computed((): string => store.getters.getUserPhoto),
+      userInfo, 
       minimize,
       searchInput,
       collapseToggle,
@@ -103,6 +111,7 @@ export default defineComponent({
     flex-direction: column;
     height: 100%;
     position: relative;
+    color: black;
   }
 
   &__logo {

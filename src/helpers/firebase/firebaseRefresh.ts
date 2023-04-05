@@ -5,18 +5,17 @@ import store from "@/store";
 
 import { notify } from "@kyvg/vue3-notification";
 
-import ResolvephotoURL from "@/helpers/file/photo";
+import { GetUserInfo } from "@/database";
 
 export default async function refreshUserInfo(): Promise<any> {
   store.dispatch("setLoadingStatus", true);
 
   await getAuth().onAuthStateChanged((user) => {
     if (user) {
-      getAuth().currentUser?.getIdToken(true).then((newToken) => {
+      getAuth().currentUser?.getIdToken(true).then(async(newToken) => {
         store.dispatch('setUserToken', newToken)
-        const currentUser: User = user;
         store.dispatch("setCurrentUser", user);
-        ResolvephotoURL(currentUser.photoURL, "setUserPhoto");
+        await GetUserInfo();
       })
       .catch((error) => {
         notify({
