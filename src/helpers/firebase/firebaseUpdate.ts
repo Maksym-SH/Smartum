@@ -4,27 +4,24 @@ import store from "@/store";
 import refreshUserInfo from "./firebaseRefresh";
 import ShowErrorMessage from "./firebaseErrorMessage";
 
-export const PasswordUpdate = (user: User, password: string): Promise<any> => {
+export const PasswordUpdate = (user: User, password: string): Promise<void> => {
   store.dispatch("setLoadingStatus", true);
-
   return new Promise((resolve, reject) => {
     updatePassword(user, password).then(() => {
       notify({
         title:"Ваш пароль был изменен!"
       })
-      resolve("resolve");
+      resolve();
     })
     .catch((e) => {
       ShowErrorMessage(e);
-      reject(e);
+      reject();
     })
     .finally(() => store.dispatch('setLoadingStatus', false))
   })
 }
 
-
-
-export const EmailUpdate = (user: User, email: string): Promise<any> => {
+/* export const EmailUpdate = (user: User, email: string): Promise<any> => {
   store.dispatch("setLoadingStatus", true);
 
   return new Promise((resolve, reject) => {
@@ -39,7 +36,7 @@ export const EmailUpdate = (user: User, email: string): Promise<any> => {
     })
     .finally(() => store.dispatch('setLoadingStatus', false))
   })
-}
+} */
 
 export const ProfileUpdate = (user: User, displayName: string, photoURL?: string): void => {
   store.dispatch("setLoadingStatus", true);

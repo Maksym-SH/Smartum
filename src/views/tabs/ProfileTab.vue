@@ -45,9 +45,10 @@
       </div>
       <div class="form-item email">
         <Input 
+          disabled
           isEmail
           v-model="userInfo.email" 
-          label="Почта"
+          label="Электронный адрес"
         />
       </div>
       <div class="form-item new-password">
@@ -60,6 +61,7 @@
       </div>
       <Button 
         variant="info"
+        :disabled="btnSaveDisable"
         @click="saveChanges"
         title="Сохранить"
       />
@@ -83,24 +85,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, reactive, onMounted } from "vue";
+import { defineComponent, computed, ref, reactive, onMounted, watch } from "vue";
 import { useStore } from "vuex";
-import { getAuth } from "@firebase/auth";
-
+import { getAuth, User } from "@firebase/auth";
 import { ELength } from "@/enums";
 import { FileResult, IUserInfo } from "@/interfaces";
-
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import RegExp from "@/helpers/regExp";
 import { Confirmation, OpenPopup } from "@/helpers/methods";
-import { emailValidator } from "@/main";
 import { ProfileUpdateAdditional, GetUserInfo } from "@/database";
-
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
-
-import { ProfileUpdate, EmailUpdate, PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
+import { ProfileUpdate, PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
 import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
@@ -134,7 +131,6 @@ export default defineComponent({
       if ((userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
           (!userInfo.editedFirstName || userInfo.editedFirstName.length >= ELength.Text) && 
             (!userInfo.editedLastName || userInfo.editedLastName.length >= ELength.Text) &&
-             emailValidator.validate(userInfo.email) &&
               (!userInfo.newPassword || userInfo.newPassword.length >= ELength.Password))
       {
         return true;
@@ -143,15 +139,19 @@ export default defineComponent({
       return false;
     })
 
+
     // Actions
-
+    const btnSaveDisable = ref(true);
     const imgChanged = ref(false);
-
-    const emailChanged = computed(() => userInfo.email != currentUser.email);
 
     const passwordChanged = computed(() => userInfo.newPassword != "");
 
-    // Photo actions.
+    // Disable save changes button.
+    watch(userInfo, () => {
+      btnSaveDisable.value = false;
+    })
+
+    // Update methods.
     const updatePhoto = ({ result }: FileResult) => {
       userInfo.photoURL = JSON.stringify({ result });
       imgChanged.value = true;
@@ -160,56 +160,46 @@ export default defineComponent({
       userInfo.photoURL = "";
       imgChanged.value = true;
     }
+    const updatePassword = (): void => {
+      PasswordUpdate(currentUser, userInfo.newPassword).then(() => {
+        userInfo.newPassword = ""; // After update password reset input value.
+        profileUpdate();
+      })
+      // Hide confirmation popup.
+      showConfirmation.value = false;
+    }
 
     const showConfirmation = ref(true);
 
-    const updateEmailAndPassword = (hideConfirmation?: boolean): void => {
-      if (emailChanged.value && passwordChanged.value) {
-        EmailUpdate(currentUser, userInfo.email)
-        .then(() => {
-          PasswordUpdate(currentUser, userInfo.newPassword)
-        })
-      }
-
-      else if (emailChanged.value) {
-        EmailUpdate(currentUser, userInfo.email)
-        .catch(() => userInfo.email = currentUser.email) // Reset email to default.
-      }
-
-      else if (passwordChanged.value) {
-        PasswordUpdate(currentUser, userInfo.newPassword).finally(() => userInfo.newPassword = "")
-      }
-
-      if (hideConfirmation) {
-        showConfirmation.value = false;
-      }
-    }
-
-    const profileUpdate = (): Promise<any> => {
+    const profileUpdate = (): Promise<void> => {
       const userFirstName = userInfo.editedFirstName || firstName;
       const userLastName = userInfo.editedLastName || lastName;
 
       return Promise.all([
         ProfileUpdate(currentUser, `${ userFirstName } ${ userLastName }`),
         ProfileUpdateAdditional(userInfo, currentUser, imgChanged.value)
-      ])
+      ]).then(() => notify({
+        title: "Ваши данные были успешно обновлены!"
+      }))
     }
 
     const saveChanges = (): void => {
       if(!validForm.value) return;
 
-      if(emailChanged.value || passwordChanged.value) {
-        Confirmation(true, updateEmailAndPassword)?.then(() => profileUpdate());
+      if(passwordChanged.value && showConfirmation.value) { // Show confirmation.
+        Confirmation(true, updatePassword)
       }
       else {
-        updateEmailAndPassword(true);
-        profileUpdate().then(() => notify({
-          title: "Ваши данные были успешно обновлены!"
-        }))
+        profileUpdate()
+        .then(() => {
+          if (passwordChanged.value) {
+            updatePassword();
+          }
+        })
       }
     }
 
-    const verify = (): void => verifyEmail(currentUser);
+    const verify = (): void => verifyEmail(currentUser); // Confirmation email.
 
     const deleteAccountPopup = (): void => {
       showConfirmation.value = false;
@@ -237,23 +227,24 @@ export default defineComponent({
       else deleteAccountPopup();
     }
 
-    onMounted(() => {
-      GetUserInfo().then(() => {
+    onMounted(():void => {
+      GetUserInfo().then(():void => {
         const userAdditionalInfo = store.getters.getAdditionalUserInfo;
         userInfo.about = userAdditionalInfo.about;
         userInfo.phone = userAdditionalInfo.phone;
         userInfo.photoURL = store.getters.getUserPhoto;
-      })
+
+      }).then(():boolean => btnSaveDisable.value = true)
     })
 
     return {
       userInfo,
-      userAvatar: computed(() => store.getters.getUserPhoto),
       TextLength: ELength.Text,
       PasswordLength: ELength.Password,
       LengthNone: ELength.None,
       TextareaLength: ELength.Textarea,
       validForm,
+      btnSaveDisable,
       updatePhoto,
       deletePhoto,
       saveChanges,
@@ -316,7 +307,7 @@ export default defineComponent({
         }
       }
       .textarea-wrapper {
-        height: auto !important; 
+        height: 110px !important; 
       }
     }
     @include mobile(max) {

@@ -14,7 +14,7 @@ export const OpenPopup = (params: IPopupParams): void => {
 }
 
 let ConfirmCallback: Function;
-export const Confirmation = (toggle: boolean, callback?: Function): Promise<any> | void => {
+export const Confirmation = (toggle: boolean, callback?: Function | void): Promise<any> | void => {
   store.dispatch("setConfirmPopup", toggle);
   if (callback && toggle) {
     ConfirmCallback = callback;

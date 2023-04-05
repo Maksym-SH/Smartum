@@ -39,7 +39,8 @@ export default defineComponent({
   }
   &:disabled {
     pointer-events: none;
-    filter: grayscale(60%);
+    user-select: none;
+    filter: grayscale(70%);
   }
   &--outline {
     background-color: transparent !important;

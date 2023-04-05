@@ -253,13 +253,14 @@ export default defineComponent({
   }
   label {
     &.label-disable {
+      user-select: none;
       color: $color-light-brown;
     }
     & ~ .phone {
       top: 35px !important;
     }
     & ~ .c-input__required {
-      height: 100% !important;
+      height: calc(100% - 36px) !important;
     }
     & ~ .c-input__toggle-password {
       top: 43px;

@@ -5,7 +5,11 @@
         <img src="@/assets/img/logo.svg" alt="Logo" />
       </div>
       <div class="aside__search-content mobile-only">
-        <Input type="search" placeholder="Поиск" v-model="searchInput" />
+        <Input
+          type="search" 
+          placeholder="Поиск" 
+          v-model="searchInput"
+        />
       </div>
       <div class="aside__user">
         <User :name="userName" :avatar="userAvatar" />
@@ -142,7 +146,6 @@ export default defineComponent({
   @include respond($xs, max) {
     transform: translateX(0);
     z-index: 5;
-
     &__collapse {
       position: absolute;
       top: 0%;
@@ -162,6 +165,11 @@ export default defineComponent({
           width: 10px;
         }
       }
+    }
+  }
+  @include mobile(max) {
+    &__logo {
+      max-height: 64px;
     }
   }
 }

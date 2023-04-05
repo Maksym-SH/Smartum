@@ -16,13 +16,15 @@
           v-model="password"
         />
       </form>
-      <router-link 
-        class="forgot-link"
-        :to="{name: 'Forgot'}" 
-        @click="result(false)"
-      >
-        Забыли пароль?
-      </router-link>
+      <div class="confirmation__window_forgot-password">
+        <router-link 
+          class="confirmation__window_forgot-password--go-page"
+          :to="{name: 'Forgot'}" 
+          @click="result(false)"
+        >
+          Забыли пароль?
+        </router-link>
+      </div>
       <div class="confirmation__button">
         <Button 
           @click="result(false)"
@@ -129,19 +131,20 @@ export default defineComponent({
     }
 
     &-input-field {
-      margin-top: 20px;
+      margin: 20px 0;
       width: 100%;
       max-width: 370px;
       .input-wrapper {
+        padding-bottom: 0;
         font-size: 14px;
       }
     }
-    .forgot-link {
-      display: block;
+    &_forgot-password {
       text-align: end;
+      padding: 5px 0 20px 0;
     }
     .confirmation__button {
-      margin-top: 30px;
+      margin-top: 10px;
       display: flex;
       gap: 15px;
       justify-content: center;
@@ -166,10 +169,11 @@ export default defineComponent({
         width: 100%;
         margin: 20px auto 0 auto;
       }
-      .forgot-link {
-        display: block;
-        margin-bottom: 20px;
-        text-align: end;
+      &_forgot-password { 
+        padding-top: 10px;
+        &--go-page {
+          font-size: 13px;
+        }
       }
       .confirmation__button {
         margin-top: 0;
