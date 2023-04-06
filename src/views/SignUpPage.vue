@@ -81,7 +81,7 @@ import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 import { emailValidator } from "@/main";
 
 import { IUserReg } from "@/interfaces";
-import { ELength } from "@/enums";
+import { Length } from "@/enums";
 
 export default defineComponent({
   setup() {
@@ -92,9 +92,9 @@ export default defineComponent({
       password: "",
     });
 
-    const LengthPassword = ELength.Password;
+    const LengthPassword = Length.Password;
 
-    const LengthText = ELength.Text;
+    const LengthText = Length.Text;
 
     const validPersonDate = computed(() => {
       return (
@@ -117,7 +117,7 @@ export default defineComponent({
       userData,
       LengthText,
       LengthPassword,
-      LengthNone: ELength.None,
+      LengthNone: Length.None,
       submitForm,
     };
   },

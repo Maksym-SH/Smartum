@@ -16,7 +16,7 @@ export type IImageSource = string | ArrayBuffer | null;
 
 export type IUserFieldsUpdate = Partial<IUserCreated>;
 
-export type LangFormat = "ru-Ru" | "en-EN";
+export type LangFormatType = "ru-Ru" | "en-EN";
 
 export type AutoComplete = "on" | "off";
 
@@ -43,3 +43,6 @@ export type FileType = "image" | "text";
 export type RouterMeta = Record<string | number | symbol, unknown>;
 
 export type ModelValue = string | number | unknown;
+
+// Omit
+export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword" | "photoURL";

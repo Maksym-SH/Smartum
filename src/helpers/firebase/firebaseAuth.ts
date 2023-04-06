@@ -5,7 +5,6 @@ import { notify } from "@kyvg/vue3-notification";
 import { IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
 import ShowErrorMessage from "./firebaseErrorMessage";
 import { ErrorCode } from "@/types";
-import { CreateUser } from "@/database";
 
 const firebaseAuth = (): IUserAuth => {
   const useAuth = {
@@ -25,7 +24,11 @@ const firebaseAuth = (): IUserAuth => {
           }
 
           if (currentUser) {
-            CreateUser(currentUser, userData.firstName, userData.lastName);
+            store.dispatch("createUser", {
+              uid: currentUser.uid,
+              firstName: userData.firstName,
+              lastName: userData.lastName
+            })
           }
 
           notify({

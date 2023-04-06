@@ -1,21 +1,21 @@
-export const enum ELanguage {
+export const enum Language {
   Russian = "ru",
   English = "eng"
 }
 
-export const enum ELength {
+export const enum Length {
   Text = 3,
   Password = 8,
   None = 0,
   Textarea = 255
 }
 
-export const enum ELangFormat {
+export const enum LangFormat {
   Ru = "ru-Ru",
   Eng = "en-EN"
 }
 
-export const enum EFileFormat {
+export const enum FileFormat {
   App_JS = "application/javascript",
   App_XJS = "application/x-javascript",
   App_ES = "application/ecmascript",
@@ -42,4 +42,9 @@ export const enum Layout {
   Mobile = 576,
   Tablet = 768,
   Desktop = 1024
+}
+
+export const enum DataCollection {
+  Profile = "profile",
+  Photo = "photos",
 }

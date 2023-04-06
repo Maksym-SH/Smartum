@@ -5,8 +5,6 @@ import store from "@/store";
 
 import { notify } from "@kyvg/vue3-notification";
 
-import { GetUserInfo } from "@/database";
-
 export default async function refreshUserInfo(): Promise<any> {
   store.dispatch("setLoadingStatus", true);
 
@@ -15,7 +13,7 @@ export default async function refreshUserInfo(): Promise<any> {
       getAuth().currentUser?.getIdToken(true).then(async(newToken) => {
         store.dispatch('setUserToken', newToken)
         store.dispatch("setCurrentUser", user);
-        await GetUserInfo();
+        store.dispatch("getUserInfo");
       })
       .catch((error) => {
         notify({

@@ -1,20 +1,20 @@
 import { notify } from "@kyvg/vue3-notification";
 
-import { /* EFileFormat, */ Numbers } from "@/enums";
+import { /* FileFormat, */ Numbers } from "@/enums";
 import { FileType } from "@/types";
 
 
 /* const Format = [ 
-  EFileFormat.APP_GZIP, 
-  EFileFormat.APP_XML, 
-  EFileFormat.APP_XPHP, 
-  EFileFormat.App_ES, 
-  EFileFormat.App_JS, 
-  EFileFormat.App_JSON, 
-  EFileFormat.App_XJS, 
-  EFileFormat.App_ZIP, 
-  EFileFormat.Text_XML, 
-  EFileFormat.Text_XPython
+  FileFormat.APP_GZIP, 
+  FileFormat.APP_XML, 
+  FileFormat.APP_XPHP, 
+  FileFormat.App_ES, 
+  FileFormat.App_JS, 
+  FileFormat.App_JSON, 
+  FileFormat.App_XJS, 
+  FileFormat.App_ZIP, 
+  FileFormat.Text_XML, 
+  FileFormat.Text_XPython
 ]; */
 
 

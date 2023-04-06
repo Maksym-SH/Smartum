@@ -86,10 +86,9 @@
 import { defineComponent, computed, ref, reactive, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 import { getAuth } from "@firebase/auth";
-import { ELength } from "@/enums";
+import { Length } from "@/enums";
 import { FileResult, IUserInfo } from "@/interfaces";
 import { Confirmation, OpenPopup } from "@/helpers/methods";
-import { GetUserInfo, UserUpdate } from "@/database";
 import { PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
 import { notify } from "@kyvg/vue3-notification";
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
@@ -124,9 +123,9 @@ export default defineComponent({
     // Actions
     const validForm = computed((): boolean => {
       if ((userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
-          (!userInfo.firstName || userInfo.firstName.length >= ELength.Text) && 
-            (!userInfo.lastName || userInfo.lastName.length >= ELength.Text) &&
-              (!userInfo.newPassword || userInfo.newPassword.length >= ELength.Password))
+          (!userInfo.firstName || userInfo.firstName.length >= Length.Text) && 
+            (!userInfo.lastName || userInfo.lastName.length >= Length.Text) &&
+              (!userInfo.newPassword || userInfo.newPassword.length >= Length.Password))
       {
         return true;
       }
@@ -161,7 +160,10 @@ export default defineComponent({
     const showConfirmation = ref(true);
 
     const profileUpdate = async(): Promise<any> => {
-      return UserUpdate(userInfo, currentUser).then((): void => notify({
+      store.dispatch("updateUserInfo", {
+        ...userInfo,
+        uid: currentUser.uid
+      }).then((): void => notify({
         title: "Ваши данные были успешно обновлены!"
       }))
     }
@@ -197,8 +199,12 @@ export default defineComponent({
           },
         },
         callback: (): void => {
-          getAuth().currentUser?.delete()
-          .then(() => store.dispatch("userLogout"));
+          store.dispatch("deleteUserInfo", currentUser.uid).then(() => {
+            getAuth().currentUser?.delete()
+            .then(() => {
+              store.dispatch("userLogout");
+            });
+          })
         }
       });
     }
@@ -211,7 +217,7 @@ export default defineComponent({
     }
 
     onMounted(():void => {
-      GetUserInfo().then((): void => {
+      store.dispatch("getUserInfo").then((): void => {
         const field = store.getters.getUserInfo;  
 
         userInfo.firstName = field.firstName;
@@ -225,10 +231,10 @@ export default defineComponent({
 
     return {
       userInfo,
-      TextLength: ELength.Text,
-      PasswordLength: ELength.Password,
-      LengthNone: ELength.None,
-      TextareaLength: ELength.Textarea,
+      TextLength: Length.Text,
+      PasswordLength: Length.Password,
+      LengthNone: Length.None,
+      TextareaLength: Length.Textarea,
       validForm,
       btnSaveDisable,
       updatePhoto,

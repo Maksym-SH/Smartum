@@ -1,4 +1,4 @@
-import { ApiMethod } from "@/types/index";
+import { ApiMethod, OmitUserInfo } from "@/types/index";
 
 export interface IError {
   config?: object;
@@ -55,6 +55,9 @@ export interface IUserInfo extends Omit<IUserReg, "password"> {
   emailVerified?: boolean;
   newPassword: string;
 }
+export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
+  uid: string,
+}
 
 // Expansion panel.
 export interface IExpPanelItem {
@@ -69,15 +72,16 @@ export interface IUserStore {
   currentUser: object;
   userPhoto: string;
   openConfirmPopup: boolean;
-  userInfo: IUserCreated
+  userInfo: IUserCreated;
 }
 
 export interface IUserCreated {
-  firstName: string,
-  lastName?: string,
-  about: string,
-  phone: string,
-  photoURL: string
+  firstName: string;
+  lastName?: string;
+  about: string;
+  phone: string;
+  photoURL: string;
+  uid?: string;
 }
 
 export interface ICommonStore {

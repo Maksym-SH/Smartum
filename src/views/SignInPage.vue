@@ -56,7 +56,7 @@ import { defineComponent, ref, reactive, computed } from "vue";
 import { IUserLogin } from "@/interfaces";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 import { emailValidator } from "@/main";
-import { ELength } from "@/enums/index";
+import { Length } from "@/enums/index";
 
 export default defineComponent({
   setup() {
@@ -65,7 +65,7 @@ export default defineComponent({
       password: "",
     });
     const authType = ref("signIn");
-    const minLength = ELength.Password;
+    const minLength = Length.Password;
 
     const { signIn } = FirebaseAuth();
 
@@ -81,7 +81,7 @@ export default defineComponent({
     return {
       userData,
       authType,
-      LengthPassword: ELength.Password,
+      LengthPassword: Length.Password,
       submitForm,
     };
   },

@@ -2,7 +2,7 @@ import { PropType } from "vue";
 
 import { ButtonSize, Variant } from "@/types/index";
 
-import { ELength } from "@/enums";
+import { Length } from "@/enums";
 
 // Input
 export const useInputProps = {
@@ -40,7 +40,7 @@ export const useInputProps = {
   },
   min: {
     type: Number,
-    default: ELength.None,
+    default: Length.None,
   },
   label: {
     type: String,
@@ -68,7 +68,7 @@ export const useTextareaProps = {
   },
   max: {
     type: Number,
-    default: ELength.None
+    default: Length.None
   },
   label: {
     type: String,
@@ -76,7 +76,7 @@ export const useTextareaProps = {
   },
   min: {
     type: Number,
-    default: ELength.None,
+    default: Length.None,
   },
   resize: {
     type: Boolean,

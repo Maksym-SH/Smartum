@@ -52,7 +52,7 @@ import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import { EmailAuthCredential, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
-import { ELength } from '@/enums';
+import { Length } from '@/enums';
 import { computed } from '@vue/reactivity';
 import { Confirmation } from '@/helpers/methods';
 
@@ -65,7 +65,7 @@ export default defineComponent({
     const currentUserEmail = userInfo.email;
     const password = ref("");
 
-    const btnConfirmDisable = computed((): boolean => password.value.length < ELength.Password);
+    const btnConfirmDisable = computed((): boolean => password.value.length < Length.Password);
 
     const result = (value: boolean): void => {
       if (value) {
@@ -84,7 +84,7 @@ export default defineComponent({
     
     return {
       password,
-      PasswordLength: ELength.Password,
+      PasswordLength: Length.Password,
       btnConfirmDisable,
       result
     }
