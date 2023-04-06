@@ -20,8 +20,6 @@ export type LangFormatType = "ru-Ru" | "en-EN";
 
 export type AutoComplete = "on" | "off";
 
-export type ApiMethod = "POST" | "GET" | "PUT" | "DELETE";
-
 export type Status = "Admin" | "User";
 
 export type ButtonSize = "sm" | "md" | "lg";
