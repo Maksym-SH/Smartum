@@ -37,7 +37,7 @@
     <span
       v-if="type == 'password'"
       class="c-input__toggle-password"
-      @click="togglePasswordType"
+      @click="toggleInputType"
     >
       <transition mode="out-in" name="toggle-content">
         <img
@@ -49,10 +49,10 @@
         />
         <img
           v-else
-          svg-inline
           key="close"
+          svg-inline
           src="@/assets/img/icons/eye-slash.svg"
-          alt=""
+          alt="Eye slash"
         />
       </transition>
     </span>
@@ -63,7 +63,7 @@
       transparent
       round
     >
-      <img src="@/assets/img/icons/search.svg" alt="" />
+      <img src="@/assets/img/icons/search.svg" alt="Search" />
     </Button>
   </div>
 </template>
@@ -110,7 +110,7 @@ export default defineComponent({
       }
     };
 
-    const togglePasswordType = (): void => {
+    const toggleInputType = (): void => {
       if (input.value?.type == "password") {
         input.value!.type = "text";
         showPassword.value = true;
@@ -137,7 +137,7 @@ export default defineComponent({
       inputName,
       showPassword,
       validator,
-      togglePasswordType,
+      toggleInputType,
     };
   },
 });

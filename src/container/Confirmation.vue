@@ -50,11 +50,11 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
-import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
-import { EmailAuthCredential, EmailAuthProvider, reauthenticateWithCredential, User } from "firebase/auth";
+import { EmailAuthCredential, EmailAuthProvider, User } from "firebase/auth";
 import { Length } from '@/enums';
 import { computed } from '@vue/reactivity';
 import { Confirmation } from '@/helpers/methods';
+import firebaseAuth from '@/helpers/firebase/firebaseAuth';
 
 export default defineComponent({
   setup() {
@@ -70,13 +70,10 @@ export default defineComponent({
     const result = (value: boolean): void => {
       if (value && userEmail) {
         const credential: EmailAuthCredential = EmailAuthProvider.credential(userEmail, password.value);
-        
-        store.dispatch("setLoadingStatus", true);
 
-        reauthenticateWithCredential(userInfo, credential)
-        .then((): void | Promise<any> => Confirmation(false))
-        .catch((error): void => ShowErrorMessage(error))  
-        .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
+        firebaseAuth().reauthorization(userInfo, credential).then(() => {
+          Confirmation(false);
+        })
       }
       else store.dispatch("setConfirmPopup", false);
     }
@@ -153,7 +150,7 @@ export default defineComponent({
     }
   }
 
-  @include respond($us, max) {
+  @include responsive($us, max) {
     &__window {
       width: 310px;
       padding: 15px 18px;

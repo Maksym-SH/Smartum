@@ -25,19 +25,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, reactive, ref, computed, onMounted } from "vue";
+import { defineComponent, watch, reactive, ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-
-import * as DescriptionJSON from "@/helpers/content/tabs.json";
+import { Layout } from "@/enums";
 import { ObjectFull, ObjectNotEmpty } from "@/helpers/methods";
-
 import { ILanguage, IMetaName } from "@/interfaces/index";
 import { RouterMeta, DynamicDescription } from "@/types";
-
+import * as DescriptionJSON from "@/helpers/content/tabs.json";
 import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
-import { Layout } from "@/enums";
+
 
 export default defineComponent({
   components: {
@@ -55,13 +53,13 @@ export default defineComponent({
     const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
 
     // Note: ObjectFull - custom method.
-    const showTabName = computed(() => ObjectFull(tabName));
-    const showTabDescription = computed(() => showTabName.value && ObjectFull(tabDescription))
+    const showTabName = computed((): boolean => ObjectFull(tabName));
+    const showTabDescription = computed((): boolean => showTabName.value && ObjectFull(tabDescription))
 
-    const showTabContent = computed(() => ObjectNotEmpty(store.getters.getCurrentUser))
+    const showTabContent = computed((): boolean => ObjectNotEmpty(store.getters.getCurrentUser))
     // Aside
     const minimizeAside = ref(true);
-    const toggleAsideShow = (value: boolean, capture: boolean = false) => {
+    const toggleAsideShow = (value: boolean, capture: boolean = false): void => {
       if (!capture) {
         minimizeAside.value = value;
       }
@@ -70,7 +68,7 @@ export default defineComponent({
       }
     };
 
-    watch((): IMetaName | RouterMeta => router.meta, (meta) => {
+    watch((): IMetaName | RouterMeta => router.meta, (meta): void => {
         const metaName: ILanguage = meta.tabName as ILanguage;
 
         if (metaName) {
@@ -116,7 +114,7 @@ export default defineComponent({
     &.minimize-info {
       padding-left: 0 !important;
     }
-    @include respond($lg, max) {
+    @include responsive($lg, max) {
       padding-left: 0;
     }
   }

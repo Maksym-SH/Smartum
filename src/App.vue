@@ -18,11 +18,9 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
-
+import { ObjectNotEmpty } from "./helpers/methods";
 import Popup from "@/container/Popup.vue";
 import ConfirmationPopup from "@/container/Confirmation.vue";
-
-import { ObjectNotEmpty } from "./helpers/methods";
 
 export default defineComponent({
   components: {
@@ -33,9 +31,9 @@ export default defineComponent({
     const store = useStore();
 
     return {
-      loadingStatus: computed(() => store.getters.getLoadingStatus),
-      showPopup: computed(() => ObjectNotEmpty(store.getters.getPopupParams)),
-      showConfirmPopup: computed(() => store.getters.getConfirmPopup)
+      loadingStatus: computed((): boolean => store.getters.getLoadingStatus),
+      showPopup: computed((): boolean  => ObjectNotEmpty(store.getters.getPopupParams)),
+      showConfirmPopup: computed((): boolean => store.getters.getConfirmPopup)
     };
   },
 });
@@ -43,10 +41,6 @@ export default defineComponent({
 
 <style lang="scss">
 @import "./assets/scss/global.scss";
-* {
-  box-sizing: border-box;
-}
-
 body {
   min-width: 320px;
   background-color: $color-grey;
@@ -61,7 +55,7 @@ body {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $color-green;
+    background-color: $color-brown;
   }
 }
 

@@ -1,7 +1,6 @@
-import { User, updatePassword, updateProfile } from "firebase/auth";
+import { User, updatePassword } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 import store from "@/store";
-import refreshUserInfo from "./firebaseRefresh";
 import ShowErrorMessage from "./firebaseErrorMessage";
 
 export const PasswordUpdate = (user: User, password: string): Promise<void> => {
@@ -38,12 +37,3 @@ export const PasswordUpdate = (user: User, password: string): Promise<void> => {
     .finally(() => store.dispatch('setLoadingStatus', false))
   })
 } */
-
-export const ProfileUpdate = (user: User, displayName: string, photoURL?: string): void => {
-  store.dispatch("setLoadingStatus", true);
-
-  updateProfile(user, { displayName, photoURL })
-  .then(() => refreshUserInfo())
-  .catch((error) => ShowErrorMessage(error))
-  .finally(() => store.dispatch("setLoadingStatus", false));
-}

@@ -53,7 +53,7 @@ export default defineComponent({
     }
   }
 
-  @include respond($lg, max) {
+  @include responsive($lg, max) {
     padding: 10px 40px;
   }
 

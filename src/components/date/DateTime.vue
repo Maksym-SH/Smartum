@@ -1,12 +1,12 @@
 <template>
   <div class="date-wrapper">
-    <Loader inline v-if="!showTemplate" />
+    <Loader :size="40" inline v-if="!showTemplate" />
     <div class="date" v-else>
       <h3 class="date__title">
         <span class="date__icon">
           <img :src="require(`@/assets/img/icons/${imageType}.svg`)" alt="" />
         </span>
-        {{ welcomeType }}
+        {{ Welcome }}
       </h3>
       <div class="date__time">
         <time class="date__time--time-text">
@@ -22,22 +22,21 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted, watch } from "vue";
-import { WelcomeType, Icon } from "@/types";
+import { Welcome, Icon } from "@/types";
 import { Numbers } from "@/enums";
-import timeStamp from "@/helpers/date/timeStamp";
+import timestamp from "@/helpers/date/timestamp";
 
 export default defineComponent({
   setup() {
-    const welcomeType = ref<WelcomeType>("Добрый вечер");
+    const Welcome = ref<Welcome>("Добрый вечер");
 
     const intervalTime = ref<number | null>(null);
 
     const time = ref("");
-
     const date = ref("");
 
     const imageType = computed((): Icon => {
-      if (welcomeType.value !== "Добрый вечер") return "sun";
+      if (Welcome.value !== "Добрый вечер") return "sun";
 
       return "moon";
     });
@@ -50,10 +49,10 @@ export default defineComponent({
 
         if (currentTime < Numbers.EveningRU) {
           // If the time is later than 16:00.
-          welcomeType.value = "Добрый день";
+          Welcome.value = "Добрый день";
         }
         else {
-          welcomeType.value = "Добрый вечер";
+          Welcome.value = "Добрый вечер";
         }
       }
     );
@@ -62,8 +61,8 @@ export default defineComponent({
       intervalTime.value = setInterval((): void => {
         const currentDate = new Date();
 
-        time.value = timeStamp(currentDate).time;
-        date.value = timeStamp(currentDate).date;
+        time.value = timestamp(currentDate).time;
+        date.value = timestamp(currentDate).date;
       }, Numbers.Second);
     });
 
@@ -76,7 +75,7 @@ export default defineComponent({
     return {
       time,
       date,
-      welcomeType,
+      Welcome,
       imageType,
       showTemplate,
     };
@@ -90,14 +89,6 @@ export default defineComponent({
     position: relative;
     height: 43.2px;
     min-width: 130px;
-    :deep(.c-loader) {
-      .c-loader__spinner {
-        svg {
-          width: 40px;
-          height: 40px;
-        }
-      }
-    }
   }
   width: fit-content;
   color: $color-grey;

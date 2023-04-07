@@ -1,3 +1,4 @@
+// Sign-in / Sign-up
 @mixin auth-window {
   width: 100%;
   min-height: 100vh;
@@ -15,6 +16,7 @@
   justify-content: center;
 }
 
+// Button component.
 @mixin button-outline-color($color, $border, $hover-border, $hover-background, $hover-color) {
   color: $color;
   border-color: $border;
@@ -38,7 +40,7 @@
   }
 }
 
-
+// Responsive
 @mixin mobile($direction) {
   @if($direction == min) {
     @media screen and (min-width: $sm) {
@@ -78,7 +80,7 @@
   }
 }
 
-@mixin respond($responsive, $direction) {
+@mixin responsive($responsive, $direction) {
   @if($direction == min) {
     @media screen and (min-width: $responsive) {
       @content;

@@ -75,13 +75,10 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from "vue";
-
-import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
-
 import { emailValidator } from "@/main";
-
 import { IUserReg } from "@/interfaces";
 import { Length } from "@/enums";
+import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 export default defineComponent({
   setup() {
@@ -96,7 +93,7 @@ export default defineComponent({
 
     const LengthText = Length.Text;
 
-    const validPersonDate = computed(() => {
+    const validPersonDate = computed((): boolean => {
       return (
         userData.firstName.length >= LengthText &&
         (!userData.lastName.length ||
@@ -111,7 +108,7 @@ export default defineComponent({
       return emailValidator.validate(userData.email) && validPersonDate.value;
     });
 
-    const submitForm = () => signUp(userData, valid.value);
+    const submitForm = (): void => signUp(userData, valid.value);
 
     return {
       userData,
@@ -199,7 +196,7 @@ export default defineComponent({
       }
     }
   }
-  @include respond($md, max) {
+  @include responsive($md, max) {
     &__window {
       width: 400px;
       &--welcome {

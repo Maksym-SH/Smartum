@@ -103,7 +103,7 @@ export default defineComponent({
     }
   }
 
-  @include respond($xxl, max) {
+  @include responsive($xxl, max) {
     display: flex;
     align-items: center;
     justify-content: space-evenly;

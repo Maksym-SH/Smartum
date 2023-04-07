@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { Routes } from "@/types";
 
-const routes = [
+const routes: Routes = [
   {
     name: "SignIn",
     path: "/sign-in",

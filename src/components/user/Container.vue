@@ -1,6 +1,5 @@
 <template>
-  <Loader v-if="!showTemplate" inline />
-  <div class="user-info" v-else>
+  <div class="user-info">
     <Avatar
       rounded 
       online 
@@ -19,37 +18,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from "vue";
+import { defineComponent, reactive } from "vue";
 import { useStore } from "vuex";
 import router from "@/router";
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";
-import { ObjectNotEmpty } from "@/helpers/methods";
 import { SelectElements } from "@/types";
+import { useContainerProps } from "./use/props";
 
 export default defineComponent({
   components: {
     Avatar,
     Info,
   },
-  props: {
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      default: ""
-    },
-    avatar: {
-      type: String,
-      default: "",
-    },
-  },
+  props: useContainerProps,
   setup() {
     const store = useStore();
-
-    const showTemplate = computed((): boolean => ObjectNotEmpty(store.getters.getCurrentUser));
 
     const actions: SelectElements = reactive([
       {
@@ -70,7 +54,6 @@ export default defineComponent({
 
     return {
       actions,
-      showTemplate,
       selected,
     };
   },
@@ -78,32 +61,18 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.c-loader {
-  display: block !important;
-  text-align: center;
-  :deep(svg) {
-    width: 40px;
-    height: 40px;
-  }
-}
-
 .user-info {
   display: flex;
-
   .user-avatar {
     margin-right: 16px;
   }
-
   &__content {
-
     position: relative;
     min-width: 135px;
-
     :deep(.c-select) {
       position: absolute;
       top: 2px;
       right: -40px;
-
       .c-button--round {
         img {
           width: 22px;

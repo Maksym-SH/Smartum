@@ -28,7 +28,7 @@
 <script lang="ts">
 import { defineComponent, ref, PropType, computed } from "vue";
 import fileValidate from "@/helpers/file/validate";
-import { RefElement, FileType, IImageSource } from "@/types";
+import { RefElement, FileType, ImageSource } from "@/types";
 import { OpenPopup } from "@/helpers/methods";
 
 export default defineComponent({
@@ -51,7 +51,7 @@ export default defineComponent({
 
     const imgLoad = (): boolean => imgLoaded.value = true;
 
-    const imageSource = ref<IImageSource>(props.photoURL);
+    const imageSource = ref<ImageSource>(props.photoURL);
 
     const fileUpload = (): void => {
       const reader = new FileReader();

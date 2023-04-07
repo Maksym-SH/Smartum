@@ -281,12 +281,12 @@ export default defineComponent({
       max-width: 200px;
       justify-self: end;
     }
-    @include respond($lg, max) {
+    @include responsive($lg, max) {
       max-width: 100%;
       padding-right: 40px;
       grid-template-columns: 200px 0.5fr 0.5fr;
     }
-    @include respond($md, max) {
+    @include responsive($md, max) {
       grid-template-columns: 170px 1fr 1fr;
       gap: 13px 15px;
       &--upload {

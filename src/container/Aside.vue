@@ -1,10 +1,11 @@
 <template>
   <aside class="aside" :class="{ 'aside-minimize': minimizeAside }">
     <div class="aside__content">
-      <div class="user">
-        <div class="aside__logo">
-          <img src="@/assets/img/logo.svg" alt="Logo" />
-        </div>
+      <div class="aside__logo">
+        <img src="@/assets/img/logo.svg" alt="Logo" />
+      </div>
+      <Loader :size="40" inline v-if="!showContent"/>
+      <template v-else>
         <div class="aside__search-content mobile-only">
           <Input
             type="search" 
@@ -19,12 +20,11 @@
             :avatar="userInfo.photoURL" 
           />
         </div>
-
-        <div class="aside__collapse" @click="collapseToggle">
-          <span class="aside__collapse--toggle"
-            ><img src="@/assets/img/icons/caret.svg" alt="" />
-          </span>
-        </div>
+      </template>
+      <div class="aside__collapse" @click="collapseToggle">
+        <span class="aside__collapse--toggle"
+          ><img src="@/assets/img/icons/caret.svg" alt="" />
+        </span>
       </div>
     </div>
   </aside>
@@ -36,6 +36,7 @@ import { useStore } from "vuex";
 import { Numbers, Layout } from "@/enums";
 import { IUserCreated } from "@/interfaces";
 import User from "@/components/user/Container.vue";
+import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
 
 export default defineComponent({
   components: {
@@ -54,6 +55,10 @@ export default defineComponent({
     const searchInput = ref("");
 
     const minimize = ref(true);
+
+    const showContent = computed((): boolean => {
+      return ObjectHasValues(store.getters.getUserInfo) && ObjectNotEmpty(store.getters.getCurrentUser)
+    });
 
     const userInfo = computed((): IUserCreated => store.getters.getUserInfo);
 
@@ -79,6 +84,7 @@ export default defineComponent({
 
     return {
       userInfo, 
+      showContent,
       minimize,
       searchInput,
       collapseToggle,
@@ -110,7 +116,13 @@ export default defineComponent({
     flex-direction: column;
     height: 100%;
     position: relative;
-    color: black;
+    color: $color-black;
+    .c-loader {
+      position: absolute !important;
+      top: 50%;
+      display: inline;
+      left: calc(50% - 20px);
+    }
   }
 
   &__logo {
@@ -151,7 +163,7 @@ export default defineComponent({
     clip-path: polygon(0 0, 100% 21%, 100% 76%, 0% 100%);
   }
 
-  @include respond($xs, max) {
+  @include responsive($xs, max) {
     transform: translateX(0);
     z-index: 5;
     &__collapse {

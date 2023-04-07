@@ -2,7 +2,7 @@ import { PropType } from "vue";
 import { ButtonSize, Variant } from "@/types/index";
 import { Length } from "@/enums";
 
-// Input
+// Input.vue
 export const useInputProps = {
   modelValue: {
     type: [String, Number],
@@ -50,7 +50,7 @@ export const useInputProps = {
   },
 };
 
-// Textarea
+// Textarea.vue
 export const useTextareaProps = {
   modelValue: {
     type: String,
@@ -82,7 +82,7 @@ export const useTextareaProps = {
   }
 }
 
-// Button
+// Button.vue
 export const useButtonProps = {
   title: {
     type: String,
@@ -118,7 +118,7 @@ export const useButtonProps = {
   },
 };
 
-// Checkbox
+// Checkbox.vue
 export const useCheckboxProps = {
   modelValue: {
     type: Boolean,

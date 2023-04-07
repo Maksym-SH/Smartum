@@ -7,17 +7,13 @@ import {
   IRootState,
   IPopupParams
 } from "@/interfaces/index";
+import { RouteRecordRaw } from "vue-router";
 import { ActionContext } from "vuex";
 
-export type Error = Awaited<Promise<IError>>;
-
-export type AwaitType<T> = Awaited<T>;
-
-export type ErrorCode = { code: string } | string;
-
+// Components
 export type RefElement = HTMLInputElement | null;
 
-export type WelcomeType = "Добрый день" | "Добрый вечер";
+export type Welcome = "Добрый день" | "Добрый вечер";
 
 export type EmailVerify = "Почта подтверждена" | "Почта не подтверждена"
 
@@ -25,15 +21,18 @@ export type Icon = "moon" | "sun";
 
 export type StatusVueIcon = "mdi-email-check" | "mdi-email-alert";
 
-export type IImageSource = string | ArrayBuffer | null;
+export type ImageSource = string | ArrayBuffer | null;
 
 export type IUserFieldsUpdate = Partial<IUserCreated>;
 
 export type LangFormatType = "ru-Ru" | "en-EN";
 
-export type AutoComplete = "on" | "off";
+export type DynamicDescription = { [key: string]: ILanguage };
 
-export type Status = "Admin" | "User";
+export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword" | "photoURL";
+
+// Props
+export type AutoComplete = "on" | "off";
 
 export type ButtonSize = "sm" | "md" | "lg";
 
@@ -49,17 +48,21 @@ export type SelectElements = Array<ISelectElem>;
 
 export type Position = "top" | "bottom" | "start" | "end" | "center";
 
-export type DynamicDescription = { [key: string]: ILanguage };
-
 export type FileType = "image" | "text";
-
-export type RouterMeta = Record<string | number | symbol, unknown>;
 
 export type ModelValue = string | number | unknown;
 
-// Omit
-export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword" | "photoURL";
 // Store
 export type RootContext = ActionContext<IRootState, IRootState>;
 
 export type UserContext<State> = ActionContext<State, IRootState>;
+
+// Router
+export type Routes = Readonly<Array<RouteRecordRaw>>
+
+export type RouterMeta = Record<string | number | symbol, unknown>;
+
+// Promise
+export type Error = Awaited<Promise<IError>>;
+
+export type ErrorCode = { code: string } | string;

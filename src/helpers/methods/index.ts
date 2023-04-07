@@ -4,6 +4,9 @@ import store from "@/store";
 export const ObjectFull = (object: object): boolean => {
   return Object.values(object).every((item) => item);
 }
+export const ObjectHasValues = (object: object): boolean => {
+  return Object.values(object).some((item) => item);
+}
 
 export const ObjectNotEmpty = (object: object): boolean => {
   return Object.keys(object).length > 0;

@@ -2,7 +2,6 @@ import { notify } from "@kyvg/vue3-notification";
 import { /* FileFormat, */ Numbers } from "@/enums";
 import { FileType } from "@/types";
 
-
 /* const Format = [ 
   FileFormat.APP_GZIP, 
   FileFormat.APP_XML, 
@@ -15,8 +14,6 @@ import { FileType } from "@/types";
   FileFormat.Text_XML, 
   FileFormat.Text_XPython
 ]; */
-
-
 
 const fileValidate = (file: File, needType: FileType): boolean => {
   const currentType: string = file.type.toLowerCase();

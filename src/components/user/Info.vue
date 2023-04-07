@@ -1,34 +1,23 @@
 <template>
   <div class="user-info__name">
-    <h5 class="user-info__name--first-name text-ellipsis">{{ firstName }} {{ lastName }}</h5>
+    <h5 class="user-info__name--name text-ellipsis">{{ firstName }}</h5>
+    <h5 class="user-info__name--name text-ellipsis">{{ lastName }}</h5>
     <small class="user-info__name--status" :class="{ 'verified': emailVerified }">
       <span :class="['mdi', statusIcon]"></span> 
-      {{ userStatusText }}  
+      {{ userStatusText }}
     </small>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from "vue";
+import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
-import { Status, EmailVerify, StatusVueIcon } from "@/types";
+import { EmailVerify, StatusVueIcon } from "@/types";
+import { useInfoProps } from "./use/props";
 
 export default defineComponent({
-  props: {
-    status: {
-      type: String as PropType<Status>,
-      default: "User",
-    },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      default: ""
-    }
-  },
-  setup() {
+  props: useInfoProps,
+  setup(props) {
     const store = useStore();
 
     const emailVerified: boolean = store.getters.getCurrentUser.emailVerified;
@@ -38,11 +27,14 @@ export default defineComponent({
       return "Почта не подтверждена"
     })
 
+    const showStatusEmailTemplate = computed((): boolean => true)
+
     const statusIcon: StatusVueIcon = emailVerified ? "mdi-email-check" : "mdi-email-alert"
 
     return {
       statusIcon,
       emailVerified,
+      showStatusEmailTemplate,
       userStatusText,
     }
   }
@@ -53,7 +45,7 @@ export default defineComponent({
 .user-info__name {
   max-width: 140px;
 
-  &--first-name {
+  &--name {
     color: $color-white4;
     font-size: 14px;
     line-height: 21px;

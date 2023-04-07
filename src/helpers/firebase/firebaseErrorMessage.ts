@@ -34,7 +34,7 @@ const ShowErrorMessage = (errorCode: ErrorCode): void => {
   } else errorText = errorCode;
 
   notify({
-    title: "Не удалось обработать запрос",
+    title: "Не удалось обработать действие",
     text: errorText,
     type: "error",
   });

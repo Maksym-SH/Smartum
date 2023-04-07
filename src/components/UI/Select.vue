@@ -36,10 +36,6 @@ export default defineComponent({
       type: String as PropType<Position>,
       default: "end",
     },
-    ellips: {
-      type: Boolean,
-      default: false,
-    },
   },
   setup() {
     const picker = ref(false);

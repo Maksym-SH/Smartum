@@ -1,18 +1,18 @@
-import { IFormatDate } from "@/interfaces";
+import { IDateFormat } from "@/interfaces";
 import { Language } from "@/enums";
-import useTimeStamp from "./timeStamp";
+import useTimestamp from "./timestamp";
 import RegExp from "@/helpers/regExp";
 
-const GetDate = (date: string, lang = Language.Russian, onlyDate = false): IFormatDate => {
+const GetDate = (date: string, lang: Language = Language.Russian, onlyDate = false): IDateFormat => {
     const dateFormat = Number(date);
-    const timeStamp = useTimeStamp(null, lang, dateFormat);
+    const timestamp = useTimestamp(null, lang, dateFormat);
 
     if(onlyDate) {
         const regExp = lang === Language.English ? RegExp.TimeRegisteredEng : RegExp.TimeRegisteredRu;
-        timeStamp.date = timeStamp.date.match(regExp)![0];
+        timestamp.date = timestamp.date.match(regExp)![0];
     }
 
-    return timeStamp;
+    return timestamp;
 };
 
 export default GetDate;

@@ -1,29 +1,37 @@
 @import "./fonts";
 
 $color-blue: #21a8f4;
-$color-blue-hover: #2ca0e2;
 $color-dark-blue: #2d72c7;
+$color-cyan: #03a9f5;
+$color-blue-hover: #2ca0e2;
+
 $color-red: #f0483e;
 $color-red-hover: #d5463e;
-$color-pink: #f1a7a7;
+
 $color-yellow: #fed600;
 $color-yellow-hover: #e4c40f;
+
 $color-green: #2ed47a;
 $color-green-hover: #15a339;
-$color-dark-grey: #1d242e;
+
+$color-pink: #f1a7a7;
+
+// Dark
 $color-light-grey: #455162;
 $color-black: #000000;
+$color-dark-grey: #1d242e;
 $color-grey: #283342;
 $color-light-brown: #7e7575;
+$color-transp-black: rgba(29, 36, 46, 0.8);
+$color-brown: #918787;
+
+// Light
 $color-white1: #e3ebf3;
 $color-white2: #f7fafd;
 $color-white3: #f2f2f2;
 $color-white4: #ffffff;
 $color-white5: #edf1f5;
-$color-transp-black: rgba(29, 36, 46, 0.8);
-$color-cyan: #03a9f5;
 $color-text: #dad4d4;
-$color-brown: #918787;
 
 // Fonts
 $PoppinsRG: "Poppins-regular", sans-serif;

@@ -3,7 +3,7 @@ import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import { ActionContext } from "vuex"
 import { getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { IUserCreated, IUserInfo, IUserState, ICreateUser, IRootState } from "@/interfaces";
+import { IUserCreated, IUserInfo, IUserState, ICreateUser } from "@/interfaces";
 import { ErrorCode, IUserFieldsUpdate, UserContext } from "@/types"; 
 import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore"; 
 import { database } from "@/main";
@@ -13,7 +13,6 @@ export default {
   state: {
     userToken: "",
     currentUser: {},
-    openConfirmPopup: false,
     userInfo: {
       firstName: "",
       lastName: "",
@@ -29,9 +28,6 @@ export default {
     getCurrentUser(state: IUserState): object {
       return state.currentUser;
     },
-    getConfirmPopup(state: IUserState): boolean {
-      return state.openConfirmPopup;
-    },
     getUserInfo(state: IUserState): IUserCreated {
       return state.userInfo;
     }
@@ -43,9 +39,6 @@ export default {
     SET_CURRENT_USER(state: IUserState, user: object): void {
       state.currentUser = user;
     },
-    SET_CONFIRM_POPUP(state:IUserState, show: boolean): void {
-      state.openConfirmPopup = show;
-    },
     SET_USER_INFO(state: IUserState, params: IUserCreated): void {
       state.userInfo = params;
     },
@@ -56,9 +49,6 @@ export default {
     },
     setCurrentUser({ commit }: UserContext<IUserState>, user: any): void {
       commit("SET_CURRENT_USER", user);
-    },
-    setConfirmPopup({ commit }: UserContext<IUserState>, show: boolean): void {
-      commit('SET_CONFIRM_POPUP', show);
     },
     createUser({ dispatch }: UserContext<IUserState>, info: ICreateUser): Promise<void> {
       dispatch("setLoadingStatus", true)
@@ -102,7 +92,7 @@ export default {
           updateDoc(profile, fieldsToUpdate).then(() => {
             updateDoc(profilePhoto, "photoURL", photoURL).then(() => {
               resolve();
-            }).finally((): Awaited<Promise<any>> => dispatch("getUserInfo"))
+            }).finally(() => dispatch("getUserInfo"))
           })
           .catch((error: ErrorCode) => {
             ShowErrorMessage(error);
@@ -126,10 +116,9 @@ export default {
           ShowErrorMessage(error);
           reject(error);
         })
-        .finally((): Awaited<Promise<any>> => dispatch("setLoadingStatus", false));
+        .finally(() => dispatch("setLoadingStatus", false));
       })
     },
-
     getUserInfo({ getters, commit, dispatch }: UserContext<IUserInfo>): Promise<any> {
         const unicID = getters.getCurrentUser.uid; // Unic id for database field access.
         
@@ -173,7 +162,6 @@ export default {
         .finally(() => dispatch("setLoadingStatus", false))
       })
     },
-
     userLogout({ commit }: UserContext<IUserState>): Awaited<void> {
       getAuth().signOut().then(() => {
         commit("SET_USER_TOKEN", "");

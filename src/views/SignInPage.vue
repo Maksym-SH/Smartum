@@ -64,19 +64,20 @@ export default defineComponent({
       email: "",
       password: "",
     });
+
     const authType = ref("signIn");
     const minLength = Length.Password;
 
     const { signIn } = FirebaseAuth();
 
-    const valid = computed(() => {
+    const valid = computed((): boolean => {
       return (
         emailValidator.validate(userData.email) &&
         userData.password.length >= minLength
       );
     });
 
-    const submitForm = () => signIn(userData, valid.value);
+    const submitForm = (): void => signIn(userData, valid.value);
 
     return {
       userData,

@@ -59,13 +59,14 @@ export default defineComponent({
       store.dispatch("setPopupParams", {})
     };
 
-    const result = (result: boolean): void => {
+    const result = async(result: boolean): Promise<void> => {
       if(!result) {
         ClosePopup(); // Clear data and close popup.
       }
       else {
-        params.callback();
-        ClosePopup();
+        await params.callback().then(() => {
+          ClosePopup();
+        })
       }
     }
 

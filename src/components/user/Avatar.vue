@@ -1,5 +1,9 @@
 <template>
-  <span class="user-avatar" :style="avatarSize" :class="{'user-avatar--rounded': rounded }">
+  <span
+    class="user-avatar" 
+    :style="avatarSize" 
+    :class="{'user-avatar--rounded': rounded }"
+  >
     <v-avatar 
       v-if="avatar" 
       :image="avatar" 
@@ -13,40 +17,20 @@
     >
       {{ initials }}
     </span>
-    <span v-if="online" class="user-avatar--online"> </span>
+    <span 
+      v-if="online" 
+      class="user-avatar--online"
+    ></span>
   </span>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref, computed, CSSProperties } from "vue";
+import { useAvatarProps } from "./use/props";
 
 export default defineComponent({
-  props: {
-    avatar: {
-      type: String,
-      default: "",
-    },
-    online: {
-      type: Boolean,
-      default: false,
-    },
-    size: {
-      type: Number,
-      default: 42,
-    },
-    rounded: {
-      type: Boolean,
-      default: false,
-    },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      default: ""
-    }
-  },
+  props: useAvatarProps,
+
   setup(props) {
     const avatarSize: CSSProperties = reactive({
       width: `${props.size}px`,

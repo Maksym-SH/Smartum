@@ -27,7 +27,7 @@ export const enum FileFormat {
   APP_XPHP = "application/x-php",
   APP_XML = "application/xml",
   Text_XML = "text/xml",
-  Text_XPython =  "text/x-script.python"
+  Text_XPython = "text/x-script.python"
 }
 
 export const enum Numbers {
@@ -35,7 +35,7 @@ export const enum Numbers {
   Second = 1000,
   AppearElement = 400,
   EveningRU = 16,
-  EveningENG = "4 am"
+  EveningENG = "4 AM"
 }
 
 export const enum Layout {

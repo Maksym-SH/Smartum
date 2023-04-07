@@ -1,7 +1,15 @@
 import store from "@/store";
 import router from "@/router";
 import ShowErrorMessage from "./firebaseErrorMessage";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  reauthenticateWithCredential, 
+  EmailAuthCredential, 
+  User, 
+  UserCredential
+} from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 import { IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
 import { ErrorCode } from "@/types";
@@ -66,6 +74,19 @@ const firebaseAuth = (): IUserAuth => {
         .catch((error): void => ShowErrorMessage(error))
         .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
     },
+    reauthorization:(userInfo: User, credential: EmailAuthCredential): Promise<UserCredential> =>  {
+      store.dispatch("setLoadingStatus", true);
+
+      return new Promise((resolve, reject) => {
+        reauthenticateWithCredential(userInfo, credential)
+        .then((response: UserCredential) => resolve(response))
+        .catch((error: ErrorCode): void => {
+          ShowErrorMessage(error);
+          reject(error);
+        })  
+        .finally(() => store.dispatch("setLoadingStatus", false));
+      })
+    }
   };
 
   return useAuth;

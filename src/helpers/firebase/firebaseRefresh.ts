@@ -1,23 +1,20 @@
 import { getAuth } from "firebase/auth";
 import store from "@/store";
 // import router from "@/router";
-import { notify } from "@kyvg/vue3-notification";
+import ShowErrorMessage from "./firebaseErrorMessage";
+import { ErrorCode } from "@/types";
 
-export default async function refreshUserInfo(): Promise<any> {
+export default async function refreshUserInfo(): Promise<void> {
   store.dispatch("setLoadingStatus", true);
 
   await getAuth().onAuthStateChanged((user) => {
     if (user) {
-      getAuth().currentUser?.getIdToken(true).then(async(newToken) => {
-        store.dispatch('setUserToken', newToken)
+      getAuth().currentUser?.getIdToken(true).then((newToken) => {
+        store.dispatch('setUserToken', newToken);
         store.dispatch("setCurrentUser", user);
         store.dispatch("getUserInfo");
       })
-      .catch((error) => {
-        notify({
-          title: error
-       })
-      });
+      .catch((error: ErrorCode): void => ShowErrorMessage(error));
     } else {
       store.dispatch("userLogout");
     }
