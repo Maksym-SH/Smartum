@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed } from "vue";
+import { defineComponent, reactive, ref, computed, CSSProperties } from "vue";
 
 export default defineComponent({
   props: {
@@ -48,7 +48,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const avatarSize = reactive({
+    const avatarSize: CSSProperties = reactive({
       width: `${props.size}px`,
       height: `${props.size}px`,
     });
@@ -67,7 +67,7 @@ export default defineComponent({
     const imgLoad = (): boolean => imgLoaded.value = true;
     const imgLoaded = ref(false);
 
-    const sizeInitials = computed((): string => `font-size: ${props.size / 1.7}px;`);
+    const sizeInitials = computed((): string => `font-size: ${ props.size / 2 }px;`);
 
     return {
       avatarSize,

@@ -1,6 +1,7 @@
-import { createStore, ActionContext } from "vuex";
 import User from "./user";
-import { ICommonStore, IPopupParams } from "@/interfaces";
+import { createStore } from "vuex";
+import { IRootState, IPopupParams } from "@/interfaces";
+import { RootContext } from "@/types";
 
 export default createStore({
   state: {
@@ -8,26 +9,26 @@ export default createStore({
     popupParams: {}
   },
   getters: {
-    getLoadingStatus(state: ICommonStore): boolean {
+    getLoadingStatus(state: IRootState): boolean {
       return state.loadingStatus;
     },
-    getPopupParams(state: ICommonStore) : boolean {
+    getPopupParams(state: IRootState): Partial<IPopupParams> {
       return state.popupParams;
     }
   },
   mutations: {
-    SET_LOADING_STATUS(state: ICommonStore, status: boolean): void {
+    SET_LOADING_STATUS(state: IRootState, status: boolean): void {
       state.loadingStatus = status;
     },
-    SET_POPUP_PARAMS(state: ICommonStore, value: boolean): void {
+    SET_POPUP_PARAMS(state: IRootState, value: boolean): void {
       state.popupParams = value;
     }
   },
   actions: {
-    setLoadingStatus({ commit }: ActionContext<ICommonStore, any>, status: boolean): void {
+    setLoadingStatus({ commit }: RootContext, status: boolean): void {
       commit("SET_LOADING_STATUS", status);
     },
-    setPopupParams({ commit }: ActionContext<ICommonStore, IPopupParams>, value: IPopupParams) : void {
+    setPopupParams({ commit }: RootContext, value: IPopupParams) : void {
       commit('SET_POPUP_PARAMS', value);
     },
   },

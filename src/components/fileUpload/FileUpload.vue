@@ -90,15 +90,16 @@ export default defineComponent({
             variant: "danger"
           },
         },
-        callback: () => {
+        callback: (): void => {
           emit("deleted");
           imgDeleted.value = true;
         }
       });
     };
 
-    const imagePath = computed(() => String(imageSource.value || props.photoURL));
-    const imageShowed = computed(() => (imgLoaded.value || props.photoURL) && !imgDeleted.value);
+    const imagePath = computed((): string => String(imageSource.value || props.photoURL));
+    const imageShowed = computed((): string | boolean => 
+                                    (imgLoaded.value || props.photoURL) && !imgDeleted.value);
 
     return {
       imgLoaded,

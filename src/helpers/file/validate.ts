@@ -1,5 +1,4 @@
 import { notify } from "@kyvg/vue3-notification";
-
 import { /* FileFormat, */ Numbers } from "@/enums";
 import { FileType } from "@/types";
 
@@ -19,8 +18,7 @@ import { FileType } from "@/types";
 
 
 
-const fileValidate = (file: any, needType: FileType): boolean => {
-  
+const fileValidate = (file: File, needType: FileType): boolean => {
   const currentType: string = file.type.toLowerCase();
 
   if(needType == "image") {

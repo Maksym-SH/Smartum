@@ -1,7 +1,7 @@
-import RegExp from "@/helpers/regExp";
 import { LangFormatType } from "@/types";
 import { Language, LangFormat } from "@/enums";
 import { IFormatDate } from "@/interfaces";
+import RegExp from "@/helpers/regExp";
 
 const useTimeStamp = (date: Date | null, lang = Language.Russian, fixedTime?:number): IFormatDate => {
 

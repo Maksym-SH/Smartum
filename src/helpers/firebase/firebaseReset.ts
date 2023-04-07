@@ -1,9 +1,9 @@
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-
 import store from "@/store";
 import router from "@/router";
-
 import { notify } from "@kyvg/vue3-notification";
+import { ErrorCode } from "@/types";
+import ShowErrorMessage from "./firebaseErrorMessage";
 
 const firebaseReset = (email: string): void => {
   if (!email) return;
@@ -19,27 +19,7 @@ const firebaseReset = (email: string): void => {
       });
       router.push({ name: "SignIn" });
     })
-    .catch((error) => {
-      let errorTextNotify = "";
-      switch (error.code) {
-        case "auth/invalid-email":
-          errorTextNotify = "Введенная почта невалидна!";
-          break;
-        case "auth/user-not-found":
-          errorTextNotify = "Пользователь не найден!";
-          break;
-        case "auth/too-many-requests":
-          errorTextNotify = "Слишком много запросов, повторите попытку позже!";
-          break;
-      }
-      if (error && errorTextNotify)
-        notify({
-          title: "Внимание!",
-          text: errorTextNotify,
-          type: "error",
-          ignoreDuplicates: true,
-        });
-    })
+    .catch((error: ErrorCode) => ShowErrorMessage(error))
     .finally(() => store.dispatch("setLoadingStatus", false));
 };
 

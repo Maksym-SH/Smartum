@@ -60,7 +60,8 @@ export interface IExpPanelItem {
 }
 
 // Store
-export interface IUserStore {
+
+export interface IUserState {
   userToken: string;
   currentUser: object;
   userPhoto: string;
@@ -77,9 +78,9 @@ export interface IUserCreated {
   uid?: string;
 }
 
-export interface ICommonStore {
+export interface IRootState {
   loadingStatus: boolean;
-  popupParams: boolean;
+  popupParams: IPopupParams | {};
 }
 
 export interface IPopupParams {
@@ -90,23 +91,12 @@ export interface IPopupParams {
       variant?: string;
       text?: string;
     },
-    yes?: {
+    yes: {
       variant?: string;
       text?: string;
     }
   },
   callback: () => any
-}
-
-export interface IPopupButtons extends Omit<IPopupParams, "title" | "text" | "buttons" | "callback"> {
-  yes: {
-    variant?: string;
-    text: string;
-  },
-  no: {
-    variant?: string;
-    text: string;
-  }
 }
 
 // TimeStamp

@@ -51,7 +51,7 @@
 import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
-import { EmailAuthCredential, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import { EmailAuthCredential, EmailAuthProvider, reauthenticateWithCredential, User } from "firebase/auth";
 import { Length } from '@/enums';
 import { computed } from '@vue/reactivity';
 import { Confirmation } from '@/helpers/methods';
@@ -60,24 +60,23 @@ export default defineComponent({
   setup() {
     const store = useStore();
     
-    const userInfo = store.getters.getCurrentUser;
+    const userInfo: User = store.getters.getCurrentUser;
 
-    const currentUserEmail = userInfo.email;
+    const userEmail = userInfo.email;
     const password = ref("");
 
     const btnConfirmDisable = computed((): boolean => password.value.length < Length.Password);
 
     const result = (value: boolean): void => {
-      if (value) {
-        const credential: EmailAuthCredential =
-                  EmailAuthProvider.credential(currentUserEmail, password.value);
+      if (value && userEmail) {
+        const credential: EmailAuthCredential = EmailAuthProvider.credential(userEmail, password.value);
         
         store.dispatch("setLoadingStatus", true);
 
         reauthenticateWithCredential(userInfo, credential)
-        .then(() => Confirmation(false))
-        .catch((error) => ShowErrorMessage(error))  
-        .finally(() => store.dispatch("setLoadingStatus", false));
+        .then((): void | Promise<any> => Confirmation(false))
+        .catch((error): void => ShowErrorMessage(error))  
+        .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
       }
       else store.dispatch("setConfirmPopup", false);
     }

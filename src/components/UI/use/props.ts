@@ -1,7 +1,5 @@
 import { PropType } from "vue";
-
 import { ButtonSize, Variant } from "@/types/index";
-
 import { Length } from "@/enums";
 
 // Input

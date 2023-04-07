@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue";
 import { useStore } from "vuex";
-import { Status, EmailVerify } from "@/types";
+import { Status, EmailVerify, StatusVueIcon } from "@/types";
 
 export default defineComponent({
   props: {
@@ -38,7 +38,7 @@ export default defineComponent({
       return "Почта не подтверждена"
     })
 
-    const statusIcon: string = emailVerified ? "mdi-email-check" : "mdi-email-alert"
+    const statusIcon: StatusVueIcon = emailVerified ? "mdi-email-check" : "mdi-email-alert"
 
     return {
       statusIcon,

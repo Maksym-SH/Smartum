@@ -1,14 +1,13 @@
-import { ActionContext } from "vuex";
 import router from "@/router";
+import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
+import { ActionContext } from "vuex"
 import { getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { IUserCreated, IUserInfo, IUserStore, ICreateUser } from "@/interfaces";
-import { IUserFieldsUpdate } from "@/types";
+import { IUserCreated, IUserInfo, IUserState, ICreateUser, IRootState } from "@/interfaces";
+import { ErrorCode, IUserFieldsUpdate, UserContext } from "@/types"; 
 import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore"; 
 import { database } from "@/main";
-import store from "@/store";
-import { DataCollection } from "@/enums/";
-import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
+import { DataCollection } from "@/enums";
 
 export default {
   state: {
@@ -24,44 +23,44 @@ export default {
     }
   },
   getters: {
-    getUserToken(state: IUserStore): string {
+    getUserToken(state: IUserState): string {
       return state.userToken;
     },
-    getCurrentUser(state: IUserStore): object {
+    getCurrentUser(state: IUserState): object {
       return state.currentUser;
     },
-    getConfirmPopup(state: IUserStore): boolean {
+    getConfirmPopup(state: IUserState): boolean {
       return state.openConfirmPopup;
     },
-    getUserInfo(state: IUserStore): IUserCreated {
+    getUserInfo(state: IUserState): IUserCreated {
       return state.userInfo;
     }
   },
   mutations: {
-    SET_USER_TOKEN(state: IUserStore, token: string): void {
+    SET_USER_TOKEN(state: IUserState, token: string): void {
       state.userToken = token;
     },
-    SET_CURRENT_USER(state: IUserStore, user: object): void {
+    SET_CURRENT_USER(state: IUserState, user: object): void {
       state.currentUser = user;
     },
-    SET_CONFIRM_POPUP(state:IUserStore, show: boolean): void {
+    SET_CONFIRM_POPUP(state:IUserState, show: boolean): void {
       state.openConfirmPopup = show;
     },
-    SET_USER_INFO(state: IUserStore, params: IUserCreated): void {
+    SET_USER_INFO(state: IUserState, params: IUserCreated): void {
       state.userInfo = params;
     },
   },
   actions: {
-    setUserToken({ commit }: ActionContext<IUserStore, any>, token: string): void {
+    setUserToken({ commit }: UserContext<IUserState>, token: string): void {
       commit("SET_USER_TOKEN", token);
     },
-    setCurrentUser({ commit }: ActionContext<IUserStore, any>, user: any): void {
+    setCurrentUser({ commit }: UserContext<IUserState>, user: any): void {
       commit("SET_CURRENT_USER", user);
     },
-    setConfirmPopup({ commit }: ActionContext<IUserStore, any>, show: boolean): void {
+    setConfirmPopup({ commit }: UserContext<IUserState>, show: boolean): void {
       commit('SET_CONFIRM_POPUP', show);
     },
-    createUser({ dispatch }: ActionContext<IUserStore, any>, info: ICreateUser): Promise<void> {
+    createUser({ dispatch }: UserContext<IUserState>, info: ICreateUser): Promise<void> {
       dispatch("setLoadingStatus", true)
 
       return new Promise((resolve, reject) => {
@@ -71,21 +70,20 @@ export default {
             about: "",
             phone: "",
         })
-        .then((): void => {
+        .then((): Awaited<void> => {
           // Set nullable photoURL.
           setDoc(doc(database, DataCollection.Photo, info.uid), {
             photoURL: ""
-          }).finally((): void => resolve())
+          }).finally(() => resolve())
         })
-        .catch((error): void => {
+        .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
           reject(error);
         })
-        .finally(() => store.dispatch("setLoadingStatus", false));
+        .finally(() => dispatch("setLoadingStatus", false));
       })
     },
-    updateUserInfo({ dispatch }: ActionContext<IUserInfo, any>, 
-                                                    info: Required<IUserCreated>): Promise<void> {
+    updateUserInfo({ dispatch }: UserContext<IUserInfo>, info: Required<IUserCreated>): Promise<void> {
 
         const profile = doc(database, DataCollection.Profile, info.uid);
         const profilePhoto = doc(database, DataCollection.Photo, info.uid);
@@ -100,84 +98,84 @@ export default {
         }
         dispatch("setLoadingStatus", true);
 
-        return new Promise((resolve, reject): void => {
-          updateDoc(profile, fieldsToUpdate).then((): void => {
-            updateDoc(profilePhoto, "photoURL", photoURL).then((): void => {
+        return new Promise((resolve, reject) => {
+          updateDoc(profile, fieldsToUpdate).then(() => {
+            updateDoc(profilePhoto, "photoURL", photoURL).then(() => {
               resolve();
-            }).finally((): Promise<any> => dispatch("getUserInfo"))
+            }).finally((): Awaited<Promise<any>> => dispatch("getUserInfo"))
           })
-          .catch((error): void => {
+          .catch((error: ErrorCode) => {
             ShowErrorMessage(error);
             dispatch("setLoadingStatus", false);
             reject(error);
           })
-          .finally((): Promise<any> => dispatch("setLoadingStatus", false))
+          .finally(() => dispatch("setLoadingStatus", false))
         })
     },
-    deleteUserInfo({ dispatch }: ActionContext<IUserInfo, any>, uid: string): Promise<void> {
+    deleteUserInfo({ dispatch }: UserContext<IUserInfo>, uid: string): Promise<void> {
       dispatch("setLoadingStatus", true);
 
-      return new Promise((resolve, reject): void => {
+      return new Promise((resolve, reject) => {
         const deleteUserProfile = doc(database, DataCollection.Profile, uid);
         const deleteUserAvatar = doc(database, DataCollection.Photo, uid);
 
-        deleteDoc(deleteUserProfile).then((): void => {
-          deleteDoc(deleteUserAvatar).finally((): void => resolve())
+        deleteDoc(deleteUserProfile).then(() => {
+          deleteDoc(deleteUserAvatar).finally(() => resolve())
         })
-        .catch((error): void => {
+        .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
           reject(error);
         })
-        .finally(() => dispatch("setLoadingStatus", false));
+        .finally((): Awaited<Promise<any>> => dispatch("setLoadingStatus", false));
       })
     },
 
-    getUserInfo({ getters, commit, dispatch }: ActionContext<IUserInfo, any>): Promise<any> {
+    getUserInfo({ getters, commit, dispatch }: UserContext<IUserInfo>): Promise<any> {
         const unicID = getters.getCurrentUser.uid; // Unic id for database field access.
         
         const profileRef = doc(database, DataCollection.Profile, unicID); // Profile document by unicID in database. 
 
-        store.dispatch("setLoadingStatus", true);
+        dispatch("setLoadingStatus", true);
 
-        return new Promise((resolve, reject): void => {
+        return new Promise((resolve, reject) => {
           //Get profile info.
-          getDoc(profileRef).then(async(response): Promise<any> => {
+          getDoc(profileRef).then(async(response) => {
             const info = response.data();
             // Get user avatar.
-            await dispatch("getUserAvatar", unicID).then((photo): void => {
+            await dispatch("getUserAvatar", unicID).then((photo: string) => {
               if (info) info.photoURL = photo;
             })
 
             commit("SET_USER_INFO", info);
             resolve(info);
           })
-          .catch((error): void => {
+          .catch((error: ErrorCode) => {
             ShowErrorMessage(error);
             reject(error);
           })
-          .finally((): Promise<any> => dispatch("setLoadingStatus", false))
+          .finally(() => dispatch("setLoadingStatus", false))
         })
     },
-    getUserAvatar({ dispatch }: ActionContext<IUserInfo, any>, unicID: string): Promise<any> {
+    getUserAvatar({ dispatch }: UserContext<IUserInfo>, unicID: string): Promise<any> {
       const avatarProfileRef = doc(database, DataCollection.Photo, unicID); // Unic id for database field access.
       dispatch("setLoadingStatus", true);
 
-      return new Promise((resolve, reject): void => {
+      return new Promise((resolve, reject) => {
         // Get user avatar.
-        getDoc(avatarProfileRef).then((response): void => {
+        getDoc(avatarProfileRef).then((response) => {
           const photoURL = response.data()?.photoURL || "";
           resolve(photoURL);
         })
-        .catch((error): void => {
+        .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
           reject(error);
         })
-        .finally((): Promise<any> => dispatch("setLoadingStatus", false))
+        .finally(() => dispatch("setLoadingStatus", false))
       })
     },
 
-    userLogout({ commit }: ActionContext<IUserStore, any>): void {
-      getAuth().signOut().then((): void => {
+    userLogout({ commit }: UserContext<IUserState>): Awaited<void> {
+      getAuth().signOut().then(() => {
         commit("SET_USER_TOKEN", "");
         commit("SET_CURRENT_USER", {});
         commit("SET_CONFIRM_POPUP", false);
@@ -200,10 +198,9 @@ export default {
           });
         }
       })
-      .catch((error): void => 
-        notify({
+      .catch((error: ErrorCode) => notify({
           title: "Произошла ошибка!",
-          text: error,
+          text: String(error),
         })
       )
     },

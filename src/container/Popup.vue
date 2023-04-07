@@ -11,10 +11,10 @@
         <Button 
           @click="result(false)"
           outline
-          :variant="btnParam.no.variant"
+          :variant="btnParam.no?.variant"
           size="sm"
           class="popup__button--no">
-          {{ btnParam.no.text }}
+          {{ btnParam.no?.text }}
         </Button>
         <Button
           @click="result(true)"
@@ -30,7 +30,8 @@
 
 <script lang="ts">
 import { ObjectFull } from '@/helpers/methods';
-import { IPopupParams, IPopupButtons } from '@/interfaces';
+import { IPopupParams } from '@/interfaces';
+import { PopupButtons } from "@/types";
 import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
 
@@ -39,9 +40,9 @@ export default defineComponent({
     const store = useStore();
     const params: IPopupParams = store.getters.getPopupParams;
 
-    const showTemplate = ObjectFull(params);
+    const showTemplate: boolean = ObjectFull(params);
 
-    const btnParam = computed((): IPopupButtons => {
+    const btnParam = computed((): PopupButtons => {
       return {
         yes: {
           text: params.buttons.yes?.text || "Подтвердить",

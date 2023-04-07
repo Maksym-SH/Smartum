@@ -1,6 +1,17 @@
-import { ISelectElem, ILanguage, IError, IExpPanelItem, IUserCreated } from "@/interfaces/index";
+import { 
+  ISelectElem,
+  ILanguage, 
+  IError, 
+  IExpPanelItem, 
+  IUserCreated, 
+  IRootState,
+  IPopupParams
+} from "@/interfaces/index";
+import { ActionContext } from "vuex";
 
 export type Error = Awaited<Promise<IError>>;
+
+export type AwaitType<T> = Awaited<T>;
 
 export type ErrorCode = { code: string } | string;
 
@@ -11,6 +22,8 @@ export type WelcomeType = "Добрый день" | "Добрый вечер";
 export type EmailVerify = "Почта подтверждена" | "Почта не подтверждена"
 
 export type Icon = "moon" | "sun";
+
+export type StatusVueIcon = "mdi-email-check" | "mdi-email-alert";
 
 export type IImageSource = string | ArrayBuffer | null;
 
@@ -30,6 +43,8 @@ export type ExpansionPanelItems = Array<IExpPanelItem>;
 
 export type Variant = "info" | "danger" | "success";
 
+export type PopupButtons = IPopupParams["buttons"];
+
 export type SelectElements = Array<ISelectElem>;
 
 export type Position = "top" | "bottom" | "start" | "end" | "center";
@@ -44,3 +59,7 @@ export type ModelValue = string | number | unknown;
 
 // Omit
 export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword" | "photoURL";
+// Store
+export type RootContext = ActionContext<IRootState, IRootState>;
+
+export type UserContext<State> = ActionContext<State, IRootState>;

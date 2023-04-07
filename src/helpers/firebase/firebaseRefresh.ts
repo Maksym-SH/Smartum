@@ -1,8 +1,6 @@
-import { getAuth, User } from "firebase/auth";
-
+import { getAuth } from "firebase/auth";
 import store from "@/store";
 // import router from "@/router";
-
 import { notify } from "@kyvg/vue3-notification";
 
 export default async function refreshUserInfo(): Promise<any> {

@@ -22,9 +22,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted, watch } from "vue";
-import timeStamp from "@/helpers/date/timeStamp";
 import { WelcomeType, Icon } from "@/types";
 import { Numbers } from "@/enums";
+import timeStamp from "@/helpers/date/timeStamp";
 
 export default defineComponent({
   setup() {

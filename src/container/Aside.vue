@@ -33,9 +33,9 @@
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import User from "@/components/user/Container.vue";
 import { Numbers, Layout } from "@/enums";
 import { IUserCreated } from "@/interfaces";
+import User from "@/components/user/Container.vue";
 
 export default defineComponent({
   components: {
@@ -48,11 +48,10 @@ export default defineComponent({
     }
   },
   emits: ["update:minimizeAside"],
-  setup(_, { emit }) {
+  setup(context, { emit }) {
+    const store = useStore();
 
     const searchInput = ref("");
-
-    const store = useStore();
 
     const minimize = ref(true);
 

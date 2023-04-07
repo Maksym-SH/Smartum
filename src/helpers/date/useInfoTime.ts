@@ -1,8 +1,6 @@
-import useTimeStamp from "./timeStamp";
-
 import { IFormatDate } from "@/interfaces";
 import { Language } from "@/enums";
-
+import useTimeStamp from "./timeStamp";
 import RegExp from "@/helpers/regExp";
 
 const GetDate = (date: string, lang = Language.Russian, onlyDate = false): IFormatDate => {

@@ -17,7 +17,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-
 import { Variant } from '@/types';
 
 export default defineComponent({

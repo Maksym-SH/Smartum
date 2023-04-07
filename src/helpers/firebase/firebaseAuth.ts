@@ -1,9 +1,9 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import store from "@/store";
 import router from "@/router";
+import ShowErrorMessage from "./firebaseErrorMessage";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 import { IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
-import ShowErrorMessage from "./firebaseErrorMessage";
 import { ErrorCode } from "@/types";
 
 const firebaseAuth = (): IUserAuth => {
