@@ -4,7 +4,7 @@
       <div class="aside__logo">
         <img src="@/assets/img/logo.svg" alt="Logo" />
       </div>
-      <Loader :size="40" inline v-if="!showContent"/>
+      <Loader :size="defaultLoaderSize" inline v-if="!showContent"/>
       <template v-else>
         <div class="aside__search-content mobile-only">
           <Input
@@ -56,6 +56,8 @@ export default defineComponent({
 
     const minimize = ref(true);
 
+    const defaultLoaderSize = 40;
+
     const showContent = computed((): boolean => {
       return ObjectHasValues(store.getters.getUserInfo) && ObjectNotEmpty(store.getters.getCurrentUser)
     });
@@ -70,14 +72,14 @@ export default defineComponent({
     }
 
     onMounted((): void => {
-      if(window.innerWidth >= Layout.Desktop) {
+      if(window.innerWidth >= Layout.LargeTablet) {
         setTimeout((): void => {
           setMinimizeValue(false);
         }, Numbers.AppearElement);
       }
 
       window.onresize = (): void => {
-        if(window.innerWidth <= Layout.Desktop)
+        if(window.innerWidth <= Layout.LargeTablet)
           setMinimizeValue(true);
       }
     });
@@ -87,6 +89,7 @@ export default defineComponent({
       showContent,
       minimize,
       searchInput,
+      defaultLoaderSize,
       collapseToggle,
     };
   },
@@ -138,7 +141,7 @@ export default defineComponent({
 
   &__search-content {
     padding: 10px 24px;
-    .input-wrapper {
+    .c-input {
       padding: 0;
       opacity: 0.8;
     }

@@ -1,6 +1,6 @@
 <template>
-  <div class="popup-container">
-    <div class="popup" v-if="showTemplate">
+  <div class="popup">
+    <div class="popup__container" v-if="showTemplate">
       <h2 class="popup__title" v-if="params.title">
         {{ params.title }}
       </h2>
@@ -59,14 +59,13 @@ export default defineComponent({
       store.dispatch("setPopupParams", {})
     };
 
-    const result = async(result: boolean): Promise<void> => {
+    const result = (result: boolean): void => {
       if(!result) {
         ClosePopup(); // Clear data and close popup.
       }
       else {
-        await params.callback().then(() => {
-          ClosePopup();
-        })
+        params.callback();
+        ClosePopup();
       }
     }
 
@@ -81,7 +80,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.popup-container {
+.popup {
   position: fixed;
   width: 100%;
   height: 100vh;
@@ -91,50 +90,48 @@ export default defineComponent({
   justify-content: center;
   z-index: 100;
 
-  .popup {
+  &__container {
     width: fit-content;
     border-radius: 10px;
     padding: 20px 40px;
     min-width: 400px;
+    max-width: 440px;
     background-color: $color-white5;
+  }
+  &__title {
+    text-align: center;
+    word-break: break-word;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
 
-    &__title {
-      text-align: center;
-      word-break: break-word;
-      font-size: 20px;
-      font-weight: 500;
-      margin-bottom: 10px;
-
-      &::first-letter {
-        text-transform: uppercase;
-      }
+    &::first-letter {
+      text-transform: uppercase;
     }
-
-    &__description {
-      font-size: 14px;
-      text-align: center;
-    }
-
-    &__button {
-      margin-top: 30px;
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-
-      .c-button {
-        min-width: 49%;
-      }
+  }
+  &__description {
+    font-size: 14px;
+    text-align: center;
+  }
+  &__button {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    .c-button {
+      min-width: 49%;
     }
   }
 
   @include mobile(max) {
-    .popup {
+    &__container {
       min-width: 300px;
       padding: 20px;
-      &__button {
-        .c-button {
-          padding:  10px;
-        }
+      margin: 5px;
+    }
+    &__button {
+      .c-button {
+        padding:  10px;
       }
     }
   }

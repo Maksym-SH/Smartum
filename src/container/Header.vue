@@ -45,10 +45,9 @@ export default defineComponent({
   }
 
   &__search-content {
-
-    .input-wrapper {
+    .c-input {
       width: 100%;
-      max-width: 440px;
+      max-width: 600px;
       padding: 0;
     }
   }

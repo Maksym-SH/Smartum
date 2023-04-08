@@ -16,9 +16,9 @@
           v-model="password"
         />
       </form>
-      <div class="confirmation__window_forgot-password">
+      <div class="confirmation__window-forgot-password">
         <router-link 
-          class="confirmation__window_forgot-password--go-page"
+          class="confirmation__window-forgot-password--go-page"
           :to="{name: 'Forgot'}" 
           @click="result(false)"
         >
@@ -123,18 +123,19 @@ export default defineComponent({
       font-size: 14px;
       text-align: center;
       line-height: 20px;
+      color: $color-grey;
     }
 
     &-input-field {
       margin: 20px 0;
       width: 100%;
       max-width: 370px;
-      .input-wrapper {
+      .c-input {
         padding-bottom: 0;
         font-size: 14px;
       }
     }
-    &_forgot-password {
+    &-forgot-password {
       text-align: end;
       padding: 5px 0 20px 0;
     }
@@ -164,7 +165,7 @@ export default defineComponent({
         width: 100%;
         margin: 20px auto 0 auto;
       }
-      &_forgot-password { 
+      &-forgot-password { 
         padding-top: 10px;
         &--go-page {
           font-size: 13px;

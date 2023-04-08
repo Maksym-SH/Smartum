@@ -1,18 +1,18 @@
 <template>
-  <div class="date-wrapper">
+  <div class="date">
     <Loader :size="40" inline v-if="!showTemplate" />
-    <div class="date" v-else>
+    <div class="date__wrapper" v-else>
       <h3 class="date__title">
         <span class="date__icon">
           <img :src="require(`@/assets/img/icons/${imageType}.svg`)" alt="" />
         </span>
         {{ Welcome }}
       </h3>
-      <div class="date__time">
-        <time class="date__time--time-text">
+      <div class="date__timestamp">
+        <time class="date__timestamp--time">
           {{ time }}
         </time>
-        <span class="date__time--date-text">
+        <span class="date__timestamp--date">
           {{ date }}
         </span>
       </div>
@@ -102,9 +102,9 @@ export default defineComponent({
   &__icon {
     margin-right: 10px;
   }
-  &__time {
+  &__timestamp {
     font-size: 12px;
-    &--time-text {
+    &--time {
       margin-right: 10px;
       position: relative;
       padding-right: 2px;
@@ -120,7 +120,7 @@ export default defineComponent({
         right: -5px;
       }
     }
-    &--date-text {
+    &--date {
       display: inline-block;
       &:first-letter {
         text-transform: uppercase;

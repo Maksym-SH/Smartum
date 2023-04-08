@@ -73,7 +73,6 @@ export default defineComponent({
   background-color: $color-green-hover;
   border-radius: 4px;
   color: $color-black;
-
   img {
     width: 100%;
     height: 100%;
@@ -81,7 +80,9 @@ export default defineComponent({
     border-radius: 4px;
     user-select: none;
   }
-
+  &--initials {
+    letter-spacing: 0.1px;
+  }
   &--online {
     position: absolute;
     display: inline-block;

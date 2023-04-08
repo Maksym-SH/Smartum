@@ -10,21 +10,21 @@
           @deleted="deletePhoto"
         />
       </div>
-      <div class="form-item first-name">
+      <div class="profile-tab__form_form-item first-name">
         <Input 
           v-model.trim="userInfo.firstName"
           :min="userInfo.firstName ? TextLength : LengthNone"
           label="Имя"
         />
       </div>
-      <div class="form-item last-name">
+      <div class="profile-tab__form_form-item last-name">
         <Input 
           v-model.trim="userInfo.lastName" 
           :min="userInfo.lastName ? TextLength : LengthNone" 
           label="Фамилия"
         />
       </div>
-      <div class="form-item textarea">
+      <div class="profile-tab__form_form-item textarea">
         <Textarea 
           v-model.trim="userInfo.about" 
           :max="TextareaLength"
@@ -32,7 +32,7 @@
           placeholder="Расскажите о себе (не обязательно)"
         />
       </div>
-      <div class="form-item phone">
+      <div class="profile-tab__form_form-item phone">
         <Input 
           class="phone"
           v-model.trim="userInfo.phone" 
@@ -41,7 +41,7 @@
           label="Телефон"
         />
       </div>
-      <div class="form-item email">
+      <div class="profile-tab__form_form-item email">
         <Input 
           disabled
           isEmail
@@ -49,7 +49,7 @@
           label="Электронный адрес"
         />
       </div>
-      <div class="form-item new-password">
+      <div class="profile-tab__form_form-item new-password">
         <Input 
           v-model.trim="userInfo.newPassword" 
           placeholder="Изменить пароль" 
@@ -267,12 +267,12 @@ export default defineComponent({
         max-width: 200px;
       }
     }
-    .input-wrapper {
+    .c-input {
       padding-bottom: 0;
     }
     .textarea {
       grid-area: 2/2/3/4;
-      .textarea-wrapper {
+      .c-textarea {
         height: 130px;
       }
     }
@@ -298,7 +298,7 @@ export default defineComponent({
           max-height: 170px; 
         }
       }
-      .textarea-wrapper {
+      .c-textarea {
         height: 110px !important; 
       }
     }
@@ -321,7 +321,7 @@ export default defineComponent({
           width: 200px;
         }
       }
-      .form-item {
+      &_form-item {
         margin: 0 auto;
         width: 100%;
         max-width: 330px;

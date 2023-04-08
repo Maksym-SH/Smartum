@@ -3,29 +3,29 @@
     <div class="sign-up__window">
       <div class="sign-up__window--welcome">
         <img
-          class="grid-image"
+          class="sign-up__window--welcome__grid-image"
           svg-inline
           src="@/assets/img/icons/grid.svg"
           alt="Grid"
         />
         <img
-          class="tasks-image"
+          class="sign-up__window--welcome__tasks-image"
           svg-inline
           src="@/assets/img/icons/list-task.svg"
           alt="Tasks"
         />
 
-        <h3 class="title">Добро пожаловать!</h3>
-        <div class="content">
-          <h4 class="description">Заполните форму чтобы создать аккаунт.</h4>
+        <h3 class="sign-up__window--welcome-title">Добро пожаловать!</h3>
+        <div class="sign-up__window-content">
+          <h4 class="sign-up__window--welcome-description">Заполните форму чтобы создать аккаунт.</h4>
         </div>
         <div class="sign-up__window--welcome-logo">
           <img src="@/assets/img/logo.svg" alt="Logo" />
         </div>
       </div>
       <div class="sign-up__window--content content">
-        <h2 class="title">Создание аккаунта</h2>
-        <form @submit.prevent="submitForm" class="form-inputs">
+        <h2 class="sign-up__window--content-title">Создание аккаунта</h2>
+        <form @submit.prevent="submitForm" class="sign-up__window-form-inputs">
           <Input
             v-model.trim="userData.firstName"
             required
@@ -58,7 +58,7 @@
             autocomplete
           />
 
-          <div class="form-inputs__send">
+          <div class="sign-up__window-form-inputs__send">
             <Button title="Регистрация" />
           </div>
         </form>
@@ -136,7 +136,7 @@ export default defineComponent({
       height: 500px;
       padding: 55px 30px 20px 30px;
       color: $color-white4;
-      .grid-image {
+      &__grid-image {
         outline: none;
         width: 70%;
         position: absolute;
@@ -144,7 +144,7 @@ export default defineComponent({
         left: -65px;
         opacity: 0.1;
       }
-      .tasks-image {
+      &__tasks-image {
         outline: none;
         width: 85%;
         opacity: 0.15;
@@ -152,11 +152,11 @@ export default defineComponent({
         bottom: -88px;
         right: -100px;
       }
-      .title {
+      &-title {
         text-align: center;
         font-size: 25px;
       }
-      .description {
+      &-description {
         margin-top: 120px;
         font-weight: 500;
         font-size: 20px;
@@ -180,18 +180,22 @@ export default defineComponent({
       color: $color-white4;
       background-color: rgba($color-grey, 0.8);
       .content__swap-type-entry {
-        margin-top: 60px;
+        margin-top: 40px;
         text-align: center;
       }
-      .title {
+      &-title {
         margin-bottom: 30px;
       }
-      .form-inputs {
-        &__send {
-          margin-top: 20px;
-          :deep(.c-button) {
-            width: 100%;
-          }
+     
+    }
+    &-form-inputs {
+      height: calc(300px + 39px);
+      display: flex;
+      flex-direction: column;
+      &__send {
+        margin-top: auto;
+        :deep(.c-button) {
+          width: 100%;
         }
       }
     }
@@ -212,20 +216,22 @@ export default defineComponent({
       margin: 0;
       width: 100%;
       height: 100vh;
-      min-height: 475px;
+      min-height: 480px;
       &--content {
         border-radius: 0;
-        .form-inputs {
-          display: flex;
-          min-height: calc(100vh - 150px);
-          flex-direction: column;
-          &__send {
-            margin-top: auto;
-            padding-top: 40px;
-          }
-        }
         .content__swap-type-entry {
-          margin: 20px 0 20px 0;
+          margin: 8px 0 20px 0;
+          font-size: 14px;
+        }
+      }
+      &-form-inputs {
+        display: flex;
+        min-height: calc(100vh - 145px);
+        flex-direction: column;
+        &__send {
+          margin-top: auto;
+          padding-top: 40px;
+          margin-bottom: 25px;
         }
       }
     }

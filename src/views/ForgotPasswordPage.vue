@@ -20,9 +20,9 @@
         />
         <Button class="submit-form" title="Отправить" size="lg" />
       </form>
-      <div class="forgot-page__window_link">
+      <div class="forgot-page__window-link">
         <a
-          class="forgot-page__window_link--go-back"
+          class="forgot-page__window-link--go-back"
           @click="goBack"
         >
           <v-icon icon="mdi mdi-arrow-left"></v-icon>
@@ -92,8 +92,8 @@ export default defineComponent({
       }
     }
     &-content {
-      .input-wrapper {
-        :deep(.c-input) {
+      .c-input {
+        :deep(.c-input__field) {
           border-color: $color-white1;
         }
       }
@@ -103,7 +103,7 @@ export default defineComponent({
         padding: 7px 0;
       }
     }
-    &_link {
+    &-link {
       margin-top: 20px;
       text-align: center;
       

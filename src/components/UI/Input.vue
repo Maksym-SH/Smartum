@@ -1,5 +1,5 @@
 <template>
-  <div class="input-wrapper">
+  <div class="c-input">
     <label 
       v-if="label" 
       :for="inputName" 
@@ -8,13 +8,13 @@
       {{ label }}
     </label>
     <input
-      class="c-input"
+      class="c-input__field"
       :class="{
-        'c-input--error': errorText,
-        'c-input--transparent': transparent,
-        'c-input--search': type === 'search',
-        'c-input--phone': isPhone,
-        'c-input--password': type === 'password'
+        'c-input__field--error': errorText,
+        'c-input__field--transparent': transparent,
+        'c-input__field--search': type === 'search',
+        'c-input__field--phone': isPhone,
+        'c-input__field--password': type === 'password'
       }"
       ref="input"
       :name="inputName"
@@ -29,14 +29,14 @@
       :required="required"
       :min="min"
     />
-    <span v-if="required" class="c-input__required"></span>
+    <span v-if="required" class="c-input--required"></span>
     <span v-if="isPhone" class="phone mdi mdi-phone"></span>
     <Transition name="error-message">
-      <span v-if="errorText" class="c-input__error-text">{{ errorText }}</span>
+      <span v-if="errorText" class="c-input--error-text">{{ errorText }}</span>
     </Transition>
     <span
       v-if="type == 'password'"
-      class="c-input__toggle-password"
+      class="c-input--toggle-password"
       @click="toggleInputType"
     >
       <transition mode="out-in" name="toggle-content">
@@ -57,7 +57,7 @@
       </transition>
     </span>
     <Button
-      class="c-input__search-btn"
+      class="c-input--search-btn"
       v-if="type === 'search'"
       @click="$emit('click')"
       transparent
@@ -144,12 +144,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.input-wrapper {
+.c-input {
   position: relative;
   width: 100%;
   padding-bottom: 15px;
   height: fit-content;
-  .c-input {
+  &__field {
     padding: 10px;
     border: 1px solid $color-dark-grey;
     outline: none;
@@ -166,9 +166,6 @@ export default defineComponent({
     &.c-input--password {
       padding-right: 44px;
     }
-    &[type="password"] {
-      letter-spacing: 1px;
-    }
     &:disabled {
       border-color: $color-brown;
       color: $color-brown;
@@ -182,7 +179,7 @@ export default defineComponent({
         position: absolute;
         top: 12px;
         left: 10px;
-        + .c-input__error-text {
+        + .c-input--error-text {
           font-size: 11px;
         }
       }
@@ -204,55 +201,60 @@ export default defineComponent({
       border: none;
       border-bottom: 2px solid $color-white4;
       border-radius: 0;
-      &.c-input--error {
+      &.c-input__field--error {
         border-color: $color-red;
+        &::placeholder {
+          color: $color-red;
+        }
       }
-      + .c-input__required {
+      & + .c-input--required {
         width: 5px;
         height: 5px;
         right: 5px;
         top: 5px;
         border-radius: 50%;
       }
- 
       &::placeholder {
         color: $color-white4;
       }
     }
-    &__required {
-      display: inline-block;
-      width: 3px;
-      height: calc(100% - 15px);
-      border-radius: 0 4px 4px 0;
-      position: absolute;
-      right: 0;
-      background-color: $color-red;
+  }
+  &--toggle-password {
+    position: absolute;
+    top: 40%;
+    right: 10px;
+    cursor: pointer;
+    transform: translate(0, -45%);
+    svg {
+      outline: none;
     }
-    &__error-text {
-      color: $color-red;
-      position: absolute;
-      bottom: -2px;
-      font-size: 12px;
-      left: 0;
+  }
+  &--search-btn {
+    position: absolute;
+    top: 23px;
+    height: 30px;
+    min-width: 20px;
+    transform: translate(0, -50%);
+    right: 10px;
+    &:active {
+      background-color: rgba($color-black, 0.3);
     }
-    &__toggle-password {
-      position: absolute;
-      top: 40%;
-      right: 10px;
-      cursor: pointer;
-      transform: translate(0, -45%);
-    }
-    + &__search-btn {
-      position: absolute;
-      top: 23px;
-      height: 30px;
-      min-width: 20px;
-      transform: translate(0, -50%);
-      right: 10px;
-      &:active {
-        background-color: rgba($color-black, 0.3);
-      }
-    }
+  }
+  &--required {
+    display: inline-block;
+    width: 3px;
+    height: calc(100% - 15px);
+    border-radius: 0 4px 4px 0;
+    position: absolute;
+    right: 0;
+    background-color: $color-red;
+  }
+  &--error-text {
+    color: $color-red;
+    position: absolute;
+    bottom: -2px;
+    font-size: 12px;
+    left: 0;
   }
   label {
     &.label-disable {
@@ -262,10 +264,10 @@ export default defineComponent({
     & ~ .phone {
       top: 35px !important;
     }
-    & ~ .c-input__required {
+    & ~ .c-input--required {
       height: calc(100% - 36px) !important;
     }
-    & ~ .c-input__toggle-password {
+    & ~ .c-input--toggle-password {
       top: 43px;
       right: 15px;
       svg {
@@ -273,7 +275,7 @@ export default defineComponent({
         fill: $color-black;
       }
     }
-    & ~ .c-input__error-text {
+    & ~ .c-input--error-text {
       bottom: -18px;
     }
   } 

@@ -44,19 +44,16 @@ export default defineComponent({
 <style lang="scss" scoped>
 .user-info__name {
   max-width: 140px;
-
   &--name {
     color: $color-white4;
     font-size: 14px;
     line-height: 21px;
     white-space: pre-wrap;
   }
-
   &--status {
     font-size: 11px;
     line-height: 16.5px;
     color: $color-yellow;
-
     &.verified {
       color: $color-green;
     }

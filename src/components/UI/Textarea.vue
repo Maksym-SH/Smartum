@@ -1,12 +1,12 @@
 <template>
-  <div class="textarea-wrapper">
+  <div class="c-textarea">
     <label v-if="label" :for="textareaName">{{ label }}</label>
     <textarea
-      class="c-textarea"
+      class="c-textarea__field"
       :class="{
-        'c-textarea--error': errorText,
-        'c-textarea--required': required,
-        'c-textarea--resize': resize
+        'c-textarea__field--error': errorText,
+        'c-textarea__field--required': required,
+        'c-textarea__field--resize': resize
       }"
       ref="textarea"
       :name="textareaName"
@@ -18,9 +18,9 @@
       :min="min"
       :maxlength="max"
     />
-    <span v-if="required" class="c-textarea__required"></span>
+    <span v-if="required" class="c-textarea--required"></span>
     <Transition name="error-message">
-      <span v-if="errorText" class="c-textarea__error-text">{{ errorText }}</span>
+      <span v-if="errorText" class="c-textarea--error-text">{{ errorText }}</span>
     </Transition>
   </div>
 </template>
@@ -79,16 +79,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.textarea-wrapper {
+.c-textarea {
   position: relative;
   width: 100%;
   height: fit-content;
-  .c-textarea {
+  &__field {
     padding: 10px;
     border: 1px solid $color-dark-grey;
     outline: none;
     width: 100%;
-    height: calc(100% - 17.6px);
+    height: calc(100% - 23px);
     background-color: $color-white1;
     border-radius: 4px;
     transition: all 0.3s ease;
@@ -101,7 +101,7 @@ export default defineComponent({
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 3px;
-      background-color: $color-green;
+      background-color: $color-dark-grey;
     }
     &--error {
       border-color: $color-red;
@@ -111,25 +111,25 @@ export default defineComponent({
         color: $color-grey;
       }
     }
-    &__required {
-      display: inline-block;
-      width: 3px;
-      height: calc(100% - 31px);
-      border-radius: 0 4px 4px 0;
-      position: absolute;
-      right: 0;
-      background-color: red;
-    }
     &--resize {
       resize: vertical;
     }
-    &__error-text {
+  }
+  &--error-text {
       color: $color-red;
       position: absolute;
       bottom: -11px;
       font-size: 12px;
       left: 0;
     }
+  &--required {
+    display: inline-block;
+    width: 3px;
+    height: calc(100% - 23px);
+    border-radius: 0 4px 4px 0;
+    position: absolute;
+    right: 0;
+    background-color: red;
   }
   label + .c-textarea {
     height: calc(100% - 23px);

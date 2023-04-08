@@ -1,12 +1,12 @@
 <template>
   <div class="auth">
     <div class="auth__window">
-      <div class="auth__window--image">
+      <div class="auth__window--logo">
         <img src="@/assets/img/logo.svg" alt="Logo" />
       </div>
-      <div class="auth-form">
+      <div class="auth__window-form">
         <form @submit.prevent="submitForm">
-          <div class="form-inputs">
+          <div class="auth__window-form__inputs">
             <Input
               required
               isEmail
@@ -24,21 +24,21 @@
               :min="LengthPassword"
               autocomplete
             />
-            <div class="auth-form__forgot">
+            <div class="auth__window-form__forgot">
               Забыли пароль?
               <router-link
                 :to="{ name: 'Forgot' }"
-                class="auth-form__forgot--link"
+                class="auth__window-form__forgot--link"
               >
                 Восстановить
               </router-link>
             </div>
           </div>
-          <div class="form-inputs__send">
+          <div class="auth__window-form__inputs--send">
             <Button title="Войти" />
           </div>
         </form>
-        <div class="auth-form__actions">
+        <div class="auth__window-form--actions">
           <div class="auth__swap-entry-type">
             <span class="auth__description" :key="authType">
               Нет аккаунта?
@@ -119,14 +119,7 @@ export default defineComponent({
     background-color: rgba($color-grey, 0.8);
     box-shadow: 0 30px 10px rgba($color-grey, 0.3);
     position: relative;
-    &-type {
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      font-size: 11px;
-      color: $color-white1;
-    }
-    &--image {
+    &--logo {
       display: flex;
       justify-content: center;
       margin-bottom: 50px;
@@ -139,24 +132,21 @@ export default defineComponent({
       line-height: 10px;
       text-align: center;
     }
-  }
-  &-form {
-    .form-inputs {
-      &__toggle-content {
-        height: 60.6px;
-      }
-      &__send {
-        text-align: center;
-        margin-top: 80px;
-        .c-button {
-          width: 150px;
+    &-form {
+      &__inputs {
+        &--send {
+          text-align: center;
+          margin-top: 80px;
+          .c-button {
+            width: 150px;
+          }
         }
       }
-    }
-    &__forgot {
-      font-size: 12px;
-      text-align: end;
-      color: $color-white1;
+      &__forgot {
+        font-size: 12px;
+        text-align: end;
+        color: $color-white1;
+      }
     }
   }
   @include mobile(max) {
@@ -164,9 +154,9 @@ export default defineComponent({
       margin: 0;
       min-width: 100%;
       height: 100vh;
-      min-height: 428px;
-      .auth-form {
-        height: calc(100vh - 100px);
+      min-height: 435px;
+      &-form {
+        height: calc(100vh - 110px);
         display: flex;
         flex-direction: column;
         min-height: 250px;
@@ -181,16 +171,19 @@ export default defineComponent({
             width: 100%;
           }
         }
-        &__actions {
-          margin-top: auto;
+        &--actions {
+          margin-top: 10px;
         }
-        .form-inputs__send {
-          .c-button {
-            width: 100%;
+        &__inputs {
+            &--send {
+            .c-button {
+              width: 100%;
+            }
           }
         }
       }
       .auth__swap-entry-type {
+        font-size: 14px;
         margin-top: 20px;
       }
     }

@@ -63,7 +63,7 @@ export default defineComponent({
       if (!capture) {
         minimizeAside.value = value;
       }
-      else if (window.innerWidth <= Layout.Desktop) {
+      else if (window.innerWidth <= Layout.LargeTablet) {
         minimizeAside.value = capture;
       }
     };
