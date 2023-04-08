@@ -1,11 +1,11 @@
 import { 
   ISelectElem,
   ILanguage, 
-  IError, 
-  IExpPanelItem, 
+  IError,
   IUserCreated, 
   IRootState,
-  IPopupParams
+  IPopupParams,
+  IAsideNavigationItemParams
 } from "@/interfaces/index";
 import { RouteRecordRaw } from "vue-router";
 import { ActionContext } from "vuex";
@@ -38,8 +38,12 @@ export type ButtonSize = "sm" | "md" | "lg";
 
 export type ExpansionPanelVariant = "accordion" | "default" | "inset" | "popout";
 
-export type ExpansionPanelItems = Array<IExpPanelItem>;
+export type AsideNavigationItems = Array<IAsideNavigationItemParams>;
 
+export type OmitAsideNavigation = Omit<IAsideNavigationItemParams, "icon" | "notify" | "panels" | "avatar">;
+
+export type AsideExpPanelNavigation = Required<OmitAsideNavigation>;
+  
 export type Variant = "info" | "danger" | "success";
 
 export type PopupButtons = IPopupParams["buttons"];

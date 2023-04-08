@@ -49,3 +49,8 @@ export const enum DataCollection {
   Profile = "profile",
   Photo = "photos",
 }
+
+export const enum Links {
+  GitHubAccount = "https://github.com/Maksym-SH",
+  TelegramAccount = "https://t.me/yerspide"
+}

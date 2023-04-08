@@ -1,4 +1,4 @@
-import { OmitUserInfo } from "@/types/index";
+import { OmitUserInfo, AsideExpPanelNavigation } from "@/types/index";
 import { User, EmailAuthCredential, UserCredential } from "firebase/auth";
 
 // Components
@@ -8,10 +8,14 @@ export interface ISelectElem {
   icon?: string;
   variant?: "info" | string;
 }
-export interface IExpPanelItem {
+export interface IAsideNavigationItemParams {
   title: string;
   icon?: string;
-  callback: () => void;
+  notify?: {
+    count: number;
+  },
+  callback?: () => void;
+  panels?: Array<AsideExpPanelNavigation>;
 }
 export interface IPopupParams {
   title?: string;

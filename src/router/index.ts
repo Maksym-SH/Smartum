@@ -47,6 +47,18 @@ const routes: Routes = [
         },
         component: () => import("@/views/tabs/ProfileTab.vue"),
       },
+      {
+        name: "Reports",
+        path: "/reports",
+        meta: {
+          tabName: {
+            eng: "Reports",
+            ru: "Отчеты",
+          },
+          protected: true,
+        },
+        component: () => import("@/views/tabs/ReportsTab.vue"),
+      },
     ],
   },
 ];

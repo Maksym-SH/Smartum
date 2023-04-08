@@ -1,5 +1,5 @@
 import { PropType } from "vue";
-import { ButtonSize, Variant } from "@/types/index";
+import { ButtonSize, Variant, ExpansionPanelVariant, AsideExpPanelNavigation  } from "@/types/index";
 import { Length } from "@/enums";
 
 // Input.vue
@@ -133,3 +133,27 @@ export const useCheckboxProps = {
     default: "",
   },
 };
+
+// ExpansionPanel.vue
+export const useExpansionPanelProps = {
+  variant: {
+    type: String as PropType<ExpansionPanelVariant>,
+    default: "default"
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  icon: {
+    type: String,
+    default: ""
+  },
+  avatar: {
+    type: String,
+    default: null
+  },
+  content: {
+    type: Array as PropType<Array<AsideExpPanelNavigation>>,
+    default: () => []
+  }
+}

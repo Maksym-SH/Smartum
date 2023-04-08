@@ -9,7 +9,7 @@
       :image="avatar" 
       :rounded="rounded" 
       :size="size"
-    ></v-avatar>
+    ></v-avatar> 
     <span
       class="user-avatar--initials"
       v-else-if="firstName"
@@ -25,16 +25,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed, CSSProperties } from "vue";
+import { defineComponent, ref, computed, CSSProperties } from "vue";
 import { useAvatarProps } from "./use/props";
 
 export default defineComponent({
   props: useAvatarProps,
 
   setup(props) {
-    const avatarSize: CSSProperties = reactive({
-      width: `${props.size}px`,
-      height: `${props.size}px`,
+    const avatarSize = computed((): CSSProperties => {
+      return {
+        width: `${props.size}px`,
+        height: `${props.size}px`,
+      }
     });
 
     const initials = computed((): string | null => {

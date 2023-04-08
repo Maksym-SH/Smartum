@@ -20,12 +20,43 @@
             :avatar="userInfo.photoURL" 
           />
         </div>
+        <template v-for="(item, index) in navigation" :key="index">
+            <template v-if="item.panels">
+              <ExpPanel
+                :name="item.title" 
+                :icon="item.icon" 
+                :content="item.panels"
+              />
+            </template>
+            <template v-else>
+              <Button class="aside__navigation-btn" transparent>
+                <span 
+                  v-if="item.icon"
+                  class="icon" 
+                  :class="['mdi', `mdi-${ item.icon }`]"
+                ></span>
+                <span :class="{ 'no-icon': !item.icon }">{{ item.title }}</span>
+                <v-badge
+                  v-if="item.notify" 
+                  class="notify"
+                  :class="{'empty-list': item.notify.count === 0 }"
+                  :content="item.notify.count"
+                >
+                </v-badge>
+              </Button>
+            </template>
+        </template>
       </template>
-      <div class="aside__collapse" @click="collapseToggle">
-        <span class="aside__collapse--toggle"
-          ><img src="@/assets/img/icons/caret.svg" alt="" />
-        </span>
-      </div>
+      <footer class="aside__about-author">
+        <article>
+          Powered by Maksym-SH © 2023
+        </article>
+      </footer>
+    </div>
+    <div class="aside__collapse" @click="collapseToggle">
+      <span class="aside__collapse--toggle"
+        ><img src="@/assets/img/icons/caret.svg" alt="" />
+      </span>
     </div>
   </aside>
 </template>
@@ -37,6 +68,8 @@ import { Numbers, Layout } from "@/enums";
 import { IUserCreated } from "@/interfaces";
 import User from "@/components/user/Container.vue";
 import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
+import asideNavigation from "./use/asideNavigation";
+import { AsideNavigationItems } from "@/types";
 
 export default defineComponent({
   components: {
@@ -71,6 +104,8 @@ export default defineComponent({
       emit("update:minimizeAside", minimize.value);
     }
 
+    const navigation: AsideNavigationItems = asideNavigation();
+
     onMounted((): void => {
       if(window.innerWidth >= Layout.LargeTablet) {
         setTimeout((): void => {
@@ -78,10 +113,10 @@ export default defineComponent({
         }, Numbers.AppearElement);
       }
 
-      window.onresize = (): void => {
+      /* window.onresize = (): void => {
         if(window.innerWidth <= Layout.LargeTablet)
           setMinimizeValue(true);
-      }
+      } */
     });
 
     return {
@@ -89,6 +124,7 @@ export default defineComponent({
       showContent,
       minimize,
       searchInput,
+      navigation,
       defaultLoaderSize,
       collapseToggle,
     };
@@ -107,24 +143,75 @@ export default defineComponent({
   background-color: $color-grey;
   transition: transform 0.5s ease;
   box-shadow: 10px 0 10px rgba($color-light-grey, 0.25);
-
   &.aside-minimize {
     box-shadow: none;
     transform: translateX(-260px);
+  }
+
+  &__navigation-btn {
+    text-align: start;
+    padding-left: 23px;
+    color: $color-white1 !important;
+    margin: 0;
+    display: flex;
+    box-shadow: 0px 3px 2px -2px rgba($color-black, 0.4);
+    .icon {
+      width: 14px;
+      max-height: 14px;
+      margin-right: 12px;
+      text-align: center;
+    }
+    .notify {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+      height: 20px;
+      font-size: 10px;
+      margin-left: auto;
+      margin-right: 24px;
+      .v-badge__badge {
+        background-color: $color-red;
+      }
+      &.empty-list {
+        .v-badge__badge {
+          background-color: $color-dark-grey3;
+        }
+      }
+    }
+    &:hover {
+      background-color: $color-dark-grey2;
+    }
+    &:active {
+      background-color: $color-dark-grey3;
+    }
   }
 
   &__content {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100vh;
     position: relative;
     color: $color-black;
+    overflow: hidden scroll;
     .c-loader {
       position: absolute !important;
       top: 50%;
       display: inline;
       left: calc(50% - 20px);
+    }
+
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-dark-grey4;
     }
   }
 
@@ -164,6 +251,22 @@ export default defineComponent({
     background-color: $color-light-grey;
     padding: 7px 7px 10px 4.2px;
     clip-path: polygon(0 0, 100% 21%, 100% 76%, 0% 100%);
+  }
+
+  &__about-author {
+    position: sticky;
+    margin-top: auto;
+    bottom: 0px;
+    z-index: 2;
+    width: 100%;
+    padding: 10px 0;
+    background-color: $color-dark-grey;
+    color: $color-white1;
+    article {
+      margin: 0 auto;
+      font-size: 10px;
+      text-align: center;
+    }
   }
 
   @include responsive($xs, max) {

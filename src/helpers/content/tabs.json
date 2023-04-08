@@ -2,5 +2,9 @@
   "Profile": {
     "ru": "Настройте ваш личный аккаунт чтобы вас могли узнать другие пользователи.",
     "eng": "Set up your personal account so that other users can recognize you."
+  },
+  "Reports": {
+    "ru": "Ниже приведены ваши отчеты и статистика по работе с приложением.",
+    "eng": "Below are your reports and statistics on working with the application."
   }
 }

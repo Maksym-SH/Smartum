@@ -18,7 +18,7 @@ export const useAvatarProps = {
   },
   firstName: {
     type: String,
-    required: true,
+    default: ""
   },
   lastName: {
     type: String,
