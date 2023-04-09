@@ -19,8 +19,8 @@
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import { ObjectNotEmpty } from "./helpers/methods";
-import Popup from "@/container/Popup.vue";
-import ConfirmationPopup from "@/container/Confirmation.vue";
+import Popup from "@/components/ui/Popup.vue";
+import ConfirmationPopup from "@/components/ui/Confirmation.vue";
 
 export default defineComponent({
   components: {
