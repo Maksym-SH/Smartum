@@ -92,9 +92,10 @@ export default function Navigation(): AsideNavigationItems {
         }
       },
       {
-        title: "Авторские права",
+        title: "Конфидециальность",
         callback(): void {
-          console.log("use agreement")
+          const confidentiality: ModalContentType = "confidentiality";
+          store.dispatch("setModalContentType", confidentiality);
         },
       }
     ]

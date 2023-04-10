@@ -49,7 +49,7 @@ export type OmitAsideNavigation = Omit<IAsideNavigationItemParams, "icon" | "not
 
 export type AsideExpPanelNavigation = Required<OmitAsideNavigation>;
 
-export type ModalContentType = "termsOfUse" | "copyright";
+export type ModalContentType = "termsOfUse" | "confidentiality";
 
 export type Variant = "info" | "danger" | "success";
 

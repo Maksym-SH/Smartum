@@ -34,6 +34,7 @@ import { defineComponent, ref, PropType, computed, watch } from 'vue';
 import { IModalContent } from "@/interfaces";
 import { ModalContentType, ModalContentLanguage, ModalLanguageType } from "@/types";
 import TermsOfUse from "@/helpers/content/TermsOfUse.json";
+import Confidentially from "@/helpers/content/Сonfidentiality.json";
 import { useStore } from 'vuex';
 import { Confirmation, DeleteAccountPopup } from '@/helpers/methods';
 
@@ -53,16 +54,7 @@ export default defineComponent({
       if (props.contentType === 'termsOfUse') {
         return TermsOfUse;
       }
-      return {
-        ru:{
-          title: "",
-          text:""
-        },
-        eng: {
-          title: "",
-          text:""
-        }
-      } // ToDo
+      return Confidentially;
     })
 
     const closeModal = (): void => {

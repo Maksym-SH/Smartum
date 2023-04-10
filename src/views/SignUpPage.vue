@@ -63,8 +63,15 @@
           </div>
           <small class="sign-up__window-description">
             Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте согласие на 
-            <span class="modal-terms-of-use" @click="showTermsOfUse">
+            <span
+              class="sign-up__window-description--open-modal" @click="showTermsOfUse">
               Правила использования
+            </span> и 
+            <span 
+              class="sign-up__window-description--open-modal"
+              @click="showConfidentiality"
+            >
+              Политики конфиденциальности
             </span>
           </small>
         </form>
@@ -124,6 +131,10 @@ export default defineComponent({
       const type: ModalContentType = "termsOfUse";
       store.dispatch("setModalContentType", type);
     }
+    const showConfidentiality = () => {
+      const type: ModalContentType = "confidentiality";
+      store.dispatch("setModalContentType", type);
+    }
 
     return {
       userData,
@@ -131,7 +142,8 @@ export default defineComponent({
       LengthPassword,
       LengthNone: Length.None,
       submitForm,
-      showTermsOfUse
+      showTermsOfUse,
+      showConfidentiality
     };
   },
 });
@@ -211,6 +223,14 @@ export default defineComponent({
         margin: 0 auto;
         margin-top: 20px;
         text-align: center;
+        font-size: 12px;
+        &--open-modal {
+          cursor: pointer;
+          color: $color-blue;
+          &:hover {
+            color: $color-dark-blue;
+          }
+        }
       }
     }
     &-form-inputs {
@@ -251,7 +271,7 @@ export default defineComponent({
         .sign-up__window-description {
           margin-top: 0;
           margin-bottom: 15px;
-          font-size: 10px;
+          font-size: 12px;
         }
       }
       &-form-inputs {
