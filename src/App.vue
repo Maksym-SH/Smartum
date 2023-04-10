@@ -3,6 +3,10 @@
   <transition name="toggle-popup" mode="out-in">
     <Popup v-if="showPopup" />
   </transition>
+  <LongContentModal 
+    v-if="modalContentType" 
+    :content-type="modalContentType"
+  />
   <transition name="toggle-popup" mode="out-in">
     <ConfirmationPopup v-if="showConfirmPopup" />
   </transition>
@@ -21,19 +25,23 @@ import { useStore } from "vuex";
 import { ObjectNotEmpty } from "./helpers/methods";
 import Popup from "@/components/ui/Popup.vue";
 import ConfirmationPopup from "@/components/ui/Confirmation.vue";
+import LongContentModal from "@/components/ui/LongContentModal.vue";
+import { ModalContentType } from "./types";
 
 export default defineComponent({
   components: {
     Popup,
-    ConfirmationPopup
-},
+    ConfirmationPopup,
+    LongContentModal
+  },
   setup() {
     const store = useStore();
 
     return {
       loadingStatus: computed((): boolean => store.getters.getLoadingStatus),
       showPopup: computed((): boolean  => ObjectNotEmpty(store.getters.getPopupParams)),
-      showConfirmPopup: computed((): boolean => store.getters.getConfirmPopup)
+      showConfirmPopup: computed((): boolean => store.getters.getConfirmPopup),
+      modalContentType: computed((): ModalContentType | "" => store.getters.getModalContentType)
     };
   },
 });

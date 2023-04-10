@@ -132,6 +132,14 @@ export const useCheckboxProps = {
     type: String,
     default: "",
   },
+  switchBox: {
+    type: Boolean,
+    default: false
+  },
+  secondaryLabel: {
+    type: String,
+    default: ""
+  }
 };
 
 // ExpansionPanel.vue

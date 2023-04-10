@@ -88,7 +88,7 @@ import { useStore } from "vuex";
 import { getAuth } from "@firebase/auth";
 import { Length } from "@/enums";
 import { FileResult, IUserInfo } from "@/interfaces";
-import { Confirmation, OpenPopup } from "@/helpers/methods";
+import { Confirmation, DeleteAccountPopup } from "@/helpers/methods";
 import { PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
 import { notify } from "@kyvg/vue3-notification";
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
@@ -188,30 +188,13 @@ export default defineComponent({
 
     const deleteAccountPopup = (): void => {
       showConfirmation.value = false;
-
-      OpenPopup({
-        title: "Удалить аккаунт?",
-        text: "Это действие необратимо!",
-        buttons: {
-          yes: {
-            text: "Удалить аккаунт",
-            variant: "danger"
-          },
-        },
-        callback: (): void => {
-          store.dispatch("deleteUserInfo", currentUser.uid).then(() => {
-            getAuth().currentUser?.delete()
-            .then(() => {
-              store.dispatch("userLogout");
-            });
-          })
-        }
-      });
+      DeleteAccountPopup(currentUser.uid)();
     }
 
     const deleteConfirm = (): void => {
       if (showConfirmation.value) {
-        Confirmation(true, deleteAccountPopup);
+        Confirmation(true, DeleteAccountPopup(currentUser.uid));
+        showConfirmation.value = false;
       }
       else deleteAccountPopup();
     }

@@ -5,7 +5,8 @@ import {
   IUserCreated, 
   IRootState,
   IPopupParams,
-  IAsideNavigationItemParams
+  IAsideNavigationItemParams,
+  IModalContent
 } from "@/interfaces/index";
 import { RouteRecordRaw } from "vue-router";
 import { ActionContext } from "vuex";
@@ -27,6 +28,10 @@ export type IUserFieldsUpdate = Partial<IUserCreated>;
 
 export type LangFormatType = "ru-Ru" | "en-EN";
 
+export type ModalLanguageType = keyof IModalContent;
+
+export type ModalContentLanguage = IModalContent[ModalLanguageType];
+
 export type DynamicDescription = { [key: string]: ILanguage };
 
 export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword" | "photoURL";
@@ -43,7 +48,9 @@ export type AsideNavigationItems = Array<IAsideNavigationItemParams>;
 export type OmitAsideNavigation = Omit<IAsideNavigationItemParams, "icon" | "notify" | "panels" | "avatar">;
 
 export type AsideExpPanelNavigation = Required<OmitAsideNavigation>;
-  
+
+export type ModalContentType = "termsOfUse" | "copyright";
+
 export type Variant = "info" | "danger" | "success";
 
 export type PopupButtons = IPopupParams["buttons"];

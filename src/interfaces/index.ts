@@ -1,4 +1,4 @@
-import { OmitUserInfo, AsideExpPanelNavigation } from "@/types/index";
+import { OmitUserInfo, AsideExpPanelNavigation, ModalContentType } from "@/types/index";
 import { User, EmailAuthCredential, UserCredential } from "firebase/auth";
 
 // Components
@@ -31,6 +31,17 @@ export interface IPopupParams {
     }
   },
   callback: () => any
+}
+
+export interface IModalContent {
+  ru: {
+    title: string;
+    text: string;
+  },
+  eng: {
+    title: string;
+    text: string;
+  }
 }
 export interface ILanguage {
   eng: string;
@@ -101,7 +112,8 @@ export interface IUserCreated {
 export interface IRootState {
   loadingStatus: boolean;
   popupParams: IPopupParams | {};
-  openConfirmPopup: boolean,
+  openConfirmPopup: boolean;
+  modalContentType: ModalContentType | "";
 }
 
 //Router

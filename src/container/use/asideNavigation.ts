@@ -1,9 +1,12 @@
-import { AsideNavigationItems } from "@/types";
+import { AsideNavigationItems, ModalContentType } from "@/types";
 import { IAsideNavigationItemParams } from "@/interfaces";
 import { Links } from "@/enums";
 import router from "@/router";
+import { useStore } from "vuex";
 
 export default function Navigation(): AsideNavigationItems {
+  const store = useStore();
+
   const Dashboard: IAsideNavigationItemParams = {
     title: "Рабочие доски",
     icon: "view-dashboard",
@@ -82,9 +85,10 @@ export default function Navigation(): AsideNavigationItems {
     icon: "shield-alert",
     panels: [
       {
-        title:"Условия пользователя",
+        title:"Пользовательское соглашение",
         callback(): void {
-          console.log("use condition")
+          const termsOfUse: ModalContentType = "termsOfUse";
+          store.dispatch("setModalContentType", termsOfUse);
         }
       },
       {

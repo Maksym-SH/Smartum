@@ -1,4 +1,5 @@
 import { IPopupParams } from "@/interfaces";
+import { getAuth } from '@firebase/auth';
 import store from "@/store";
 
 export const ObjectFull = (object: object): boolean => {
@@ -25,4 +26,29 @@ export const Confirmation = (toggle: boolean, callback?: Function | void): Promi
   else return new Promise((resolve) => {
     resolve(ConfirmCallback());
   })
+}
+
+export const DeleteAccountPopup = (uid: string, params?: Partial<IPopupParams>): Function => {
+  const userUID: string = uid;
+  const popupParams: Partial<IPopupParams> | null = params ?? null;
+  return function() {
+    OpenPopup({
+      title: popupParams?.title || "Удалить аккаунт?",
+      text: popupParams?.text || "Это действие необратимо!",
+      buttons: {
+        yes: {
+          text: "Удалить аккаунт",
+          variant: "danger"
+        },
+      },
+      callback: (): void => {
+        store.dispatch("deleteUserInfo", userUID).then(() => {
+          getAuth().currentUser?.delete()
+          .then(() => {
+            store.dispatch("userLogout");
+          });
+        })
+      }
+    });
+  }
 }

@@ -61,6 +61,12 @@
           <div class="sign-up__window-form-inputs__send">
             <Button title="Регистрация" />
           </div>
+          <small class="sign-up__window-description">
+            Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте согласие на 
+            <span class="modal-terms-of-use" @click="showTermsOfUse">
+              Правила использования
+            </span>
+          </small>
         </form>
         <div class="content__swap-type-entry">
           <span>
@@ -77,11 +83,15 @@
 import { defineComponent, reactive, computed } from "vue";
 import { emailValidator } from "@/main";
 import { IUserReg } from "@/interfaces";
+import { ModalContentType } from "@/types";
 import { Length } from "@/enums";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
+import { useStore } from "vuex";
 
 export default defineComponent({
   setup() {
+    const store = useStore();
+
     const userData: IUserReg = reactive({
       firstName: "",
       lastName: "",
@@ -110,12 +120,18 @@ export default defineComponent({
 
     const submitForm = (): void => signUp(userData, valid.value);
 
+    const showTermsOfUse = () => {
+      const type: ModalContentType = "termsOfUse";
+      store.dispatch("setModalContentType", type);
+    }
+
     return {
       userData,
       LengthText,
       LengthPassword,
       LengthNone: Length.None,
       submitForm,
+      showTermsOfUse
     };
   },
 });
@@ -133,8 +149,8 @@ export default defineComponent({
       background-color: $color-dark-blue;
       position: relative;
       overflow: hidden;
-      height: 500px;
-      padding: 55px 30px 20px 30px;
+      height: 600px;
+      padding: 65px 30px 20px 30px;
       color: $color-white4;
       &__grid-image {
         outline: none;
@@ -157,7 +173,7 @@ export default defineComponent({
         font-size: 25px;
       }
       &-description {
-        margin-top: 120px;
+        margin-top: 200px;
         font-weight: 500;
         font-size: 20px;
         text-align: center;
@@ -186,10 +202,19 @@ export default defineComponent({
       &-title {
         margin-bottom: 30px;
       }
-     
+      .modal-terms-of-use {
+        color: $color-blue;
+        cursor: pointer;
+      }
+      .sign-up__window-description {
+        max-width: 300px;
+        margin: 0 auto;
+        margin-top: 20px;
+        text-align: center;
+      }
     }
     &-form-inputs {
-      height: calc(300px + 39px);
+      height: calc(400px + 39px);
       display: flex;
       flex-direction: column;
       &__send {
@@ -216,12 +241,17 @@ export default defineComponent({
       margin: 0;
       width: 100%;
       height: 100vh;
-      min-height: 480px;
+      min-height: 570px;
       &--content {
         border-radius: 0;
         .content__swap-type-entry {
           margin: 8px 0 20px 0;
           font-size: 14px;
+        }
+        .sign-up__window-description {
+          margin-top: 0;
+          margin-bottom: 15px;
+          font-size: 10px;
         }
       }
       &-form-inputs {

@@ -1,13 +1,14 @@
 import User from "./user";
 import { createStore } from "vuex";
 import { IRootState, IPopupParams } from "@/interfaces";
-import { RootContext } from "@/types";
+import { ModalContentType, RootContext } from "@/types";
 
 export default createStore<IRootState>({
   state: {
     loadingStatus: false,
     popupParams: {},
     openConfirmPopup: false,
+    modalContentType: "",
   },
   getters: {
     getLoadingStatus(state: IRootState): boolean {
@@ -19,6 +20,9 @@ export default createStore<IRootState>({
     getConfirmPopup(state: IRootState): boolean {
       return state.openConfirmPopup;
     },
+    getModalContentType(state: IRootState): ModalContentType | "" {
+      return state.modalContentType;
+    }
   },
   mutations: {
     SET_LOADING_STATUS(state: IRootState, status: boolean): void {
@@ -30,6 +34,9 @@ export default createStore<IRootState>({
     SET_CONFIRM_POPUP(state: IRootState, show: boolean): void {
       state.openConfirmPopup = show;
     },
+    SET_MODAL_CONTENT_TYPE(state: IRootState, type: ModalContentType | ""): void {
+      state.modalContentType = type;
+    }
   },
   actions: {
     setLoadingStatus({ commit }: RootContext, status: boolean): void {
@@ -41,6 +48,9 @@ export default createStore<IRootState>({
     setConfirmPopup({ commit }: RootContext, show: boolean): void {
       commit('SET_CONFIRM_POPUP', show);
     },
+    setModalContentType({ commit }: RootContext, type: ModalContentType | ""): void {
+      commit("SET_MODAL_CONTENT_TYPE", type);
+    }
   },
   modules: {
     User,

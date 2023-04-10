@@ -46,11 +46,15 @@ export default defineComponent({
   &-text {
     background-color: $color-dark-grey;
     cursor: pointer;
+    font-size: 14px;
     &:active {
       background-color:  $color-dark-grey3;
     }
     &:hover {
       background-color: $color-dark-grey2;
+    }
+    :deep(.v-expansion-panel-text__wrapper) {
+      padding: 16px 24px;
     }
   }
   &-title {

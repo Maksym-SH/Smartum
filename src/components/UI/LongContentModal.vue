@@ -1,0 +1,177 @@
+<template>
+  <v-dialog
+    class="modal"
+    persistent
+    fullscreen
+    v-model="dialog"
+    transition="dialog-bottom-transition"
+  >
+    <v-card>
+      <v-toolbar color="indigo" class="modal__actions">
+        <v-btn icon dark @click="closeModal">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title class="modal__header-title">{{ modalContent.title }}</v-toolbar-title>
+      </v-toolbar>
+      <v-list>
+        <v-list-subheader class="modal__header">
+          <Checkbox  
+            switchBox 
+            name="language" 
+            label="English" 
+            secondaryLabel="Русский" 
+            v-model="switchLanguage" 
+          />
+        </v-list-subheader>
+        <div class="content" v-html="modalContent.text"></div>
+      </v-list>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, PropType, computed, watch } from 'vue';
+import { IModalContent } from "@/interfaces";
+import { ModalContentType, ModalContentLanguage, ModalLanguageType } from "@/types";
+import TermsOfUse from "@/helpers/content/TermsOfUse.json";
+import { useStore } from 'vuex';
+import { Confirmation, DeleteAccountPopup } from '@/helpers/methods';
+
+export default defineComponent({
+  props: {
+    contentType: {
+      type: String as PropType<ModalContentType>,
+      required: true
+    }
+  },
+  setup(props) {
+    const store = useStore();
+    const dialog = ref(true);
+    const switchLanguage = ref(false); // "Русский" by default.
+    
+    const currentContentType = computed((): IModalContent => {
+      if (props.contentType === 'termsOfUse') {
+        return TermsOfUse;
+      }
+      return {
+        ru:{
+          title: "",
+          text:""
+        },
+        eng: {
+          title: "",
+          text:""
+        }
+      } // ToDo
+    })
+
+    const closeModal = (): void => {
+      store.dispatch("setModalContentType", "");
+    } 
+
+    watch(dialog, (value) => {
+      if (!value) store.dispatch("setModalContentType", "");
+    })
+
+    const dissmissConfirmation = () => {
+      const userUID: string = store.getters.getCurrentUser.uid;
+      Confirmation(true, DeleteAccountPopup(userUID, {
+        title: "Внимание!",
+        text: "В случае отклонения данного соглашения мы будем вынуждены удалить ваш аккаунт!"
+      }));
+    }
+
+    const currentLanguage = computed((): ModalLanguageType  => {
+      return !switchLanguage.value ? "ru" : "eng"; // "Русский" / "English"
+    })
+
+    const modalContent = computed((): ModalContentLanguage => currentContentType.value[currentLanguage.value]);
+
+    return {
+      dissmissConfirmation,
+      dialog,
+      modalContent,
+      switchLanguage,
+      closeModal
+    }
+  },
+})
+</script>
+
+<style lang="scss" scoped>
+.modal {
+  z-index: 90 !important;
+  &__header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .v-list {
+    padding: 20px;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $color-light-grey;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-dark-blue;
+    }
+    .content {
+      :deep() {
+        h2 {
+          margin: 5px;
+        }
+        ul {
+          padding-left: 50px;
+        }
+      }
+    }
+  }
+  @include tablet(max) {
+    .modal {
+      &__header {
+        padding: 0;
+        padding-inline-start: 0 !important;
+        &-title {
+          margin: 0;
+          font-size: 16px;
+        }
+        :deep(.v-list-subheader__text) {
+          display: flex;
+          width: 100%;
+          flex-direction: column;
+          align-items: center;
+          .modal__mobile-title {
+            font-size: 17px;
+            display: block;
+            color: $color-dark-grey3;
+          }
+          .c-checkbox {
+            align-self: flex-end;
+          }
+        }
+      }
+    }
+    .v-list {
+      padding: 10px;
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+      .content {
+        :deep() {
+          font-size: 14px;
+          h2 {
+            margin: 5px;
+            font-size: 16px;
+          }
+          ul {
+            padding-left: 10px;
+          }
+        }
+      }
+    } 
+  }
+}
+</style>

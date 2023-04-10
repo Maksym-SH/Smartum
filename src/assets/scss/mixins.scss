@@ -69,12 +69,12 @@
 
 @mixin tablet($direction) {
   @if($direction == min) {
-    @media screen and (min-width: $xs) {
+    @media screen and (min-width: $md) {
       @content;
     }
   }
   @else {
-    @media screen and (max-width: $xs) {
+    @media screen and (max-width: $md) {
       @content;
     }
   }
