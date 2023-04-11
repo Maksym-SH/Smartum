@@ -5,7 +5,7 @@
         <span class="label">Обновить фото профиля</span>
         <ImageUpload 
           :fileType="'image'" 
-          :photoURL="userInfo.photoURL" 
+          :photoURL="userInfo.photoURL"
           @loaded="updatePhoto"
           @deleted="deletePhoto"
         />
@@ -114,6 +114,7 @@ export default defineComponent({
       phone: "",
       about: "",
       email: currentUser.email,
+      photoFile: null,
       photoURL: "",
       emailVerified: currentUser.emailVerified,
       newPassword: "",
@@ -142,10 +143,11 @@ export default defineComponent({
     })
 
     // Update methods.
-    const updatePhoto = ({ result }: FileResult) => {
-      userInfo.photoURL = result;
+    const updatePhoto = (file: File) => {
+      userInfo.photoFile = file;
     }
     const deletePhoto = (): void => {
+      userInfo.photoFile = null;
       userInfo.photoURL = "";
     }
     const updatePassword = (): void => {
@@ -160,10 +162,11 @@ export default defineComponent({
     const showConfirmation = ref(true);
 
     const profileUpdate = async(): Promise<any> => {
-      store.dispatch("updateUserInfo", {
+      const infoToUpdate = {
         ...userInfo,
         uid: currentUser.uid
-      }).then((): void => notify({
+      }
+      store.dispatch("updateUserInfo", infoToUpdate).then((): void => notify({
         title: "Ваши данные были успешно обновлены!"
       }))
     }
@@ -206,7 +209,7 @@ export default defineComponent({
         userInfo.firstName = field.firstName;
         userInfo.lastName = field.lastName;
         userInfo.about = field.about;
-        userInfo.photoURL = field.photoURL;
+        userInfo.photoURL = field.photoURL || "";
         userInfo.phone = field.phone;
 
       }).then(():boolean => btnSaveDisable.value = true)

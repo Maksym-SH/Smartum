@@ -72,7 +72,7 @@ export default defineComponent({
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  background-color: $color-green-hover;
+  background-color: $color-brown;
   border-radius: 4px;
   color: $color-black;
   img {

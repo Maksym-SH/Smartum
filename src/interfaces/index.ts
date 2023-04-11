@@ -78,12 +78,17 @@ export interface IUserInfo extends Omit<IUserReg, "password"> {
   lastName: string;
   phone: string;
   about: string;
-  photoURL: string;
+  photoFile: File | null;
+  photoURL: string,
   emailVerified?: boolean;
   newPassword: string;
 }
 export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
   uid: string,
+}
+export interface IAvatarUpdate {
+  file: File | null;
+  uid: string;
 }
 
 // Response
@@ -107,6 +112,7 @@ export interface IUserCreated {
   about: string;
   phone: string;
   photoURL: string;
+  photoFile?: File;
   uid?: string;
 }
 export interface IRootState {

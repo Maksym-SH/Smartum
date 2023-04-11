@@ -69,10 +69,7 @@ export default defineComponent({
               imgLoaded.value = true;
               imgDeleted.value = false;
 
-              emit('loaded', {
-                result: reader.result, 
-                type: file.type
-              })
+              emit('loaded', file);
 
               upload.value!.value = ""; // Clear input file after image load.
             }

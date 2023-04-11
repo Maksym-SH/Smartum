@@ -31,7 +31,7 @@ export const enum FileFormat {
 }
 
 export const enum Numbers {
-  ImageSize = 1048487,
+  ImageSize = 10000000,
   Second = 1000,
   AppearElement = 400,
   EveningRU = 16,
@@ -46,8 +46,7 @@ export const enum Layout {
 }
 
 export const enum DataCollection {
-  Profile = "profile",
-  Photo = "photos",
+  Profile = "profile"
 }
 
 export const enum Links {

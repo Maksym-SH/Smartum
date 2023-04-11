@@ -30,7 +30,7 @@ export default defineComponent({
   setup() {
     const Welcome = ref<Welcome>("Добрый вечер");
 
-    const intervalTime = ref<number | null>(null);
+    const intervalTime = ref<ReturnType<typeof setInterval> | null>(null);
 
     const time = ref("");
     const date = ref("");

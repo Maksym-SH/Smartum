@@ -1,11 +1,11 @@
 import router from "@/router";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
-import { ActionContext } from "vuex"
 import { getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { IUserCreated, IUserInfo, IUserState, ICreateUser } from "@/interfaces";
+import { IUserCreated, IUserInfo, IUserState, ICreateUser, IAvatarUpdate } from "@/interfaces";
 import { ErrorCode, IUserFieldsUpdate, UserContext } from "@/types"; 
-import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore"; 
+import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"; 
 import { database } from "@/main";
 import { DataCollection } from "@/enums";
 
@@ -53,18 +53,13 @@ export default {
     createUser({ dispatch }: UserContext<IUserState>, info: ICreateUser): Promise<void> {
       dispatch("setLoadingStatus", true)
 
-      return new Promise((resolve, reject) => {
+      return new Promise((_, reject) => {
         setDoc(doc(database, DataCollection.Profile, info.uid), {
             firstName: info.firstName,
             lastName: info.lastName || "",
+            photoURL: "",
             about: "",
             phone: "",
-        })
-        .then((): Awaited<void> => {
-          // Set nullable photoURL.
-          setDoc(doc(database, DataCollection.Photo, info.uid), {
-            photoURL: ""
-          }).finally(() => resolve())
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
@@ -73,44 +68,63 @@ export default {
         .finally(() => dispatch("setLoadingStatus", false));
       })
     },
-    updateUserInfo({ dispatch }: UserContext<IUserInfo>, info: Required<IUserCreated>): Promise<void> {
+    async updateUserInfo({ getters, dispatch }: UserContext<IUserInfo>,
+                                                   data: Required<IUserCreated>): Promise<void> {
+      const unicID = data.uid; // Unic id for database field access.
+      const profileRef = doc(database, DataCollection.Profile, unicID);
 
-        const profile = doc(database, DataCollection.Profile, info.uid);
-        const profilePhoto = doc(database, DataCollection.Photo, info.uid);
-      
-        const { firstName, lastName, about, photoURL, phone }: IUserCreated = info;
-      
-        const fieldsToUpdate: IUserFieldsUpdate = {
-          firstName,
-          lastName,
-          about,
-          phone,
-        }
-        dispatch("setLoadingStatus", true);
+      const { firstName, lastName, photoURL, photoFile, about, phone }: IUserCreated = data;
 
-        return new Promise((resolve, reject) => {
-          updateDoc(profile, fieldsToUpdate).then(() => {
-            updateDoc(profilePhoto, "photoURL", photoURL).then(() => {
-              resolve();
-            }).finally(() => dispatch("getUserInfo"))
-          })
-          .catch((error: ErrorCode) => {
-            ShowErrorMessage(error);
-            dispatch("setLoadingStatus", false);
-            reject(error);
-          })
-          .finally(() => dispatch("setLoadingStatus", false))
+      const fieldsToUpdate: IUserFieldsUpdate = {
+        firstName,
+        lastName,
+        photoURL,
+        about,
+        phone,
+      }
+
+      dispatch("setLoadingStatus", true);
+
+      // New upload image.
+      if (photoFile !== null) 
+      {
+        await dispatch("updateUserAvatar", {
+          file: photoFile,
+          uid: unicID
+        }).then((photo) => {
+            fieldsToUpdate.photoURL = photo;
         })
+      }
+      // Photo has been removed.
+      else if(!photoURL && getters.getUserInfo.photoURL) { 
+        await dispatch("deleteUserAvatar", unicID)
+        .then(() => fieldsToUpdate.photoURL = "")
+      }
+
+      return new Promise((resolve, reject) => {
+        updateDoc(profileRef, fieldsToUpdate).then(() => {
+          dispatch("getUserInfo").then(() => resolve())
+        })
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          dispatch("setLoadingStatus", false);
+          reject(error);
+        })
+        .finally(() => dispatch("setLoadingStatus", false))
+      })
     },
-    deleteUserInfo({ dispatch }: UserContext<IUserInfo>, uid: string): Promise<void> {
+    deleteUserInfo({ dispatch, getters }: UserContext<IUserInfo>, unicID: string): Promise<void> {
       dispatch("setLoadingStatus", true);
 
       return new Promise((resolve, reject) => {
-        const deleteUserProfile = doc(database, DataCollection.Profile, uid);
-        const deleteUserAvatar = doc(database, DataCollection.Photo, uid);
+        const deleteUserProfile = doc(database, DataCollection.Profile, unicID);
+        const currentUserAvatar = getters.getUserInfo.photoURL;
 
         deleteDoc(deleteUserProfile).then(() => {
-          deleteDoc(deleteUserAvatar).finally(() => resolve())
+          if (currentUserAvatar) {
+            dispatch("deleteUserAvatar", unicID)
+          }
+          resolve();
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
@@ -120,40 +134,27 @@ export default {
       })
     },
     getUserInfo({ getters, commit, dispatch }: UserContext<IUserInfo>): Promise<any> {
-        const unicID = getters.getCurrentUser.uid; // Unic id for database field access.
-        
-        const profileRef = doc(database, DataCollection.Profile, unicID); // Profile document by unicID in database. 
+      const unicID = getters.getCurrentUser.uid; // Unic id for database field access.
 
-        dispatch("setLoadingStatus", true);
+      // Profile document by unicID in database. 
+      const profileRef = doc(database, DataCollection.Profile, unicID);
 
-        return new Promise((resolve, reject) => {
-          //Get profile info.
-          getDoc(profileRef).then(async(response) => {
-            const info = response.data();
-            // Get user avatar.
-            await dispatch("getUserAvatar", unicID).then((photo: string) => {
-              if (info) info.photoURL = photo;
-            })
-
-            commit("SET_USER_INFO", info);
-            resolve(info);
-          })
-          .catch((error: ErrorCode) => {
-            ShowErrorMessage(error);
-            reject(error);
-          })
-          .finally(() => dispatch("setLoadingStatus", false))
-        })
-    },
-    getUserAvatar({ dispatch }: UserContext<IUserInfo>, unicID: string): Promise<any> {
-      const avatarProfileRef = doc(database, DataCollection.Photo, unicID); // Unic id for database field access.
       dispatch("setLoadingStatus", true);
 
       return new Promise((resolve, reject) => {
-        // Get user avatar.
-        getDoc(avatarProfileRef).then((response) => {
-          const photoURL = response.data()?.photoURL || "";
-          resolve(photoURL);
+        // Get profile info.
+        getDoc(profileRef).then(async(response) => {
+          const info = response.data();
+          if (info) {
+            // Get user avatar.
+            if (info.photoURL) {
+              await dispatch("getUserAvatar", unicID)
+              .then((photo: string) => info.photoURL = photo);  
+            }
+
+            commit("SET_USER_INFO", info);
+            resolve(info);
+          }
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
@@ -162,8 +163,51 @@ export default {
         .finally(() => dispatch("setLoadingStatus", false))
       })
     },
+    updateUserAvatar({ getters, dispatch }: UserContext<IUserInfo>, info: IAvatarUpdate): Promise<string> {
+      if (!info.file) return getters.getUserInfo.photoURL;
+
+      const unicID = getters.getCurrentUser.uid; // Unic id for database field access.
+
+      const storage = getStorage();
+      const storageRef = ref(storage, unicID);
+      return new Promise((resolve, reject) => {
+        if (info.file) {
+          uploadBytes(storageRef, info.file)
+          .then(() => {
+            // Get image url after upload.
+            dispatch("getUserAvatar", unicID).then((url) => resolve(url))
+          })
+          .catch((error: ErrorCode) => {
+            ShowErrorMessage(error);
+            reject(error);
+          })
+        }
+      })
+    },
+    deleteUserAvatar(context: UserContext<IUserInfo>, unicID: string): Promise<void> {
+      const storage = getStorage();
+      const deleteAvatarRef = ref(storage, unicID);
+      return new Promise((resolve, reject) => {
+        deleteObject(deleteAvatarRef).then(() => {
+          resolve();
+        }).catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          reject(error)
+        })
+      })
+    },
+    getUserAvatar(context: UserContext<IUserInfo>, unicID: string): Promise<string> {
+      const storage = getStorage();
+      const avatarRef = ref(storage, unicID);
+      return new Promise((resolve) => {
+        getDownloadURL(avatarRef).then((photoURL) => {
+          resolve(photoURL)
+        })
+      })
+    },
     userLogout({ commit }: UserContext<IUserState>): Awaited<void> {
       getAuth().signOut().then(() => {
+        console.log('then')
         commit("SET_USER_TOKEN", "");
         commit("SET_CURRENT_USER", {});
         commit("SET_CONFIRM_POPUP", false);
