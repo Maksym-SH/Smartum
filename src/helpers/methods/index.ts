@@ -17,6 +17,11 @@ export const OpenPopup = (params: IPopupParams): void => {
   store.dispatch("setPopupParams", params);
 }
 
+// Random light color generation.
+export const RandomHSLA = () => {
+  return `hsl(${Math.round(360 * Math.random())}, 45%,  45%)`;
+}
+
 let ConfirmCallback: Function;
 export const Confirmation = (toggle: boolean, callback?: Function | void): Promise<any> | void => {
   store.dispatch("setConfirmPopup", toggle);

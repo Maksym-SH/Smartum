@@ -44,6 +44,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .user-info__name {
   max-width: 140px;
+  min-height: 66px;
+  display: flex;
+  flex-direction: column;
   &--name {
     color: $color-white4;
     font-size: 14px;
@@ -51,6 +54,7 @@ export default defineComponent({
     white-space: pre-wrap;
   }
   &--status {
+    margin-top: auto;
     font-size: 11px;
     line-height: 16.5px;
     color: $color-yellow;

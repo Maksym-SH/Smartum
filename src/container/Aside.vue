@@ -17,7 +17,7 @@
           <User 
             :firstName="userInfo.firstName"
             :lastName="userInfo.lastName" 
-            :avatar="userInfo.photoURL" 
+            :avatar="userInfo.avatarParams" 
           />
         </div>
         <template v-for="(item, index) in navigation" :key="index">

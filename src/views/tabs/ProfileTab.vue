@@ -5,7 +5,7 @@
         <span class="label">Обновить фото профиля</span>
         <ImageUpload 
           :fileType="'image'" 
-          :photoURL="userInfo.photoURL"
+          :avatarParams="userInfo.avatarParams.url"
           @loaded="updatePhoto"
           @deleted="deletePhoto"
         />
@@ -119,7 +119,9 @@ export default defineComponent({
       about: "",
       email: currentUser.email,
       photoFile: null,
-      photoURL: "",
+      avatarParams: {
+        url: ""
+      },
       emailVerified: currentUser.emailVerified,
       newPassword: "",
     })
@@ -152,7 +154,7 @@ export default defineComponent({
     }
     const deletePhoto = (): void => {
       userInfo.photoFile = null;
-      userInfo.photoURL = "";
+      userInfo.avatarParams.url = "";
     }
     const updatePassword = (): void => {
       PasswordUpdate(currentUser, userInfo.newPassword).then((): void => {
@@ -213,7 +215,7 @@ export default defineComponent({
         userInfo.firstName = field.firstName;
         userInfo.lastName = field.lastName;
         userInfo.about = field.about;
-        userInfo.photoURL = field.photoURL || "";
+        userInfo.avatarParams.url = field.avatarParams.url || "";
         userInfo.phone = field.phone;
 
       }).then(():boolean => btnSaveDisable.value = true)

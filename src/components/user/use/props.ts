@@ -1,8 +1,13 @@
+import { PropType } from "vue"
+import { IAvatarParams } from "@/interfaces";
 // Avatar.vue
 export const useAvatarProps = {
   avatar: {
-    type: String,
-    default: "",
+    type: Object as PropType<IAvatarParams>,
+    default: {
+      url: "",
+      bgAvatar: ""
+    },
   },
   online: {
     type: Boolean,
@@ -37,8 +42,11 @@ export const useContainerProps = {
     default: ""
   },
   avatar: {
-    type: String,
-    default: "",
+    type: Object as PropType<IAvatarParams>,
+    default: {
+      url: "",
+      bgAvatar: ""
+    },
   },
 }
 // Info.vue

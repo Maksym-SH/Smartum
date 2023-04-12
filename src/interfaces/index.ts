@@ -69,9 +69,9 @@ export interface IUserAuth {
   signIn: (userData: IUserLogin, validate: boolean) => void;
   reauthorization: (userInfo: User, credential: EmailAuthCredential) => Promise<UserCredential>;
 }
-export interface IUserResponse {
-  accessToken?: string,
-  displayName: string | null
+export interface IAvatarParams {
+  url: string;
+  bgAvatar?: string
 }
 export interface IUserInfo extends Omit<IUserReg, "password"> {
   firstName: string;
@@ -79,12 +79,13 @@ export interface IUserInfo extends Omit<IUserReg, "password"> {
   phone: string;
   about: string;
   photoFile: File | null;
-  photoURL: string,
+  avatarParams: IAvatarParams;
   emailVerified?: boolean;
   newPassword: string;
 }
+
 export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
-  uid: string,
+  uid: string;
 }
 export interface IAvatarUpdate {
   file: File | null;
@@ -97,21 +98,25 @@ export interface IError {
   status?: number;
   code?: number;
 }
+export interface IUserResponse {
+  accessToken?: string,
+  displayName: string | null
+}
 
 // Store
 export interface IUserState {
   userToken: string;
   currentUser: object;
-  userPhoto: string;
   openConfirmPopup: boolean;
   userInfo: IUserCreated;
 }
+
 export interface IUserCreated {
   firstName: string;
   lastName?: string;
   about: string;
   phone: string;
-  photoURL: string;
+  avatarParams: IAvatarParams;
   photoFile?: File;
   uid?: string;
 }

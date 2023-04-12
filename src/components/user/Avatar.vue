@@ -1,12 +1,13 @@
 <template>
   <span
     class="user-avatar" 
-    :style="avatarSize" 
+    :style="avatarStyles"
     :class="{'user-avatar--rounded': rounded }"
   >
+    <Loader v-if="!avatar.bgAvatar" inline :size="30" />
     <v-avatar 
-      v-if="avatar" 
-      :image="avatar" 
+      v-else-if="avatar.url" 
+      :image="avatar.url" 
       :rounded="rounded" 
       :size="size"
     ></v-avatar> 
@@ -32,17 +33,18 @@ export default defineComponent({
   props: useAvatarProps,
 
   setup(props) {
-    const avatarSize = computed((): CSSProperties => {
+    const avatarStyles = computed((): CSSProperties => {
       return {
         width: `${props.size}px`,
         height: `${props.size}px`,
+        backgroundColor: props.avatar.bgAvatar
       }
     });
 
     const initials = computed((): string | null => {
       if(props.firstName) {
-        const firstNameInitial = props.firstName[0];
-        const lastNameInitial = props.lastName[0] ?? "";
+        const firstNameInitial = props.firstName[0].toUpperCase();
+        const lastNameInitial = props.lastName[0].toUpperCase() ?? "";
         
         return firstNameInitial + lastNameInitial;
       }
@@ -53,10 +55,10 @@ export default defineComponent({
     const imgLoad = (): boolean => imgLoaded.value = true;
     const imgLoaded = ref(false);
 
-    const sizeInitials = computed((): string => `font-size: ${ props.size / 2 }px;`);
+    const sizeInitials = computed((): string => `font-size: ${ props.size / 2.2 }px;`);
 
     return {
-      avatarSize,
+      avatarStyles,
       imgLoaded,
       initials,
       sizeInitials,
@@ -72,9 +74,12 @@ export default defineComponent({
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  background-color: $color-brown;
   border-radius: 4px;
   color: $color-black;
+  background-color: $color-dark-grey4;
+  .c-loader {
+    position: static !important;
+  }
   img {
     width: 100%;
     height: 100%;

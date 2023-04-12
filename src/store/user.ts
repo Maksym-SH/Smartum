@@ -18,7 +18,10 @@ export default {
       lastName: "",
       about: "",
       phone: "",
-      photoURL: ""
+      avatarParams: {
+        url: "",
+        bgAvatar: ""
+      }
     }
   },
   getters: {
@@ -52,12 +55,14 @@ export default {
     },
     createUser({ dispatch }: UserContext<IUserState>, info: ICreateUser): Promise<void> {
       dispatch("setLoadingStatus", true)
-
       return new Promise((_, reject) => {
         setDoc(doc(database, DataCollection.Profile, info.uid), {
             firstName: info.firstName,
             lastName: info.lastName || "",
-            photoURL: "",
+            avatarParams: {
+              url: "",
+              bgAvatar: info.avatarParams.bgAvatar
+            },
             about: "",
             phone: "",
         })
@@ -73,12 +78,15 @@ export default {
       const unicID = data.uid; // Unic id for database field access.
       const profileRef = doc(database, DataCollection.Profile, unicID);
 
-      const { firstName, lastName, photoURL, photoFile, about, phone }: IUserCreated = data;
+      const { firstName, lastName, avatarParams, photoFile, about, phone }: IUserCreated = data;
 
       const fieldsToUpdate: IUserFieldsUpdate = {
         firstName,
         lastName,
-        photoURL,
+        avatarParams: {
+          url: avatarParams.url,
+          bgAvatar: getters.getUserInfo.avatarParams.bgAvatar
+        },
         about,
         phone,
       }
@@ -92,13 +100,19 @@ export default {
           file: photoFile,
           uid: unicID
         }).then((photo) => {
-            fieldsToUpdate.photoURL = photo;
+          if(fieldsToUpdate.avatarParams) {
+            fieldsToUpdate.avatarParams.url = photo;
+          }
         })
       }
       // Photo has been removed.
-      else if(!photoURL && getters.getUserInfo.photoURL) { 
+      else if(!avatarParams.url && getters.getUserInfo.avatarParams.url) { 
         await dispatch("deleteUserAvatar", unicID)
-        .then(() => fieldsToUpdate.photoURL = "")
+        .then(() => {
+          if (fieldsToUpdate.avatarParams) {
+            fieldsToUpdate.avatarParams.url = "";
+          }
+        })
       }
 
       return new Promise((resolve, reject) => {
@@ -118,7 +132,7 @@ export default {
 
       return new Promise((resolve, reject) => {
         const deleteUserProfile = doc(database, DataCollection.Profile, unicID);
-        const currentUserAvatar = getters.getUserInfo.photoURL;
+        const currentUserAvatar = getters.getUserInfo.avatarParams.url;
 
         deleteDoc(deleteUserProfile).then(() => {
           if (currentUserAvatar) {
@@ -147,9 +161,9 @@ export default {
           const info = response.data();
           if (info) {
             // Get user avatar.
-            if (info.photoURL) {
+            if (info.avatarParams.url) {
               await dispatch("getUserAvatar", unicID)
-              .then((photo: string) => info.photoURL = photo);  
+              .then((photo: string) => info.avatarParams.url = photo);
             }
 
             commit("SET_USER_INFO", info);
@@ -164,7 +178,7 @@ export default {
       })
     },
     updateUserAvatar({ getters, dispatch }: UserContext<IUserInfo>, info: IAvatarUpdate): Promise<string> {
-      if (!info.file) return getters.getUserInfo.photoURL;
+      if (!info.file) return getters.getUserInfo.avatarParams;
 
       const unicID = getters.getCurrentUser.uid; // Unic id for database field access.
 
@@ -200,8 +214,8 @@ export default {
       const storage = getStorage();
       const avatarRef = ref(storage, unicID);
       return new Promise((resolve) => {
-        getDownloadURL(avatarRef).then((photoURL) => {
-          resolve(photoURL)
+        getDownloadURL(avatarRef).then((avatarParams) => {
+          resolve(avatarParams)
         })
       })
     },
@@ -216,7 +230,7 @@ export default {
           lastName: "",
           about: "",
           phone: "",
-          photoURL: ""
+          avatarParams: ""
         });
 
         if (!router.currentRoute.value.meta.notAuthorized) {

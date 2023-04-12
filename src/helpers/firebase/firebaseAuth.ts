@@ -13,6 +13,7 @@ import {
 import { notify } from "@kyvg/vue3-notification";
 import { IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
 import { ErrorCode } from "@/types";
+import { RandomHSLA } from "@/helpers/methods";
 
 const firebaseAuth = (): IUserAuth => {
   const useAuth = {
@@ -35,7 +36,11 @@ const firebaseAuth = (): IUserAuth => {
             store.dispatch("createUser", {
               uid: currentUser.uid,
               firstName: userData.firstName,
-              lastName: userData.lastName
+              lastName: userData.lastName,
+              avatarParams: {
+                url: "",
+                bgAvatar: RandomHSLA()
+              }
             })
           }
 

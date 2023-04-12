@@ -37,7 +37,7 @@ export default defineComponent({
       type: String as PropType<FileType>,
       required: true,
     },
-    photoURL: {
+    avatarParams: {
       type: String,
       default: "",
     }
@@ -51,7 +51,7 @@ export default defineComponent({
 
     const imgLoad = (): boolean => imgLoaded.value = true;
 
-    const imageSource = ref<ImageSource>(props.photoURL);
+    const imageSource = ref<ImageSource>(props.avatarParams);
 
     const fileUpload = (): void => {
       const reader = new FileReader();
@@ -94,9 +94,9 @@ export default defineComponent({
       });
     };
 
-    const imagePath = computed((): string => String(imageSource.value || props.photoURL));
+    const imagePath = computed((): string => String(imageSource.value || props.avatarParams));
     const imageShowed = computed((): string | boolean => 
-                                    (imgLoaded.value || props.photoURL) && !imgDeleted.value);
+                                    (imgLoaded.value || props.avatarParams) && !imgDeleted.value);
 
     return {
       imgLoaded,

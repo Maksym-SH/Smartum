@@ -34,7 +34,7 @@ export type ModalContentLanguage = IModalContent[ModalLanguageType];
 
 export type DynamicDescription = { [key: string]: ILanguage };
 
-export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword" | "photoURL";
+export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword";
 
 // Props
 export type AutoComplete = "on" | "off";
