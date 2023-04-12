@@ -13,6 +13,7 @@
       <div class="profile-tab__form_form-item first-name">
         <Input 
           v-model.trim="userInfo.firstName"
+          @keydown.enter.prevent
           :min="userInfo.firstName ? TextLength : LengthNone"
           label="Имя"
         />
@@ -20,6 +21,7 @@
       <div class="profile-tab__form_form-item last-name">
         <Input 
           v-model.trim="userInfo.lastName" 
+          @keydown.enter.prevent
           :min="userInfo.lastName ? TextLength : LengthNone" 
           label="Фамилия"
         />
@@ -35,6 +37,7 @@
       <div class="profile-tab__form_form-item phone">
         <Input 
           class="phone"
+          @keydown.enter.prevent
           v-model.trim="userInfo.phone" 
           :placeholder="userInfo.phone"
           isPhone
@@ -53,6 +56,7 @@
         <Input 
           v-model.trim="userInfo.newPassword" 
           placeholder="Изменить пароль" 
+          @keydown.enter.prevent
           :min="userInfo.newPassword ? PasswordLength : LengthNone"
           label="Новый пароль"
         />
