@@ -15,6 +15,7 @@
         </div>
         <div class="aside__user">
           <User 
+            @user-menu-picked="setMinimizeValue(true, LayoutMobile)"
             :firstName="userInfo.firstName"
             :lastName="userInfo.lastName" 
             :avatar="userInfo.avatarParams" 
@@ -99,7 +100,9 @@ export default defineComponent({
 
     const collapseToggle = (): void => setMinimizeValue(!minimize.value);
 
-    const setMinimizeValue = (value: boolean): void => {
+    const setMinimizeValue = (value: boolean, layoutType?: Layout): void => {
+      if (layoutType && window.innerWidth > layoutType) return;
+
       minimize.value = value;
       emit("update:minimizeAside", minimize.value);
     }
@@ -112,11 +115,6 @@ export default defineComponent({
           setMinimizeValue(false);
         }, Numbers.AppearElement);
       }
-
-      /* window.onresize = (): void => {
-        if(window.innerWidth <= Layout.LargeTablet)
-          setMinimizeValue(true);
-      } */
     });
 
     return {
@@ -127,6 +125,8 @@ export default defineComponent({
       navigation,
       defaultLoaderSize,
       collapseToggle,
+      setMinimizeValue,
+      LayoutMobile: Layout.LargeTablet
     };
   },
 });
@@ -135,6 +135,7 @@ export default defineComponent({
 <style lang="scss">
 .aside {
   width: 100%;
+  height: 100%;
   max-width: 260px;
   position: fixed;
   top: 0;
@@ -188,10 +189,9 @@ export default defineComponent({
   }
 
   &__content {
-    min-height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    height: 100vh;
     position: relative;
     color: $color-black;
     overflow: hidden scroll;
@@ -279,12 +279,12 @@ export default defineComponent({
       justify-content: center;
       align-items: center;
       background-color: rgba($color-light-grey, 0.8);
-      right: -30px;
+      right: -45px;
       bottom: auto;
       clip-path: none;
       border-radius: 0 10px 10px 0;
-      width: 30px;
-      height: 63px;
+      width: 45px;
+      height: 64px;
 
       &--toggle {
         img {

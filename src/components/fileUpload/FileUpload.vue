@@ -9,13 +9,14 @@
     >
       <span class="mdi mdi-delete-outline"></span>
     </Button>
-    <img
-      v-if="imageShowed"
+    <v-img
       @load="imgLoad"
+      v-if="imageShowed"
       ref="image"
-      :src="imagePath"
       class="file-upload--image"
-    />
+      cover
+      :src="imagePath"
+    ></v-img>
     <img
       svg-inline
       class="file-upload--icon"
@@ -159,6 +160,9 @@ export default defineComponent({
     outline: none;
     animation: upload 0.5s infinite alternate-reverse;
     font-size: 1rem;
+    @include mobile(max) {
+      font-size: 2.1rem;
+    }
   }
 }
 

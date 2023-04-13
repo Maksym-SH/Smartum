@@ -143,23 +143,24 @@ export default defineComponent({
         }
       }
       &__forgot {
-        font-size: 12px;
+        margin-top: 10px;
+        font-size: 14px;
         text-align: end;
         color: $color-white1;
       }
     }
   }
   @include mobile(max) {
+    height: 100%;
+    min-height: 445px;
     &__window {
       margin: 0;
       min-width: 100%;
-      height: 100vh;
-      min-height: 435px;
+      height: 100%;
       &-form {
-        height: calc(100vh - 110px);
+        height: calc(100% - 65px);
         display: flex;
         flex-direction: column;
-        min-height: 250px;
         form {
           width: 100%;
           margin: 0 auto;

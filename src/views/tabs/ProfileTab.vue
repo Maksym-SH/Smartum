@@ -57,6 +57,7 @@
           v-model.trim="userInfo.newPassword" 
           placeholder="Изменить пароль" 
           @keydown.enter.prevent
+          type="password"
           :min="userInfo.newPassword ? PasswordLength : LengthNone"
           label="Новый пароль"
         />
@@ -202,8 +203,7 @@ export default defineComponent({
 
     const deleteConfirm = (): void => {
       if (showConfirmation.value) {
-        Confirmation(true, DeleteAccountPopup(currentUser.uid));
-        showConfirmation.value = false;
+        Confirmation(true, deleteAccountPopup);
       }
       else deleteAccountPopup();
     }
@@ -309,20 +309,21 @@ export default defineComponent({
         .file-upload {
           max-width: none;
           max-height: none;
-          height: 200px;
-          width: 200px;
+          height: 320px;
+          width: 320px;
         }
       }
       &_form-item {
         margin: 0 auto;
         width: 100%;
-        max-width: 330px;
+        max-width: 400px;
       }
       .c-button {
         width: 45%;
+        max-width: 170px !important;
         font-size: 14px;
-        margin: 0 auto;
         max-width: none;
+        margin: 10px auto;
       }
     }
   }

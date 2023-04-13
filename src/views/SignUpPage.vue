@@ -62,7 +62,7 @@
             <Button title="Регистрация" />
           </div>
           <small class="sign-up__window-description">
-            Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте согласие на 
+            Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте согласие на
             <span
               class="sign-up__window-description--open-modal" @click="showTermsOfUse">
               Правила использования
@@ -219,6 +219,7 @@ export default defineComponent({
         cursor: pointer;
       }
       .sign-up__window-description {
+        width: 100%;
         max-width: 300px;
         margin: 0 auto;
         margin-top: 20px;
@@ -257,11 +258,12 @@ export default defineComponent({
     }
   }
   @include mobile(max) {
+    height: 100%;
+    min-height: 570px;
     &__window {
       margin: 0;
       width: 100%;
-      height: 100vh;
-      min-height: 570px;
+      height: 100%;
       &--content {
         border-radius: 0;
         .content__swap-type-entry {
@@ -271,12 +273,13 @@ export default defineComponent({
         .sign-up__window-description {
           margin-top: 0;
           margin-bottom: 15px;
-          font-size: 12px;
+          font-size: 11px;
+          line-height: 22px;
         }
       }
       &-form-inputs {
         display: flex;
-        min-height: calc(100vh - 145px);
+        min-height: calc(100% - 102px);
         flex-direction: column;
         &__send {
           margin-top: auto;

@@ -268,7 +268,7 @@ export default defineComponent({
       height: calc(100% - 36px) !important;
     }
     & ~ .c-input--toggle-password {
-      top: 43px;
+      top: 49px;
       right: 15px;
       svg {
         outline: none;

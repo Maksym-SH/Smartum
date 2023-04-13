@@ -1,7 +1,7 @@
 // Sign-in / Sign-up
 @mixin auth-window {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
   background: url(@/assets/img/login-background.jpg) center center no-repeat;
   background-size: cover;
   display: flex;

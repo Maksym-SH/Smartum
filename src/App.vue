@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { ObjectNotEmpty } from "./helpers/methods";
 import Popup from "@/components/ui/Popup.vue";
@@ -51,8 +51,14 @@ export default defineComponent({
 @import "./assets/scss/global.scss";
 body {
   min-width: 320px;
+  position: fixed;
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
+  overflow: hidden auto;
   background-color: $color-grey;
   font-family: $PoppinsRG;
+  scroll-behavior: smooth;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -63,8 +69,11 @@ body {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: $color-brown;
+    background-color: $color-light-grey;
   }
+}
+#app {
+  height: 100%;
 }
 
 .router-nav-enter-active,

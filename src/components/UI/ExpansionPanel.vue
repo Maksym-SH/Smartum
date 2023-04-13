@@ -46,7 +46,7 @@ export default defineComponent({
   &-text {
     background-color: $color-dark-grey;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     &:active {
       background-color:  $color-dark-grey3;
     }

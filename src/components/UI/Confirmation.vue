@@ -15,8 +15,7 @@
           :min="PasswordLength"
           v-model="password"
         />
-      </form>
-      <div class="confirmation__window-forgot-password">
+        <div class="confirmation__window-forgot-password">
         <router-link 
           class="confirmation__window-forgot-password--go-page"
           :to="{name: 'Forgot'}" 
@@ -43,6 +42,8 @@
             Подтвердить
         </Button>
       </div>
+      </form>
+     
     </div>
   </div>
 </template>

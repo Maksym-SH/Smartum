@@ -45,6 +45,7 @@ export default defineComponent({
   }
 
   &__search-content {
+    width: 50%;
     .c-input {
       width: 100%;
       max-width: 600px;

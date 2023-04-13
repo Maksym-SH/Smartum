@@ -31,8 +31,9 @@ export default defineComponent({
     Avatar,
     Info,
   },
+  emits: ["user-menu-picked"],
   props: useContainerProps,
-  setup() {
+  setup(props, { emit }) {
     const store = useStore();
 
     const actions: SelectElements = reactive([
@@ -50,7 +51,10 @@ export default defineComponent({
       },
     ]);
 
-    const selected = (callback: Function): Function => callback();
+    const selected = (callback: Function): void => {
+      emit("user-menu-picked");
+      callback();
+    };
 
     return {
       actions,

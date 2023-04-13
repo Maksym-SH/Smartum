@@ -119,14 +119,19 @@ export default defineComponent({
         }
       }
     }
-    @include mobile(max) {
-      height: 100vh;
+  }
+  @include mobile(max) {
+    height: 100%; 
+    min-height: 300px;
+    &__window {
+      height: 100%;
       min-width: 100%;
       border-radius: 0;
       display: flex;
       padding: 15px;
       margin: 0;
       flex-direction: column;
+      min-height: 300px;
       &-header {
         margin-bottom: 40px;
         h2 {
@@ -143,6 +148,7 @@ export default defineComponent({
         }
       }
       &-content {
+        min-height: 70px;
         .c-button {
           position: absolute;
           bottom: 30px;

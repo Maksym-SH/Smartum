@@ -35,7 +35,9 @@ export const enum Numbers {
   Second = 1000,
   AppearElement = 400,
   EveningRU = 16,
-  EveningENG = "4 AM"
+  EveningENG = "4 AM",
+  MorningRU = 4,
+  MorningENG = "4 PM"
 }
 
 export const enum Layout {

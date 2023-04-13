@@ -103,11 +103,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .home-page {
-  min-height: 100vh;
+  min-height: 100%;
   background-color: $color-white5;
   &__wrapper {
     display: grid;
-    min-height: 100vh;
+    min-height: 100%;
     grid-template-rows: auto 1fr;
     padding-left: 260px;
     transition: padding-left 0.5s ease;

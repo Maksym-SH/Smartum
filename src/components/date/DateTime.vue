@@ -47,8 +47,8 @@ export default defineComponent({
     watch((): string  => time.value, (): void => {
         const currentTime = Number(time.value.split("").slice(0, 2).join(""));
 
-        if (currentTime < Numbers.EveningRU) {
-          // If the time is later than 16:00.
+        if (currentTime < Numbers.EveningRU && currentTime > Numbers.MorningRU) {
+          // If the time is later than 16:00 and later than 4:00.
           Welcome.value = "Добрый день";
         }
         else {
