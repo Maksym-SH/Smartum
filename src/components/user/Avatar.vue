@@ -2,10 +2,11 @@
   <span
     class="user-avatar" 
     :style="avatarStyles"
-    :class="{'user-avatar--rounded': rounded }"
+    :class="{'user-avatar--rounded': rounded && circle }"
   >
-    <Loader v-if="!avatar.bgAvatar" inline :size="30" />
+    <Loader v-if="showPreload" inline :size="30" />
     <v-avatar 
+      :class="{ 'user-avatar--circle': circle }"
       v-else-if="avatar.url" 
       :image="avatar.url" 
       :rounded="rounded" 
@@ -52,6 +53,8 @@ export default defineComponent({
       return null;
     });
 
+    const showPreload = computed(() => !initials && !props.avatar.url)
+
     const imgLoad = (): boolean => imgLoaded.value = true;
     const imgLoaded = ref(false);
 
@@ -62,6 +65,7 @@ export default defineComponent({
       imgLoaded,
       initials,
       sizeInitials,
+      showPreload,
       imgLoad,
     };
   },
@@ -79,6 +83,9 @@ export default defineComponent({
   background-color: $color-dark-grey4;
   .c-loader {
     position: static !important;
+  }
+  &--rounded {
+    border-radius: 50% !important;
   }
   img {
     width: 100%;

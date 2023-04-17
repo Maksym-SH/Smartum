@@ -33,6 +33,7 @@ export const enum FileFormat {
 export const enum Numbers {
   ImageSize = 10000000,
   Second = 1000,
+  MillisecondsInDay = 86400000,
   AppearElement = 400,
   EveningRU = 16,
   EveningENG = "4 AM",
@@ -48,10 +49,19 @@ export const enum Layout {
 }
 
 export const enum DataCollection {
-  Profile = "profile"
+  Profile = "profile",
+  Notifications="notifications"
 }
 
 export const enum Links {
   GitHubAccount = "https://github.com/Maksym-SH",
   TelegramAccount = "https://t.me/yerspide"
+}
+
+export const enum NotifyType {
+  User="user",
+  Dashboard="dashboard",
+  Profile="profile",
+  Reset="reset",
+  Default="default"
 }

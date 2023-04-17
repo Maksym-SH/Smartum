@@ -1,7 +1,7 @@
 <template>
   <div class="home-page">
-    <c-aside v-model:minimizeAside="minimizeAside" />
-    <div class="home-page__wrapper"
+    <c-aside v-model:minimizeAside="minimizeAside" :notification-count="notificationsSize" />
+    <div class="home-page__wrapper" 
       @click.capture="toggleAsideShow(false, true)"
       :class="{ 'minimize-info': minimizeAside }"
     >
@@ -17,7 +17,13 @@
           mode="out-in"
           class="home-page__content"
         >
-          <component v-if="showTabContent" :is="Component" />
+          <component 
+            v-if="showTabContent" 
+            :is="Component"
+            :notification-list="notificationList"
+            @read="notifyAction($event, 'read')"
+            @delete="notifyAction($event, 'delete')"
+          />
         </transition>
       </router-view>
     </div>
@@ -31,11 +37,11 @@ import { useRoute } from "vue-router";
 import { Layout } from "@/enums";
 import { ObjectFull, ObjectNotEmpty } from "@/helpers/methods";
 import { ILanguage, IMetaName } from "@/interfaces/index";
-import { RouterMeta, DynamicDescription } from "@/types";
+import { RouterMeta, DynamicDescription, NotifyAction } from "@/types";
 import * as DescriptionJSON from "@/helpers/content/tabs.json";
 import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
-
+import useNotifications from "@/composables/useNotifications";
 
 export default defineComponent({
   components: {
@@ -45,6 +51,8 @@ export default defineComponent({
   setup() {
     const router = useRoute();
     const store = useStore();
+   
+    const { notificationsSize, notificationList, notifyAction } = useNotifications();
 
     const tabName: ILanguage = reactive({ eng: "", ru: "" });
 
@@ -81,20 +89,23 @@ export default defineComponent({
         else {
           tabName.ru = tabName.eng = "";
           tabDescription.eng = tabDescription.ru = "";
-
         }
       },
       { immediate: true }
     );
-      
+    
+
     return {
       tabName,
       tabDescription,
       minimizeAside,
       showTabName,
+      notificationList,
+      notificationsSize,
       showTabDescription,
       showTabContent,
       toggleAsideShow,
+      notifyAction,
       showLoading: computed(() => store.getters.getLoadingStatus),
     };
   },
@@ -104,6 +115,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .home-page {
   min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr;
   background-color: $color-white5;
   &__wrapper {
     display: grid;
@@ -114,7 +127,7 @@ export default defineComponent({
     &.minimize-info {
       padding-left: 0 !important;
     }
-    @include responsive($lg, max) {
+    @include responsive($xs, max) {
       padding-left: 0;
     }
   }
@@ -140,6 +153,14 @@ export default defineComponent({
     margin-top: 120px;
     width: 100%;
     padding-left: 40px;
+  }
+  @include responsive($xs, max) {
+    &__tab-info {
+      padding-left: 20px;
+    }
+    &__content{
+      padding-left: 20px;
+    }
   }
   @include mobile(max) {
     &__tab-info {

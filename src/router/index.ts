@@ -48,6 +48,18 @@ const routes: Routes = [
         component: () => import("@/views/tabs/ProfileTab.vue"),
       },
       {
+        name: "Notifications",
+        path: "/notifications",
+        meta: {
+          tabName: {
+            eng: "Notifications",
+            ru: "Уведомления",
+          },
+          protected: true,
+        },
+        component: () => import("@/views/tabs/NotificationsTab.vue"),
+      },
+      {
         name: "Reports",
         path: "/reports",
         meta: {

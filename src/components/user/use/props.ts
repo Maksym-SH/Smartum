@@ -1,9 +1,9 @@
 import { PropType } from "vue"
-import { IAvatarParams } from "@/interfaces";
+import { IPictureParams } from "@/interfaces";
 // Avatar.vue
 export const useAvatarProps = {
   avatar: {
-    type: Object as PropType<IAvatarParams>,
+    type: Object as PropType<IPictureParams>,
     default: {
       url: "",
       bgAvatar: ""
@@ -16,6 +16,10 @@ export const useAvatarProps = {
   size: {
     type: Number,
     default: 42,
+  },
+  circle: {
+    type: Boolean,
+    default: false,
   },
   rounded: {
     type: Boolean,
@@ -42,7 +46,7 @@ export const useContainerProps = {
     default: ""
   },
   avatar: {
-    type: Object as PropType<IAvatarParams>,
+    type: Object as PropType<IPictureParams>,
     default: {
       url: "",
       bgAvatar: ""

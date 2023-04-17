@@ -91,7 +91,7 @@
 import { defineComponent, computed, ref, reactive, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 import { getAuth } from "@firebase/auth";
-import { Length } from "@/enums";
+import { Length, NotifyType } from "@/enums";
 import { FileResult, IUserInfo } from "@/interfaces";
 import { Confirmation, DeleteAccountPopup } from "@/helpers/methods";
 import { PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
@@ -159,6 +159,14 @@ export default defineComponent({
     }
     const updatePassword = (): void => {
       PasswordUpdate(currentUser, userInfo.newPassword).then((): void => {
+
+        store.dispatch("setNewNotification", {
+          title: "Изменения в безопасности аккаунта!",
+          description: "Ваш пароль был изменен, если это были не вы, сбросьте пароль,нажав на это уведомление.",
+          status: "not read",
+          image: process.env.BASE_URL + "notifyIcons/guard.svg",
+          type: NotifyType.Reset
+        })
         userInfo.newPassword = ""; // After update password reset input value.
         profileUpdate();
       })

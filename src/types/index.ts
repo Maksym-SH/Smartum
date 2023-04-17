@@ -1,3 +1,4 @@
+import { NotifyType } from "@/enums";
 import { 
   ISelectElem,
   ILanguage, 
@@ -6,7 +7,8 @@ import {
   IRootState,
   IPopupParams,
   IAsideNavigationItemParams,
-  IModalContent
+  IModalContent,
+  INotificationItem
 } from "@/interfaces/index";
 import { RouteRecordRaw } from "vue-router";
 import { ActionContext } from "vuex";
@@ -59,14 +61,20 @@ export type SelectElements = Array<ISelectElem>;
 
 export type Position = "top" | "bottom" | "start" | "end" | "center";
 
+export type NotificationStatus = "read" | "not read";
+
 export type FileType = "image" | "text";
 
 export type ModelValue = string | number | unknown;
 
+export type NotificationCategory = NotifyType;
+
+export type NotifyAction = "delete" | "read";
+
 // Store
 export type RootContext = ActionContext<IRootState, IRootState>;
 
-export type UserContext<State> = ActionContext<State, IRootState>;
+export type ModuleCtx<State> = ActionContext<State, IRootState>;
 
 // Router
 export type Routes = Readonly<Array<RouteRecordRaw>>

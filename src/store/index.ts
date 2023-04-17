@@ -1,4 +1,5 @@
 import User from "./user";
+import Notifications from "./notifications";
 import { createStore } from "vuex";
 import { IRootState, IPopupParams } from "@/interfaces";
 import { ModalContentType, RootContext } from "@/types";
@@ -22,7 +23,7 @@ export default createStore<IRootState>({
     },
     getModalContentType(state: IRootState): ModalContentType | "" {
       return state.modalContentType;
-    }
+    },
   },
   mutations: {
     SET_LOADING_STATUS(state: IRootState, status: boolean): void {
@@ -36,7 +37,7 @@ export default createStore<IRootState>({
     },
     SET_MODAL_CONTENT_TYPE(state: IRootState, type: ModalContentType | ""): void {
       state.modalContentType = type;
-    }
+    },
   },
   actions: {
     setLoadingStatus({ commit }: RootContext, status: boolean): void {
@@ -50,9 +51,10 @@ export default createStore<IRootState>({
     },
     setModalContentType({ commit }: RootContext, type: ModalContentType | ""): void {
       commit("SET_MODAL_CONTENT_TYPE", type);
-    }
+    },
   },
   modules: {
     User,
+    Notifications
   },
 });

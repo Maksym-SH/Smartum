@@ -30,7 +30,11 @@
               />
             </template>
             <template v-else>
-              <Button class="aside__navigation-btn" transparent>
+              <Button 
+                class="aside__navigation-btn" 
+                transparent
+                @click="item?.callback?.()"
+              >
                 <span 
                   v-if="item.icon"
                   class="icon" 
@@ -38,10 +42,10 @@
                 ></span>
                 <span :class="{ 'no-icon': !item.icon }">{{ item.title }}</span>
                 <v-badge
-                  v-if="item.notify" 
+                  v-if="notificationCount >= 0 && item.notify" 
                   class="notify"
-                  :class="{'empty-list': item.notify.count === 0 }"
-                  :content="item.notify.count"
+                  :class="{'empty-list': notificationCount === 0 }"
+                  :content="notificationCount"
                 >
                 </v-badge>
               </Button>
@@ -79,6 +83,10 @@ export default defineComponent({
   props: {
     minimizeAside: {
       type: Boolean,
+      required: true,
+    },
+    notificationCount: {
+      type: Number,
       required: true,
     }
   },

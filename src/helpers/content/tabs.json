@@ -6,5 +6,9 @@
   "Reports": {
     "ru": "Ниже приведены ваши отчеты и статистика по работе с приложением.",
     "eng": "Below are your reports and statistics on working with the application."
+  },
+  "Notifications": {
+    "ru": "Здесь вы можете узнать о самых важных изменениях, связанных с нашим сервисом.",
+    "eng": "Here you can find out about the most important changes regarding our services."
   }
 }

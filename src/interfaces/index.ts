@@ -1,4 +1,10 @@
-import { OmitUserInfo, AsideExpPanelNavigation, ModalContentType } from "@/types/index";
+import { 
+  OmitUserInfo, 
+  AsideExpPanelNavigation, 
+  ModalContentType, 
+  NotificationStatus,
+  NotificationCategory
+} from "@/types/index";
 import { User, EmailAuthCredential, UserCredential } from "firebase/auth";
 
 // Components
@@ -11,9 +17,7 @@ export interface ISelectElem {
 export interface IAsideNavigationItemParams {
   title: string;
   icon?: string;
-  notify?: {
-    count: number;
-  },
+  notify?: true, 
   callback?: () => void;
   panels?: Array<AsideExpPanelNavigation>;
 }
@@ -69,7 +73,7 @@ export interface IUserAuth {
   signIn: (userData: IUserLogin, validate: boolean) => void;
   reauthorization: (userInfo: User, credential: EmailAuthCredential) => Promise<UserCredential>;
 }
-export interface IAvatarParams {
+export interface IPictureParams {
   url: string;
   bgAvatar?: string
 }
@@ -79,17 +83,37 @@ export interface IUserInfo extends Omit<IUserReg, "password"> {
   phone: string;
   about: string;
   photoFile: File | null;
-  avatarParams: IAvatarParams;
+  avatarParams: IPictureParams;
   emailVerified?: boolean;
   newPassword: string;
 }
-
 export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
   uid: string;
 }
 export interface IAvatarUpdate {
   file: File | null;
   uid: string;
+}
+export interface INotificationItem<T> {
+  id: number;
+  title: string;
+  status: NotificationStatus;
+  date: T;
+  image?: string;
+  description: string;
+  type: NotificationCategory;
+}
+export interface IUpdateNotifications {
+  notifications: Array<INotificationItem<INotificationDate>>;
+  unicID: string;
+}
+export interface INotificationDate {
+  seconds: number;
+  nanoseconds: number;
+}
+export interface CreateNotifyList {
+  unicID: string;
+  item: INotificationItem<Date>
 }
 
 // Response
@@ -116,7 +140,7 @@ export interface IUserCreated {
   lastName?: string;
   about: string;
   phone: string;
-  avatarParams: IAvatarParams;
+  avatarParams: IPictureParams;
   photoFile?: File;
   uid?: string;
 }
@@ -125,6 +149,9 @@ export interface IRootState {
   popupParams: IPopupParams | {};
   openConfirmPopup: boolean;
   modalContentType: ModalContentType | "";
+}
+export interface INotificationState {
+  newNotification: INotificationItem<INotificationDate> | {}
 }
 
 //Router

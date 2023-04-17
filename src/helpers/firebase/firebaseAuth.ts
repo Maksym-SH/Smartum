@@ -10,8 +10,9 @@ import {
   User, 
   UserCredential
 } from "firebase/auth";
+import { NotifyType } from "@/enums";
 import { notify } from "@kyvg/vue3-notification";
-import { IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
+import { INotificationItem, IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
 import { ErrorCode } from "@/types";
 import { RandomHSLA } from "@/helpers/methods";
 
@@ -42,6 +43,21 @@ const firebaseAuth = (): IUserAuth => {
                 bgAvatar: RandomHSLA()
               }
             })
+
+            const confirmEmailNotify: INotificationItem<Date> = {
+              id: Date.now(),
+              title: "Добро пожаловать в Smartum task management!",
+              description: "Подтвердите свой электронный адрес, для этого нажмите на это уведомление",
+              status: "not read",
+              date: new Date(),
+              image: process.env.BASE_URL + "notifyIcons/mail.svg",
+              type: NotifyType.Profile
+            }
+            // Create user notifications field in database.
+            store.dispatch("createNotificationList", {
+              unicID: currentUser.uid,
+              item: confirmEmailNotify
+            });
           }
 
           notify({

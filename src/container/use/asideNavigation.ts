@@ -18,11 +18,9 @@ export default function Navigation(): AsideNavigationItems {
   const Notification: IAsideNavigationItemParams = {
     title: "Уведомления",
     icon: "bell",
-    notify: {
-      count: 0
-    },
+    notify: true,
     callback() {
-      console.log("settings")
+      router.push({ name: "Notifications" })
     }
   };
 

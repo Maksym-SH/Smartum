@@ -8,7 +8,7 @@
         Нам нужно убедиться что это действительно вы, 
         введите пароль указанный вами при регистрации в поле ниже.
       </p>
-      <form class="confirmation__window-input-field">
+      <form class="confirmation__window-input-field" @submit.prevent>
         <Input 
           label="Ваш пароль"
           type="password"
@@ -16,34 +16,33 @@
           v-model="password"
         />
         <div class="confirmation__window-forgot-password">
-        <router-link 
-          class="confirmation__window-forgot-password--go-page"
-          :to="{name: 'Forgot'}" 
-          @click="result(false)"
-        >
-          Забыли пароль?
-        </router-link>
-      </div>
-      <div class="confirmation__button">
-        <Button 
-          @click="result(false)"
-          outline
-          variant="info"
-          size="sm"
-          class="confirmation__button--no">
-          Отмена
-        </Button>
-        <Button
-          @click="result(true)"
-          variant="info"
-          size="sm"
-          :disabled="btnConfirmDisable"
-          class="confirmation__buttons--yes">
-            Подтвердить
-        </Button>
-      </div>
-      </form>
-     
+          <router-link 
+            class="confirmation__window-forgot-password--go-page"
+            :to="{name: 'Forgot'}" 
+            @click="result(false)"
+          >
+            Забыли пароль?
+          </router-link>
+        </div>
+        <div class="confirmation__button">
+          <Button 
+            @click="result(false)"
+            outline
+            variant="info"
+            size="sm"
+            class="confirmation__button--no">
+            Отмена
+          </Button>
+          <Button
+            @click="result(true)"
+            variant="info"
+            size="sm"
+            :disabled="btnConfirmDisable"
+            class="confirmation__buttons--yes">
+              Подтвердить
+          </Button>
+        </div>
+      </form>  
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 import { IPopupParams } from "@/interfaces";
-import { getAuth } from '@firebase/auth';
+import { getAuth } from "@firebase/auth";
 import store from "@/store";
 
 export const ObjectFull = (object: object): boolean => {

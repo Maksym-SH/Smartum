@@ -3,9 +3,9 @@ import { Language, LangFormat } from "@/enums";
 import { IDateFormat } from "@/interfaces";
 import RegExp from "@/helpers/regExp";
 
-const useTimestamp = (date: Date | null, lang = Language.Russian, fixedTime?:number): IDateFormat => {
+const useTimestamp = (date: Date | null, lang = Language.Russian, exaptDate?:number): IDateFormat => {
 
-  const datestamp = date || new Date(Number(fixedTime)); 
+  const datestamp = date || new Date(Number(exaptDate)); 
 
   const dateLang: LangFormatType = lang === Language.Russian ? LangFormat.Ru : LangFormat.Eng;
 

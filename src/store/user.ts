@@ -3,7 +3,7 @@ import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import { getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 import { IUserCreated, IUserInfo, IUserState, ICreateUser, IAvatarUpdate } from "@/interfaces";
-import { ErrorCode, IUserFieldsUpdate, UserContext } from "@/types"; 
+import { ErrorCode, IUserFieldsUpdate, ModuleCtx } from "@/types"; 
 import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"; 
 import { database } from "@/main";
@@ -47,13 +47,13 @@ export default {
     },
   },
   actions: {
-    setUserToken({ commit }: UserContext<IUserState>, token: string): void {
+    setUserToken({ commit }: ModuleCtx<IUserState>, token: string): void {
       commit("SET_USER_TOKEN", token);
     },
-    setCurrentUser({ commit }: UserContext<IUserState>, user: any): void {
+    setCurrentUser({ commit }: ModuleCtx<IUserState>, user: any): void {
       commit("SET_CURRENT_USER", user);
     },
-    createUser({ dispatch }: UserContext<IUserState>, info: ICreateUser): Promise<void> {
+    createUser({ dispatch }: ModuleCtx<IUserState>, info: ICreateUser): Promise<void> {
       dispatch("setLoadingStatus", true)
       return new Promise((_, reject) => {
         setDoc(doc(database, DataCollection.Profile, info.uid), {
@@ -73,7 +73,7 @@ export default {
         .finally(() => dispatch("setLoadingStatus", false));
       })
     },
-    async updateUserInfo({ getters, dispatch }: UserContext<IUserInfo>,
+    async updateUserInfo({ getters, dispatch }: ModuleCtx<IUserInfo>,
                                                    data: Required<IUserCreated>): Promise<void> {
       const unicID = data.uid; // Unic id for database field access.
       const profileRef = doc(database, DataCollection.Profile, unicID);
@@ -127,7 +127,7 @@ export default {
         .finally(() => dispatch("setLoadingStatus", false))
       })
     },
-    deleteUserInfo({ dispatch, getters }: UserContext<IUserInfo>, unicID: string): Promise<void> {
+    deleteUserInfo({ dispatch, getters }: ModuleCtx<IUserInfo>, unicID: string): Promise<void> {
       dispatch("setLoadingStatus", true);
 
       return new Promise((resolve, reject) => {
@@ -138,6 +138,7 @@ export default {
           if (currentUserAvatar) {
             dispatch("deleteUserAvatar", unicID)
           }
+          dispatch("deleleNotificationList", unicID)
           resolve();
         })
         .catch((error: ErrorCode) => {
@@ -147,7 +148,7 @@ export default {
         .finally(() => dispatch("setLoadingStatus", false));
       })
     },
-    getUserInfo({ getters, commit, dispatch }: UserContext<IUserInfo>): Promise<any> {
+    getUserInfo({ getters, commit, dispatch }: ModuleCtx<IUserInfo>): Promise<any> {
       const unicID = getters.getCurrentUser.uid; // Unic id for database field access.
 
       // Profile document by unicID in database. 
@@ -177,7 +178,7 @@ export default {
         .finally(() => dispatch("setLoadingStatus", false))
       })
     },
-    updateUserAvatar({ getters, dispatch }: UserContext<IUserInfo>, info: IAvatarUpdate): Promise<string> {
+    updateUserAvatar({ getters, dispatch }: ModuleCtx<IUserInfo>, info: IAvatarUpdate): Promise<string> {
       if (!info.file) return getters.getUserInfo.avatarParams;
 
       const unicID = getters.getCurrentUser.uid; // Unic id for database field access.
@@ -198,7 +199,7 @@ export default {
         }
       })
     },
-    deleteUserAvatar(context: UserContext<IUserInfo>, unicID: string): Promise<void> {
+    deleteUserAvatar(context: ModuleCtx<IUserInfo>, unicID: string): Promise<void> {
       const storage = getStorage();
       const deleteAvatarRef = ref(storage, unicID);
       return new Promise((resolve, reject) => {
@@ -210,7 +211,7 @@ export default {
         })
       })
     },
-    getUserAvatar(context: UserContext<IUserInfo>, unicID: string): Promise<string> {
+    getUserAvatar(context: ModuleCtx<IUserInfo>, unicID: string): Promise<string> {
       const storage = getStorage();
       const avatarRef = ref(storage, unicID);
       return new Promise((resolve) => {
@@ -219,9 +220,8 @@ export default {
         })
       })
     },
-    userLogout({ commit }: UserContext<IUserState>): Awaited<void> {
+    userLogout({ commit }: ModuleCtx<IUserState>): Awaited<void> {
       getAuth().signOut().then(() => {
-        console.log('then')
         commit("SET_USER_TOKEN", "");
         commit("SET_CURRENT_USER", {});
         commit("SET_CONFIRM_POPUP", false);
