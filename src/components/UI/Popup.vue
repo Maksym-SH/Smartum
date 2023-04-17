@@ -38,7 +38,7 @@ import { useStore } from 'vuex';
 export default defineComponent({
   setup() {
     const store = useStore();
-    const params: IPopupParams = store.getters.getPopupParams;
+    const params: IPopupParams = store.state.popupParams;
 
     const showTemplate: boolean = ObjectFull(params);
 
@@ -56,7 +56,7 @@ export default defineComponent({
     })
 
     const ClosePopup = (): void => {
-      store.dispatch("setPopupParams", {})
+      store.commit("setPopupParams", {})
     };
 
     const result = (result: boolean): void => {

@@ -129,8 +129,7 @@ export interface IUserResponse {
 
 // Store
 export interface IUserState {
-  userToken: string;
-  currentUser: object;
+  currentUser: User;
   openConfirmPopup: boolean;
   userInfo: IUserCreated;
 }

@@ -21,7 +21,7 @@ const firebaseAuth = (): IUserAuth => {
     signUp: (userData: IUserReg, validate: boolean): void => {
       if (!validate) return;
 
-      store.dispatch("setLoadingStatus", true);
+      store.commit("setLoadingStatus", true);
 
       createUserWithEmailAndPassword(getAuth(), userData.email, userData.password)
         .then(async (response) => {
@@ -30,7 +30,6 @@ const firebaseAuth = (): IUserAuth => {
          
           if (responseUser.accessToken) {
             localStorage.setItem("smartumToken", responseUser.accessToken);
-            store.dispatch("setUserToken", responseUser.accessToken);
           }
 
           if (currentUser) {
@@ -65,27 +64,26 @@ const firebaseAuth = (): IUserAuth => {
             type: "success",
           });
 
-          store.dispatch("setCurrentUser", getAuth().currentUser);
+          store.commit("setCurrentUser", getAuth().currentUser);
           router.push({ name: "Home" });
         })
         .catch((error: ErrorCode): void => ShowErrorMessage(error))
-        .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
+        .finally((): void => store.commit("setLoadingStatus", false));
     },
 
     signIn: (userData: IUserLogin, validate: boolean): void => {
       if (!validate) return;
 
-      store.dispatch("setLoadingStatus", true);
+      store.commit("setLoadingStatus", true);
       signInWithEmailAndPassword(getAuth(), userData.email, userData.password)
         .then((response) => {
           const user: IUserResponse = response.user;
 
           if(user.accessToken) {
             localStorage.setItem("smartumToken", user.accessToken);
-            store.dispatch("setUserToken", user.accessToken);
           }
 
-          store.dispatch("setCurrentUser", getAuth().currentUser);
+          store.commit("setCurrentUser", getAuth().currentUser);
           notify({
             title: "Вы успешно вошли в аккаунт.",
             type: "success",
@@ -93,10 +91,10 @@ const firebaseAuth = (): IUserAuth => {
           router.push({ name: "Home" });
         })
         .catch((error): void => ShowErrorMessage(error))
-        .finally((): Promise<any> => store.dispatch("setLoadingStatus", false));
+        .finally((): void => store.commit("setLoadingStatus", false));
     },
     reauthorization:(userInfo: User, credential: EmailAuthCredential): Promise<UserCredential> =>  {
-      store.dispatch("setLoadingStatus", true);
+      store.commit("setLoadingStatus", true);
 
       return new Promise((resolve, reject) => {
         reauthenticateWithCredential(userInfo, credential)
@@ -105,7 +103,7 @@ const firebaseAuth = (): IUserAuth => {
           ShowErrorMessage(error);
           reject(error);
         })  
-        .finally(() => store.dispatch("setLoadingStatus", false));
+        .finally(() => store.commit("setLoadingStatus", false));
       })
     }
   };

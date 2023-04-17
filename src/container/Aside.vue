@@ -101,10 +101,10 @@ export default defineComponent({
     const defaultLoaderSize = 40;
 
     const showContent = computed((): boolean => {
-      return ObjectHasValues(store.getters.getUserInfo) && ObjectNotEmpty(store.getters.getCurrentUser)
+      return ObjectHasValues(store.state.User.userInfo) && ObjectNotEmpty(store.state.User.currentUser)
     });
 
-    const userInfo = computed((): IUserCreated => store.getters.getUserInfo);
+    const userInfo = computed((): IUserCreated => store.state.User.userInfo);
 
     const collapseToggle = (): void => setMinimizeValue(!minimize.value);
 
@@ -118,11 +118,11 @@ export default defineComponent({
     const navigation: AsideNavigationItems = asideNavigation();
 
     onMounted((): void => {
-      if(window.innerWidth >= Layout.LargeTablet) {
+      if(window.innerWidth > Layout.Laptop) {
         setTimeout((): void => {
           setMinimizeValue(false);
         }, Numbers.AppearElement);
-      }
+      } 
     });
 
     return {

@@ -4,7 +4,7 @@ import store from "@/store";
 import ShowErrorMessage from "./firebaseErrorMessage";
 
 export const PasswordUpdate = (user: User, password: string): Promise<void> => {
-  store.dispatch("setLoadingStatus", true);
+  store.commit("setLoadingStatus", true);
   return new Promise((resolve, reject) => {
     updatePassword(user, password)
     .then(() => {
@@ -17,12 +17,12 @@ export const PasswordUpdate = (user: User, password: string): Promise<void> => {
       ShowErrorMessage(error);
       reject();
     })
-    .finally(() => store.dispatch('setLoadingStatus', false))
+    .finally(() => store.commit('setLoadingStatus', false))
   })
 }
 
 /* export const EmailUpdate = (user: User, email: string): Promise<any> => {
-  store.dispatch("setLoadingStatus", true);
+  store.commit("setLoadingStatus", true);
 
   return new Promise((resolve, reject) => {
     updateEmail(user, email).then(() => {

@@ -8,7 +8,7 @@ import ShowErrorMessage from "./firebaseErrorMessage";
 const firebaseReset = (email: string): void => {
   if (!email) return;
 
-  store.dispatch("setLoadingStatus", true);
+  store.commit("setLoadingStatus", true);
 
   sendPasswordResetEmail(getAuth(), email)
     .then(() => {
@@ -20,7 +20,7 @@ const firebaseReset = (email: string): void => {
       router.push({ name: "SignIn" });
     })
     .catch((error: ErrorCode) => ShowErrorMessage(error))
-    .finally(() => store.dispatch("setLoadingStatus", false));
+    .finally(() => store.commit("setLoadingStatus", false));
 };
 
 export default firebaseReset;

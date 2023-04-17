@@ -90,9 +90,8 @@
 <script lang="ts">
 import { defineComponent, computed, ref, reactive, watch, onMounted } from "vue";
 import { useStore } from "vuex";
-import { getAuth } from "@firebase/auth";
 import { Length, NotifyType } from "@/enums";
-import { FileResult, IUserInfo } from "@/interfaces";
+import { IUserInfo } from "@/interfaces";
 import { Confirmation, DeleteAccountPopup } from "@/helpers/methods";
 import { PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
 import { notify } from "@kyvg/vue3-notification";
@@ -111,7 +110,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     // User info.
-    const currentUser = store.getters.getCurrentUser;
+    const currentUser = store.state.User.currentUser;
 
     const userInfo: IUserInfo = reactive({
       firstName: "",
@@ -160,7 +159,7 @@ export default defineComponent({
     const updatePassword = (): void => {
       PasswordUpdate(currentUser, userInfo.newPassword).then((): void => {
 
-        store.dispatch("setNewNotification", {
+        store.commit("setNewNotification", {
           title: "Изменения в безопасности аккаунта!",
           description: "Ваш пароль был изменен, если это были не вы, сбросьте пароль,нажав на это уведомление.",
           status: "not read",
@@ -218,7 +217,7 @@ export default defineComponent({
 
     onMounted(():void => {
       store.dispatch("getUserInfo").then((): void => {
-        const field = store.getters.getUserInfo;  
+        const field = store.state.User.userInfo;  
 
         userInfo.firstName = field.firstName;
         userInfo.lastName = field.lastName;

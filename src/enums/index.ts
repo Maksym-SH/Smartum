@@ -45,7 +45,8 @@ export const enum Layout {
   Mobile = 576,
   Tablet = 768,
   LargeTablet = 992,
-  Desktop = 1024
+  Laptop = 1024,
+  Desktop = 1200
 }
 
 export const enum DataCollection {

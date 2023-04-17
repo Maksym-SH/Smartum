@@ -32,7 +32,7 @@ const useNotifications = () => {
 
   // Get all notifications.
   watchEffect(() => {
-    const unicID = store.getters.getCurrentUser?.uid;
+    const unicID = store.state.User.currentUser?.uid;
     if (unicID) {
       store.dispatch("getAllNotifications", unicID)
       .then((notifications) => {
@@ -40,17 +40,17 @@ const useNotifications = () => {
       })
     }
   })
-  watch(() => store.getters.getNewNotification, (newNotification: INotificationItem<Date>): void => {
+  watch(() => store.state.Notifications.newNotification, (newNotification: INotificationItem<Date>): void => {
     if (ObjectHasValues(newNotification)) {
       notificationList.push(newNotification);
-      store.dispatch("clearNewNotification");
+      store.commit("clearNewNotification");
     }
   })
   // Update database.
   watch(notificationList, (newValue) => {
     if (newValue) {
       store.dispatch("updateNotifications", {
-        unicID: store.getters.getCurrentUser.uid,
+        unicID: store.state.User.currentUser.uid,
         notifications: newValue
       })
     }

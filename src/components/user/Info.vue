@@ -20,7 +20,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
 
-    const emailVerified: boolean = store.getters.getCurrentUser.emailVerified;
+    const emailVerified: boolean = store.state.User.currentUser.emailVerified;
 
     const userStatusText = computed((): EmailVerify => {
       if (emailVerified) return "Почта подтверждена"

@@ -59,7 +59,7 @@ export default defineComponent({
     return {
       notifyAction,
       showList,
-      showLoading: computed(() => store.getters.getLoadingStatus),
+      showLoading: computed(() => store.state.loadingStatus),
     }
   }
 })

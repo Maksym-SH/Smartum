@@ -86,14 +86,14 @@ export default function Navigation(): AsideNavigationItems {
         title:"Пользовательское соглашение",
         callback(): void {
           const termsOfUse: ModalContentType = "termsOfUse";
-          store.dispatch("setModalContentType", termsOfUse);
+          store.commit("setModalContentType", termsOfUse);
         }
       },
       {
         title: "Конфидециальность",
         callback(): void {
           const confidentiality: ModalContentType = "confidentiality";
-          store.dispatch("setModalContentType", confidentiality);
+          store.commit("setModalContentType", confidentiality);
         },
       }
     ]

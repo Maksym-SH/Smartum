@@ -58,15 +58,15 @@ export default defineComponent({
     })
 
     const closeModal = (): void => {
-      store.dispatch("setModalContentType", "");
+      store.commit("setModalContentType", "");
     } 
 
     watch(dialog, (value) => {
-      if (!value) store.dispatch("setModalContentType", "");
+      if (!value) store.commit("setModalContentType", "");
     })
 
     const dissmissConfirmation = () => {
-      const userUID: string = store.getters.getCurrentUser.uid;
+      const userUID: string = store.state.currentUser.uid;
       Confirmation(true, DeleteAccountPopup(userUID, {
         title: "Внимание!",
         text: "В случае отклонения данного соглашения мы будем вынуждены удалить ваш аккаунт!"

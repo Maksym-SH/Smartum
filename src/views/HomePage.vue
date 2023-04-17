@@ -64,14 +64,14 @@ export default defineComponent({
     const showTabName = computed((): boolean => ObjectFull(tabName));
     const showTabDescription = computed((): boolean => showTabName.value && ObjectFull(tabDescription))
 
-    const showTabContent = computed((): boolean => ObjectNotEmpty(store.getters.getCurrentUser))
+    const showTabContent = computed((): boolean => ObjectNotEmpty(store.state.User.currentUser))
     // Aside
     const minimizeAside = ref(true);
     const toggleAsideShow = (value: boolean, capture: boolean = false): void => {
       if (!capture) {
         minimizeAside.value = value;
       }
-      else if (window.innerWidth <= Layout.LargeTablet) {
+      else if (window.innerWidth <= Layout.Laptop) {
         minimizeAside.value = capture;
       }
     };
@@ -106,7 +106,7 @@ export default defineComponent({
       showTabContent,
       toggleAsideShow,
       notifyAction,
-      showLoading: computed(() => store.getters.getLoadingStatus),
+      showLoading: computed(() => store.state.loadingStatus),
     };
   },
 });

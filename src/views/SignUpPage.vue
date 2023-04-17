@@ -129,11 +129,11 @@ export default defineComponent({
 
     const showTermsOfUse = () => {
       const type: ModalContentType = "termsOfUse";
-      store.dispatch("setModalContentType", type);
+      store.commit("setModalContentType", type);
     }
     const showConfidentiality = () => {
       const type: ModalContentType = "confidentiality";
-      store.dispatch("setModalContentType", type);
+      store.commit("setModalContentType", type);
     }
 
     return {

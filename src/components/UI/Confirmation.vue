@@ -60,7 +60,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     
-    const userInfo: User = store.getters.getCurrentUser;
+    const userInfo: User = store.state.User.currentUser;
 
     const userEmail = userInfo.email;
     const password = ref("");
@@ -75,7 +75,7 @@ export default defineComponent({
           Confirmation(false);
         })
       }
-      else store.dispatch("setConfirmPopup", false);
+      else store.commit("setConfirmPopup", false);
     }
     
     return {

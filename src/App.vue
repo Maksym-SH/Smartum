@@ -38,10 +38,10 @@ export default defineComponent({
     const store = useStore();
 
     return {
-      loadingStatus: computed((): boolean => store.getters.getLoadingStatus),
-      showPopup: computed((): boolean  => ObjectNotEmpty(store.getters.getPopupParams)),
-      showConfirmPopup: computed((): boolean => store.getters.getConfirmPopup),
-      modalContentType: computed((): ModalContentType | "" => store.getters.getModalContentType)
+      loadingStatus: computed((): boolean => store.state.loadingStatus),
+      showPopup: computed((): boolean  => ObjectNotEmpty(store.state.popupParams)),
+      showConfirmPopup: computed((): boolean => store.state.openConfirmPopup),
+      modalContentType: computed((): ModalContentType | "" => store.state.modalContentType)
     };
   },
 });

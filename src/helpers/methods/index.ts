@@ -14,7 +14,7 @@ export const ObjectNotEmpty = (object: object): boolean => {
 }
 
 export const OpenPopup = (params: IPopupParams): void => { 
-  store.dispatch("setPopupParams", params);
+  store.commit("setPopupParams", params);
 }
 
 // Random light color generation.
@@ -24,7 +24,7 @@ export const RandomHSLA = () => {
 
 let ConfirmCallback: Function;
 export const Confirmation = (toggle: boolean, callback?: Function | void): Promise<any> | void => {
-  store.dispatch("setConfirmPopup", toggle);
+  store.commit("setConfirmPopup", toggle);
   if (callback && toggle) {
     ConfirmCallback = callback;
   } 
