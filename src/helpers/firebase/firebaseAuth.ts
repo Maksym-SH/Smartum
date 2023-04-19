@@ -1,6 +1,3 @@
-import store from "@/store";
-import router from "@/router";
-import ShowErrorMessage from "./firebaseErrorMessage";
 import { 
   getAuth, 
   createUserWithEmailAndPassword, 
@@ -10,11 +7,15 @@ import {
   User, 
   UserCredential
 } from "firebase/auth";
-import { NotifyType } from "@/enums";
+import store from "@/store";
+import router from "@/router";
+import ShowErrorMessage from "./firebaseErrorMessage";
 import { notify } from "@kyvg/vue3-notification";
 import { INotificationItem, IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
 import { ErrorCode } from "@/types";
 import { RandomHSLA } from "@/helpers/methods";
+import notificationContent from "@/composables/useNotificationContent";
+import { NotifcationType } from "@/enums";
 
 const firebaseAuth = (): IUserAuth => {
   const useAuth = {
@@ -43,15 +44,7 @@ const firebaseAuth = (): IUserAuth => {
               }
             })
 
-            const confirmEmailNotify: INotificationItem<Date> = {
-              id: Date.now(),
-              title: "Добро пожаловать в Smartum task management!",
-              description: "Подтвердите свой электронный адрес, для этого нажмите на это уведомление",
-              status: "not read",
-              date: new Date(),
-              image: process.env.BASE_URL + "notifyIcons/mail.svg",
-              type: NotifyType.Profile
-            }
+            const confirmEmailNotify: INotificationItem<Date> = notificationContent(NotifcationType.Welcome);
             // Create user notifications field in database.
             store.dispatch("createNotificationList", {
               unicID: currentUser.uid,

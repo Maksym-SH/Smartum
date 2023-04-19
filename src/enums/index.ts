@@ -61,9 +61,15 @@ export const enum Links {
 }
 
 export const enum NotifyType {
-  User="user",
-  Dashboard="dashboard",
-  Profile="profile",
-  Reset="reset",
-  Default="default"
+  User,
+  Dashboard,
+  Profile,
+  Reset,
+  Default
+}
+
+export const enum NotifcationType {
+  PasswordChange,
+  Welcome,
+  
 }

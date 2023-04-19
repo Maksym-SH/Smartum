@@ -89,7 +89,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, reactive, watch, onMounted } from "vue";
 import { useStore } from "vuex";
-import { Length, NotifyType } from "@/enums";
+import { Length, NotifcationType } from "@/enums";
 import { IUserInfo } from "@/interfaces";
 import { Confirmation, DeleteAccountPopup } from "@/helpers/methods";
 import { PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
@@ -99,6 +99,7 @@ import RegExp from "@/helpers/regExp";
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
+import newNotificationContent from "@/composables/useNotificationContent";
 
 export default defineComponent({
   components: {
@@ -158,13 +159,7 @@ export default defineComponent({
     const updatePassword = (): void => {
       PasswordUpdate(currentUser, userInfo.newPassword).then((): void => {
 
-        store.commit("setNewNotification", {
-          title: "Изменения в безопасности аккаунта!",
-          description: "Ваш пароль был изменен, если это были не вы, сбросьте пароль, нажав на это уведомление.",
-          status: "not read",
-          image: process.env.BASE_URL + "notifyIcons/guard.svg",
-          type: NotifyType.Reset
-        })
+        store.commit("setNewNotification", newNotificationContent(NotifcationType.PasswordChange))
         userInfo.newPassword = ""; // After update password reset input value.
         profileUpdate();
       })

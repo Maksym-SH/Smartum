@@ -20,7 +20,7 @@
         </div>
         <div class="aside__user">
           <User 
-            @user-menu-picked="setMinimizeValue(true, LayoutLargeTablet)"
+            @user-menu-picked="setMinimizeValue(true, LayoutLaptop)"
             :firstName="userInfo.firstName"
             :lastName="userInfo.lastName" 
             :avatar="userInfo.avatarParams" 
@@ -152,7 +152,7 @@ export default defineComponent({
       collapseToggle,
       navigationCallbackHandler,
       setMinimizeValue,
-      LayoutLargeTablet: Layout.LargeTablet
+      LayoutLaptop: Layout.Laptop
     };
   },
 });

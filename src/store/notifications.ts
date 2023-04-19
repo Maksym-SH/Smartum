@@ -11,11 +11,7 @@ export default {
   },
   mutations: {
     setNewNotification(state: INotificationState, notification: INotificationItem<Date>): void {
-      state.newNotification = {
-        ...notification,
-        id: Date.now(),
-        date: new Date()
-      };
+      state.newNotification = notification;
     },
     clearNewNotification(state: INotificationState): void {
       state.newNotification = {}
