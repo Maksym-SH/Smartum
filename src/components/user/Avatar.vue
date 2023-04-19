@@ -2,16 +2,14 @@
   <span
     class="user-avatar" 
     :style="avatarStyles"
-    :class="{'user-avatar--rounded': rounded && circle }"
+    :class="{'user-avatar--circle': circle }"
   >
     <Loader v-if="showPreload" inline :size="30" />
-    <v-avatar 
-      :class="{ 'user-avatar--circle': circle }"
+    <img 
       v-else-if="avatar.url" 
-      :image="avatar.url" 
-      :rounded="rounded" 
-      :size="size"
-    ></v-avatar> 
+      :src="avatar.url"
+      alt=""
+    /> 
     <span
       class="user-avatar--initials"
       v-else-if="firstName"
@@ -37,6 +35,7 @@ export default defineComponent({
     const avatarStyles = computed((): CSSProperties => {
       return {
         width: `${props.size}px`,
+        minWidth: `${props.size}px`,
         height: `${props.size}px`,
         backgroundColor: props.avatar.bgAvatar
       }
@@ -84,8 +83,11 @@ export default defineComponent({
   .c-loader {
     position: static !important;
   }
-  &--rounded {
-    border-radius: 50% !important;
+  &.user-avatar--circle {
+    border-radius: 50%;
+    img {
+      border-radius: 50%;
+    }
   }
   img {
     width: 100%;

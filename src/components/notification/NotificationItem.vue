@@ -8,7 +8,6 @@
       v-if="image" 
       :avatar="image" 
       :size="45"
-      rounded
       circle
     />
     <div class="notification-item__content">

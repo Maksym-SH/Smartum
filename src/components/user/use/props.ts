@@ -21,10 +21,6 @@ export const useAvatarProps = {
     type: Boolean,
     default: false,
   },
-  rounded: {
-    type: Boolean,
-    default: false,
-  },
   firstName: {
     type: String,
     default: ""

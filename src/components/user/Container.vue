@@ -1,8 +1,7 @@
 <template>
   <div class="user-info">
     <Avatar
-      rounded 
-      online 
+      online
       :firstName="firstName"
       :lastName="lastName" 
       :avatar="avatar"
