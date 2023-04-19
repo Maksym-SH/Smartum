@@ -55,12 +55,12 @@
             </Button>
         </template>
       </template>
-      <footer class="aside__about-author">
-        <article>
-          Powered by Maksym-SH © 2023
-        </article>
-      </footer>
     </div>
+    <footer class="aside__about-author">
+      <article>
+        Powered by Maksym-SH © 2023
+      </article>
+    </footer>
     <div class="aside__collapse" @click="collapseToggle">
       <span class="aside__collapse--toggle"
         ><img src="@/assets/img/icons/caret.svg" alt="" />
@@ -215,7 +215,7 @@ export default defineComponent({
   }
 
   &__content {
-    height: calc(100% - 66.8px);
+    height: calc(100% - 101px);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -233,11 +233,11 @@ export default defineComponent({
     }
 
     &::-webkit-scrollbar-track {
-      background-color: $color-dark-grey;
+      background-color: $color-grey;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: $color-dark-grey4;
+      background-color: $color-dark-grey3;
     }
   }
 
@@ -303,13 +303,11 @@ export default defineComponent({
   }
 
   &__about-author {
-    position: sticky;
     margin-top: auto;
-    bottom: 0px;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     padding: 10px 0;
-    background-color: $color-dark-grey;
+    background-color: $color-dark-grey3;
     color: $color-white1;
     article {
       margin: 0 auto;

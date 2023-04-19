@@ -248,12 +248,12 @@ export default defineComponent({
   &__form {
     display: grid;
     grid-template-columns: minmax(auto, 200px) repeat(2, 0.4fr);
-    gap: 25px;
+    gap: 22px 25px;
     padding-bottom: 20px;
     max-width: 1200px;
-    row-gap: 22px;
     &--upload {
       .label {
+        font-size: 13px;
         color: var(--color-text);
       }
       grid-area: 1/1/3/1;
@@ -266,11 +266,12 @@ export default defineComponent({
     }
     .c-input {
       padding-bottom: 0;
+      margin-top: 2px;
     }
     .textarea {
       grid-area: 2/2/3/4;
       .c-textarea {
-        height: 135px;
+        height: 130px;
       }
     }
     .btn-delete {
