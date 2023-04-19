@@ -29,24 +29,26 @@
           <Input
             v-model.trim="userData.firstName"
             required
-            placeholder="Имя"
+            label="Имя"
+            :maxLength="MaxLength"
             :min="LengthText"
             transparent
-            autocomplete
           />
           <Input
             v-model.trim="userData.lastName"
             :min="userData.lastName ? LengthText : LengthNone"
-            placeholder="Фамилия"
+            :maxLength="MaxLength"
+            label="Фамилия"
             transparent
-            autocomplete
           />
           <Input
             v-model.trim="userData.email"
             required
+            type="email"
             isEmail
             transparent
-            placeholder="Почта"
+            autocomplete
+            label="Электронный адрес"
           />
           <Input
             v-model="userData.password"
@@ -54,7 +56,7 @@
             type="password"
             transparent
             :min="LengthPassword"
-            placeholder="Пароль"
+            label="Пароль"
             autocomplete
           />
 
@@ -141,6 +143,7 @@ export default defineComponent({
       LengthText,
       LengthPassword,
       LengthNone: Length.None,
+      MaxLength: Length.Maximum,
       submitForm,
       showTermsOfUse,
       showConfidentiality
@@ -157,13 +160,12 @@ export default defineComponent({
     display: flex;
     box-shadow: 0 30px 10px rgba($color-grey, 0.3);
     &--welcome {
-      height: 100%;
       background-color: $color-dark-blue;
       position: relative;
       overflow: hidden;
-      height: 600px;
+      height: 611px;
       padding: 65px 30px 20px 30px;
-      color: $color-white4;
+      color: $color-white3;
       &__grid-image {
         outline: none;
         width: 70%;
@@ -192,7 +194,7 @@ export default defineComponent({
       }
       &-logo {
         position: absolute;
-        bottom: 0;
+        bottom: 5px;
         width: 100%;
         left: 0;
         text-align: center;
@@ -205,7 +207,7 @@ export default defineComponent({
     &--content {
       width: 60%;
       padding: 20px;
-      color: $color-white4;
+      color: $color-white3;
       background-color: rgba($color-grey, 0.8);
       .content__swap-type-entry {
         margin-top: 40px;
@@ -235,7 +237,7 @@ export default defineComponent({
       }
     }
     &-form-inputs {
-      height: calc(400px + 39px);
+      height: calc(400px + 50px);
       display: flex;
       flex-direction: column;
       &__send {

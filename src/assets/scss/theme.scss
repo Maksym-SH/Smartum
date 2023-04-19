@@ -1,0 +1,48 @@
+:root {
+  --color-dark: #181a1d;
+  --color-light: #edf1f5;
+
+  --color-light-secondary: #f7fafd;
+  --color-dark-secondary: #161B22;
+  
+  --color-light-modal-background: #edf1f5;
+  --color-dark-modal-background: #010101;
+  
+  --color-light-input: #ffffff;
+  --color-dark-input: #010409;
+  
+  --color-light-notification-read: #fff9f9;
+  --color-dark-notification-read: transparent;
+  
+  --color-light-notification-border: transparent;
+  --color-dark-notification-border: #30363d;
+  
+  --color-dark-notification-background-new: #062b4e;
+  --color-light-notification-background-new: #bdd6ee;
+}
+
+// Dark theme.
+body[data-theme='dark'] {
+  --color-background-secondary: var(--color-dark-secondary);
+  --color-background: var(--color-dark);
+  --color-text: var(--color-light);
+  --color-scroll-track: var(--color-light-secondary);
+  --color-input: var(--color-light-input);
+  --color-background-notification: var(--color-dark-notification-read);
+  --color-border-notification: var(--color-dark-notification-border);
+  --color-background-notification-new: var(--color-dark-notification-background-new);
+  --color-background-modal: var(--color-dark-modal-background);
+}
+
+// Light theme.
+body[data-theme='light'] {
+  --color-background-secondary: var(--color-light-secondary);
+  --color-background: var(--color-light);
+  --color-scroll-track: var(--color-dark-secondary);
+  --color-text: var(--color-dark);
+  --color-input: var(--color-dark-input);
+  --color-background-notification: var(--color-light-notification-read);
+  --color-border-notification: var(--color-light-notification-border);
+  --color-background-notification-new: var(--color-light-notification-background-new);
+  --color-background-modal: var(--color-light-modal-background);
+}

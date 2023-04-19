@@ -1,9 +1,9 @@
 <template>
   <span class="c-checkbox" :class="{'switch': switchBox }">
-    <input v-model="checked" type="checkbox" :id="name">
+    <input class="c-checkbox__input" v-model="checked" type="checkbox" :id="name">
     <label 
-      class="secondary-label" 
-      :class="{ 'selected': !checked }"
+      class="label secondary-label" 
+      :class="{ 'not-selected': checked }"
       v-if="secondaryLabel && switchBox" 
       @click="checkboxToggle(false)"
     >
@@ -11,9 +11,9 @@
     </label>
     <label class="checkbox-label" :for="name"></label>
     <label
-      class="main-label"
+      class="label main-label"
       v-if="label"
-      :class="{ 'selected': checked }"
+      :class="{ 'not-selected': !checked }"
       @click="checkboxToggle(true)"
     >
       {{ label }}
@@ -56,13 +56,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .c-checkbox {
   cursor: pointer;
-  input {
+  &__input {
     display: none;
   }
-  .selected {
-    color: $color-black;
+  .not-selected {
+    color: $color-brown !important;
   }
-  label {
+  .label {
     cursor: pointer;
     user-select: none;
   }
@@ -84,14 +84,14 @@ export default defineComponent({
         width: 15px;
         height: 15px;
         border-radius: 3px;
-        background-color: $color-white5;
+        background-color: $color-white4;
         border: 1px solid $color-dark-grey;
       }
     }
-    input {
-        &:checked {
+    .c-checkbox__input {
+      &:checked {
         & ~ .checkbox-label {
-          color: $color-text;
+          color: $color-white5;
           &::before {
             background-color: $color-green;
             background-image: url(~@/assets/img/icons/check.svg);
@@ -126,12 +126,14 @@ export default defineComponent({
       }
     }
     .secondary-label {
+      color: var(--color-text);
       padding-right: 5px;
     }
     .main-label {
+      color: var(--color-text);
       padding-left: 5px;
     }
-    input {
+    .c-checkbox__input {
       display: none;
         &:checked {
         ~ .checkbox-label {

@@ -2,7 +2,9 @@
   <div class="user-info__name">
     <h5 class="user-info__name--name text-ellipsis">{{ firstName }}</h5>
     <h5 class="user-info__name--name text-ellipsis">{{ lastName }}</h5>
-    <small class="user-info__name--status" :class="{ 'verified': emailVerified }">
+    <small 
+      v-if="firstName"
+      class="user-info__name--status" :class="{ 'verified': emailVerified }">
       <span :class="['mdi', statusIcon]"></span> 
       {{ userStatusText }}
     </small>
@@ -44,16 +46,16 @@ export default defineComponent({
 <style lang="scss" scoped>
 .user-info__name {
   max-width: 140px;
-  min-height: 66px;
   display: flex;
   flex-direction: column;
   &--name {
-    color: $color-white4;
+    color: $color-white3;
     font-size: 14px;
     line-height: 21px;
     white-space: pre-wrap;
   }
   &--status {
+    padding-top: 10px;
     margin-top: auto;
     font-size: 11px;
     line-height: 16.5px;

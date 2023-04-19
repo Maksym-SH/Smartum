@@ -1,27 +1,39 @@
 <template>
   <div class="c-textarea">
-    <label v-if="label" :for="textareaName">{{ label }}</label>
-    <textarea
-      class="c-textarea__field"
-      :class="{
-        'c-textarea__field--error': errorText,
-        'c-textarea__field--required': required,
-        'c-textarea__field--resize': resize
-      }"
-      ref="textarea"
-      :name="textareaName"
-      :placeholder="placeholder"
-      v-model="model"
-      v-bind="$attrs"
-      @blur="validator()"
-      :required="required"
-      :min="min"
-      :maxlength="max"
-    />
-    <span v-if="required" class="c-textarea--required"></span>
-    <Transition name="error-message">
-      <span v-if="errorText" class="c-textarea--error-text">{{ errorText }}</span>
-    </Transition>
+    <div class="c-textarea--relative">
+      <textarea
+        class="c-textarea__field"
+        :class="{
+          'c-textarea__field--error': errorText,
+          'c-textarea__field--required': required,
+          'c-textarea__field--resize': resize
+        }"
+        ref="textarea"
+        :name="textareaName"
+        :placeholder="placeholder"
+        v-model="model"
+        :disabled="disabled"
+        v-bind="$attrs"
+        @blur="validator()"
+        :required="required"
+        :min="min"
+        :maxlength="max"
+      />
+      <label 
+        v-if="label" 
+        :for="textareaName"
+        :class="{
+          'label-disable': disabled,
+          'top-fixed': modelValue
+        }"
+      >
+        {{ label }}
+      </label>
+      <span v-if="required" class="c-textarea--required"></span>
+      <Transition name="error-message">
+        <span v-if="errorText" class="c-textarea--error-text">{{ errorText }}</span>
+      </Transition>
+    </div>
   </div>
 </template>
 
@@ -80,19 +92,24 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .c-textarea {
-  position: relative;
   width: 100%;
   height: fit-content;
+  padding-top: 20px;
+  &--relative {
+    position: relative;
+    height: 100%;
+  }
   &__field {
     padding: 10px;
-    border: 1px solid $color-dark-grey;
+    border: 1px solid var(--color-input);
     outline: none;
     width: 100%;
-    height: calc(100% - 23px);
-    background-color: $color-white1;
+    height: 100%;
+    background-color: var(--input-bg-color);
     border-radius: 4px;
     transition: all 0.3s ease;
     resize: none;
+    color: var(--color-text);
     &::-webkit-scrollbar {
       width: 6px;
     }
@@ -101,7 +118,7 @@ export default defineComponent({
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 3px;
-      background-color: $color-dark-grey;
+      background-color: var(--color-scroll-track);
     }
     &--error {
       border-color: $color-red;
@@ -110,6 +127,16 @@ export default defineComponent({
       &::placeholder {
         color: $color-grey;
       }
+    }
+    &:focus {
+      & + label {
+        top: -18px;
+        left: 0 !important;
+      }
+    }
+    &:disabled {
+      border-color: $color-brown;
+      color: $color-brown;
     }
     &--resize {
       resize: vertical;
@@ -131,9 +158,19 @@ export default defineComponent({
     right: 0;
     background-color: red;
   }
-  label + .c-textarea {
-    height: calc(100% - 23px);
-  }
+  label {
+    transition: all 0.2s;
+    color: var(--color-text);
+    pointer-events: none;
+    position: absolute;
+    font-size: 13px;
+    top: 10px;
+    left: 10px;
+    &.top-fixed {
+      top: -18px;
+      left: 0;
+    }
+  } 
 }
 
 .error-message-enter-active,

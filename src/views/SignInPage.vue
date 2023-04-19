@@ -10,7 +10,8 @@
             <Input
               required
               isEmail
-              placeholder="Почта"
+              type="email"
+              label="Почта"
               v-model="userData.email"
               transparent
               autocomplete
@@ -18,7 +19,7 @@
             <Input
               required
               type="password"
-              placeholder="Пароль"
+              label="Пароль"
               v-model="userData.password"
               transparent
               :min="LengthPassword"
@@ -109,7 +110,7 @@ export default defineComponent({
     }
     .auth__description {
       margin-bottom: 20px;
-      color: $color-white5;
+      color: $color-white4;
     }
   }
   &__window {

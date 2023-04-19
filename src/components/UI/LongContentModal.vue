@@ -99,10 +99,11 @@ export default defineComponent({
   }
   .v-list {
     padding: 20px;
+    background-color: var(--color-background-secondary);
+    color: var(--color-text);
     &::-webkit-scrollbar {
       width: 10px;
     }
-
     &::-webkit-scrollbar-track {
       background: $color-light-grey;
     }

@@ -227,7 +227,7 @@ export default {
           title: "Произошла ошибка!",
           text: String(error),
         })
-      )
+      ).finally(() => commit("setLoadingStatus", false))
     },
   },
 }

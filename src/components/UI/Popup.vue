@@ -1,6 +1,8 @@
 <template>
-  <div class="popup">
-    <div class="popup__container" v-if="showTemplate">
+  <div class="popup" 
+    @click.self="result(false)"
+  >
+    <div class="popup__window" v-if="showTemplate">
       <h2 class="popup__title" v-if="params.title">
         {{ params.title }}
       </h2>
@@ -90,13 +92,16 @@ export default defineComponent({
   justify-content: center;
   z-index: 100;
 
-  &__container {
+  &__window {
     width: fit-content;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
     padding: 20px 40px;
     min-width: 400px;
     max-width: 440px;
-    background-color: $color-white5;
+    background-color: var(--color-background-modal);
+    color: var(--color-text);
   }
   &__title {
     text-align: center;
@@ -113,9 +118,11 @@ export default defineComponent({
     font-size: 14px;
     text-align: center;
     line-height: 20px;
+    opacity: 0.9;
   }
   &__button {
-    margin-top: 30px;
+    margin-top: auto;
+    padding-top: 30px;
     display: flex;
     gap: 15px;
     justify-content: center;
@@ -125,14 +132,16 @@ export default defineComponent({
   }
 
   @include mobile(max) {
-    &__container {
+    &__window {
+      width: 90%;
       min-width: 300px;
+      min-height: 150px;
       padding: 20px;
       margin: 5px;
     }
     &__button {
       .c-button {
-        padding:  10px;
+        padding: 10px;
       }
     }
   }

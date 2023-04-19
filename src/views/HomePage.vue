@@ -117,7 +117,7 @@ export default defineComponent({
   min-height: 100%;
   display: grid;
   grid-template-rows: 1fr;
-  background-color: $color-white5;
+  background-color: var(--color-background);
   &__wrapper {
     display: grid;
     min-height: 100%;
@@ -136,6 +136,7 @@ export default defineComponent({
     top: 100px;
     font-size: 24px;
     padding-left: 40px;
+    color: var(--color-text);
     .page {
       &-title {
         font-size: 24px;

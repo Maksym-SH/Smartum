@@ -103,7 +103,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .notification-item {
-  background-color: $color-white3;
+  background-color: var(--color-background-notification);
+  border: 1px solid var(--color-border-notification);
   padding: 10px;
   display: flex;
   width: 100%;
@@ -113,9 +114,9 @@ export default defineComponent({
   transition: all 0.2s;
   cursor: pointer;
   padding-right: 27px;
-  box-shadow: 0 5px 7px rgba(black, 0.2);
+  color: var(--color-text);
   &.not-read {
-    background-color: $color-light-blue;
+    background-color: var(--color-background-notification-new);
   }
   &__content {
     width: 100%;
@@ -142,13 +143,14 @@ export default defineComponent({
     margin-top: 7px;
     font-size: 13px;
     line-height: 16px;
-    color: $color-dark-grey3;
+    color: var(--color-text);
+    opacity: 0.8;
   }
   &__close {
     position: absolute;
     top: -2px;
     right: 2px;
-    color: $color-dark-grey2;
+    color: var(--color-text);
     font-size: 24px;
     cursor: pointer;
     transition: all 0.1s;

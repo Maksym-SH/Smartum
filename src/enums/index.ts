@@ -7,7 +7,8 @@ export const enum Length {
   Text = 3,
   Password = 8,
   None = 0,
-  Textarea = 255
+  Textarea = 255,
+  Maximum = 45
 }
 
 export const enum LangFormat {

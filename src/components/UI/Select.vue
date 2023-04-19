@@ -66,10 +66,10 @@ export default defineComponent({
     border-radius: 4px;
     border: 1px solid $color-black;
     z-index: 3;
-    right: 0;
+    right: 5px;
     top: 50px;
     .c-button {
-      padding: 15px 17px;
+      padding: 15px 16px;
       margin: 0;
       &.no-icon {
         padding-left: 44px !important;
@@ -82,7 +82,7 @@ export default defineComponent({
         border-bottom-color: transparent;
       }
       &:hover {
-        background-color: $color-white4;
+        background-color: $color-white3;
         border-radius: 4px;
       }
     }
@@ -93,14 +93,14 @@ export default defineComponent({
     }
     &--caret {
       top: -10px;
-      right: 12px;
+      right: 7px;
       display: inline-block;
       width: 15px;
       height: 10px;
       border-radius: 40px 40px 0 0;
       position: absolute;
       background-color: $color-white2;
-      border: 1px solid black;
+      border: 1px solid $color-black;
       border-bottom-color: transparent;
     }
   }

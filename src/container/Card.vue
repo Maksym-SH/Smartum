@@ -34,7 +34,7 @@ export default defineComponent({
   padding: 60px 30px 40px 30px;
   border-radius: 10px;
   box-shadow: 0 0 5px rgba($color-black, 0.3);
-  background-color: $color-white4;
+  background-color: $color-white3;
   border: 2px solid transparent;
   display: flex;
   flex-wrap: wrap;

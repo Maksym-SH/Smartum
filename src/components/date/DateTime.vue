@@ -85,13 +85,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .date {
+  width: 207px;
+  color: var(--color-text);
+  text-align: center;
   &-wrapper {
     position: relative;
     height: 43.2px;
     min-width: 130px;
   }
-  width: fit-content;
-  color: $color-grey;
   &__title {
     font-size: 14px;
     display: flex;

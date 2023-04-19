@@ -1,55 +1,58 @@
 <template>
   <aside class="aside" :class="{ 'aside-minimize': minimizeAside }">
+    <div class="aside__logo">
+      <img src="@/assets/img/logo.svg" alt="Logo" />
+    </div>
     <div class="aside__content">
-      <div class="aside__logo">
-        <img src="@/assets/img/logo.svg" alt="Logo" />
-      </div>
       <Loader :size="defaultLoaderSize" inline v-if="!showContent"/>
       <template v-else>
-        <div class="aside__search-content mobile-only">
+        <div class="aside__mobile-content mobile-only">
+          <SwitchTheme
+            class="aside__theme-switch"
+            small
+          />
           <Input
             type="search" 
-            placeholder="Поиск" 
+            light-theme
+            label="Поиск" 
             v-model="searchInput"
           />
         </div>
         <div class="aside__user">
           <User 
-            @user-menu-picked="setMinimizeValue(true, LayoutMobile)"
+            @user-menu-picked="setMinimizeValue(true, LayoutLargeTablet)"
             :firstName="userInfo.firstName"
             :lastName="userInfo.lastName" 
             :avatar="userInfo.avatarParams" 
           />
         </div>
         <template v-for="(item, index) in navigation" :key="index">
-            <template v-if="item.panels">
-              <ExpPanel
-                :name="item.title" 
-                :icon="item.icon" 
-                :content="item.panels"
-              />
-            </template>
-            <template v-else>
-              <Button 
-                class="aside__navigation-btn" 
-                transparent
-                @click="item?.callback?.()"
+            <ExpPanel
+              v-if="item.panels"
+              :name="item.title" 
+              :icon="item.icon" 
+              :content="item.panels"
+            />
+            <Button 
+              v-else
+              class="aside__navigation-btn" 
+              transparent
+              @click="navigationCallbackHandler(item?.callback?.())"
+            >
+              <span 
+                v-if="item.icon"
+                class="icon" 
+                :class="['mdi', `mdi-${ item.icon }`]"
+              ></span>
+              <span :class="{ 'no-icon': !item.icon }">{{ item.title }}</span>
+              <v-badge
+                v-if="notificationCount >= 0 && item.notify" 
+                class="notify"
+                :class="{'empty-list': notificationCount === 0 }"
+                :content="notificationCount"
               >
-                <span 
-                  v-if="item.icon"
-                  class="icon" 
-                  :class="['mdi', `mdi-${ item.icon }`]"
-                ></span>
-                <span :class="{ 'no-icon': !item.icon }">{{ item.title }}</span>
-                <v-badge
-                  v-if="notificationCount >= 0 && item.notify" 
-                  class="notify"
-                  :class="{'empty-list': notificationCount === 0 }"
-                  :content="notificationCount"
-                >
-                </v-badge>
-              </Button>
-            </template>
+              </v-badge>
+            </Button>
         </template>
       </template>
       <footer class="aside__about-author">
@@ -62,6 +65,12 @@
       <span class="aside__collapse--toggle"
         ><img src="@/assets/img/icons/caret.svg" alt="" />
       </span>
+      <v-badge
+        v-if="notificationCount > 0 && minimizeAside" 
+        class="aside__collapse--notify-badge"
+        :content="notificationCount"
+      >
+      </v-badge>
     </div>
   </aside>
 </template>
@@ -72,13 +81,16 @@ import { useStore } from "vuex";
 import { Numbers, Layout } from "@/enums";
 import { IUserCreated } from "@/interfaces";
 import User from "@/components/user/Container.vue";
+import SwitchTheme from "@/components/ui/SwitchTheme.vue";
 import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
 import asideNavigation from "./use/asideNavigation";
 import { AsideNavigationItems } from "@/types";
 
+
 export default defineComponent({
   components: {
     User,
+    SwitchTheme
   },
   props: {
     minimizeAside: {
@@ -115,6 +127,11 @@ export default defineComponent({
       emit("update:minimizeAside", minimize.value);
     }
 
+    const navigationCallbackHandler = (callback: void | (() => void)): void => {
+      setMinimizeValue(true, Layout.LargeTablet); // Close aside panel after click navigation item.
+      callback?.();
+    };
+
     const navigation: AsideNavigationItems = asideNavigation();
 
     onMounted((): void => {
@@ -133,8 +150,9 @@ export default defineComponent({
       navigation,
       defaultLoaderSize,
       collapseToggle,
+      navigationCallbackHandler,
       setMinimizeValue,
-      LayoutMobile: Layout.LargeTablet
+      LayoutLargeTablet: Layout.LargeTablet
     };
   },
 });
@@ -151,7 +169,7 @@ export default defineComponent({
   z-index: 2;
   background-color: $color-grey;
   transition: transform 0.5s ease;
-  box-shadow: 10px 0 10px rgba($color-light-grey, 0.25);
+  box-shadow: 10px 0 10px rgba($color-dark-grey, 0.2);
   &.aside-minimize {
     box-shadow: none;
     transform: translateX(-260px);
@@ -197,7 +215,7 @@ export default defineComponent({
   }
 
   &__content {
-    height: 100%;
+    height: calc(100% - 66.8px);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -215,7 +233,7 @@ export default defineComponent({
     }
 
     &::-webkit-scrollbar-track {
-      background-color: transparent;
+      background-color: $color-dark-grey;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -234,11 +252,20 @@ export default defineComponent({
     }
   }
 
-  &__search-content {
+  &__mobile-content {
     padding: 10px 24px;
     .c-input {
+      margin-top: 35px;
       padding: 0;
-      opacity: 0.8;
+      :deep(.c-input__field--search) {
+        display: none;
+        border: 5px solid $color-white1 !important;
+      }
+    }
+    .aside__theme-switch {
+      transform: translateX(20px);
+      z-index: 2;
+      margin-left: auto;
     }
   }
 
@@ -254,11 +281,25 @@ export default defineComponent({
   &__collapse {
     position: absolute;
     bottom: 34px;
-    right: -16px;
+    right: -27px;
     cursor: pointer;
-    background-color: $color-light-grey;
-    padding: 7px 7px 10px 4.2px;
+    background-color: $color-grey;
+    padding: 15px 10px;
     clip-path: polygon(0 0, 100% 21%, 100% 76%, 0% 100%);
+    &--toggle {
+      img {
+        width: 7px;
+      }
+    }
+    &--notify-badge {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      pointer-events: none;
+      .v-badge__badge {
+        background-color: $color-red;
+      }
+    }
   }
 
   &__about-author {
@@ -304,6 +345,9 @@ export default defineComponent({
   @include mobile(max) {
     &__logo {
       max-height: 64px;
+    }
+    &__user {
+      padding: 10px 24px;
     }
   }
 }

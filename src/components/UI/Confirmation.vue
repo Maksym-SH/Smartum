@@ -1,5 +1,5 @@
 <template>
-  <div class="confirmation">
+  <div class="confirmation" @click.self="result(false)">
     <div class="confirmation__window">
       <h2 class="confirmation__window-title">
         Подтверждение действия
@@ -105,7 +105,7 @@ export default defineComponent({
     padding: 20px 40px;
     width: 100%;
     max-width: 400px;
-    background-color: $color-white5;
+    background-color: var(--color-background-modal);
 
     &-title {
       text-align: center;
@@ -113,6 +113,7 @@ export default defineComponent({
       font-size: 20px;
       font-weight: 500;
       margin-bottom: 10px;
+      color: var(--color-text);
 
       &::first-letter {
         text-transform: uppercase;
@@ -123,7 +124,8 @@ export default defineComponent({
       font-size: 14px;
       text-align: center;
       line-height: 20px;
-      color: $color-grey;
+      color: var(--color-text);
+      opacity: 0.9;
     }
 
     &-input-field {
@@ -177,6 +179,20 @@ export default defineComponent({
           min-width: 48%;
           padding:  10px;
         }
+      }
+    }
+  }
+  @include mobile(max) {
+    &__window {
+      width: 90%;
+      min-width: 300px;
+      min-height: 150px;
+      padding: 20px;
+      margin: 5px;
+    }
+    &__button {
+      .c-button {
+        padding: 10px;
       }
     }
   }

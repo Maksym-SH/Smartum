@@ -15,6 +15,7 @@
           v-model.trim="userInfo.firstName"
           @keydown.enter.prevent
           :min="userInfo.firstName ? TextLength : LengthNone"
+          :maxLength="MaxLength"
           label="Имя"
         />
       </div>
@@ -23,6 +24,7 @@
           v-model.trim="userInfo.lastName" 
           @keydown.enter.prevent
           :min="userInfo.lastName ? TextLength : LengthNone" 
+          :maxLength="MaxLength"
           label="Фамилия"
         />
       </div>
@@ -31,15 +33,13 @@
           v-model.trim="userInfo.about" 
           :max="TextareaLength"
           label="Дополнительная информация"
-          placeholder="Расскажите о себе (не обязательно)"
         />
       </div>
       <div class="profile-tab__form_form-item phone">
         <Input 
           class="phone"
           @keydown.enter.prevent
-          v-model.trim="userInfo.phone" 
-          :placeholder="userInfo.phone"
+          v-model.trim="userInfo.phone"
           isPhone
           label="Телефон"
         />
@@ -55,7 +55,6 @@
       <div class="profile-tab__form_form-item new-password">
         <Input 
           v-model.trim="userInfo.newPassword" 
-          placeholder="Изменить пароль" 
           @keydown.enter.prevent
           type="password"
           :min="userInfo.newPassword ? PasswordLength : LengthNone"
@@ -161,7 +160,7 @@ export default defineComponent({
 
         store.commit("setNewNotification", {
           title: "Изменения в безопасности аккаунта!",
-          description: "Ваш пароль был изменен, если это были не вы, сбросьте пароль,нажав на это уведомление.",
+          description: "Ваш пароль был изменен, если это были не вы, сбросьте пароль, нажав на это уведомление.",
           status: "not read",
           image: process.env.BASE_URL + "notifyIcons/guard.svg",
           type: NotifyType.Reset
@@ -234,6 +233,7 @@ export default defineComponent({
       PasswordLength: Length.Password,
       LengthNone: Length.None,
       TextareaLength: Length.Textarea,
+      MaxLength: Length.Maximum,
       validForm,
       btnSaveDisable,
       updatePhoto,
@@ -258,6 +258,9 @@ export default defineComponent({
     max-width: 1200px;
     row-gap: 22px;
     &--upload {
+      .label {
+        color: var(--color-text);
+      }
       grid-area: 1/1/3/1;
       .file-upload {
         width: 100%;
@@ -272,7 +275,7 @@ export default defineComponent({
     .textarea {
       grid-area: 2/2/3/4;
       .c-textarea {
-        height: 130px;
+        height: 135px;
       }
     }
     .btn-delete {
@@ -317,7 +320,12 @@ export default defineComponent({
           max-width: none;
           max-height: none;
           height: 320px;
-          width: 320px;
+          max-width: 320px;
+          :deep(.file-upload--delete) {
+            width: 40px;
+            height: 40px;
+            font-size: 25px;
+          }
         }
       }
       &_form-item {
@@ -331,6 +339,9 @@ export default defineComponent({
         font-size: 14px;
         max-width: none;
         margin: 10px auto;
+      }
+      .btn-delete {
+        grid-area: 3/3/3/3;
       }
     }
   }

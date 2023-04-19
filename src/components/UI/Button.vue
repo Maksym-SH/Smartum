@@ -35,7 +35,7 @@ export default defineComponent({
   border-bottom: 1px solid transparent;
   transition: all 0.2s ease-in-out;
   &:hover {
-    color: $color-white3;
+    color: $color-white1;
   }
   &:disabled {
     pointer-events: none;
@@ -47,7 +47,7 @@ export default defineComponent({
     border: 1.5px solid transparent;
     &.c-button--info {
       @include button-outline-color($color-blue, $color-blue, $color-blue-hover,
-                                     $color-blue-hover, $color-white1);
+                                      $color-blue-hover, $color-white1);
     }
     &.c-button--danger {
       @include button-outline-color($color-red, $color-red, $color-red-hover,
@@ -59,7 +59,7 @@ export default defineComponent({
     }
     &.c-button--success {
       @include button-outline-color($color-green, $color-green, $color-green-hover,
-                                     $color-green-hover, $color-white1);
+                                      $color-green-hover, $color-white1);
     }
   }
   // Variant
@@ -88,7 +88,7 @@ export default defineComponent({
     border-radius: 0;
     background-color: transparent;
     margin: 0 5px;
-    color: $color-text;
+    color: $color-white5;
     &.active {
       color: $color-white2;
     }

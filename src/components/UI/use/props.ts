@@ -36,6 +36,10 @@ export const useInputProps = {
     type: Boolean,
     default: false
   },
+  lightTheme: {
+    type: Boolean,
+    default:false
+  },
   min: {
     type: Number,
     default: Length.None,
@@ -63,6 +67,10 @@ export const useTextareaProps = {
   required: {
     type: Boolean, 
     default: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
   max: {
     type: Number,

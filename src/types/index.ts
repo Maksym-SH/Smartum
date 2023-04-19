@@ -14,6 +14,9 @@ import { RouteRecordRaw } from "vue-router";
 import { ActionContext } from "vuex";
 
 // Components
+
+export type Theme = "light" | "dark";
+
 export type RefElement = HTMLInputElement | null;
 
 export type Welcome = "Добрый день" | "Добрый вечер";

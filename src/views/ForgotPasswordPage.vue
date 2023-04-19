@@ -2,20 +2,21 @@
   <div class="forgot-page">
     <div class="forgot-page__window">
       <div class="forgot-page__window-header">
-        <h2>
+        <h2 class="forgot-page__window-header__title">
           Восстановление пароля
         </h2>
-        <p>
+        <p class="forgot-page__window-header__description">
           Введите электронный адрес, который вы использовали при регистрации а затем мы
           отправим вам письмо с инструкциями.
         </p>
       </div>
       <form class="forgot-page__window-content" @submit.prevent="submitForm">
         <Input
-          placeholder="Введите адрес электронной почты"
+          label="Введите адрес электронной почты"
           v-model="email"
           isEmail
           required
+          light-theme
           @invalid="errorEmail = true"
         />
         <Button class="submit-form" title="Отправить" size="lg" />
@@ -84,17 +85,17 @@ export default defineComponent({
     border-radius: 20px;
     &-header {
       margin-bottom: 40px;
-      h2 {
+      &__title {
         font-size: 25px;
       }
-      p {
+      &__description {
         line-height: 15px;
       }
     }
     &-content {
       .c-input {
         :deep(.c-input__field) {
-          border-color: $color-white1;
+          border: 1px solid $color-white1;
         }
       }
       .c-button {
@@ -134,10 +135,10 @@ export default defineComponent({
       min-height: 300px;
       &-header {
         margin-bottom: 40px;
-        h2 {
+        &__title {
           font-size: 18px;
         }
-        p {
+        &__description {
           line-height: 15px;
         }
       }
