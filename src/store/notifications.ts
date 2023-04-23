@@ -1,5 +1,5 @@
 import { DataCollection } from "@/enums";
-import { CreateNotifyList, INotificationItem, INotificationState, IUpdateNotifications } from "@/interfaces";
+import { ICreateNotifyList, INotificationItem, INotificationState, IUpdateNotifications } from "@/interfaces";
 import { database } from "@/main";
 import { ErrorCode, ModuleCtx } from "@/types";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
@@ -66,7 +66,7 @@ export default {
         .finally(() => commit("setLoadingStatus", false))
       })
     },
-    createNotificationList({ commit }: ModuleCtx<INotificationState>, info: CreateNotifyList): Promise<void> {
+    createNotificationList({ commit }: ModuleCtx<INotificationState>, info: ICreateNotifyList): Promise<void> {
       commit("setLoadingStatus", true);
       return new Promise((resolve, reject) => {
         setDoc(doc(database, DataCollection.Notifications, info.unicID), {

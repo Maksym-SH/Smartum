@@ -1,17 +1,28 @@
 <template>
-  <div class="card" :class="`card-variant--${variant}`">
-    <div class="card__descript" v-if="$slots.descript">
-      <slot name="descript" />
-    </div>
-    <div class="card__wrapper" v-if="$slots.content">
-      <slot name="content" />
-    </div>
-    <div class="card__form" v-if="$slots.form">
-      <slot name="form" />
-    </div>
-    <div class="card__footer" v-if="$slots.footer">
-      <slot name="footer" />
-    </div>
+  <div class="card">
+    <template v-if="!table">
+      <header class="card__header" v-if="$slots.header">
+        <slot name="header" />
+      </header>
+      <div class="card__content" v-if="$slots.content">
+        <slot name="content" />
+      </div>
+      <footer class="card__footer" v-if="$slots.footer">
+        <slot name="footer" />
+      </footer>
+    </template>
+    <table v-else class="card__table">
+      <thead class="card__table-header">
+        <tr>
+          <slot name="table-header" />
+        </tr>
+      </thead>
+      <slot name="table-body"></slot>
+      <tfoot class="card__table-footer">
+        <slot name="table-footer-titles"></slot>
+        <slot name="table-footer"></slot>
+      </tfoot>
+    </table>
   </div>
 </template>
 
@@ -24,6 +35,10 @@ export default defineComponent({
     variant: {
       type: String as PropType<Variant>,
       default: "info"
+    },
+    table: {
+      type: Boolean,
+      default: false
     }
   },
 })
@@ -31,107 +46,38 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .card {
-  padding: 60px 30px 40px 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba($color-black, 0.3);
-  background-color: $color-white3;
-  border: 2px solid transparent;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  position: relative;
-  
-  &__footer {
-    color: $color-dark-grey;
-    padding: 2px;
-    text-align: center;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    border-radius: 0 0 8px 8px;
-    border-top: 2px solid transparent;
-  }
+  border: 1px solid var(--color-border-card);
+  background-color: var(--color-background-card);
+  border-radius: 4px;
 
-  &-variant {
-    &--info {
-      border-color: $color-dark-blue;
- 
-     .card__footer {
-        border-color: $color-dark-blue;
-        background-color: $color-cyan;
+  &__header, &__content, &__footer {
+    border-bottom: 1px solid var(--color-border-card);
+    padding: 13px 30px;
+  }
+  &__table {
+    border-collapse: collapse;
+    &-header, &-footer {
+      border-bottom: 1px solid var(--color-border-card);
+      :deep(th) {
+        font-size: 18px;
+        color: var(--color-text);
+        text-align: start;
+        padding: 15px 30px;
+      } 
+    }
+    &-footer {
+      border-top: 1px solid var(--color-border-card);
+      ::deep(td) {
+        color: var(--color-text);
+        text-align: start;
+        padding: 15px 30px;  
       }
     }
-
-    &--success {
-      border-color: $color-green;
- 
-     .card__footer {
-        border-color: $color-green;
-        background-color: rgba($color-green, 0.3);
-      }
-    }
-  }
-
-  &__wrapper {
-    margin-top: 20px;
-    overflow: hidden;
-    max-width: 100%;
-
-  }
-
-  &__form {
-    padding-left: 20px;
-    width: 100%;
-    margin-left: auto;
-    display: flex;
-    flex-direction: column;
-    padding-right: 20px;
-    width: 50%;
-
-    :deep(.c-input) {
-      border-radius: 4px;
-      border: 1px solid rgba($color-black, 0.2);
-      color: $color-black;
-      margin: 5px 0;
-    }
-
-    :deep(.c-button) {
-      width: 100%;
-      margin-top: 20px;
-    }
-  }
-
-  @include responsive($xxl, max) {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    padding-top: 20px;
-
-    &__wrapper {
-      display: flex;
-      margin-left: 20px;
-      flex-direction: column;
-    }
-  
-    &__form {
-      width: 100%;
-    }
-  }
-
-  @include mobile(max) {
-    display: flex;
-    flex-direction: column;
-    padding: 10px 10px 40px 10px;
-
-    &__wrapper {
-      margin-left: 0;
-    }
-
-    &__form {
-      padding: 0;
-    }
+    :deep(td) {
+      color: var(--color-text);
+      text-align: start;
+      padding: 15px 30px;
+    } 
   }
 }
 </style>

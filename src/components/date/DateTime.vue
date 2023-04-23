@@ -85,7 +85,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .date {
-  width: 207px;
+  width: 210px;
   color: var(--color-text);
   text-align: center;
   &-wrapper {

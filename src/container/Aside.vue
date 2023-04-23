@@ -27,6 +27,7 @@
           />
         </div>
         <template v-for="(item, index) in navigation" :key="index">
+          <template v-if="item.showed">
             <ExpPanel
               v-if="item.panels"
               :name="item.title" 
@@ -53,13 +54,19 @@
               >
               </v-badge>
             </Button>
+          </template>
         </template>
       </template>
     </div>
     <footer class="aside__about-author">
       <article>
-        Powered by Maksym-SH © 2023
-      </article>
+        <span>
+          Powered by Maksym-SH © 2023
+        </span>
+        <span>
+          {{ applicationVersion }}
+        </span>
+      </article> 
     </footer>
     <div class="aside__collapse" @click="collapseToggle">
       <span class="aside__collapse--toggle"
@@ -79,11 +86,10 @@
 import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Numbers, Layout } from "@/enums";
-import { IUserCreated } from "@/interfaces";
+import { IAsideNavigationItem, IUserCreated } from "@/interfaces";
 import User from "@/components/user/Container.vue";
 import SwitchTheme from "@/components/ui/SwitchTheme.vue";
 import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
-import asideNavigation from "./use/asideNavigation";
 import { AsideNavigationItems } from "@/types";
 
 
@@ -132,7 +138,11 @@ export default defineComponent({
       callback?.();
     };
 
-    const navigation: AsideNavigationItems = asideNavigation();
+    const navigation = computed((): IAsideNavigationItem[] => {
+      return store.state.Configuration.asideNavigate;
+    });
+  
+    const applicationVersion = `v ${ require('/package.json').version }`;
 
     onMounted((): void => {
       if(window.innerWidth > Layout.Laptop) {
@@ -149,6 +159,7 @@ export default defineComponent({
       searchInput,
       navigation,
       defaultLoaderSize,
+      applicationVersion,
       collapseToggle,
       navigationCallbackHandler,
       setMinimizeValue,
@@ -270,6 +281,7 @@ export default defineComponent({
   }
 
   &__user {
+    min-height: 129.3px;
     padding: 30px 24px;
 
     &--avatar {
@@ -312,7 +324,9 @@ export default defineComponent({
     article {
       margin: 0 auto;
       font-size: 10px;
-      text-align: center;
+      display: flex;
+      padding: 0 23px;
+      justify-content: space-between;
     }
   }
 
@@ -345,6 +359,7 @@ export default defineComponent({
       max-height: 64px;
     }
     &__user {
+      min-height: 89px;
       padding: 10px 24px;
     }
   }

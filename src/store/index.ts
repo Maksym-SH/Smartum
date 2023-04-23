@@ -1,5 +1,6 @@
 import User from "./user";
 import Notifications from "./notifications";
+import Configuration from "./configuration";
 import { createStore } from "vuex";
 import { IRootState, IPopupParams } from "@/interfaces";
 import { ModalContentType } from "@/types";
@@ -27,6 +28,7 @@ export default createStore<IRootState>({
   },
   modules: {
     User,
-    Notifications
+    Notifications,
+    Configuration
   },
 });

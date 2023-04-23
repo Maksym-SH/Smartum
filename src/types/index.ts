@@ -6,9 +6,9 @@ import {
   IUserCreated, 
   IRootState,
   IPopupParams,
-  IAsideNavigationItemParams,
+  IAsideNavigationItem,
   IModalContent,
-  INotificationItem
+  IUserReg,
 } from "@/interfaces/index";
 import { RouteRecordRaw } from "vue-router";
 import { ActionContext } from "vuex";
@@ -48,9 +48,9 @@ export type ButtonSize = "sm" | "md" | "lg";
 
 export type ExpansionPanelVariant = "accordion" | "default" | "inset" | "popout";
 
-export type AsideNavigationItems = Array<IAsideNavigationItemParams>;
+export type AsideNavigationItems = Array<IAsideNavigationItem>;
 
-export type OmitAsideNavigation = Omit<IAsideNavigationItemParams, "icon" | "notify" | "panels" | "avatar">;
+export type OmitAsideNavigation = Omit<IAsideNavigationItem, "icon" | "notify" | "panels" | "avatar">;
 
 export type AsideExpPanelNavigation = Required<OmitAsideNavigation>;
 
@@ -74,6 +74,7 @@ export type NotificationCategory = NotifyType;
 
 export type NotifyAction = "delete" | "read";
 
+export type UserName = Pick<IUserReg, "firstName" | "lastName">;
 // Store
 export type RootContext = ActionContext<IRootState, IRootState>;
 

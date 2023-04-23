@@ -13,7 +13,7 @@ import ShowErrorMessage from "./firebaseErrorMessage";
 import { notify } from "@kyvg/vue3-notification";
 import { INotificationItem, IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
 import { ErrorCode } from "@/types";
-import { RandomHSLA } from "@/helpers/methods";
+import { GenerateLightColorHexFormat } from "@/helpers/methods";
 import notificationContent from "@/composables/useNotificationContent";
 import { NotifcationType } from "@/enums";
 
@@ -40,7 +40,7 @@ const firebaseAuth = (): IUserAuth => {
               lastName: userData.lastName,
               avatarParams: {
                 url: "",
-                bgAvatar: RandomHSLA()
+                bgAvatar: GenerateLightColorHexFormat()
               }
             })
 
@@ -50,6 +50,8 @@ const firebaseAuth = (): IUserAuth => {
               unicID: currentUser.uid,
               item: confirmEmailNotify
             });
+            // Create user configuration field in database.
+            store.dispatch("createUserConfiguration", currentUser.uid);
           }
 
           notify({

@@ -1,13 +1,14 @@
 import { AsideNavigationItems, ModalContentType } from "@/types";
-import { IAsideNavigationItemParams } from "@/interfaces";
+import { IAsideNavigationItem } from "@/interfaces";
 import { Links } from "@/enums";
 import router from "@/router";
-import { useStore } from "vuex";
+import store from "@/store";
 
 export default function Navigation(): AsideNavigationItems {
-  const store = useStore();
-
-  const Dashboard: IAsideNavigationItemParams = {
+  const Dashboard: IAsideNavigationItem = {
+    id: 0,
+    showed: true,
+    alwaysDisplay: true,
     title: "Рабочие доски",
     icon: "view-dashboard",
     callback() {
@@ -15,7 +16,20 @@ export default function Navigation(): AsideNavigationItems {
     }
   };
 
-  const Notification: IAsideNavigationItemParams = {
+  const Configuration: IAsideNavigationItem = {
+    id: 2,
+    showed: true,
+    alwaysDisplay: true,
+    title: "Конфигурация",
+    icon: "tune-vertical-variant",
+    callback() {
+      router.push({ name: "Configuration" })
+    }
+  };
+
+  const Notification: IAsideNavigationItem = {
+    id: 1,
+    showed: true,
     title: "Уведомления",
     icon: "bell",
     notify: true,
@@ -24,15 +38,11 @@ export default function Navigation(): AsideNavigationItems {
     }
   };
 
-  const Configuration: IAsideNavigationItemParams = {
-    title: "Конфигурация",
-    icon: "tune-vertical-variant",
-    callback() {
-      console.log("settings")
-    }
-  };
+  
 
-  const Reports: IAsideNavigationItemParams = {
+  const Reports: IAsideNavigationItem = {
+    id: 3,
+    showed: true,
     title: "Отчёты",
     icon: "chart-timeline-variant",
     panels: [
@@ -51,7 +61,9 @@ export default function Navigation(): AsideNavigationItems {
     ]
   };
 
-  const Statistics: IAsideNavigationItemParams = {
+  const Statistics: IAsideNavigationItem = {
+    id: 4,
+    showed: true,
     title: "Статистика",
     icon: "chart-bar",
     callback(): void {
@@ -59,7 +71,9 @@ export default function Navigation(): AsideNavigationItems {
     }
   }
 
-  const Author: IAsideNavigationItemParams = {
+  const Author: IAsideNavigationItem = {
+    id: 5,
+    showed: true,
     title: "Связь с автором",
     icon: "message-bulleted",
     panels: [
@@ -78,13 +92,16 @@ export default function Navigation(): AsideNavigationItems {
     ]
   }
 
-  const ConditionUse: IAsideNavigationItemParams = {
+  const ConditionUse: IAsideNavigationItem = {
+    id: 6,
+    showed: true,
     title: "Об использовании",
     icon: "shield-alert",
     panels: [
       {
         title:"Пользовательское соглашение",
         callback(): void {
+          console.log(store);
           const termsOfUse: ModalContentType = "termsOfUse";
           store.commit("setModalContentType", termsOfUse);
         }
@@ -101,8 +118,8 @@ export default function Navigation(): AsideNavigationItems {
 
   return [
     Dashboard,
-    Notification,
     Configuration,
+    Notification,
     Statistics,
     Reports,
     ConditionUse,

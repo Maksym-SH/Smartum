@@ -14,12 +14,15 @@ export interface ISelectElem {
   icon?: string;
   variant?: "info" | string;
 }
-export interface IAsideNavigationItemParams {
+export interface IAsideNavigationItem {
+  id: number;
+  showed: boolean;
+  alwaysDisplay?: boolean,
   title: string;
   icon?: string;
   notify?: true, 
   callback?: () => void;
-  panels?: Array<AsideExpPanelNavigation>;
+  panels?: Array<Omit<AsideExpPanelNavigation, "id" | "showed" | "alwaysDisplay">>;
 }
 export interface IPopupParams {
   title?: string;
@@ -73,6 +76,7 @@ export interface IUserAuth {
   signIn: (userData: IUserLogin, validate: boolean) => void;
   reauthorization: (userInfo: User, credential: EmailAuthCredential) => Promise<UserCredential>;
 }
+
 export interface IPictureParams {
   url: string;
   bgAvatar?: string
@@ -111,9 +115,18 @@ export interface INotificationDate {
   seconds: number;
   nanoseconds: number;
 }
-export interface CreateNotifyList {
+export interface ICreateNotifyList {
   unicID: string;
   item: INotificationItem<Date>
+}
+
+export interface  IConfiguration {
+  navigations: Array<string>,
+  showEmailConfirm: boolean,
+  asideBackgroundColor: string,
+  showCurrentDate: boolean,
+  dontShowNotifications: boolean,
+  hideDeleteAccountButton: boolean,
 }
 
 // Response
@@ -151,6 +164,10 @@ export interface IRootState {
 }
 export interface INotificationState {
   newNotification: INotificationItem<INotificationDate> | {}
+}
+export interface IConfigurationState {
+  asideNavigate: Array<IAsideNavigationItem>;
+  navigationNames: Array<string>;
 }
 
 //Router

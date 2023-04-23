@@ -10,5 +10,9 @@
   "Notifications": {
     "ru": "Здесь вы можете узнать о самых важных изменениях, связанных с нашим сервисом.",
     "eng": "Here you can find out about the most important changes regarding our services."
+  },
+  "Configuration": {
+    "ru": "Настройте приложение под свои удобства.",
+    "eng": "Сustomize the application for your convenience."
   }
 }

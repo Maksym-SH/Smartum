@@ -11,7 +11,9 @@ export default async function refreshUserInfo(): Promise<void> {
     if (user) {
       getAuth().currentUser?.getIdToken(true).then(() => {
         store.commit("setCurrentUser", user);
-        store.dispatch("getUserInfo");
+        store.dispatch("getUserInfo").then(() => {
+          store.dispatch("getUserConfiguration", user.uid);
+        })
       })
       .catch((error: ErrorCode): void => ShowErrorMessage(error));
     } else {

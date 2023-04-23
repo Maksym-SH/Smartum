@@ -1,6 +1,7 @@
 import { IPopupParams } from "@/interfaces";
 import { getAuth } from "@firebase/auth";
 import store from "@/store";
+import { Colors } from "@/enums";
 
 export const ObjectFull = (object: object): boolean => {
   return Object.values(object).every((item) => item);
@@ -13,13 +14,30 @@ export const ObjectNotEmpty = (object: object): boolean => {
   return Object.keys(object).length > 0;
 }
 
+export const NewObjectLink = <Type>(object: Type): Type => {
+  return JSON.parse(JSON.stringify(object));
+}
+
 export const OpenPopup = (params: IPopupParams): void => { 
   store.commit("setPopupParams", params);
 }
 
 // Random light color generation.
-export const RandomHSLA = () => {
-  return `hsl(${Math.round(360 * Math.random())}, 45%,  45%)`;
+export const GenerateLightColorHexFormat = (): string => {
+   // Generate random values for RGB components.
+   const r = Math.floor(Math.random() * 128) + 128;
+   const g = Math.floor(Math.random() * 128) + 128;
+   const b = Math.floor(Math.random() * 128) + 128;
+
+   const colorHex = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+ 
+   return colorHex;
+  
+   // Helper function to convert component values to HEX.
+  function componentToHex(c: number) {
+    const hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
 }
 
 let ConfirmCallback: Function;

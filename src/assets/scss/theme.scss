@@ -4,7 +4,13 @@
 
   --color-light-secondary: #f7fafd;
   --color-dark-secondary: #161B22;
+
+  --color-light-border-card: #c0c2c4;
+  --color-dark-border-card: #edf1f5;
   
+  --color-light-background-card: #ffffff;
+  --color-dark-background-card: #2b2e33;
+
   --color-light-modal-background: #edf1f5;
   --color-dark-modal-background: #010101;
   
@@ -19,6 +25,9 @@
   
   --color-dark-notification-background-new: #062b4e;
   --color-light-notification-background-new: #bdd6ee;
+
+  --color-disable-light: #cad1e1;
+  --color-disable-dark: #69727e; 
 }
 
 // Dark theme.
@@ -28,10 +37,13 @@ body[data-theme='dark'] {
   --color-text: var(--color-light);
   --color-scroll-track: var(--color-light-secondary);
   --color-input: var(--color-light-input);
+  --color-border-card: var(--color-dark-border-card);
+  --color-background-card: var(--color-dark-background-card);
   --color-background-notification: var(--color-dark-notification-read);
   --color-border-notification: var(--color-dark-notification-border);
   --color-background-notification-new: var(--color-dark-notification-background-new);
   --color-background-modal: var(--color-dark-modal-background);
+  --color-disable: var(--color-disable-dark);
 }
 
 // Light theme.
@@ -41,8 +53,11 @@ body[data-theme='light'] {
   --color-scroll-track: var(--color-dark-secondary);
   --color-text: var(--color-dark);
   --color-input: var(--color-dark-input);
+  --color-border-card: var(--color-light-border-card);
+  --color-background-card: var(--color-light-background-card);
   --color-background-notification: var(--color-light-notification-read);
   --color-border-notification: var(--color-light-notification-border);
   --color-background-notification-new: var(--color-light-notification-background-new);
   --color-background-modal: var(--color-light-modal-background);
+  --color-disable: var(--color-disable-light);
 }

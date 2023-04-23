@@ -147,6 +147,10 @@ export const useCheckboxProps = {
   secondaryLabel: {
     type: String,
     default: ""
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 };
 

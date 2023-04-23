@@ -52,7 +52,8 @@ export const enum Layout {
 
 export const enum DataCollection {
   Profile = "profile",
-  Notifications="notifications"
+  Notifications="notifications",
+  Configuration="configuration"
 }
 
 export const enum Links {
@@ -71,5 +72,10 @@ export const enum NotifyType {
 export const enum NotifcationType {
   PasswordChange,
   Welcome,
-  
+}
+
+export const enum Colors {
+  Grey="#283342",
+  MaxColorHEXValue=256,
+  MaxHexDigits=2
 }

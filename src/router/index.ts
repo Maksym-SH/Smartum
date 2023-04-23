@@ -71,6 +71,18 @@ const routes: Routes = [
         },
         component: () => import("@/views/tabs/ReportsTab.vue"),
       },
+      {
+        name: "Configuration",
+        path: "/configuration",
+        meta: {
+          tabName: {
+            eng: "Configuration",
+            ru: "Конфигурация",
+          },
+          protected: true,
+        },
+        component: () => import("@/views/tabs/ConfigurationTab.vue"),
+      },
     ],
   },
 ];

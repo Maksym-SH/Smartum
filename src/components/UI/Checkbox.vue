@@ -1,19 +1,40 @@
 <template>
   <span class="c-checkbox" :class="{'switch': switchBox }">
-    <input class="c-checkbox__input" v-model="checked" type="checkbox" :id="name">
+    <input 
+      class="c-checkbox__input" 
+      v-model="checked" 
+      type="checkbox"
+      :disabled="disabled" 
+      :id="name"
+    >
+    <!-- Text -->
     <label 
       class="label secondary-label" 
-      :class="{ 'not-selected': checked }"
+      :class="{ 
+        'not-selected': checked,
+        'disabled': disabled 
+      }"
       v-if="secondaryLabel && switchBox" 
       @click="checkboxToggle(false)"
     >
       {{ secondaryLabel }}
     </label>
-    <label class="checkbox-label" :for="name"></label>
+
+    <!-- Switch -->
+    <label 
+      class="checkbox-label" 
+      :for="name"
+      :class="{ 'disabled': disabled }"
+    ></label>
+
+    <!-- Text -->
     <label
       class="label main-label"
       v-if="label"
-      :class="{ 'not-selected': !checked }"
+      :class="{ 
+        'not-selected': !checked,
+        'disabled': disabled  
+      }"
       @click="checkboxToggle(true)"
     >
       {{ label }}
@@ -55,16 +76,21 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .c-checkbox {
-  cursor: pointer;
+  position: relative;
   &__input {
     display: none;
-  }
-  .not-selected {
-    color: $color-brown !important;
   }
   .label {
     cursor: pointer;
     user-select: none;
+    &.not-selected {
+      color: $color-brown !important;
+    }
+    &.disabled {
+      pointer-events: none; 
+      cursor: default;
+      color: var(--color-disable) !important;
+    }
   }
   &:not(.switch) {
     .checkbox-label {
@@ -124,6 +150,12 @@ export default defineComponent({
         top: -4px;
         border-radius: 50%;
       }
+      &.disabled {
+        background-color: var(--color-disable);
+        &::after {
+          background-color: var(--color-disable);
+        }
+      }
     }
     .secondary-label {
       color: var(--color-text);
@@ -135,12 +167,20 @@ export default defineComponent({
     }
     .c-checkbox__input {
       display: none;
-        &:checked {
+      &:checked {
         ~ .checkbox-label {
           background-color: $color-dark-blue;
           &::before {
             transform: translateX(16px);
             background-color: $color-blue;
+          }
+        }  
+      }
+      &:disabled {
+        & ~ .checkbox-label {
+          background-color: var(--color-disable);
+          &::before {
+            background-color: var(--color-disable);
           }
         }
       }

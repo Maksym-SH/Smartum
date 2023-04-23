@@ -3,7 +3,7 @@
     <h5 class="user-info__name--name text-ellipsis">{{ firstName }}</h5>
     <h5 class="user-info__name--name text-ellipsis">{{ lastName }}</h5>
     <small 
-      v-if="firstName"
+      v-show="firstName"
       class="user-info__name--status" :class="{ 'verified': emailVerified }">
       <span :class="['mdi', statusIcon]"></span> 
       {{ userStatusText }}
