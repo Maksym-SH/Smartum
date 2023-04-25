@@ -38,12 +38,12 @@
       @click="checkboxToggle(true)"
     >
       {{ label }}
-    </label>
+    </label> 
   </span>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from "vue";
+import { defineComponent, watch, computed } from "vue";
 import { useCheckboxProps } from  "./use/props";
 
 export default defineComponent({
@@ -51,7 +51,10 @@ export default defineComponent({
   emits: ["update:modelValue"],
 
   setup(props, { emit }) {
-    const checked = ref<boolean>(props.modelValue);
+    const checked = computed({
+      get: () => props.modelValue,
+      set: (newValue) => emit("update:modelValue", newValue), 
+    })
 
     const hasTwoLabel = computed((): string | false => props.switchBox && props.label && props.secondaryLabel);
 
@@ -139,6 +142,7 @@ export default defineComponent({
       border-radius: 10px;
       position: relative;
       background-color: $color-dark-grey4;
+      text-align: start !important;
       &::before {
         content: "";
         display: inline-block;

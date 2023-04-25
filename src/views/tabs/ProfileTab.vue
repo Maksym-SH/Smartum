@@ -68,6 +68,7 @@
         title="Сохранить"
       />
       <Button 
+        v-if="showDeleteAccountButton"
         @click="deleteConfirm"
         class="btn-delete"
         variant="danger"
@@ -143,7 +144,11 @@ export default defineComponent({
     const btnSaveDisable = ref(true);
     const passwordChanged = computed((): boolean => userInfo.newPassword != "");
 
-    // Disable save changes button.
+    const showDeleteAccountButton = computed((): boolean => {
+      return store.state.Configuration.additionalParams.showDeleteAccountButton;
+    })
+
+    // Enable save changes button.
     watch(userInfo, () => {
       btnSaveDisable.value = false;
     })
@@ -231,6 +236,7 @@ export default defineComponent({
       MaxLength: Length.Maximum,
       validForm,
       btnSaveDisable,
+      showDeleteAccountButton,
       updatePhoto,
       deletePhoto,
       saveChanges,

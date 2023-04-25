@@ -1,8 +1,8 @@
 <template>
   <div class="configuration-tab">
     <div class="configuration-tab__content">
-      <div class="configuration-tab-navigation-filter">
-        <Card table v-if="showedNavigations.length">
+      <div class="configuration-tab__content-navigation-filter">
+        <Card table>
           <template #table-header>
             <th class="card-info__title">Страницы</th>
             <th class="card-info__title center">Действие</th>
@@ -24,7 +24,7 @@
                 <Checkbox  
                   switchBox
                   :disabled="navigate.alwaysDisplay"
-                  name="language" 
+                  :name="navigate.title" 
                   label="Показать"
                   secondaryLabel="Скрыть" 
                   v-model="navigate.showed" 
@@ -32,51 +32,116 @@
               </td>
             </tr>
           </template>
-        </Card>
-      </div>
-      <div class="configuration-tab__additional-settings">
-        <Card>
-          <template #header>
-           <h2 class="card-info__title">
-            Изменить цвет фона аватара 
-            <Button
-              size="sm" 
+          <template #custom>
+            <Button 
+              @click="saveNavigationList"
+              class="card-info--save-changes"
               title="Сохранить"
             />
-           </h2> 
-          </template>
-          <template #content>
-            <div class="card-info__change-background-avatar">
-              <div class="card-info__change-background-avatar--result">
-                <h5>Результат:</h5>
-                <Avatar 
-                  :size="70"
-                  :avatar="avatarParams"
-                  :firstName="userName.firstName"
-                  :lastName="userName.lastName"
-                />
-              </div>
-              <div class="card-info__change-background-avatar--params">
-                <h5>Изменить цвет</h5>
-                <ColorPalette v-model="avatarParams.bgAvatar" />
-              </div>
-            </div>
           </template>
         </Card>
+      </div>
+      <div class="configuration-tab__content-wrapper">
+        <div class="configuration-tab__content-avatar-settings">
+          <Card>
+            <template #header>
+              <h2 class="card-info__title--settings-avatar">
+                Изменить цвет фона профиля
+                <Button
+                  size="sm"
+                  @click="saveBackgroundAvatar"
+                  title="Сохранить"
+                />
+              </h2> 
+            </template>
+            <template #content>
+              <div class="card-info__change-background-avatar">
+                <div class="card-info__change-background-avatar--result">
+                  <h5>Результат:</h5>
+                  <Avatar 
+                    :size="80"
+                    :avatar="avatarParams"
+                    :firstName="userName.firstName"
+                    :lastName="userName.lastName"
+                  />
+                </div>
+                <div class="card-info__change-background-avatar--params">
+                  <h5>Изменить цвет</h5>
+                  <ColorPalette v-model="avatarParams.bgAvatar" />
+                </div>
+                <small class="change-avatar-hint">
+                  Примечание: выбирайте более светлые тона, чтобы ваши инициалы были различимы.
+                </small>
+              </div>
+            </template>
+          </Card>
+        </div>
+        <div class="configuration-tab__content-additional-settings">
+          <Card>
+            <template #header>
+              <h2 class="card-info__title">
+                Дополнительные настройки
+              </h2> 
+            </template>
+            <template #content>
+              <div class="card-info__additional-settings">
+                <div class="card-info__additional-settings-item">
+                  <h4>Изменить фон боковой панели</h4>
+                  <ColorPalette v-model="asideBackgroundColor" />
+                </div>
+                <div class="card-info__additional-settings-item">
+                  <h4>Статус подтверждения адреса</h4>
+                  <Checkbox  
+                    switchBox
+                    name="ToggleStatus" 
+                    label="Показать"
+                    secondaryLabel="Скрыть" 
+                    v-model="additionalParams.showEmailConfirm"
+                  />
+                </div>
+                <div class="card-info__additional-settings-item">
+                  <h4>Дата и время</h4>
+                  <Checkbox  
+                    switchBox
+                    name="ToggleTime" 
+                    label="Показать"
+                    secondaryLabel="Скрыть" 
+                    v-model="additionalParams.showCurrentDate"
+                  />
+                </div>
+
+                <div class="card-info__additional-settings-item">
+                  <h4>Кнопка "Удалить аккаунт"</h4>
+                  <Checkbox  
+                    switchBox
+                    name="ToggleDeleteAccount" 
+                    label="Показать"
+                    secondaryLabel="Скрыть" 
+                    v-model="additionalParams.showDeleteAccountButton"
+                  />
+                </div>
+              </div>
+            </template>
+            <template #custom>
+              <Button 
+                @click="saveAdditional"
+                class="card-info--save-changes"
+                title="Сохранить"
+              />
+            </template>
+          </Card>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch,ref, onMounted } from 'vue';
-import { useStore } from 'vuex';
-import { IAsideNavigationItem, IPictureParams, IUserInfo } from '@/interfaces';
-import { UserName } from "@/types";
-import { NewObjectLink } from '@/helpers/methods';
+import { defineComponent } from 'vue';
 import Card from "@/container/Card.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import ColorPalette from '@/components/ui/ColorPalette.vue';
+import useConfiguration from "@/composables/useConfiguration";
 
 export default defineComponent({
   components: { 
@@ -85,51 +150,8 @@ export default defineComponent({
     ColorPalette
   },
   setup() {
-    const store = useStore();
 
-    const showedNavigations = reactive<IAsideNavigationItem[]>([]);
-
-    const avatarParams: Required<IPictureParams> = reactive({
-      bgAvatar:"",
-      url: "" 
-    })
-
-    const userName = reactive<UserName>({
-      firstName: "",
-      lastName: ""
-    });
-
-    watch(() => store.state.Configuration.asideNavigate, (navigations: IAsideNavigationItem[]) =>  {
-      showedNavigations.push(...navigations);
-    })
-
-    const saveChanges = () => {
-      console.log(123);
-    }
-
-    const saveBackgroundAvatar = () => {
-      store.dispatch()
-    }
-
-    onMounted(() => {
-      store.dispatch("getUserInfo").then((): void => {
-        const navigations = NewObjectLink(store.state.Configuration.asideNavigate); 
-        showedNavigations.push(...navigations);
-        
-        avatarParams.bgAvatar = store.state.User.userInfo.avatarParams.bgAvatar; // Set background avatar.
-        
-        const userInfo: IUserInfo = store.state.User.userInfo;
-
-        userName.firstName = userInfo.firstName;
-        userName.lastName = userInfo.lastName;
-      })
-    })
-
-    return {
-      showedNavigations,
-      avatarParams,
-      userName
-    }
+    return useConfiguration();
   }
 })
 
@@ -137,48 +159,208 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .configuration-tab {
-  padding-top: 20px;
+  padding: 20px 40px 20px 40px;
   &__content {
     display: flex;
-    flex-wrap: wrap;
+    max-width: fit-content;
     gap: 50px;
     color: var(--color-text);
+    &-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+    
     .card {
       width: fit-content;
       &-info {
-       &__title {
+        &__title {
           &.center {
             text-align: center;
           }
+          &--settings-avatar {
+            display: flex;
+            justify-content: space-between;
+          }
+        }
+        &--save-changes {
+          margin: 0 10px 10px auto;
+          display: block;
+          min-width: 40%;
         }
         &__change-background-avatar {
           display: flex;
           justify-content: space-between;
+          position: relative;
+          .user-avatar {
+            border: 1px solid var(--color-text);
+          }
           &--params {
             .color-picker {
               width: 100%;
               height: 40px;
             }
           }
+          .change-avatar-hint {
+            position: absolute;
+            bottom: 0;
+            font-size: 10px;
+            right: -20px;
+            max-width: 220px;
+          }
+        }
+        &__additional-settings {
+          display: flex;
+          flex-direction: column;
+          gap:10px;
+          &-item {
+            display: flex;
+            width: 100%;
+            font-size: 14px;
+            justify-content: space-between;
+            align-items: center;
+            .color-picker {
+              width: 90px;
+              height: 40px;
+            }
+          }
         }
       }
-      &-content-info__item {
-        &--text {
-          position: relative;
-          .icon {
-            margin-right: 10px;
+      &-content-info {
+        &__item {
+          &--text {
+            position: relative;
+            .icon {
+              margin-right: 10px;
+            }
+            .disable-icon {
+              position: absolute;
+              right: 0;
+            }
           }
-          .disable-icon {
-            position: absolute;
-            right: 0;
+          &--actions {
+            text-align: center;
           }
         }
       }
     }
+    &-avatar-settings {
+      .c-button {
+        margin-left: 30px;
+      }
+    }
+    &-additional-settings {
+      grid-area: 2/2/3/3;
+      .card {
+        width: 100%;
+      }
+    }
   }
-  &__additional-settings {
-    .c-button {
-      margin-left: 30px;
+  @include responsive($xxl, max) {
+    padding: 20px;
+    &__content {
+      display: flex;
+      flex-direction: column;
+      max-width: none;
+      gap: 12px;
+      &-wrapper {
+        gap: 12px;
+      }
+      
+      .card {
+        width: 100%;
+        
+        &-info {
+          &--save-changes {
+            margin-top: 10px;
+            min-width: 20%;
+            max-width: 100px;
+          }
+          &__title.center {
+            text-align: end;
+            padding-right: 60px;
+          }
+        }
+        
+        &-content-info {
+          &__item {
+            &--text, &--actions {
+              padding: 10px 20px;
+            }
+
+            &--text {
+              width: 35%;
+              white-space: nowrap;
+            }
+            &--actions {
+              text-align: end;
+            }
+          }
+        }
+      }
+
+      &-avatar-settings {
+        .c-button {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+  @include mobile(max) {
+    &__content {
+      .card {
+        width: 100%;
+      }
+    }
+  }
+  @include responsive($us, max) {
+    padding: 10px;
+    &__content {
+      .card {
+        :deep(.card__header) {
+          padding: 0;
+        }
+        :deep(.card__content) {
+          padding: 5px;
+        }
+        .c-checkbox {
+          min-width: 140px;
+        }
+        &-content-info {
+          &__item {
+            &--text, &--actions {
+              padding: 10px;
+              font-size: 12px;
+              .icon {
+                display: none;
+              }
+            }
+            &--text {
+              padding-right: 20px;
+            }
+          }
+        }
+        &-info {
+          &__title, &__title--settings-avatar {
+            align-items: center;
+            font-size: 12px;
+            padding: 10px;
+          }
+          &__change-background-avatar {
+            padding-bottom: 20px;
+            .change-avatar-hint {
+              right: 0;
+              font-size: 10px;
+              width: 70%;
+              text-align: end;
+            }
+          }
+          &__additional-settings-item {
+            font-size: 12px;
+            padding-right: 2px;
+          }
+        }
+      }
     }
   }
 }

@@ -17,12 +17,13 @@
           <slot name="table-header" />
         </tr>
       </thead>
-      <slot name="table-body"></slot>
-      <tfoot class="card__table-footer">
+      <slot name="table-body" v-if="$slots['table-body']"></slot>
+      <tfoot class="card__table-footer" v-if="$slots['table-body'] || $slots['table-footer']">
         <slot name="table-footer-titles"></slot>
         <slot name="table-footer"></slot>
       </tfoot>
     </table>
+    <slot name="custom"></slot>
   </div>
 </template>
 
@@ -50,11 +51,17 @@ export default defineComponent({
   background-color: var(--color-background-card);
   border-radius: 4px;
 
-  &__header, &__content, &__footer {
+  &__header {
     border-bottom: 1px solid var(--color-border-card);
+  }
+  &__footer {
+    border-top: 1px solid var(--color-border-card);
+  }
+  &__header, &__content, &__footer {
     padding: 13px 30px;
   }
   &__table {
+    width: 100%;
     border-collapse: collapse;
     &-header, &-footer {
       border-bottom: 1px solid var(--color-border-card);

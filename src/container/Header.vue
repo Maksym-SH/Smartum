@@ -8,17 +8,17 @@
           v-model="searchInput"
         />
       </div>
+      <Date v-if="showDate" />
       <SwitchTheme class="not-mobile"/>
-      <Date />
     </div>
   </header>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import Date from "@/components/date/DateTime.vue";
 import SwitchTheme from "@/components/ui/SwitchTheme.vue";
-import { Theme } from "@/types";
+import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
@@ -26,16 +26,17 @@ export default defineComponent({
     SwitchTheme
   },
   setup() {
-    const searchInput = ref("");
-    const toggleTheme = (theme: Theme): void => {
-      document.body.setAttribute('data-theme', theme);
+    const store = useStore();
 
-      localStorage.setItem('theme', theme);
-    }
+    const searchInput = ref("");
+
+    const showDate = computed((): boolean => {
+      return store.state.Configuration.additionalParams.showCurrentDate;
+    })
 
     return {
       searchInput,
-      toggleTheme,
+      showDate,
     };
   },
 });
@@ -43,7 +44,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .c-header {
-  padding: 10px 40px 10px 50px;
+  padding: 10px 20px 10px 50px;
   background-color: var(--color-background-secondary);
   box-shadow: 0 2px 1px rgba($color-black, 0.1);
   width: 100%;
@@ -66,7 +67,7 @@ export default defineComponent({
   }
 
   @include responsive($lg, max) {
-    padding: 10px 40px 10px 50px;
+    padding: 10px 5px 10px 50px;
     &__search-content {
       width: 40%;
     }

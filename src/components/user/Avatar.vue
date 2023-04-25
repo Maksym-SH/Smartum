@@ -52,7 +52,8 @@ export default defineComponent({
       return null;
     });
 
-    const showPreload = computed(() => !initials && !props.avatar.url)
+    const showPreload = computed(() => (!initials && !props.avatar.url) ||
+                                               (!props.avatar.bgAvatar && !props.noBackgrond))
 
     const imgLoad = (): boolean => imgLoaded.value = true;
     const imgLoaded = ref(false);

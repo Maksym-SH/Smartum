@@ -79,7 +79,10 @@ export interface IUserAuth {
 
 export interface IPictureParams {
   url: string;
-  bgAvatar?: string
+  bgAvatar?: string;
+}
+export interface IUpdatePictureBG extends Pick<IPictureParams, "bgAvatar"> {
+  unicID: string;
 }
 export interface IUserInfo extends Omit<IUserReg, "password"> {
   firstName: string;
@@ -125,8 +128,23 @@ export interface  IConfiguration {
   showEmailConfirm: boolean,
   asideBackgroundColor: string,
   showCurrentDate: boolean,
-  dontShowNotifications: boolean,
-  hideDeleteAccountButton: boolean,
+  showDeleteAccountButton: boolean,
+}
+
+export interface IConfigurationAdditional {
+  showEmailConfirm: boolean,
+  showCurrentDate: boolean, // Time and date in app header.
+  showDeleteAccountButton: boolean,
+}
+
+export interface IAdditionalUpdate {
+  additional: IConfigurationAdditional,
+  unicID: string;
+}
+
+export interface INavigationListUpdate {
+  navigations: Array<IAsideNavigationItem>;
+  unicID: string;
 }
 
 // Response
@@ -165,9 +183,9 @@ export interface IRootState {
 export interface INotificationState {
   newNotification: INotificationItem<INotificationDate> | {}
 }
-export interface IConfigurationState {
+export interface IConfigState {
   asideNavigate: Array<IAsideNavigationItem>;
-  navigationNames: Array<string>;
+  additionalParams: Omit<IConfiguration, "navigations">
 }
 
 //Router

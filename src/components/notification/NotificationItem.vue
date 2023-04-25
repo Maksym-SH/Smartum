@@ -9,6 +9,7 @@
       :avatar="image" 
       :size="45"
       circle
+      noBackgrond
     />
     <div class="notification-item__content">
       <div class="notification-item__content-info">

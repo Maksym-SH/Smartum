@@ -1,5 +1,8 @@
 <template>
-  <aside class="aside" :class="{ 'aside-minimize': minimizeAside }">
+  <aside class="aside" 
+    :style="{ 'backgroundColor': asideBackgroundColor }"
+    :class="{ 'aside-minimize': minimizeAside }"
+  >
     <div class="aside__logo">
       <img src="@/assets/img/logo.svg" alt="Logo" />
     </div>
@@ -90,8 +93,6 @@ import { IAsideNavigationItem, IUserCreated } from "@/interfaces";
 import User from "@/components/user/Container.vue";
 import SwitchTheme from "@/components/ui/SwitchTheme.vue";
 import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
-import { AsideNavigationItems } from "@/types";
-
 
 export default defineComponent({
   components: {
@@ -118,9 +119,14 @@ export default defineComponent({
 
     const defaultLoaderSize = 40;
 
+    const asideBackgroundColor = computed((): string => {
+      return store.state.Configuration.additionalParams.asideBackgroundColor;
+    })
+
     const showContent = computed((): boolean => {
       return ObjectHasValues(store.state.User.userInfo) && ObjectNotEmpty(store.state.User.currentUser)
     });
+
 
     const userInfo = computed((): IUserCreated => store.state.User.userInfo);
 
@@ -163,6 +169,7 @@ export default defineComponent({
       collapseToggle,
       navigationCallbackHandler,
       setMinimizeValue,
+      asideBackgroundColor,
       LayoutLaptop: Layout.Laptop
     };
   },
@@ -179,7 +186,7 @@ export default defineComponent({
   left: 0;
   z-index: 2;
   background-color: $color-grey;
-  transition: transform 0.5s ease;
+  transition: all 0.5s ease;
   box-shadow: 10px 0 10px rgba($color-dark-grey, 0.2);
   &.aside-minimize {
     box-shadow: none;

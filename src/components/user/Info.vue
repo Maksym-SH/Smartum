@@ -3,7 +3,7 @@
     <h5 class="user-info__name--name text-ellipsis">{{ firstName }}</h5>
     <h5 class="user-info__name--name text-ellipsis">{{ lastName }}</h5>
     <small 
-      v-show="firstName"
+      v-show="firstName && showEmailVerified"
       class="user-info__name--status" :class="{ 'verified': emailVerified }">
       <span :class="['mdi', statusIcon]"></span> 
       {{ userStatusText }}
@@ -24,6 +24,8 @@ export default defineComponent({
 
     const emailVerified: boolean = store.state.User.currentUser.emailVerified;
 
+    const showEmailVerified = computed(() => store.state.Configuration.additionalParams.showEmailConfirm);
+
     const userStatusText = computed((): EmailVerify => {
       if (emailVerified) return "Почта подтверждена"
       return "Почта не подтверждена"
@@ -35,6 +37,7 @@ export default defineComponent({
 
     return {
       statusIcon,
+      showEmailVerified,
       emailVerified,
       showStatusEmailTemplate,
       userStatusText,

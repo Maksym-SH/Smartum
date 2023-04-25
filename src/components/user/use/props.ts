@@ -21,6 +21,10 @@ export const useAvatarProps = {
     type: Boolean,
     default: false,
   },
+  noBackgrond: {
+    type: Boolean,
+    default: false,
+  },
   firstName: {
     type: String,
     default: ""

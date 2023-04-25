@@ -71,7 +71,7 @@ export default defineComponent({
   }
   &__content {
     position: relative;
-    min-width: 135px;
+    min-width: 137px;
     :deep(.c-select) {
       position: absolute;
       top: 2px;

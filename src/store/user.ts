@@ -2,7 +2,7 @@ import router from "@/router";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import { getAuth, User } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { IUserCreated, IUserState, ICreateUser, IAvatarUpdate, IPictureParams } from "@/interfaces";
+import { IUserCreated, IUserState, ICreateUser, IAvatarUpdate, IPictureParams, IUpdatePictureBG } from "@/interfaces";
 import { ErrorCode, IUserFieldsUpdate, ModuleCtx } from "@/types"; 
 import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"; 
@@ -30,6 +30,9 @@ export default {
     setUserInfo(state: IUserState, params: IUserCreated): void {
       state.userInfo = params;
     },
+    setBackgroundAvatar(state: IUserState, background: string): void {
+      state.userInfo.avatarParams.bgAvatar = background;
+    }
   },
   actions: {
     createUser({ commit }: ModuleCtx<IUserState>, info: ICreateUser): Promise<void> {
@@ -118,6 +121,7 @@ export default {
             dispatch("deleteUserAvatar", unicID)
           }
           dispatch("deleleNotificationList", unicID)
+          dispatch("deleteUserConfiguration", unicID);
           resolve();
         })
         .catch((error: ErrorCode) => {
@@ -145,7 +149,6 @@ export default {
               await dispatch("getUserAvatar", unicID)
               .then((photo: string) => info.avatarParams.url = photo);
             }
-
             commit("setUserInfo", info);
             resolve(info);
           }
@@ -177,6 +180,29 @@ export default {
             reject(error);
           })
         }
+      })
+    },
+    updateUserBackgroundAvatar({ state, commit }: ModuleCtx<IUserState>, info: IUpdatePictureBG): Promise<void> {
+      const profileRef = doc(database, DataCollection.Profile, info.unicID);
+      
+      commit("setLoadingStatus", true);
+
+      return new Promise((resolve, reject) => {
+        updateDoc(profileRef, {
+          avatarParams: {
+            url: state.userInfo.avatarParams.url,
+            bgAvatar: info.bgAvatar,
+          }
+        }).then(() => {
+          resolve();
+          commit("setBackgroundAvatar", info.bgAvatar);
+        })
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          commit("setLoadingStatus", false);
+          reject(error);
+        })
+        .finally(() => commit("setLoadingStatus", false))
       })
     },
     deleteUserAvatar(context: ModuleCtx<IUserState>, unicID: string): Promise<void> {
