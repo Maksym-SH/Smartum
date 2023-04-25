@@ -8,6 +8,7 @@ import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"; 
 import { database } from "@/main";
 import { DataCollection } from "@/enums";
+import { setTheme } from "@/helpers/methods";
 
 export default {
   state: {
@@ -237,6 +238,9 @@ export default {
           phone: "",
           avatarParams: ""
         });
+        // Set dark theme by default.
+        setTheme("dark");
+        localStorage.removeItem("smartumTheme");
 
         if (!router.currentRoute.value.meta.notAuthorized) {
           router.push({ name: "SignIn" });

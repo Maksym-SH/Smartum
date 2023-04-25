@@ -29,36 +29,43 @@
             :avatar="userInfo.avatarParams" 
           />
         </div>
-        <template v-for="(item, index) in navigation" :key="index">
-          <template v-if="item.showed">
-            <ExpPanel
-              v-if="item.panels"
-              :name="item.title" 
-              :icon="item.icon" 
-              :content="item.panels"
-            />
-            <Button 
-              v-else
-              class="aside__navigation-btn" 
-              transparent
-              @click="navigationCallbackHandler(item?.callback?.())"
-            >
-              <span 
-                v-if="item.icon"
-                class="icon" 
-                :class="['mdi', `mdi-${ item.icon }`]"
-              ></span>
-              <span :class="{ 'no-icon': !item.icon }">{{ item.title }}</span>
-              <v-badge
-                v-if="notificationCount >= 0 && item.notify" 
-                class="notify"
-                :class="{'empty-list': notificationCount === 0 }"
-                :content="notificationCount"
+        <transition-group 
+          name="toggle-content" 
+          mode="out-in" 
+          tag="div"
+          class="aside__navigations"
+        >
+          <template v-for="(item, index) in navigation" :key="item.title">
+            <template v-if="item.showed">
+              <ExpPanel
+                v-if="item.panels"
+                :name="item.title" 
+                :icon="item.icon" 
+                :content="item.panels"
+              />
+              <Button 
+                v-else
+                class="aside__navigation-btn" 
+                transparent
+                @click="navigationCallbackHandler(item?.callback?.())"
               >
-              </v-badge>
-            </Button>
+                <span 
+                  v-if="item.icon"
+                  class="icon" 
+                  :class="['mdi', `mdi-${ item.icon }`]"
+                ></span>
+                <span :class="{ 'no-icon': !item.icon }">{{ item.title }}</span>
+                <v-badge
+                  v-if="notificationCount >= 0 && item.notify" 
+                  class="notify"
+                  :class="{'empty-list': notificationCount === 0 }"
+                  :content="notificationCount"
+                >
+                </v-badge>
+              </Button>
+            </template>
           </template>
-        </template>
+        </transition-group>
       </template>
     </div>
     <footer class="aside__about-author">
@@ -229,6 +236,11 @@ export default defineComponent({
     }
     &:active {
       background-color: $color-dark-grey3;
+    }
+  }
+  &__navigations {
+    .c-button {
+      width: 100%;
     }
   }
 

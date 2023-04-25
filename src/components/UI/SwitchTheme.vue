@@ -10,6 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
+import { setTheme } from "@/helpers/methods";
 import { Theme } from '@/types';
 
 export default defineComponent({
@@ -22,10 +23,6 @@ export default defineComponent({
   setup() {
     const switchModel = ref<boolean>(true);
 
-    const setTheme = (theme: Theme): void => {
-      document.body.setAttribute("data-theme", theme);
-    }
-
     watch(switchModel, (value: boolean):void => {
       const currentTheme: Theme = value ? "light" : "dark";
       setTheme(currentTheme);
@@ -33,8 +30,8 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      const savedTheme = localStorage.getItem("smartumTheme") as Theme || "light";
-      switchModel.value = savedTheme === 'light' ? true : false;
+      const savedTheme = localStorage.getItem("smartumTheme") as Theme || "dark";
+      switchModel.value = savedTheme === 'dark' ? false : true;
 
       setTheme(savedTheme);
     })

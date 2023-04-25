@@ -2,6 +2,7 @@ import { IPopupParams } from "@/interfaces";
 import { getAuth } from "@firebase/auth";
 import store from "@/store";
 import { Colors } from "@/enums";
+import { Theme } from "@/types";
 
 export const ObjectFull = (object: object): boolean => {
   return Object.values(object).every((item) => item);
@@ -20,6 +21,10 @@ export const NewObjectLink = <Type>(object: Type): Type => {
 
 export const OpenPopup = (params: IPopupParams): void => { 
   store.commit("setPopupParams", params);
+}
+
+export const setTheme = (theme: Theme): void => {
+  document.body.setAttribute("data-theme", theme);
 }
 
 // Random light color generation.

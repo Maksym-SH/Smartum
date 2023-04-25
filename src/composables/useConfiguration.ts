@@ -1,4 +1,4 @@
-import { watchEffect, reactive, ref, computed } from "vue";
+import { watchEffect, watch, reactive, ref, computed } from "vue";
 import { useStore } from "vuex";
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import { notify } from '@kyvg/vue3-notification';
@@ -36,7 +36,7 @@ const useConfiguration = () => {
       lastName
     } 
   });
-
+  // Save card methods.
   const saveBackgroundAvatar = () => {
     store.dispatch("updateUserBackgroundAvatar", {
       bgAvatar: avatarParams.bgAvatar,
@@ -66,8 +66,18 @@ const useConfiguration = () => {
     store.dispatch("updateNavigateItem", {
       navigations: showedNavigations.map((item) => item.showed),
       unicID: store.state.User.currentUser.uid
+    }).then(() => {
+      notify({
+        title: "Список отображаемых страниц был успешно сохранен!"
+      })
     })
   }
+  // Set background avatar.
+  watch((): string => store.state.User.userInfo.avatarParams.bgAvatar, (background: string, oldValue) => {
+    if (!oldValue) {
+      avatarParams.bgAvatar = background;
+    }
+  }) 
 
   watchEffect(() => {
     const unicID: string = store.state.User.currentUser?.uid;
@@ -77,8 +87,6 @@ const useConfiguration = () => {
         
         const navigationList: IAsideNavigationItem[] = store.state.Configuration.asideNavigate
         showedNavigations.forEach((item, index) => item.showed = navigationList[index].showed);
-
-        avatarParams.bgAvatar = store.state.User.userInfo.avatarParams.bgAvatar; // Set background avatar.
       
         // Set additional params.
         asideBackgroundColor.value = configuration.asideBackgroundColor;

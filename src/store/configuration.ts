@@ -75,6 +75,7 @@ export default {
         })
         .then(() => {
           dispatch("getUserConfiguration", data.unicID);
+          resolve();
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);

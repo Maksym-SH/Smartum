@@ -21,7 +21,7 @@ export const useAvatarProps = {
     type: Boolean,
     default: false,
   },
-  noBackgrond: {
+  noBackground: {
     type: Boolean,
     default: false,
   },
