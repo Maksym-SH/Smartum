@@ -20,7 +20,9 @@
           <h4 class="sign-up__window--welcome-description">Заполните форму чтобы создать аккаунт.</h4>
         </div>
         <div class="sign-up__window--welcome-logo">
-          <img src="@/assets/img/logo.svg" alt="Logo" />
+          <img
+            class="sign-up__window--welcome-logo_image"
+            src="@/assets/img/logo.svg" alt="Logo" />
         </div>
       </div>
       <div class="sign-up__window--content content">
@@ -94,8 +96,9 @@ import { emailValidator } from "@/main";
 import { IUserReg } from "@/interfaces";
 import { ModalContentType } from "@/types";
 import { Length } from "@/enums";
-import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 import { useStore } from "vuex";
+
+import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 export default defineComponent({
   setup() {
@@ -109,7 +112,6 @@ export default defineComponent({
     });
 
     const LengthPassword = Length.Password;
-
     const LengthText = Length.Text;
 
     const validPersonDate = computed((): boolean => {
@@ -160,8 +162,8 @@ export default defineComponent({
     display: flex;
     box-shadow: 0 30px 10px rgba($color-grey, 0.3);
     &--welcome {
-      background-color: $color-dark-blue;
       position: relative;
+      background-color: $color-dark-blue;
       overflow: hidden;
       height: 611px;
       padding: 65px 30px 20px 30px;
@@ -198,7 +200,7 @@ export default defineComponent({
         width: 100%;
         left: 0;
         text-align: center;
-        img {
+        &_image {
           user-select: none;
           width: 50%;
         }
@@ -251,7 +253,7 @@ export default defineComponent({
   @include responsive($md, max) {
     &__window {
       width: 400px;
-      &--welcome {
+      &--WelcomeText {
         display: none;
       }
       &--content {
@@ -261,13 +263,14 @@ export default defineComponent({
   }
   @include mobile(max) {
     height: 100%;
-    min-height: 570px;
+    min-height: 660px; 
     &__window {
       margin: 0;
       width: 100%;
       height: 100%;
       &--content {
         border-radius: 0;
+        min-height: 100%;
         .content__swap-type-entry {
           margin: 8px 0 20px 0;
           font-size: 14px;

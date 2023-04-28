@@ -7,15 +7,24 @@ import {
   User, 
   UserCredential
 } from "firebase/auth";
+
+import { 
+  INotificationItem,
+  IUserAuth, 
+  IUserLogin, 
+  IUserReg, 
+  IUserResponse 
+} from "@/interfaces";
+
+import { ErrorCode } from "@/types";
+import { GenerateLightColorHexFormat } from "@/helpers/methods";
+import { NotificationType } from "@/enums";
+import { notify } from "@kyvg/vue3-notification";
+
 import store from "@/store";
 import router from "@/router";
 import ShowErrorMessage from "./firebaseErrorMessage";
-import { notify } from "@kyvg/vue3-notification";
-import { INotificationItem, IUserAuth, IUserLogin, IUserReg, IUserResponse } from "@/interfaces";
-import { ErrorCode } from "@/types";
-import { GenerateLightColorHexFormat } from "@/helpers/methods";
 import notificationContent from "@/composables/useNotificationContent";
-import { NotifcationType } from "@/enums";
 
 const firebaseAuth = (): IUserAuth => {
   const useAuth = {
@@ -34,7 +43,7 @@ const firebaseAuth = (): IUserAuth => {
           }
 
           if (currentUser) {
-            store.dispatch("createUser", {
+            store.dispatch("createUserProfile", {
               uid: currentUser.uid,
               firstName: userData.firstName,
               lastName: userData.lastName,
@@ -44,7 +53,7 @@ const firebaseAuth = (): IUserAuth => {
               }
             })
 
-            const confirmEmailNotify: INotificationItem<Date> = notificationContent(NotifcationType.Welcome);
+            const confirmEmailNotify: INotificationItem<Date> = notificationContent(NotificationType.WelcomeText);
             // Create user notifications field in database.
             store.dispatch("createNotificationList", {
               unicID: currentUser.uid,

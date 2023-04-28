@@ -1,6 +1,7 @@
 import { AsideNavigationItems, ModalContentType } from "@/types";
 import { IAsideNavigationItem } from "@/interfaces";
 import { Links } from "@/enums";
+
 import router from "@/router";
 import store from "@/store";
 
@@ -101,7 +102,6 @@ export default function Navigation(): AsideNavigationItems {
       {
         title:"Пользовательское соглашение",
         callback(): void {
-          console.log(store);
           const termsOfUse: ModalContentType = "termsOfUse";
           store.commit("setModalContentType", termsOfUse);
         }

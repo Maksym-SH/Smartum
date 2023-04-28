@@ -25,8 +25,8 @@
   &__title {
     color:var(--color-text);
     margin-top: 10px;
-    font-weight: 500;
     font-size: 22px;
+    font-weight: 500;
   }
   @include mobile(max) {
     &__icon { 

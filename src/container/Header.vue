@@ -8,7 +8,7 @@
           v-model="searchInput"
         />
       </div>
-      <Date v-if="showDate" />
+      <Date v-show="showDateTemplate" />
       <SwitchTheme class="not-mobile"/>
     </div>
   </header>
@@ -16,9 +16,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
+import { useStore } from "vuex";
+
 import Date from "@/components/date/DateTime.vue";
 import SwitchTheme from "@/components/ui/SwitchTheme.vue";
-import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
@@ -30,13 +31,13 @@ export default defineComponent({
 
     const searchInput = ref("");
 
-    const showDate = computed((): boolean => {
+    const showDateTemplate = computed((): boolean => {
       return store.state.Configuration.additionalParams.showCurrentDate;
     })
 
     return {
       searchInput,
-      showDate,
+      showDateTemplate,
     };
   },
 });
@@ -48,6 +49,7 @@ export default defineComponent({
   background-color: var(--color-background-secondary);
   box-shadow: 0 2px 1px rgba($color-black, 0.1);
   width: 100%;
+  min-height: 63px;
   &__wrapper {
     display: flex;
     justify-content: space-between;

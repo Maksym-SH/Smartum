@@ -13,16 +13,17 @@ export interface ISelectElem {
   callback: () => void;
   icon?: string;
   variant?: "info" | string;
+  displaying: boolean
 }
 export interface IAsideNavigationItem {
   id: number;
   showed: boolean;
-  alwaysDisplay?: boolean,
+  alwaysDisplay?: boolean;
   title: string;
   icon?: string;
-  notify?: true, 
+  notify?: true;
   callback?: () => void;
-  panels?: Array<Omit<AsideExpPanelNavigation, "id" | "showed" | "alwaysDisplay">>;
+  panels?: Omit<AsideExpPanelNavigation, "id" | "showed" | "alwaysDisplay">[];
 }
 export interface IPopupParams {
   title?: string;
@@ -37,7 +38,7 @@ export interface IPopupParams {
       text?: string;
     }
   },
-  callback: () => any
+  callback: () => any;
 }
 
 export interface IModalContent {
@@ -62,6 +63,7 @@ export interface IDateFormat {
   time: string;
   date: string;
 }
+
 // User
 export interface IUserLogin {
   email: string;
@@ -76,7 +78,6 @@ export interface IUserAuth {
   signIn: (userData: IUserLogin, validate: boolean) => void;
   reauthorization: (userInfo: User, credential: EmailAuthCredential) => Promise<UserCredential>;
 }
-
 export interface IPictureParams {
   url: string;
   bgAvatar?: string;
@@ -111,7 +112,7 @@ export interface INotificationItem<T> {
   type: NotificationCategory;
 }
 export interface IUpdateNotifications {
-  notifications: Array<INotificationItem<INotificationDate>>;
+  notifications: INotificationItem<INotificationDate>[];
   unicID: string;
 }
 export interface INotificationDate {
@@ -120,30 +121,26 @@ export interface INotificationDate {
 }
 export interface ICreateNotifyList {
   unicID: string;
-  item: INotificationItem<Date>
+  item: INotificationItem<Date>;
 }
-
 export interface  IConfiguration {
-  navigations: Array<string>,
-  showEmailConfirm: boolean,
+  navigations: string[];
+  showEmailConfirm: boolean;
   asideBackgroundColor: string,
-  showCurrentDate: boolean,
-  showDeleteAccountButton: boolean,
+  showCurrentDate: boolean;
+  showDeleteAccountButton: boolean;
 }
-
 export interface IConfigurationAdditional {
-  showEmailConfirm: boolean,
-  showCurrentDate: boolean, // Time and date in app header.
-  showDeleteAccountButton: boolean,
+  showEmailConfirm: boolean;
+  showCurrentDate: boolean; // Time and date in app header.
+  showDeleteAccountButton: boolean;
 }
-
 export interface IAdditionalUpdate {
-  additional: IConfigurationAdditional,
+  additional: IConfigurationAdditional;
   unicID: string;
 }
-
 export interface INavigationListUpdate {
-  navigations: Array<IAsideNavigationItem>;
+  navigations: IAsideNavigationItem[];
   unicID: string;
 }
 
@@ -155,7 +152,7 @@ export interface IError {
 }
 export interface IUserResponse {
   accessToken?: string,
-  displayName: string | null
+  displayName: string | null;
 }
 
 // Store
@@ -164,7 +161,6 @@ export interface IUserState {
   openConfirmPopup: boolean;
   userInfo: IUserCreated;
 }
-
 export interface IUserCreated {
   firstName: string;
   lastName?: string;
@@ -181,11 +177,11 @@ export interface IRootState {
   modalContentType: ModalContentType | "";
 }
 export interface INotificationState {
-  newNotification: INotificationItem<INotificationDate> | {}
+  newNotification: INotificationItem<INotificationDate> | {};
 }
 export interface IConfigState {
-  asideNavigate: Array<IAsideNavigationItem>;
-  additionalParams: Omit<IConfiguration, "navigations">
+  asideNavigate: IAsideNavigationItem[];
+  additionalParams: Omit<IConfiguration, "navigations">;
 }
 
 //Router

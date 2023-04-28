@@ -17,8 +17,13 @@
           <slot name="table-header" />
         </tr>
       </thead>
+      
       <slot name="table-body" v-if="$slots['table-body']"></slot>
-      <tfoot class="card__table-footer" v-if="$slots['table-body'] || $slots['table-footer']">
+      
+      <tfoot 
+        class="card__table-footer" 
+        v-if="$slots['table-body'] || $slots['table-footer']"
+      >
         <slot name="table-footer-titles"></slot>
         <slot name="table-footer"></slot>
       </tfoot>

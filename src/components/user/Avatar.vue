@@ -4,21 +4,22 @@
     :style="avatarStyles"
     :class="{'user-avatar--circle': circle }"
   >
-    <Loader v-if="showPreload" inline :size="30" />
-    <img 
-      v-else-if="avatar.url" 
+    <Loader v-show="showPreload" inline :size="30" />
+    <img
+      v-if="!showPreload && avatar.url" 
+      class="user-avatar__picture"
       :src="avatar.url"
       alt=""
     /> 
     <span
-      class="user-avatar--initials"
       v-else-if="firstName"
+      class="user-avatar--initials"
       :style="sizeInitials"
     >
       {{ initials }}
     </span>
     <span 
-      v-if="online" 
+      v-show="online" 
       class="user-avatar--online"
     ></span>
   </span>
@@ -26,12 +27,15 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, CSSProperties } from "vue";
-import { useAvatarProps } from "./use/props";
+import { useAvatarProps } from "./use/useProps";
 
 export default defineComponent({
   props: useAvatarProps,
 
   setup(props) {
+    const showPreload = computed(() => (!initials && !props.avatar.url) ||
+                                               (!props.avatar.bgAvatar && !props.noBackground));
+
     const avatarStyles = computed((): CSSProperties => {
       return {
         width: `${props.size}px`,
@@ -51,9 +55,6 @@ export default defineComponent({
 
       return null;
     });
-
-    const showPreload = computed(() => (!initials && !props.avatar.url) ||
-                                               (!props.avatar.bgAvatar && !props.noBackground))
 
     const imgLoad = (): boolean => imgLoaded.value = true;
     const imgLoaded = ref(false);
@@ -86,11 +87,11 @@ export default defineComponent({
   }
   &.user-avatar--circle {
     border-radius: 50%;
-    img {
+    .user-avatar__picture {
       border-radius: 50%;
     }
   }
-  img {
+  &__picture {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -102,11 +103,11 @@ export default defineComponent({
   }
   &--online {
     position: absolute;
+    bottom: 4px;
+    right: -6px;
     display: inline-block;
     width: 12px;
     height: 12px;
-    bottom: 4px;
-    right: -6px;
     border-radius: 50%;
     border: 2px solid $color-grey;
     background-color: $color-green;

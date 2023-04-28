@@ -2,7 +2,7 @@
   <div 
     class="notification-item" 
     :class="{ 'not-read': params.status === 'not read' }"
-    @click="openNotify"
+    @click="readNotification"
   >
     <Avatar 
       v-if="image" 
@@ -25,22 +25,23 @@
       </p>
     </div>
     <span
-      @click.stop="$emit('delete', params.id)" 
+      @click.stop="deleteNotification(params.id)" 
       class="notification-item__close mdi mdi-close-circle"></span>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, reactive, computed } from 'vue';
-import Avatar from '@/components/user/Avatar.vue';
 import { IPictureParams, INotificationItem, INotificationDate } from '@/interfaces';
-import { GetBetweenDateString } from '@/helpers/date/useInfoTime';
-import { Language, NotifyType, Numbers } from '@/enums';
+import { GetBetweenDateString } from '@/helpers/date/getDate';
+import { Language, NotificationActionType, Numbers } from '@/enums';
+
+import Avatar from '@/components/user/Avatar.vue';
 import useTimestamp from '@/helpers/date/timestamp';
 import router from '@/router';
 
 export default defineComponent({
-  emits:["delete", "read"],
+  emits:["deleteNotification", "readNotification"],
   components: {
     Avatar
   },
@@ -56,35 +57,43 @@ export default defineComponent({
     })
 
     const dateSent = computed((): string => {
-      const propsDate = props.params.date.seconds || props.params.date;
-      const recievedDate = props.params.date.seconds 
-                              ? new Date(Number(propsDate) * Numbers.Second) 
-                              : new Date()
+      const propsDate = props.params.date?.seconds;
 
-      const dateBetween = GetBetweenDateString(recievedDate);
-      const time = useTimestamp(recievedDate, Language.Russian, props.params.date.seconds).time;
-      return `${ dateBetween } в ${ time }`
+      const recievedDate = propsDate ? new Date(Number(propsDate) * Numbers.Second) : props.params.date;
+
+      const dateBetween: string = GetBetweenDateString(recievedDate as Date);
+      const time: string = useTimestamp(recievedDate as Date, Language.Russian, 
+                                                          props.params.date.seconds).time;
+
+      return `${ dateBetween } в ${ time }` // 'Сегодня в 22:00:00' as an example.
     })
 
-    const openNotify = (): void => {
-      emit('read', props.params.id);
-      
+    const deleteNotification = (id: number): void => {
+      emit("deleteNotification", id);
+    }
+
+    const readNotification = (): void => {
+      emit("readNotification", props.params.id);
+
       // Action by notification type.
       switch(props.params.type) {
         // ToDo: Dashboard page.
-        //case NotifyType.Dashboard: 
+        //case NotificationActionType.Dashboard: 
         //  router.push({ name: "Dashboard" });
         //  break;
-        case NotifyType.Profile: 
-          router.push({ name: "Profile" })
+        case NotificationActionType.Profile: 
+          router.push({ name: "Profile" });
           break;
-        case NotifyType.Reset: 
-          router.push({ name: "Forgot" })
+        case NotificationActionType.Reset: 
+          router.push({ name: "Forgot" });
           break;
-        case NotifyType.Default: 
+        case NotificationActionType.Configuration:
+          router.push({ name: "Configuration" });
+          break;
+        case NotificationActionType.Default: 
           return;
         // ToDo: Users page.
-        // case NotifyType.User: 
+        // case NotificationActionType.User: 
         //  router.push({ name: "Dashboard/User" })
         //  break;
       }
@@ -92,7 +101,8 @@ export default defineComponent({
     };
 
     return {
-      openNotify,
+      deleteNotification,
+      readNotification,
       image,
       dateSent
     }
@@ -103,17 +113,17 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .notification-item {
-  background-color: var(--color-background-notification);
-  border: 1px solid var(--color-border-notification);
-  padding: 10px;
+  position: relative;
   display: flex;
   width: 100%;
+  background-color: var(--color-background-notification);
+  border: 1px solid var(--color-border-notification);
   border-radius: 4px;
-  position: relative;
+  padding: 10px;
+  padding-right: 27px;
   margin-bottom: 10px;
   transition: all 0.2s;
   cursor: pointer;
-  padding-right: 27px;
   color: var(--color-text);
   &.not-read {
     background-color: var(--color-background-notification-new);
@@ -122,9 +132,9 @@ export default defineComponent({
     width: 100%;
     margin-left: 10px;
     &-info {
-      width: 100%;
       display: flex;
       flex-wrap: nowrap;
+      width: 100%;
       overflow-x: hidden;
     }
   }

@@ -11,7 +11,7 @@
     <ConfirmationPopup v-if="showConfirmPopup" />
   </transition>
 
-  <Loader v-if="loadingStatus" />
+  <Loader v-show="loadingStatus" />
   <router-view v-slot="{ Component }">
     <transition name="router-nav" mode="out-in">
       <component :is="Component" />
@@ -20,13 +20,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onMounted } from "vue";
+import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import { ObjectNotEmpty } from "./helpers/methods";
+import { ModalContentType } from "./types";
+
 import Popup from "@/components/ui/Popup.vue";
 import ConfirmationPopup from "@/components/ui/Confirmation.vue";
 import LongContentModal from "@/components/ui/LongContentModal.vue";
-import { ModalContentType } from "./types";
 
 export default defineComponent({
   components: {

@@ -1,14 +1,23 @@
-import router from "@/router";
-import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import { getAuth, User } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { IUserCreated, IUserState, ICreateUser, IAvatarUpdate, IPictureParams, IUpdatePictureBG } from "@/interfaces";
+import { 
+  IUserCreated, 
+  IUserState, 
+  ICreateUser, 
+  IAvatarUpdate, 
+  IPictureParams, 
+  IUpdatePictureBG 
+} from "@/interfaces";
+
 import { ErrorCode, IUserFieldsUpdate, ModuleCtx } from "@/types"; 
 import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"; 
 import { database } from "@/main";
 import { DataCollection } from "@/enums";
-import { setTheme } from "@/helpers/methods";
+import { SetTheme } from "@/helpers/methods";
+
+import router from "@/router";
+import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 
 export default {
   state: {
@@ -36,10 +45,13 @@ export default {
     }
   },
   actions: {
-    createUser({ commit }: ModuleCtx<IUserState>, info: ICreateUser): Promise<void> {
+    createUserProfile({ commit }: ModuleCtx<IUserState>, info: ICreateUser): Promise<void> {
+      const unicID = info.uid; // Unic id for database field access.
+
       commit("setLoadingStatus", true)
-      return new Promise((_, reject) => {
-        setDoc(doc(database, DataCollection.Profile, info.uid), {
+      return new Promise((resolve, reject) => {
+        // Create new profile collection.
+        setDoc(doc(database, DataCollection.Profile, unicID), {
             firstName: info.firstName,
             lastName: info.lastName || "",
             avatarParams: {
@@ -49,6 +61,7 @@ export default {
             about: "",
             phone: "",
         })
+        .then(() => resolve())
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
           reject(error);
@@ -100,7 +113,7 @@ export default {
 
       return new Promise((resolve, reject) => {
         updateDoc(profileRef, fieldsToUpdate).then(() => {
-          dispatch("getUserInfo").then(() => resolve())
+          dispatch("getUserProfile").then(() => resolve())
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
@@ -110,7 +123,7 @@ export default {
         .finally(() => commit("setLoadingStatus", false))
       })
     },
-    deleteUserInfo({ state, dispatch, commit }: ModuleCtx<IUserState>, unicID: string): Promise<void> {
+    deleteUserProfile({ state, dispatch, commit }: ModuleCtx<IUserState>, unicID: string): Promise<void> {
       commit("setLoadingStatus", true);
 
       return new Promise((resolve, reject) => {
@@ -132,7 +145,7 @@ export default {
         .finally(() => commit("setLoadingStatus", false));
       })
     },
-    getUserInfo({ state, commit, dispatch }: ModuleCtx<IUserState>): Promise<any> {
+    getUserProfile({ state, commit, dispatch }: ModuleCtx<IUserState>): Promise<any> {
       const unicID = state.currentUser!.uid; // Unic id for database field access.
 
       // Profile document by unicID in database. 
@@ -239,7 +252,7 @@ export default {
           avatarParams: ""
         });
         // Set dark theme by default.
-        setTheme("dark");
+        SetTheme("dark");
         localStorage.removeItem("smartumTheme");
 
         if (!router.currentRoute.value.meta.notAuthorized) {

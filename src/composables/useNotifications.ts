@@ -7,7 +7,7 @@ import { NotifyAction } from "@/types";
 const useNotifications = () => {
   const store = useStore();
 
-  const notificationList: Array<INotificationItem<INotificationDate | Date>> = reactive([]); 
+  const notificationList: INotificationItem<INotificationDate | Date>[] = reactive([]); 
 
   const notificationsSize = computed(() => {
     return notificationList.length
@@ -17,10 +17,10 @@ const useNotifications = () => {
     const foundNotification = notificationList.find((notify) => notify.id === id);
     if (foundNotification) {
       switch(action) {
-        case "read":
+        case "readNotification":
           foundNotification.status = "read";
           break;
-        case "delete": 
+        case "deleteNotification": 
           const notificationIndex: number = notificationList
                                               .findIndex((item) => item === foundNotification);
           notificationList.splice(notificationIndex, 1);

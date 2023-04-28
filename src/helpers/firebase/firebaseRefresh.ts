@@ -1,8 +1,8 @@
 import { getAuth } from "firebase/auth";
-import store from "@/store";
-// import router from "@/router";
-import ShowErrorMessage from "./firebaseErrorMessage";
 import { ErrorCode } from "@/types";
+
+import store from "@/store";
+import ShowErrorMessage from "./firebaseErrorMessage";
 
 export default async function refreshUserInfo(): Promise<void> {
   store.commit("setLoadingStatus", true);
@@ -11,7 +11,7 @@ export default async function refreshUserInfo(): Promise<void> {
     if (user) {
       getAuth().currentUser?.getIdToken(true).then(() => {
         store.commit("setCurrentUser", user);
-        store.dispatch("getUserInfo").then(() => {
+        store.dispatch("getUserProfile").then(() => {
           store.dispatch("getUserConfiguration", user.uid);
         })
       })

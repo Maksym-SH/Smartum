@@ -2,7 +2,7 @@
   <div class="file-upload" @click="upload?.click()">
     <input type="file" ref="upload" class="file-upload--input" @change="fileUpload" />
     <Button 
-      v-if="imageShowed"
+      v-if="showImageTemplate"
       class="file-upload--delete"
       variant="danger"
       @click.stop="deleteImage"
@@ -10,12 +10,12 @@
       <span class="mdi mdi-delete-outline"></span>
     </Button>
     <v-img
+      v-if="showImageTemplate"
       @load="imgLoad"
-      v-if="imageShowed"
       ref="image"
       class="file-upload--image"
       cover
-      :src="imagePath"
+      :src="currentImgPath"
     ></v-img>
     <img
       svg-inline
@@ -28,9 +28,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType, computed } from "vue";
-import fileValidate from "@/helpers/file/validate";
 import { RefElement, FileType, ImageSource } from "@/types";
 import { OpenPopup } from "@/helpers/methods";
+
+import fileValidate from "@/helpers/file/validate";
 
 export default defineComponent({
   props: {
@@ -46,14 +47,20 @@ export default defineComponent({
   emits:["loaded", "deleted"],
   setup(props, { emit }) {
     const upload = ref<RefElement>();
-
+    // Image 
     const imgLoaded = ref(false);
+    
     const imgDeleted = ref(false);
+
+    const currentImgPath = computed((): string => String(imageSource.value || props.avatarParams));
+    const showImageTemplate = computed((): string | boolean => 
+                                    (imgLoaded.value || props.avatarParams) && !imgDeleted.value);
 
     const imgLoad = (): boolean => imgLoaded.value = true;
 
     const imageSource = ref<ImageSource>(props.avatarParams);
 
+    // File upload.
     const fileUpload = (): void => {
       const reader = new FileReader();
       const file = upload.value?.files?.[0];
@@ -63,7 +70,7 @@ export default defineComponent({
 
         reader.onload = (): void => {
           
-          if(fileValidate(file, props.fileType)) {
+          if(fileValidate(file, props.fileType)) { // Validation was successful.
 
             if(props.fileType == "image") {
               imageSource.value = reader.result;
@@ -95,17 +102,12 @@ export default defineComponent({
       });
     };
 
-    const imagePath = computed((): string => String(imageSource.value || props.avatarParams));
-    const imageShowed = computed((): string | boolean => 
-                                    (imgLoaded.value || props.avatarParams) && !imgDeleted.value);
-
     return {
       imgLoaded,
       upload,
-      imageSource,
-      imagePath,
+      currentImgPath,
       imgDeleted,
-      imageShowed,
+      showImageTemplate,
       deleteImage,
       fileUpload,
       imgLoad,
@@ -116,19 +118,19 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .file-upload {
-  border-radius: 8px;
-  border: 3px dashed $color-blue;
+  position: relative;
   width: 100px;
   height: 100px;
-  position: relative;
+  border-radius: 8px;
+  border: 3px dashed $color-blue;
   cursor: pointer;
   @include flex-center;
   
   &--delete { 
     position: absolute;
-    z-index: 2;
     top: 2px;
     right: 2px;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;

@@ -5,7 +5,7 @@
         <img src="@/assets/img/logo.svg" alt="Logo" />
       </div>
       <div class="auth__window-form">
-        <form @submit.prevent="submitForm">
+        <form class="auth__window-form_wrapper" @submit.prevent="submitForm">
           <div class="auth__window-form__inputs">
             <Input
               required
@@ -55,9 +55,10 @@
 <script lang="ts">
 import { defineComponent, ref, reactive, computed } from "vue";
 import { IUserLogin } from "@/interfaces";
-import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 import { emailValidator } from "@/main";
 import { Length } from "@/enums/index";
+
+import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 export default defineComponent({
   setup() {
@@ -94,10 +95,10 @@ export default defineComponent({
 .auth {
   @include auth-window;
   &__swap-entry-type {
-    text-align: center;
-    margin-top: 40px;
     display: flex;
     flex-direction: column;
+    text-align: center;
+    margin-top: 40px;
     padding-bottom: 10px;
     .c-button {
       padding: 0;
@@ -114,12 +115,12 @@ export default defineComponent({
     }
   }
   &__window {
+    position: relative;
     min-width: 400px;
     padding: 10px 20px 30px;
     margin: 30px;
     background-color: rgba($color-grey, 0.8);
     box-shadow: 0 30px 10px rgba($color-grey, 0.3);
-    position: relative;
     &--logo {
       display: flex;
       justify-content: center;
@@ -153,21 +154,21 @@ export default defineComponent({
   }
   @include mobile(max) {
     height: 100%;
-    min-height: 445px;
+    min-height: 500px;
     &__window {
       margin: 0;
       min-width: 100%;
       height: 100%;
       &-form {
-        height: calc(100% - 65px);
         display: flex;
         flex-direction: column;
-        form {
-          width: 100%;
-          margin: 0 auto;
+        height: calc(100% - 65px);
+        &_wrapper {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          width: 100%;
+          margin: 0 auto;
           height: 100%;
           .c-input {
             width: 100%;

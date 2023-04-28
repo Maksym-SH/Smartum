@@ -1,9 +1,10 @@
 import { LangFormatType } from "@/types";
 import { Language, LangFormat } from "@/enums";
 import { IDateFormat } from "@/interfaces";
+
 import RegExp from "@/helpers/regExp";
 
-const useTimestamp = (date: Date | null, lang = Language.Russian, exaptDate?:number): IDateFormat => {
+const Timestamp = (date: Date | null, lang = Language.Russian, exaptDate?:number): IDateFormat => {
 
   const datestamp = date || new Date(Number(exaptDate)); 
 
@@ -24,4 +25,4 @@ const useTimestamp = (date: Date | null, lang = Language.Russian, exaptDate?:num
   };
 };
 
-export default useTimestamp;
+export default Timestamp;

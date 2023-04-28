@@ -7,25 +7,26 @@
     >
       <c-header class="home-page__header" />
       <div class="home-page__tab-info">
-        <h1 class="page-title"  v-if="showTabName">{{ tabName.ru }}</h1>
-        <p class="page-description" v-if="showTabDescription">{{ tabDescription.ru }}</p>
+        <h1 class="page-title">
+          {{ tabName.ru }}
+        </h1>
+        <p class="page-description">
+          {{ tabDescription.ru }}
+        </p>
       </div>
-      <router-view v-slot="{ Component }">
-        <transition
-          tag="div"
-          name="router-nav"
-          mode="out-in"
-          class="home-page__content"
-        >
-          <component 
-            v-if="showTabContent" 
-            :is="Component"
-            :notification-list="notificationList"
-            @read="notifyAction($event, 'read')"
-            @delete="notifyAction($event, 'delete')"
-          />
-        </transition>
-      </router-view>
+      <div class="home-page__content">
+        <router-view v-slot="{ Component }">
+          <transition name="router-nav" mode="out-in">
+            <component 
+              v-if="showTabContent" 
+              :is="Component"
+              :notification-list="notificationList"
+              @readNotification="notifyAction($event, 'readNotification')"
+              @deleteNotification="notifyAction($event, 'deleteNotification')"
+            />
+          </transition>
+        </router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -35,9 +36,10 @@ import { defineComponent, watch, reactive, ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { Layout } from "@/enums";
-import { ObjectFull, ObjectNotEmpty } from "@/helpers/methods";
+import { ObjectNotEmpty } from "@/helpers/methods";
 import { ILanguage, IMetaName } from "@/interfaces/index";
-import { RouterMeta, DynamicDescription, NotifyAction } from "@/types";
+import { RouterMeta, DynamicDescription } from "@/types";
+
 import * as DescriptionJSON from "@/helpers/content/tabs.json";
 import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
@@ -61,9 +63,6 @@ export default defineComponent({
     const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
 
     // Note: ObjectFull - custom method.
-    const showTabName = computed((): boolean => ObjectFull(tabName));
-    const showTabDescription = computed((): boolean => showTabName.value && ObjectFull(tabDescription))
-
     const showTabContent = computed((): boolean => ObjectNotEmpty(store.state.User.currentUser))
     // Aside
     const minimizeAside = ref(true);
@@ -99,10 +98,8 @@ export default defineComponent({
       tabName,
       tabDescription,
       minimizeAside,
-      showTabName,
       notificationList,
       notificationsSize,
-      showTabDescription,
       showTabContent,
       toggleAsideShow,
       notifyAction,
@@ -114,14 +111,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .home-page {
-  min-height: 100%;
   display: grid;
   grid-template-rows: 1fr;
+  min-height: 100%;
   background-color: var(--color-background);
   &__wrapper {
     display: grid;
-    min-height: 100%;
     grid-template-rows: auto 1fr;
+    min-height: 100%;
     padding-left: 260px;
     transition: padding-left 0.5s ease;
     &.minimize-info {
@@ -154,6 +151,7 @@ export default defineComponent({
     margin-top: 120px;
     width: 100%;
     padding-left: 40px;
+    padding-right: 40px;
   }
   @include responsive($xs, max) {
     &__tab-info {
@@ -161,6 +159,7 @@ export default defineComponent({
     }
     &__content{
       padding-left: 20px;
+      padding-right: 20px;
     }
   }
   @include mobile(max) {

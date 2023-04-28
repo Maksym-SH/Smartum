@@ -173,7 +173,7 @@ export const useExpansionPanelProps = {
     default: null
   },
   content: {
-    type: Array as PropType<Array<AsideExpPanelNavigation>>,
+    type: Array as PropType<AsideExpPanelNavigation[]>,
     default: () => []
   }
 }

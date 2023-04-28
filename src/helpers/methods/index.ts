@@ -1,8 +1,8 @@
 import { IPopupParams } from "@/interfaces";
 import { getAuth } from "@firebase/auth";
-import store from "@/store";
-import { Colors } from "@/enums";
 import { Theme } from "@/types";
+
+import store from "@/store";
 
 export const ObjectFull = (object: object): boolean => {
   return Object.values(object).every((item) => item);
@@ -23,20 +23,20 @@ export const OpenPopup = (params: IPopupParams): void => {
   store.commit("setPopupParams", params);
 }
 
-export const setTheme = (theme: Theme): void => {
+export const SetTheme = (theme: Theme): void => {
   document.body.setAttribute("data-theme", theme);
 }
 
 // Random light color generation.
 export const GenerateLightColorHexFormat = (): string => {
-   // Generate random values for RGB components.
-   const r = Math.floor(Math.random() * 128) + 128;
-   const g = Math.floor(Math.random() * 128) + 128;
-   const b = Math.floor(Math.random() * 128) + 128;
+  // Generate random values for RGB components.
+  const r = Math.floor(Math.random() * 128) + 128;
+  const g = Math.floor(Math.random() * 128) + 128;
+  const b = Math.floor(Math.random() * 128) + 128;
 
-   const colorHex = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
- 
-   return colorHex;
+  const colorHex = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+
+  return colorHex;
   
    // Helper function to convert component values to HEX.
   function componentToHex(c: number) {
@@ -59,6 +59,7 @@ export const Confirmation = (toggle: boolean, callback?: Function | void): Promi
 export const DeleteAccountPopup = (uid: string, params?: Partial<IPopupParams>): Function => {
   const userUID: string = uid;
   const popupParams: Partial<IPopupParams> | null = params ?? null;
+
   return function() {
     OpenPopup({
       title: popupParams?.title || "Удалить аккаунт?",
@@ -70,7 +71,7 @@ export const DeleteAccountPopup = (uid: string, params?: Partial<IPopupParams>):
         },
       },
       callback: (): void => {
-        store.dispatch("deleteUserInfo", userUID).then(() => {
+        store.dispatch("deleteUserProfile", userUID).then(() => {
           getAuth().currentUser?.delete()
           .then(() => {
             store.dispatch("userLogout");

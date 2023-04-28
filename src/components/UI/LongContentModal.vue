@@ -23,7 +23,7 @@
             v-model="switchLanguage" 
           />
         </v-list-subheader>
-        <div class="content" v-html="modalContent.text"></div>
+        <div class="modal__content" v-html="modalContent.text"></div>
       </v-list>
     </v-card>
   </v-dialog>
@@ -33,10 +33,11 @@
 import { defineComponent, ref, PropType, computed, watch } from 'vue';
 import { IModalContent } from "@/interfaces";
 import { ModalContentType, ModalContentLanguage, ModalLanguageType } from "@/types";
-import TermsOfUse from "@/helpers/content/TermsOfUse.json";
-import Confidentially from "@/helpers/content/Сonfidentiality.json";
 import { useStore } from 'vuex';
 import { Confirmation, DeleteAccountPopup } from '@/helpers/methods';
+
+import TermsOfUse from "@/helpers/content/TermsOfUse.json";
+import Confidentially from "@/helpers/content/Сonfidentiality.json";
 
 export default defineComponent({
   props: {
@@ -65,14 +66,6 @@ export default defineComponent({
       if (!value) store.commit("setModalContentType", "");
     })
 
-    const dissmissConfirmation = () => {
-      const userUID: string = store.state.currentUser.uid;
-      Confirmation(true, DeleteAccountPopup(userUID, {
-        title: "Внимание!",
-        text: "В случае отклонения данного соглашения мы будем вынуждены удалить ваш аккаунт!"
-      }));
-    }
-
     const currentLanguage = computed((): ModalLanguageType  => {
       return !switchLanguage.value ? "ru" : "eng"; // "Русский" / "English"
     })
@@ -80,7 +73,6 @@ export default defineComponent({
     const modalContent = computed((): ModalContentLanguage => currentContentType.value[currentLanguage.value]);
 
     return {
-      dissmissConfirmation,
       dialog,
       modalContent,
       switchLanguage,
@@ -111,7 +103,7 @@ export default defineComponent({
     &::-webkit-scrollbar-thumb {
       background-color: $color-dark-blue;
     }
-    .content {
+    .modal__content {
       :deep() {
         h2 {
           margin: 5px;
@@ -133,12 +125,12 @@ export default defineComponent({
         }
         :deep(.v-list-subheader__text) {
           display: flex;
-          width: 100%;
           flex-direction: column;
           align-items: center;
+          width: 100%;
           .modal__mobile-title {
-            font-size: 17px;
             display: block;
+            font-size: 17px;
             color: $color-dark-grey3;
           }
           .c-checkbox {
@@ -152,7 +144,7 @@ export default defineComponent({
       &::-webkit-scrollbar {
         width: 3px;
       }
-      .content {
+      .modal__content {
         :deep() {
           font-size: 14px;
           h2 {

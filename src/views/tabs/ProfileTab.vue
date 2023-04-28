@@ -61,41 +61,36 @@
           label="Новый пароль"
         />
       </div>
-      <Button 
-        variant="info"
-        :disabled="btnSaveDisable"
-        @click="saveChanges"
-        title="Сохранить"
-      />
-      <Button 
-        v-if="showDeleteAccountButton"
-        @click="deleteConfirm"
-        class="btn-delete"
-        variant="danger"
-        title="Удалить аккаунт"
-      />
+      <div class="profile-tab__form_buttons-wrapper">
+        <Button 
+          variant="info"
+          class="btn-save"
+          :class="{'full-width-mobile': saveChangesButtonToFullScreen }"
+          :disabled="btnSaveDisable"
+          @click="saveChanges"
+          title="Сохранить"
+        />
+        <Button 
+          v-if="showDeleteAccountButton"
+          @click="deleteConfirm"
+          class="btn-delete"
+          variant="danger"
+          title="Удалить аккаунт"
+        />
+      </div>
     </form>
-    <Button
-      v-if="!userInfo.emailVerified"
-      class="verify-email-btn"
-      variant="info"
-      @click="verify"
-    >
-      <span class="mdi mdi-email-open-multiple-outline"></span>
-      Подтвердить почту
-    </Button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed, ref, reactive, watch, onMounted } from "vue";
 import { useStore } from "vuex";
-import { Length, NotifcationType } from "@/enums";
+import { Length, NotificationType } from "@/enums";
 import { IUserInfo } from "@/interfaces";
 import { Confirmation, DeleteAccountPopup } from "@/helpers/methods";
 import { PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
 import { notify } from "@kyvg/vue3-notification";
-import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
+
 import RegExp from "@/helpers/regExp";
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
@@ -148,6 +143,8 @@ export default defineComponent({
       return store.state.Configuration.additionalParams.showDeleteAccountButton;
     })
 
+    const saveChangesButtonToFullScreen = computed(() => !showDeleteAccountButton.value);
+
     // Enable save changes button.
     watch(userInfo, () => {
       btnSaveDisable.value = false;
@@ -164,7 +161,7 @@ export default defineComponent({
     const updatePassword = (): void => {
       PasswordUpdate(currentUser, userInfo.newPassword).then((): void => {
 
-        store.commit("setNewNotification", newNotificationContent(NotifcationType.PasswordChange))
+        store.commit("setNewNotification", newNotificationContent(NotificationType.PasswordChange))
         userInfo.newPassword = ""; // After update password reset input value.
         profileUpdate();
       })
@@ -200,8 +197,6 @@ export default defineComponent({
       }
     }
 
-    const verify = (): void => verifyEmail(currentUser); // Confirmation email.
-
     const deleteAccountPopup = (): void => {
       showConfirmation.value = false;
       DeleteAccountPopup(currentUser.uid)();
@@ -215,7 +210,7 @@ export default defineComponent({
     }
 
     onMounted(():void => {
-      store.dispatch("getUserInfo").then((): void => {
+      store.dispatch("getUserProfile").then((): void => {
         const field = store.state.User.userInfo;  
 
         userInfo.firstName = field.firstName;
@@ -237,11 +232,11 @@ export default defineComponent({
       validForm,
       btnSaveDisable,
       showDeleteAccountButton,
+      saveChangesButtonToFullScreen,
       updatePhoto,
       deletePhoto,
       saveChanges,
       deleteConfirm,
-      verify,
     };
   },
 });
@@ -249,11 +244,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .profile-tab {
-  padding-top: 20px;
   position: relative;
+  padding-top: 20px;
   &__form {
     display: grid;
-    grid-template-columns: minmax(auto, 200px) repeat(2, 0.4fr);
+    grid-template-columns: minmax(auto, 200px) repeat(2, 0.5fr);
     gap: 22px 25px;
     padding-bottom: 20px;
     max-width: 1200px;
@@ -285,9 +280,17 @@ export default defineComponent({
       max-width: 200px;
       justify-self: end;
     }
+    &_buttons-wrapper {
+      display: flex;
+      justify-content: space-between;
+      grid-area: 4/1/4/4;
+      .btn-save, .btn-delete {
+        width: 30%;
+        max-width: 200px;
+      }
+    }
     @include responsive($lg, max) {
       max-width: 100%;
-      padding-right: 40px;
       grid-template-columns: 200px 0.5fr 0.5fr;
     }
     @include responsive($md, max) {
@@ -305,11 +308,17 @@ export default defineComponent({
       .c-textarea {
         height: 110px !important; 
       }
+      &_buttons-wrapper {
+        .btn-save, .btn-delete {
+          width: 170px;
+        }
+      }
     }
     @include mobile(max) {
       padding: 0;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
       &--upload {
         width: 100%;
         display: flex;
@@ -333,31 +342,26 @@ export default defineComponent({
       &_form-item {
         margin: 0 auto;
         width: 100%;
-        max-width: 400px;
+        max-width: 440px;
       }
-      .c-button {
-        width: 45%;
-        max-width: 170px !important;
-        font-size: 14px;
-        max-width: none;
-        margin: 10px auto;
-      }
-      .btn-delete {
-        grid-area: 3/3/3/3;
+      &_buttons-wrapper {
+        gap: 20px;
+        width: 100%;
+        max-width: 440px;
+        justify-content: space-between;
+        .btn-save, .btn-delete {
+          font-size: 14px;
+          width: 100%;
+          max-width: none;
+        }
+        .btn-save {
+          &.full-width-mobile {
+            width: 100%;
+            max-width: 400px;
+          }
+        }
       }
     }
   }
-  .verify-email-btn {
-    position: absolute;
-    top: -115px;
-    right: 5px;
-    @include mobile(max) {
-      position: static;
-      display: block;
-      margin: 0 auto;
-      font-size: 14px;
-      margin: 20px auto;
-    }
-  } 
 }
 </style>

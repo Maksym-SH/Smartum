@@ -1,35 +1,53 @@
 import { INotificationItem } from "@/interfaces";
-import { NotifcationType, NotifyType } from "@/enums";
+import { NotificationType, NotificationActionType } from "@/enums";
+import userStore from "@/store/user";
+import { User } from "firebase/auth";
 
-const useNewNotificationContent = (type: NotifcationType, ): INotificationItem<Date> | never => {
+const useNewNotificationContent = (type: NotificationType): INotificationItem<Date> | never => {
   let currentContent: Partial<INotificationItem<Date>>;
-
+  
   switch(type) {
-    case NotifcationType.Welcome:
+    case NotificationType.WelcomeText:
       currentContent = {
         title: "Добро пожаловать в Smartum task management!",
         description: "Подтвердите свой электронный адрес, для подтверждения нажмите на это уведомление.",
-        status: "not read",
         image: process.env.BASE_URL + "notifyIcons/mail.svg",
-        type: NotifyType.Profile
+        type: NotificationActionType.Verify
       }
       break;
-    case NotifcationType.PasswordChange:
+    case NotificationType.PasswordChange:
       currentContent = {
         title: "Изменения в безопасности аккаунта!",
         description: "Ваш пароль был изменен, если это были не вы, сбросьте пароль, нажав на это уведомление.",
-        status: "not read",
         image: process.env.BASE_URL + "notifyIcons/guard.svg",
-        type: NotifyType.Reset
+        type: NotificationActionType.Reset
       }
       break;
-    // ToDo ...
+    case NotificationType.ConfigurationChange:
+      currentContent = {
+        title: "Изменения в навигации приложения!",
+        description: "Некоторые элементы с приложения стали недоступны, если вам нужен доступ к скрытым частям приложения, пожалуйста активируйте их в пункте 'Конфигурация', вы можете перейти на страницу конфигурации, нажав на это уведомление.",
+        image: process.env.BASE_URL + "notifyIcons/settings.svg",
+        type: NotificationActionType.Configuration
+      }
+      break;
+    case NotificationType.EmailConfirm: 
+      const emailToConfirm = (userStore.state.currentUser as User).email;
+      currentContent = {
+        title: "Подтверждение адреса электронной почты",
+        description: `Сообщение с инструкциями для подтверждения учётной записи было выслано вам на электронный адресс ${ emailToConfirm }.`,
+        status: "not read",
+        image: process.env.BASE_URL + "notifyIcons/mail.svg",
+        type: NotificationActionType.Default
+      }
+      break;
     default: throw new Error("Notification not supported.")
   }
 
   return {
     ...currentContent as Required<INotificationItem<Date>>,
     id: Date.now(),
+    status: "not read",
     date: new Date()
   }
 }

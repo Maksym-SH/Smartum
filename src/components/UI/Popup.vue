@@ -1,9 +1,13 @@
 <template>
-  <div class="popup" 
-    @click.self="result(false)"
-  >
-    <div class="popup__window" v-if="showTemplate">
-      <h2 class="popup__title" v-if="params.title">
+  <div class="popup" @click.self="result(false)">
+    <div 
+      class="popup__window" 
+      v-if="showTemplate"
+    >
+      <h2 
+        v-if="params.title"
+        class="popup__title"
+      >
         {{ params.title }}
       </h2>
       <p class="popup__description">
@@ -84,22 +88,22 @@ export default defineComponent({
 <style lang="scss" scoped>
 .popup {
   position: fixed;
-  width: 100%;
-  height: 100vh;
-  background-color: $color-transp-black;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  width: 100%;
+  height: 100vh;
+  background-color: $color-transp-black;
 
   &__window {
-    width: fit-content;
-    border-radius: 10px;
     display: flex;
     flex-direction: column;
     padding: 20px 40px;
+    width: fit-content;
     min-width: 400px;
     max-width: 440px;
+    border-radius: 10px;
     background-color: var(--color-background-modal);
     color: var(--color-text);
   }

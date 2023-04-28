@@ -11,7 +11,7 @@
           'c-input__field--password': type === 'password',
           'c-input__field--light-theme': lightTheme
         }"
-        ref="input"
+        ref="inputRef"
         :name="inputName"
         :autocomplete="isAutoComplete"
         :placeholder=placeholder
@@ -38,7 +38,7 @@
       <span v-if="required" class="c-input--required"></span>
       <span v-if="isPhone" class="phone mdi mdi-phone"></span>
       <Transition name="error-message">
-        <span v-if="errorText" class="c-input--error-text">{{ errorText }}</span>
+        <span v-show="errorText" class="c-input--error-text">{{ errorText }}</span>
       </Transition>
       <span
         v-if="type == 'password'"
@@ -47,9 +47,10 @@
       >
         <transition mode="out-in" name="toggle-content">
           <img
+            v-if="!showPassword"
             key="open"
             svg-inline
-            v-if="!showPassword"
+            class="c-input--toggle-password_icon"
             src="@/assets/img/icons/eye.svg"
             alt="Eye"
           />
@@ -57,20 +58,22 @@
             v-else
             key="close"
             svg-inline
+            class="c-input--toggle-password_icon"
             src="@/assets/img/icons/eye-slash.svg"
             alt="Eye slash"
           />
         </transition>
       </span>
       <Button
-        class="c-input--search-btn"
         v-if="type === 'search'"
+        class="c-input--search-btn"
         @click="$emit('click')"
         transparent
         round
       >
         <img
           svg-inline
+          class="c-input--search-btn_icon"
           src="@/assets/img/icons/search.svg" 
           alt="Search" 
         />
@@ -82,10 +85,11 @@
 <script lang="ts">
 import { defineComponent, watch, ref, computed } from "vue";
 import { emailValidator } from "@/main";
-import { useInputProps } from "./use/props";
+import { useInputProps } from "./use/useProps";
 import { RefElement, ModelValue, AutoComplete } from "@/types";
-import RegExp from "@/helpers/regExp";
 import { placeholder } from "@babel/types";
+
+import RegExp from "@/helpers/regExp";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -103,7 +107,7 @@ export default defineComponent({
       set: (newValue) => emit("update:modelValue", newValue),
     });
 
-    const input = ref<RefElement>(null);
+    const inputRef = ref<RefElement>(null);
 
     const showPassword = ref(false);
 
@@ -123,11 +127,11 @@ export default defineComponent({
     };
 
     const toggleInputType = (): void => {
-      if (input.value?.type == "password") {
-        input.value!.type = "text";
+      if (inputRef.value?.type == "password") {
+        inputRef.value!.type = "text";
         showPassword.value = true;
       } else {
-        input.value!.type = "password";
+        inputRef.value!.type = "password";
         showPassword.value = false;
       }
     };
@@ -146,7 +150,7 @@ export default defineComponent({
     return {
       errorText,
       isAutoComplete,
-      input,
+      inputRef,
       model,
       inputName,
       showPassword,
@@ -190,13 +194,16 @@ export default defineComponent({
       }
     }
 
-    &:autofill {
-      border: 3px solid $color-blue;
-      background-color: $color-light-blue;
-    }
-    &:-webkit-autofill {
-      background-color: $color-light-blue;
-      border: 3px solid $color-blue;
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover, 
+    &:-webkit-autofill:focus {
+      border: 1px solid $color-green;
+      border-radius: 4px;
+      -webkit-text-fill-color: var(--color-text);
+      -webkit-box-shadow: 0 0 0 1000px var(--color-background) inset;
+      & + .label {
+        color: $color-green;
+      }
     }
 
     &.c-input--password {
@@ -213,7 +220,7 @@ export default defineComponent({
     &.c-input__field--light-theme {
       border-color: $color-white1;
       color: $color-white1;
-      & + label {
+      & + .label {
         color:  $color-white1;
       }
       & ~ .c-input--search-btn {
@@ -228,7 +235,7 @@ export default defineComponent({
         left: 10px;
         color: var(--color-text);
       }
-      & ~ label {
+      & ~ .label {
         left: 30px !important;
       }
     }
@@ -238,7 +245,7 @@ export default defineComponent({
       &:not(.c-input__field--transparent) {
         color: $color-black !important;
       } 
-      & + label {
+      & + .label {
         color: $color-red !important;
       }
       & ~ .phone {
@@ -254,11 +261,11 @@ export default defineComponent({
       padding-right: 45px;
     }
     &--transparent {
-      background-color: transparent;
-      color: $color-white3;
       border: none;
       border-bottom: 2px solid $color-white3;
       border-radius: 0;
+      background-color: transparent;
+      color: $color-white3;
       & ~ .c-input--required {
         width: 5px;
         height: 5px;
@@ -284,7 +291,7 @@ export default defineComponent({
     right: 10px;
     cursor: pointer;
     transform: translate(0, -50%);
-    svg {
+    &_icon {
       fill: var(--color-input);
       outline: none;
     }
@@ -303,7 +310,7 @@ export default defineComponent({
     &:active {
       background-color: rgba($color-brown, 0.3);
     }
-    svg {
+    &_icon {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -328,14 +335,14 @@ export default defineComponent({
     left: 0;
   }
   .label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
     transition: all 0.2s;
     color: var(--color-text);
     font-size: 13px;
     pointer-events: none;
-    position: absolute;
-    top: 50%;
-    transform: translate(0, -50%);
-    left: 10px;
     &.top-fixed {
       top: -8px;
       left: 0 !important;

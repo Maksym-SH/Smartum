@@ -8,13 +8,13 @@
       :id="name"
     >
     <!-- Text -->
-    <label 
+    <label
+      v-if="secondaryLabel && switchBox"  
       class="label secondary-label" 
       :class="{ 
         'not-selected': checked,
         'disabled': disabled 
       }"
-      v-if="secondaryLabel && switchBox" 
       @click="checkboxToggle(false)"
     >
       {{ secondaryLabel }}
@@ -29,8 +29,8 @@
 
     <!-- Text -->
     <label
-      class="label main-label"
       v-if="label"
+      class="label main-label"
       :class="{ 
         'not-selected': !checked,
         'disabled': disabled  
@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { defineComponent, watch, computed } from "vue";
-import { useCheckboxProps } from  "./use/props";
+import { useCheckboxProps } from  "./use/useProps";
 
 export default defineComponent({
   props: useCheckboxProps,
@@ -97,12 +97,12 @@ export default defineComponent({
   }
   &:not(.switch) {
     .checkbox-label {
-      padding-left: 20px;
-      color: $color-white1;
       position: relative;
+      padding-left: 20px;
       cursor: pointer;
       font-size: 12px;
       user-select: none;
+      color: $color-white1;
       &::before {
         content: "";
         position: absolute;

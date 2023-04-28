@@ -1,8 +1,7 @@
-import { watchEffect, watch, reactive, ref, computed } from "vue";
+import { watchEffect, reactive, ref, computed } from "vue";
 import { useStore } from "vuex";
-import useAsideNavigation from "@/composables/useAsideNavigation";
 import { notify } from '@kyvg/vue3-notification';
-import { Colors } from '@/enums';
+import { Colors, NotificationType } from '@/enums';
 import { UserName } from "@/types";
 import { 
   IAsideNavigationItem, 
@@ -11,6 +10,9 @@ import {
   IPictureParams 
 } from '@/interfaces';
 
+import useAsideNavigation from "@/composables/useAsideNavigation";
+import useNewNotificationContent from "./useNotificationContent";
+
 const useConfiguration = () => {
   const store = useStore();
 
@@ -18,17 +20,24 @@ const useConfiguration = () => {
     ...useAsideNavigation()
   ]);
 
+  const notificationAdded = ref(false);
+
+  // Params
   const additionalParams = reactive<IConfigurationAdditional>({
     showEmailConfirm: true,
     showCurrentDate: false, // Time and date in app header.
     showDeleteAccountButton: false,
   })
+
+  const avatarParams = computed((): Required<IPictureParams> => {
+    return {
+      bgAvatar: store.state.User.userInfo.avatarParams.bgAvatar,
+      url: "" 
+    } 
+  });
+
   const asideBackgroundColor= ref(Colors.Grey as string);
 
-  const avatarParams: Required<IPictureParams> = reactive({
-    bgAvatar:"",
-    url: "" 
-  })
   const userName = computed((): UserName => {
     const { firstName, lastName } = store.state.User.userInfo;
     return {
@@ -36,10 +45,11 @@ const useConfiguration = () => {
       lastName
     } 
   });
+
   // Save card methods.
   const saveBackgroundAvatar = () => {
     store.dispatch("updateUserBackgroundAvatar", {
-      bgAvatar: avatarParams.bgAvatar,
+      bgAvatar: avatarParams.value.bgAvatar,
       unicID: store.state.User.currentUser.uid
     }).then(() => {
       notify({
@@ -59,6 +69,11 @@ const useConfiguration = () => {
       notify({
         title: "Настройки конфигурации были успешно сохранены!"
       })
+
+      if (!notificationAdded.value) {
+        store.commit("setNewNotification", useNewNotificationContent(NotificationType.ConfigurationChange));
+      }
+      notificationAdded.value = true;
     })
   }
 
@@ -70,15 +85,14 @@ const useConfiguration = () => {
       notify({
         title: "Список отображаемых страниц был успешно сохранен!"
       })
+
+      if (!notificationAdded.value) {
+        store.commit("setNewNotification", useNewNotificationContent(NotificationType.ConfigurationChange));
+      }
+      notificationAdded.value = true;
     })
   }
-  // Set background avatar.
-  watch((): string => store.state.User.userInfo.avatarParams.bgAvatar, (background: string, oldValue) => {
-    if (!oldValue) {
-      avatarParams.bgAvatar = background;
-    }
-  }) 
-
+  // Get info.
   watchEffect(() => {
     const unicID: string = store.state.User.currentUser?.uid;
     if (unicID) {

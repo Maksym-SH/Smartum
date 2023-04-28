@@ -1,5 +1,6 @@
 import { User, updatePassword } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
+
 import store from "@/store";
 import ShowErrorMessage from "./firebaseErrorMessage";
 

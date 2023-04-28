@@ -8,24 +8,24 @@ import {
 import { ErrorCode, ModuleCtx } from "@/types";
 import { database } from "@/main";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import { Colors, DataCollection } from "@/enums";
-import allAsideNavigates from "@/composables/useAsideNavigation";
+
+import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
+import allAsideNavigations from "@/composables/useAsideNavigation";
 
 export default {
   state: {
     asideNavigate: [],
     additionalParams: {
       asideBackgroundColor: Colors.Grey as string,
-      showEmailConfirm: true,
-      showCurrentDate: true, // Time and date in app header.
+      showEmailConfirm: false,
+      showCurrentDate: false, // Time and date in app header.
       showDeleteAccountButton: false,
     }
   },
   mutations: {
-    setAdditionalParams(state: IConfigState, names: Omit<IConfiguration, "navigations">): void {
-      console.log(names);
-      state.additionalParams = names;
+    setAdditionalParams(state: IConfigState, params: Omit<IConfiguration, "navigations">): void {
+      state.additionalParams = params;
     },
     setNavigateList(state: IConfigState, navigationList: IAsideNavigationItem[]): void {
       state.asideNavigate = navigationList;
@@ -33,9 +33,9 @@ export default {
   },
   actions: {
     createUserConfiguration({ commit }: ModuleCtx<IConfigState>, unicID: string): Promise<void> {
-      const navigationsShow = allAsideNavigates().map((item) => item.showed);
-      commit("setLoadingStatus", true);
+      const navigationsShow = allAsideNavigations().map((item) => item.showed);
 
+      commit("setLoadingStatus", true);
       return new Promise((resolve, reject) => {
         setDoc(doc(database, DataCollection.Configuration, unicID), {
           navigationsShowValues: navigationsShow,
@@ -45,11 +45,11 @@ export default {
           showDeleteAccountButton: true,
         })
         .then(() => resolve())
-        .catch((error: ErrorCode) => {
+        .catch((error: ErrorCode): void => {
           ShowErrorMessage(error);
           reject(error);
         })
-        .finally((): void => commit("setLoadingStatus", false))
+        .finally(() => commit("setLoadingStatus", false))
       })  
     },
     deleteUserConfiguration( { commit }: ModuleCtx<IConfigState>, unicID: string): Promise<void> {
@@ -97,7 +97,7 @@ export default {
           dispatch("getUserConfiguration", data.unicID);
           resolve();
         })
-        .catch((error: ErrorCode) => {
+        .catch((error: ErrorCode): void => {
           ShowErrorMessage(error);
           reject(error)
         })
@@ -109,14 +109,15 @@ export default {
 
       return new Promise((resolve, reject) => {
         getDoc(configurationRef)
-        .then((configuration) => {
+        .then((configuration): void => {
           const responseData = configuration.data();
 
           if (responseData) {
-            const valuesShow: Array<boolean> = responseData.navigationsShowValues;
+            const navigationDisplayStatus: boolean[] = responseData.navigationsShowValues;
+
             // Set displaying all aside navigation items.
-            const showedNavigations = allAsideNavigates();
-            showedNavigations.forEach((item, index) => item.showed = valuesShow[index]);
+            const showedNavigations = allAsideNavigations();
+            showedNavigations.forEach((item, index) => item.showed = navigationDisplayStatus[index]);
             commit("setNavigateList", showedNavigations);
 
             // Set additional params.

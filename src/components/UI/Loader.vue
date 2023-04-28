@@ -5,9 +5,11 @@
   >
     <div class="c-loader__spinner">
       <svg
+        class="c-loader__spinner--animation"
         :style="loaderSize"
         viewBox="-3 -4 39 39">
         <polygon 
+          class="c-loader__spinner-polygon"
           fill="transparent" 
           strokeWidth="1" 
           points="16,0 32,32 0,32" 
@@ -49,20 +51,20 @@ export default defineComponent({
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 100;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
   background-color: rgba($color-black, 0.5);
   &:not(.inline-transparent) {
     width: 100%;
     height: 100vh;
   }
   &__spinner {
-    svg {
+    &--animation {
       display: inline-block;
       transform-origin: 50% 65%;
-      polygon {
+      .c-loader__spinner-polygon {
         stroke: $color-blue;
         stroke-dasharray: 17;
         -webkit-animation: dash 2.5s cubic-bezier(0.35, 0.04, 0.63, 0.95)

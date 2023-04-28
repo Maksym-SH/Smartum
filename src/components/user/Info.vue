@@ -3,7 +3,7 @@
     <h5 class="user-info__name--name text-ellipsis">{{ firstName }}</h5>
     <h5 class="user-info__name--name text-ellipsis">{{ lastName }}</h5>
     <small 
-      v-show="firstName && showEmailVerified"
+      v-show="firstName && showVerifiedTemplate"
       class="user-info__name--status" :class="{ 'verified': emailVerified }">
       <span :class="['mdi', statusIcon]"></span> 
       {{ userStatusText }}
@@ -15,7 +15,7 @@
 import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 import { EmailVerify, StatusVueIcon } from "@/types";
-import { useInfoProps } from "./use/props";
+import { useInfoProps } from "./use/useProps";
 
 export default defineComponent({
   props: useInfoProps,
@@ -24,22 +24,20 @@ export default defineComponent({
 
     const emailVerified: boolean = store.state.User.currentUser.emailVerified;
 
-    const showEmailVerified = computed(() => store.state.Configuration.additionalParams.showEmailConfirm);
+    const showVerifiedTemplate = computed((): Boolean => 
+                                            store.state.Configuration.additionalParams.showEmailConfirm);
 
     const userStatusText = computed((): EmailVerify => {
-      if (emailVerified) return "Почта подтверждена"
-      return "Почта не подтверждена"
+      if (emailVerified) return "Адрес подтверждён"
+      return "Адрес не подтверждён"
     })
-
-    const showStatusEmailTemplate = computed((): boolean => true)
 
     const statusIcon: StatusVueIcon = emailVerified ? "mdi-email-check" : "mdi-email-alert"
 
     return {
       statusIcon,
-      showEmailVerified,
+      showVerifiedTemplate,
       emailVerified,
-      showStatusEmailTemplate,
       userStatusText,
     }
   }
@@ -48,9 +46,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .user-info__name {
-  max-width: 140px;
   display: flex;
   flex-direction: column;
+  max-width: 140px;
   &--name {
     color: $color-white3;
     font-size: 14px;

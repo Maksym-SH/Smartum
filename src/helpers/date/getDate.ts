@@ -1,5 +1,6 @@
 import { IDateFormat } from "@/interfaces";
 import { Language, Numbers } from "@/enums";
+
 import useTimestamp from "./timestamp";
 import RegExp from "@/helpers/regExp";
 
@@ -24,22 +25,24 @@ export const  GetBetweenDateString = (date: Date): string => {
 
    const weekAgo =  new Date(today);
    weekAgo.setDate(today.getDate() - 7);
-
-  switch(true) {
+  if (date) {
+    switch(true) {
       case date >= today:
         return "Сегодня";
       case date >= yesterday:
         return "Вчера";
       case date >= weekAgo:
         const dayAgo = Math.floor((Number(today) - Number(date)) / Numbers.MillisecondsInDay + 1);
-        return `${dayAgo} ${getDayStringFormat(dayAgo)} назад`;
+        return `${dayAgo} ${GetDayStringFormat(dayAgo)} назад`;
       default:
         return date.toLocaleDateString();
+    }
   }
+  return ""
 }
 
 // Get the word "день", "дня" or "дней" depending on the number.
-export const getDayStringFormat = (num: number): string => {
+export const GetDayStringFormat = (num: number): string => {
   if (num === 1) return "день";
   else if (num >= 2 && num <= 4) return "дня";
 

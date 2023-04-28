@@ -54,6 +54,7 @@ import { EmailAuthCredential, EmailAuthProvider, User } from "firebase/auth";
 import { Length } from '@/enums';
 import { computed } from '@vue/reactivity';
 import { Confirmation } from '@/helpers/methods';
+
 import firebaseAuth from '@/helpers/firebase/firebaseAuth';
 
 export default defineComponent({
@@ -91,13 +92,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .confirmation {
   position: fixed;
-  width: 100%;
-  height: 100vh;
-  background-color: $color-transp-black;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  width: 100%;
+  height: 100vh;
+  background-color: $color-transp-black;
 
   &__window {
     width: fit-content;

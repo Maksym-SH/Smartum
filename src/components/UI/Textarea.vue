@@ -8,7 +8,7 @@
           'c-textarea__field--required': required,
           'c-textarea__field--resize': resize
         }"
-        ref="textarea"
+        ref="textareaRef"
         :name="textareaName"
         :placeholder="placeholder"
         v-model="model"
@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { defineComponent, watch, ref, computed } from "vue";
-import { useTextareaProps } from "./use/props";
+import { useTextareaProps } from "./use/useProps";
 import { RefElement, ModelValue } from "@/types";
 
 export default defineComponent({
@@ -60,14 +60,14 @@ export default defineComponent({
       set: (newValue) => emit("update:modelValue", newValue),
     });
 
-    const textarea = ref<RefElement>(null);
+    const textareaRef = ref<RefElement>(null);
 
     const validator = (): void => {
       if (props.min && String(model.value).length < props.min) {
         errorText.value = `Введите не менее ${props.min} символов.`;
       } 
       else if (String(model.value).startsWith(" ")) {
-        errorText.value = "Пустое значение недопустимо.";
+        errorText.value = "Начальное пустое значение недопустимо.";
       }
     };
 
@@ -81,7 +81,7 @@ export default defineComponent({
     return {
       errorText,
       isRequired,
-      textarea,
+      textareaRef,
       model,
       textareaName,
       validator,
@@ -93,7 +93,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .c-textarea {
   width: 100%;
-  height: fit-content;
   padding-top: 20px;
   &--relative {
     position: relative;

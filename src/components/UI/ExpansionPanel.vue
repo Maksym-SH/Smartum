@@ -22,8 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { useExpansionPanelProps } from "./use/props";
-
+import { useExpansionPanelProps } from "./use/useProps";
 
 export default defineComponent({ 
   props: useExpansionPanelProps,

@@ -1,8 +1,9 @@
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import store from "@/store";
-import router from "@/router";
 import { notify } from "@kyvg/vue3-notification";
 import { ErrorCode } from "@/types";
+
+import store from "@/store";
+import router from "@/router";
 import ShowErrorMessage from "./firebaseErrorMessage";
 
 const firebaseReset = (email: string): void => {

@@ -4,10 +4,12 @@
     :class="{ 'aside-minimize': minimizeAside }"
   >
     <div class="aside__logo">
-      <img src="@/assets/img/logo.svg" alt="Logo" />
+      <img 
+        class="aside__logo-picture"
+        src="@/assets/img/logo.svg" alt="Logo" />
     </div>
     <div class="aside__content">
-      <Loader :size="defaultLoaderSize" inline v-if="!showContent"/>
+      <Loader v-if="!showContent" :size="defaultLoaderSize" inline />
       <template v-else>
         <div class="aside__mobile-content mobile-only">
           <SwitchTheme
@@ -35,7 +37,7 @@
           tag="div"
           class="aside__navigations"
         >
-          <template v-for="(item, index) in navigation" :key="item.title">
+          <template v-for="item in navigationList" :key="item.id">
             <template v-if="item.showed">
               <ExpPanel
                 v-if="item.panels"
@@ -56,7 +58,7 @@
                 ></span>
                 <span :class="{ 'no-icon': !item.icon }">{{ item.title }}</span>
                 <v-badge
-                  v-if="notificationCount >= 0 && item.notify" 
+                  v-show="notificationCount >= 0 && item.notify" 
                   class="notify"
                   :class="{'empty-list': notificationCount === 0 }"
                   :content="notificationCount"
@@ -69,7 +71,7 @@
       </template>
     </div>
     <footer class="aside__about-author">
-      <article>
+      <article class="aside__about-author_description">
         <span>
           Powered by Maksym-SH © 2023
         </span>
@@ -97,9 +99,10 @@ import { defineComponent, computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Numbers, Layout } from "@/enums";
 import { IAsideNavigationItem, IUserCreated } from "@/interfaces";
+import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
+
 import User from "@/components/user/Container.vue";
 import SwitchTheme from "@/components/ui/SwitchTheme.vue";
-import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
 
 export default defineComponent({
   components: {
@@ -131,7 +134,9 @@ export default defineComponent({
     })
 
     const showContent = computed((): boolean => {
-      return ObjectHasValues(store.state.User.userInfo) && ObjectNotEmpty(store.state.User.currentUser)
+      return ObjectHasValues(store.state.User.userInfo) && 
+                ObjectNotEmpty(store.state.User.currentUser) && 
+                  ObjectNotEmpty(navigationList.value)
     });
 
 
@@ -151,7 +156,7 @@ export default defineComponent({
       callback?.();
     };
 
-    const navigation = computed((): IAsideNavigationItem[] => {
+    const navigationList = computed((): IAsideNavigationItem[] => {
       return store.state.Configuration.asideNavigate;
     });
   
@@ -170,7 +175,7 @@ export default defineComponent({
       showContent,
       minimize,
       searchInput,
-      navigation,
+      navigationList,
       defaultLoaderSize,
       applicationVersion,
       collapseToggle,
@@ -185,28 +190,28 @@ export default defineComponent({
 
 <style lang="scss">
 .aside {
-  width: 100%;
-  height: 100%;
-  max-width: 260px;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 2;
+  width: 100%;
+  height: 100%;
+  max-width: 260px;
   background-color: $color-grey;
   transition: all 0.5s ease;
   box-shadow: 10px 0 10px rgba($color-dark-grey, 0.2);
   &.aside-minimize {
     box-shadow: none;
-    transform: translateX(-260px);
+    transform: translateX(-261px);
   }
 
   &__navigation-btn {
+    display: flex;
     text-align: start;
     padding-left: 23px;
     color: $color-white1 !important;
     margin: 0;
-    display: flex;
-    box-shadow: 0px 3px 2px -2px rgba($color-black, 0.4);
+    box-shadow: 0px 3px 2px -1px rgba($color-black, 0.5);
     .icon {
       width: 14px;
       max-height: 14px;
@@ -245,17 +250,17 @@ export default defineComponent({
   }
 
   &__content {
-    height: calc(100% - 101px);
+    position: relative;
     display: flex;
     flex-direction: column;
-    position: relative;
+    height: calc(100% - 101px);
     color: $color-black;
     overflow: hidden scroll;
     .c-loader {
       position: absolute !important;
       top: 50%;
-      display: inline;
       left: calc(50% - 20px);
+      display: inline;
     }
 
     &::-webkit-scrollbar {
@@ -277,7 +282,7 @@ export default defineComponent({
     width: 100%;
     text-align: center;
 
-    img {
+    &-picture {
       width: 140px;
     }
   }
@@ -300,7 +305,7 @@ export default defineComponent({
   }
 
   &__user {
-    min-height: 129.3px;
+    min-height: 130px;
     padding: 30px 24px;
 
     &--avatar {
@@ -340,12 +345,13 @@ export default defineComponent({
     padding: 10px 0;
     background-color: $color-dark-grey3;
     color: $color-white1;
-    article {
+    &_description {
+      display: flex;
+      justify-content: space-between;
       margin: 0 auto;
       font-size: 10px;
-      display: flex;
       padding: 0 23px;
-      justify-content: space-between;
+      
     }
   }
 
@@ -355,12 +361,12 @@ export default defineComponent({
     &__collapse {
       position: absolute;
       top: 0%;
+      right: -45px;
+      bottom: auto;
       display: flex;
       justify-content: center;
       align-items: center;
       background-color: rgba($color-light-grey, 0.8);
-      right: -45px;
-      bottom: auto;
       clip-path: none;
       border-radius: 0 10px 10px 0;
       width: 45px;

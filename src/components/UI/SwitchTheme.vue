@@ -1,7 +1,11 @@
 <template>
   <div class="toggle-theme-switch" :class="{ 'small': small }">
-    <label>
-      <input type="checkbox" v-model="switchModel">
+    <label class="toggle-theme-switch__label">
+      <input 
+        class="toggle-theme-switch__input"
+        type="checkbox" 
+        v-model="switchModel"
+      >
       <span class="toggle-theme-switch__icon"></span>
     </label>
   </div>
@@ -10,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
-import { setTheme } from "@/helpers/methods";
+import { SetTheme } from "@/helpers/methods";
 import { Theme } from '@/types';
 
 export default defineComponent({
@@ -25,7 +29,7 @@ export default defineComponent({
 
     watch(switchModel, (value: boolean):void => {
       const currentTheme: Theme = value ? "light" : "dark";
-      setTheme(currentTheme);
+      SetTheme(currentTheme);
       localStorage.setItem("smartumTheme", currentTheme);
     })
 
@@ -33,7 +37,7 @@ export default defineComponent({
       const savedTheme = localStorage.getItem("smartumTheme") as Theme || "dark";
       switchModel.value = savedTheme === 'dark' ? false : true;
 
-      setTheme(savedTheme);
+      SetTheme(savedTheme);
     })
 
     return {
@@ -46,15 +50,15 @@ export default defineComponent({
 .toggle-theme-switch {
   position: relative;
   width: 70px;
-  label {
+  &__label {
     position: absolute;
     width: 100%;
-    height: 30px;
+    height: 29px;
     background-color: $color-dark-grey4;
     border-radius: 50px;
     cursor: pointer;
   }
-  input {
+  &__input {
     position: absolute;
     display: none;
     &:checked {
@@ -90,10 +94,10 @@ export default defineComponent({
   
   &.small {
     width: 50px;
-    label {
+    .toggle-theme-switch__label {
       height: 25px;
     }
-    input {
+    .toggle-theme-switch__input {
       &:checked {
         ~ .toggle-theme-switch__icon {
           &::before {

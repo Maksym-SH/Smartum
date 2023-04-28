@@ -35,7 +35,7 @@ import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
 // Notificaton
-import Notifications from "@kyvg/vue3-notification";
+import notifications from "@kyvg/vue3-notification";
 // Styles
 import "normalize.css";
 import "vuetify/styles";
@@ -60,6 +60,6 @@ app.component("ExpPanel", ExpPanel);
 app.use(router);
 app.use(store);
 app.use(vuetify);
-app.use(Notifications);
+app.use(notifications);
 
 app.mount("#app");

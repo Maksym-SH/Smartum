@@ -1,4 +1,4 @@
-import { NotifyType } from "@/enums";
+import { NotificationActionType } from "@/enums";
 import { 
   ISelectElem,
   ILanguage, 
@@ -10,6 +10,7 @@ import {
   IModalContent,
   IUserReg,
 } from "@/interfaces/index";
+
 import { RouteRecordRaw } from "vue-router";
 import { ActionContext } from "vuex";
 
@@ -19,9 +20,9 @@ export type Theme = "light" | "dark";
 
 export type RefElement = HTMLInputElement | null;
 
-export type Welcome = "Добрый день" | "Добрый вечер";
+export type WelcomeText = "Добрый день" | "Добрый вечер";
 
-export type EmailVerify = "Почта подтверждена" | "Почта не подтверждена"
+export type EmailVerify = "Адрес подтверждён" | "Адрес не подтверждён";
 
 export type Icon = "moon" | "sun";
 
@@ -42,13 +43,14 @@ export type DynamicDescription = { [key: string]: ILanguage };
 export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword";
 
 // Props
+
 export type AutoComplete = "on" | "off";
 
 export type ButtonSize = "sm" | "md" | "lg";
 
 export type ExpansionPanelVariant = "accordion" | "default" | "inset" | "popout";
 
-export type AsideNavigationItems = Array<IAsideNavigationItem>;
+export type AsideNavigationItems = IAsideNavigationItem[];
 
 export type OmitAsideNavigation = Omit<IAsideNavigationItem, "icon" | "notify" | "panels" | "avatar">;
 
@@ -60,7 +62,7 @@ export type Variant = "info" | "danger" | "success";
 
 export type PopupButtons = IPopupParams["buttons"];
 
-export type SelectElements = Array<ISelectElem>;
+export type SelectElements = ISelectElem[];
 
 export type Position = "top" | "bottom" | "start" | "end" | "center";
 
@@ -70,22 +72,26 @@ export type FileType = "image" | "text";
 
 export type ModelValue = string | number | unknown;
 
-export type NotificationCategory = NotifyType;
+export type NotificationCategory = NotificationActionType;
 
-export type NotifyAction = "delete" | "read";
+export type NotifyAction = "deleteNotification" | "readNotification";
 
 export type UserName = Pick<IUserReg, "firstName" | "lastName">;
+
 // Store
+
 export type RootContext = ActionContext<IRootState, IRootState>;
 
 export type ModuleCtx<State> = ActionContext<State, IRootState>;
 
 // Router
-export type Routes = Readonly<Array<RouteRecordRaw>>
+
+export type Routes = Readonly<RouteRecordRaw[]>;
 
 export type RouterMeta = Record<string | number | symbol, unknown>;
 
 // Promise
+
 export type Error = Awaited<Promise<IError>>;
 
 export type ErrorCode = { code: string } | string;

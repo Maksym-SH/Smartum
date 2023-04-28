@@ -1,26 +1,21 @@
-import store from "@/store";
 import { sendEmailVerification, User } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 import { ErrorCode } from "@/types";
+import useNewNotificationContent from "@/composables/useNotificationContent";
 import ShowErrorMessage from "./firebaseErrorMessage";
-import { NotifyType } from "@/enums";
+import { NotificationType } from "@/enums";
+import store from "@/store";
 
-const verifyEmail = (userInfo: User): void => {
+const VerifyEmail = (userInfo: User): void => {
   sendEmailVerification(userInfo)
   .then(() => {
     notify({
       title: "Успешно!",
-      text: "Сообщение для подтверждения было отправлено вам на почту!"
+      text: "Сообщение для подтверждения было отправлено вам на электронный адрес!"
     })
-    store.commit("setNewNotification", {
-      title: "Подтверждение учетной записи",
-      description: `Сообщение с инструкциями для подтверждения учётной записи было выслано вам на электронный адресс ${ userInfo.email }`,
-      status: "not read",
-      image: process.env.BASE_URL + "notifyIcons/mail.svg",
-      type: NotifyType.Default
-    })
+    store.commit("setNewNotification", useNewNotificationContent(NotificationType.EmailConfirm));
   })
   .catch((error: ErrorCode) => ShowErrorMessage(error))
 }
 
-export default verifyEmail;
+export default VerifyEmail;

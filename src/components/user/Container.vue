@@ -17,13 +17,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, computed } from "vue";
 import { useStore } from "vuex";
 import router from "@/router";
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";
 import { SelectElements } from "@/types";
-import { useContainerProps } from "./use/props";
+import { useContainerProps } from "./use/useProps";
+import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
+import { User } from "@firebase/auth";
 
 export default defineComponent({
   components: {
@@ -35,18 +37,30 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore();
 
-    const actions: SelectElements = reactive([
+    const currentUser = computed((): User => store.state.User.currentUser);
+    const emailVerified = computed((): boolean => currentUser.value.emailVerified);
+
+    const actions = reactive<SelectElements>([
       {
         title: "Мой профиль",
         callback: () => router.push("/profile"),
-        icon: require("@/assets/img/icons/account.svg"),
+        icon: "mdi-account",
         variant: "default",
+        displaying: true,
+      },
+      {
+        title: "Подтвердить адрес",
+        callback: () => verifyEmail(currentUser.value),
+        icon: "mdi-email-check-outline",
+        variant: "info",
+        displaying: !emailVerified.value // Not verified.
       },
       {
         title: "Выйти с аккаунта",
         callback: () => store.dispatch("userLogout"),
-        icon: require("@/assets/img/icons/logout.svg"),
+        icon: "mdi-logout",
         variant: "danger",
+        displaying: true
       },
     ]);
 

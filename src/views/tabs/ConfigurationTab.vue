@@ -57,7 +57,7 @@
             <template #content>
               <div class="card-info__change-background-avatar">
                 <div class="card-info__change-background-avatar--result">
-                  <h5>Результат:</h5>
+                  <h5 class="card-info__avatar-title">Результат:</h5>
                   <Avatar 
                     :size="80"
                     :avatar="avatarParams"
@@ -86,11 +86,15 @@
             <template #content>
               <div class="card-info__additional-settings">
                 <div class="card-info__additional-settings-item">
-                  <h4>Изменить фон боковой панели</h4>
+                  <h4 class="card-info__additional-settings-title">
+                    Изменить фон боковой панели
+                  </h4>
                   <ColorPalette v-model="asideBackgroundColor" />
                 </div>
                 <div class="card-info__additional-settings-item">
-                  <h4>Статус подтверждения адреса</h4>
+                  <h4 class="card-info__additional-settings-title">
+                    Статус подтверждения адреса
+                  </h4>
                   <Checkbox  
                     switchBox
                     name="ToggleStatus" 
@@ -100,7 +104,9 @@
                   />
                 </div>
                 <div class="card-info__additional-settings-item">
-                  <h4>Дата и время</h4>
+                  <h4 class="card-info__additional-settings-title">
+                    Дата и время
+                  </h4>
                   <Checkbox  
                     switchBox
                     name="ToggleTime" 
@@ -109,9 +115,10 @@
                     v-model="additionalParams.showCurrentDate"
                   />
                 </div>
-
                 <div class="card-info__additional-settings-item">
-                  <h4>Кнопка "Удалить аккаунт"</h4>
+                  <h4 class="card-info__additional-settings-title">
+                    Кнопка "Удалить аккаунт"
+                  </h4>
                   <Checkbox  
                     switchBox
                     name="ToggleDeleteAccount" 
@@ -138,6 +145,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+
 import Card from "@/container/Card.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import ColorPalette from '@/components/ui/ColorPalette.vue';
@@ -159,10 +167,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .configuration-tab {
-  padding: 20px 40px 20px 40px;
+  padding: 20px 0 20px 0;
   &__content {
     display: flex;
-    max-width: fit-content;
     gap: 50px;
     color: var(--color-text);
     &-wrapper {
@@ -257,7 +264,6 @@ export default defineComponent({
     }
   }
   @include responsive($xxl, max) {
-    padding: 20px;
     &__content {
       display: flex;
       flex-direction: column;
@@ -314,14 +320,13 @@ export default defineComponent({
     }
   }
   @include responsive($us, max) {
-    padding: 10px;
     &__content {
       .card {
         :deep(.card__header) {
           padding: 0;
         }
         :deep(.card__content) {
-          padding: 5px;
+          padding: 15px;
         }
         .c-checkbox {
           min-width: 140px;
@@ -329,7 +334,7 @@ export default defineComponent({
         &-content-info {
           &__item {
             &--text, &--actions {
-              padding: 10px;
+              padding: 10px 10px 10px 15px;
               font-size: 12px;
               .icon {
                 display: none;
@@ -343,21 +348,56 @@ export default defineComponent({
         &-info {
           &__title, &__title--settings-avatar {
             align-items: center;
-            font-size: 12px;
-            padding: 10px;
+            font-size: 15px;
+            padding: 15px;
           }
           &__change-background-avatar {
             padding-bottom: 20px;
             .change-avatar-hint {
               right: 0;
-              font-size: 10px;
-              width: 70%;
+              font-size: 11px;
+              width: 60%;
               text-align: end;
             }
           }
           &__additional-settings-item {
             font-size: 12px;
             padding-right: 2px;
+          }
+        }
+      }
+    }
+  }
+  @include responsive($tiny, max) {
+    &__content {
+      .card {
+        :deep(.card__content) {
+          padding: 5px;
+        }
+        .c-checkbox {
+          min-width: 140px;
+        }
+        &-content-info {
+          &__item {
+            &--text, &--actions {
+              padding: 5px;
+              font-size: 12px;
+            }
+            &--text {
+              padding-right: 20px;
+            }
+          }
+        }
+        &-info {
+          &__title, &__title--settings-avatar {
+            font-size: 12.5px;
+            padding: 5px;
+          }
+          &__change-background-avatar {
+            .change-avatar-hint {
+              font-size: 10px;
+              width: 70%;
+            }
           }
         }
       }

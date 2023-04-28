@@ -37,10 +37,10 @@ export default defineComponent({
 
 .color-picker {
   &__control { 
+    position: relative;
     width: 100%;
     height: 100%;
     min-height: 30px;
-    position: relative;
     &::after {
       content: "";
       position: absolute;

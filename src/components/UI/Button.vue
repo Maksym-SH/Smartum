@@ -12,14 +12,14 @@
     ]"
     :disabled="disabled"
   >
-    <v-icon v-if="icon" :icon="icon"></v-icon>
+    <v-icon class="c-button__icon" v-if="icon" :icon="icon"></v-icon>
     <slot>{{ title }}</slot>
   </button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useButtonProps } from "./use/props";
+import { useButtonProps } from "./use/useProps";
 
 export default defineComponent({
   props: useButtonProps,
@@ -33,7 +33,7 @@ export default defineComponent({
   border-radius: 4px;
   color: $color-white2;
   border-bottom: 1px solid transparent;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out; 
   &:hover {
     color: $color-white1;
   }
@@ -41,6 +41,11 @@ export default defineComponent({
     pointer-events: none;
     user-select: none;
     filter: grayscale(70%);
+  }
+  &__icon {
+    display: none;
+    margin: -5px 5px 0 0;
+    font-size: 20px !important;
   }
   &--outline {
     background-color: transparent !important;
@@ -102,14 +107,11 @@ export default defineComponent({
     border-radius: 50%;
     transition: all 0.2s;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &:hover {
       background-color: transparent;
-    }
-    img {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
     }
   }
 

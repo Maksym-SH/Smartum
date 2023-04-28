@@ -3,20 +3,21 @@
     class="notifications-tab"
     :class="{ 'empty': !showList }" 
   >
-    <div 
-      class="notifications-tab__container" 
+    <transition-group
       v-if="showList"
+      class="notifications-tab__container"
+      tag="div"
+      name="toggle-content"
+      mode="in-out"
     >
-      <div class="notifications-tab__filters">
-      </div>
       <Notification 
         v-for="notify in notificationList" 
         :key="notify.id" 
         :params="notify"
-        @read="notifyAction($event, 'read')"
-        @delete ="notifyAction($event, 'delete')"
+        @readNotification="notifyAction($event, 'readNotification')"
+        @deleteNotification ="notifyAction($event, 'deleteNotification')"
       />
-    </div>
+    </transition-group>
     <EmptyList 
       v-else-if="!showLoading"
       class="notifications-tab__empty-list" 
@@ -26,21 +27,22 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue';
-import NotificationItem from '@/components/notification/NotificationItem.vue';
-import NotificationEmptyList from "@/components/notification/NotificationsEmptyList.vue";
 import { NotifyAction } from "@/types";
 import { INotificationDate, INotificationItem } from '@/interfaces';
 import { useStore } from 'vuex';
 
+import NotificationItem from '@/components/notification/NotificationItem.vue';
+import NotificationEmptyList from "@/components/notification/NotificationsEmptyList.vue";
+
 export default defineComponent({
-  emits:["read", "delete"],
+  emits:["readNotification", "deleteNotification"],
   components: {
     Notification: NotificationItem,
     EmptyList: NotificationEmptyList
   },
   props: {
     notificationList: {
-      type: Array as PropType<Array<INotificationItem<INotificationDate>>>,
+      type: Array as PropType<INotificationItem<INotificationDate>[]>,
       required: true,
     }
   },
@@ -68,12 +70,12 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .notifications-tab {
-  padding-right: 20px;
   position: relative;
   &.empty {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
   }
   &__container {
     padding-top: 20px;
