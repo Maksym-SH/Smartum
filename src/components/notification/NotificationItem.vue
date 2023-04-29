@@ -35,10 +35,12 @@ import { defineComponent, PropType, reactive, computed } from 'vue';
 import { IPictureParams, INotificationItem, INotificationDate } from '@/interfaces';
 import { GetBetweenDateString } from '@/helpers/date/getDate';
 import { Language, NotificationActionType, Numbers } from '@/enums';
+import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
 
 import Avatar from '@/components/user/Avatar.vue';
 import useTimestamp from '@/helpers/date/timestamp';
 import router from '@/router';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   emits:["deleteNotification", "readNotification"],
@@ -55,6 +57,8 @@ export default defineComponent({
     const image = reactive<IPictureParams>({
       url: props.params.image || "",
     })
+    const store = useStore();
+    const currentUser = store.state.User.currentUser;
 
     const dateSent = computed((): string => {
       const propsDate = props.params.date?.seconds;
@@ -81,6 +85,9 @@ export default defineComponent({
         //case NotificationActionType.Dashboard: 
         //  router.push({ name: "Dashboard" });
         //  break;
+        case NotificationActionType.Verify:
+          VerifyEmail(currentUser);
+          break;
         case NotificationActionType.Profile: 
           router.push({ name: "Profile" });
           break;
