@@ -20,14 +20,11 @@ import ExpPanel from "./components/ui/ExpansionPanel.vue";
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseApp);
+export const analytics = getAnalytics(firebaseApp);
 export const database = getFirestore(firebaseApp);
 
 import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 refreshUserInfo();
-
-// Global export
-export let emailValidator = require("email-validator");
 
 // Vuetify
 import { createVuetify } from "vuetify";

@@ -19,7 +19,7 @@ import { useInfoProps } from "./use/useProps";
 
 export default defineComponent({
   props: useInfoProps,
-  setup(props) {
+  setup() {
     const store = useStore();
 
     const emailVerified: boolean = store.state.User.currentUser.emailVerified;

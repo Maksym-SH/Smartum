@@ -9,7 +9,7 @@
           'c-textarea__field--resize': resize
         }"
         ref="textareaRef"
-        :name="textareaName"
+        :name="name"
         :placeholder="placeholder"
         v-model="model"
         :disabled="disabled"
@@ -21,7 +21,7 @@
       />
       <label 
         v-if="label" 
-        :for="textareaName"
+        :for="name"
         :class="{
           'label-disable': disabled,
           'top-fixed': modelValue
@@ -53,14 +53,12 @@ export default defineComponent({
 
     const isRequired = ref(false);
 
-    const textareaName: string = String(Date.now());
+    const textareaRef = ref<RefElement>(null);
 
     const model = computed({
       get: () => props.modelValue,
       set: (newValue) => emit("update:modelValue", newValue),
     });
-
-    const textareaRef = ref<RefElement>(null);
 
     const validator = (): void => {
       if (props.min && String(model.value).length < props.min) {
@@ -73,8 +71,8 @@ export default defineComponent({
 
     watch((): ModelValue => props.modelValue, (): string => errorText.value = "");
 
-    watch((): string => errorText.value, (value): void => {
-        if (value) emit("invalid");
+    watch((): string => errorText.value, (message): void => {
+        if (message) emit("invalid");
       }
     );
 
@@ -83,7 +81,6 @@ export default defineComponent({
       isRequired,
       textareaRef,
       model,
-      textareaName,
       validator,
     };
   },

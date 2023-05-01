@@ -68,6 +68,7 @@ export default {
     },
     updateAdditionalParams({ commit, dispatch }: ModuleCtx<IConfigState>, data: IAdditionalUpdate): Promise<void> {
       const configurationRef = doc(database, DataCollection.Configuration, data.unicID);
+
       commit("setLoadingStatus", true);
       return new Promise((resolve, reject) => {
         updateDoc(configurationRef, {
@@ -88,6 +89,7 @@ export default {
                                                            data: INavigationListUpdate): Promise<void> {
 
       const configurationRef = doc(database, DataCollection.Configuration, data.unicID);
+
       commit("setLoadingStatus", true);
       return new Promise((resolve, reject) => {
         updateDoc(configurationRef, {

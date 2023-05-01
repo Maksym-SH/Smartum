@@ -50,6 +50,9 @@ export default defineComponent({
 
 <style lang="scss">
 @import "./assets/scss/global.scss";
+html {
+  overflow-y: auto !important;
+}
 body {
   min-width: 320px;
   position: fixed;

@@ -11,7 +11,8 @@
               required
               isEmail
               type="email"
-              label="Почта"
+              name="userEmail"
+              label="Электронный адрес"
               v-model="userData.email"
               transparent
               autocomplete
@@ -19,6 +20,7 @@
             <Input
               required
               type="password"
+              name="userPassword"
               label="Пароль"
               v-model="userData.password"
               transparent
@@ -55,7 +57,7 @@
 <script lang="ts">
 import { defineComponent, ref, reactive, computed } from "vue";
 import { IUserLogin } from "@/interfaces";
-import { emailValidator } from "@/main";
+import * as emailValidator from "email-validator";
 import { Length } from "@/enums/index";
 
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";

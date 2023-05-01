@@ -20,10 +20,6 @@ const ShowErrorMessage = (errorCode: ErrorCode): void => {
       case "auth/email-already-in-use":
         errorText = "Введённая почта уже используется!";
         break;
-      case "auth/wrong-password":
-        errorText =
-          "Введён неправильный логин или пароль, повторите попытку!";
-        break;
       case "auth/user-not-found":
         errorText = "Такого пользователя не существует!";
         break;

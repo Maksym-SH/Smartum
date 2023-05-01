@@ -46,6 +46,7 @@ const useNotifications = () => {
       store.commit("clearNewNotification");
     }
   })
+
   // Update database.
   watch(notificationList, (newValue) => {
     if (newValue) {

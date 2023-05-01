@@ -34,7 +34,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      const savedTheme = localStorage.getItem("smartumTheme") as Theme || "dark";
+      const savedTheme = localStorage.getItem("smartumTheme") as Theme ?? "dark";
       switchModel.value = savedTheme === 'dark' ? false : true;
 
       SetTheme(savedTheme);
@@ -53,7 +53,7 @@ export default defineComponent({
   &__label {
     position: absolute;
     width: 100%;
-    height: 29px;
+    height: 28.5px;
     background-color: $color-dark-grey4;
     border-radius: 50px;
     cursor: pointer;

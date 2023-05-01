@@ -20,9 +20,10 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const changeColor = (event: Event) => {
-      emit('update:modelValue', (event.target as HTMLInputElement).value)
+      const selectedColor = (event.target as HTMLInputElement).value;
+      emit('update:modelValue', selectedColor);
     }
 
     return { 
@@ -49,7 +50,7 @@ export default defineComponent({
       transform: translateY(-60%);
       width: 20px;
       height: 20px;
-      background-image: url("~@/assets/img/icons/brush.svg");
+      background-image: url("@/assets/img/icons/brush.svg");
     }
   }
 }

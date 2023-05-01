@@ -40,7 +40,6 @@ export interface IPopupParams {
   },
   callback: () => any;
 }
-
 export interface IModalContent {
   ru: {
     title: string;

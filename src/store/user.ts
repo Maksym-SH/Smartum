@@ -219,7 +219,7 @@ export default {
         .finally(() => commit("setLoadingStatus", false))
       })
     },
-    deleteUserAvatar(context: ModuleCtx<IUserState>, unicID: string): Promise<void> {
+    deleteUserAvatar(_: any, unicID: string): Promise<void> {
       const storage = getStorage();
       const deleteAvatarRef = ref(storage, unicID);
       return new Promise((resolve, reject) => {
@@ -231,7 +231,7 @@ export default {
         })
       })
     },
-    getUserAvatar(context: ModuleCtx<IUserState>, unicID: string): Promise<string> {
+    getUserAvatar(_: any, unicID: string): Promise<string> {
       const storage = getStorage();
       const avatarRef = ref(storage, unicID);
       return new Promise((resolve) => {

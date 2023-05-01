@@ -20,6 +20,10 @@ export const useInputProps = {
     type: String,
     default: "",
   },
+  name: {
+    type: String,
+    required: true
+  },
   disabled: {
     type: Boolean,
     default: false,
@@ -67,6 +71,10 @@ export const useTextareaProps = {
   required: {
     type: Boolean, 
     default: false
+  },
+  name: {
+    type: String,
+    required: true
   },
   disabled: {
     type: Boolean,

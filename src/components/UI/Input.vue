@@ -12,7 +12,7 @@
           'c-input__field--light-theme': lightTheme
         }"
         ref="inputRef"
-        :name="inputName"
+        :name="name"
         :autocomplete="isAutoComplete"
         :placeholder=placeholder
         :type="type"
@@ -26,11 +26,11 @@
       />
       <label 
         v-if="label && !placeholder" 
-        :for="inputName"
+        :for="name"
         class="label"
         :class="{
           'label-disable': disabled,
-          'top-fixed': labelFixed
+          'top-fixed': labelAttachedToTop
         }"
       >
         {{ label }}
@@ -46,22 +46,18 @@
         @click="toggleInputType"
       >
         <transition mode="out-in" name="toggle-content">
-          <img
+          <span 
             v-if="!showPassword"
+            class="mdi mdi-eye c-input--toggle-password__icon"
             key="open"
-            svg-inline
-            class="c-input--toggle-password_icon"
-            src="@/assets/img/icons/eye.svg"
-            alt="Eye"
-          />
-          <img
+          >
+          </span>
+          <span 
             v-else
+            class="mdi mdi-eye-off c-input--toggle-password__icon"
             key="close"
-            svg-inline
-            class="c-input--toggle-password_icon"
-            src="@/assets/img/icons/eye-slash.svg"
-            alt="Eye slash"
-          />
+          >
+          </span>
         </transition>
       </span>
       <Button
@@ -71,12 +67,7 @@
         transparent
         round
       >
-        <img
-          svg-inline
-          class="c-input--search-btn_icon"
-          src="@/assets/img/icons/search.svg" 
-          alt="Search" 
-        />
+        <span class="mdi mdi-magnify c-input--search-btn_icon"></span>
       </Button>
     </div>
   </div>
@@ -84,11 +75,10 @@
 
 <script lang="ts">
 import { defineComponent, watch, ref, computed } from "vue";
-import { emailValidator } from "@/main";
 import { useInputProps } from "./use/useProps";
 import { RefElement, ModelValue, AutoComplete } from "@/types";
-import { placeholder } from "@babel/types";
 
+import * as emailValidator from "email-validator";
 import RegExp from "@/helpers/regExp";
 
 export default defineComponent({
@@ -100,8 +90,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const errorText = ref("");
 
-    const inputName: string = String(Date.now());
-
     const model = computed({
       get: () => props.modelValue,
       set: (newValue) => emit("update:modelValue", newValue),
@@ -112,7 +100,7 @@ export default defineComponent({
     const showPassword = ref(false);
 
     const validator = (): void => {
-      if (props.isEmail && !emailValidator.validate(model.value)) {
+      if (props.isEmail && !emailValidator.validate(model.value as string)) {
         errorText.value = "Введите корректный адрес.";
       }
       else if (props.isPhone && !String(model.value).match(RegExp.Phone) && model.value) {
@@ -145,16 +133,15 @@ export default defineComponent({
 
     const isAutoComplete = computed((): AutoComplete => props.autoComplete ? "on" : "off");
 
-    const labelFixed = computed(() => props.modelValue || errorText.value && !props.transparent);
+    const labelAttachedToTop = computed(() => props.modelValue || errorText.value && !props.transparent);
 
     return {
       errorText,
       isAutoComplete,
       inputRef,
       model,
-      inputName,
       showPassword,
-      labelFixed,
+      labelAttachedToTop,
       validator,
       toggleInputType,
     };
@@ -252,9 +239,7 @@ export default defineComponent({
         color: $color-black;
       }
       & ~ .c-input--toggle-password {
-        svg {
-          fill: $color-black;
-        }
+        color: $color-black;
       }
     }
     &--search {
@@ -278,31 +263,27 @@ export default defineComponent({
           color: $color-black;
         }
         & ~ .c-input--toggle-password {
-          svg {
-            fill: $color-white1;
-          }
+          color: $color-white1;
         }
       }
     }
   }
   &--toggle-password {
     position: absolute;
-    top: 25px;
+    top: 50%;
     right: 10px;
     cursor: pointer;
     transform: translate(0, -50%);
-    &_icon {
-      fill: var(--color-input);
-      outline: none;
-    }
+    font-size: 20px;
   }
   &--search-btn {
     position: absolute;
-    top: 22px;
+    top: 50%;
     height: 30px;
     min-width: 22px;
     transform: translate(0, -50%);
     right: 10px;
+    font-size: 22px;
     color: var(--color-text);
     &:hover {
       color: var(--color-text);

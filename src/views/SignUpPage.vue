@@ -4,13 +4,11 @@
       <div class="sign-up__window--welcome">
         <img
           class="sign-up__window--welcome__grid-image"
-          svg-inline
           src="@/assets/img/icons/grid.svg"
           alt="Grid"
         />
         <img
           class="sign-up__window--welcome__tasks-image"
-          svg-inline
           src="@/assets/img/icons/list-task.svg"
           alt="Tasks"
         />
@@ -32,6 +30,7 @@
             v-model.trim="userData.firstName"
             required
             label="Имя"
+            name="userFirstName"
             :maxLength="MaxLength"
             :min="LengthText"
             transparent
@@ -39,6 +38,7 @@
           <Input
             v-model.trim="userData.lastName"
             :min="userData.lastName ? LengthText : LengthNone"
+            name="userLastName"
             :maxLength="MaxLength"
             label="Фамилия"
             transparent
@@ -47,6 +47,7 @@
             v-model.trim="userData.email"
             required
             type="email"
+            name="userEmail"
             isEmail
             transparent
             autocomplete
@@ -56,10 +57,11 @@
             v-model="userData.password"
             required
             type="password"
+            name="userPassword"
             transparent
             :min="LengthPassword"
             label="Пароль"
-            autocomplete
+            autocomplete="new-password"
           />
 
           <div class="sign-up__window-form-inputs__send">
@@ -92,7 +94,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from "vue";
-import { emailValidator } from "@/main";
+import * as emailValidator from "email-validator";
 import { IUserReg } from "@/interfaces";
 import { ModalContentType } from "@/types";
 import { Length } from "@/enums";
@@ -253,7 +255,7 @@ export default defineComponent({
   @include responsive($md, max) {
     &__window {
       width: 400px;
-      &--WelcomeText {
+      &--welcome {
         display: none;
       }
       &--content {

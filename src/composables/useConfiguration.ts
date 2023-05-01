@@ -3,13 +3,13 @@ import { useStore } from "vuex";
 import { notify } from '@kyvg/vue3-notification';
 import { Colors, NotificationType } from '@/enums';
 import { UserName } from "@/types";
+
 import { 
   IAsideNavigationItem, 
   IConfiguration, 
   IConfigurationAdditional, 
   IPictureParams 
 } from '@/interfaces';
-
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import useNewNotificationContent from "./useNotificationContent";
 
@@ -29,11 +29,9 @@ const useConfiguration = () => {
     showDeleteAccountButton: false,
   })
 
-  const avatarParams = computed((): Required<IPictureParams> => {
-    return {
-      bgAvatar: store.state.User.userInfo.avatarParams.bgAvatar,
-      url: "" 
-    } 
+  const avatarParams = reactive<Required<IPictureParams>>({
+    bgAvatar: "",
+    url: "" 
   });
 
   const asideBackgroundColor= ref(Colors.Grey as string);
@@ -49,7 +47,7 @@ const useConfiguration = () => {
   // Save card methods.
   const saveBackgroundAvatar = () => {
     store.dispatch("updateUserBackgroundAvatar", {
-      bgAvatar: avatarParams.value.bgAvatar,
+      bgAvatar: avatarParams.bgAvatar,
       unicID: store.state.User.currentUser.uid
     }).then(() => {
       notify({
@@ -101,7 +99,11 @@ const useConfiguration = () => {
         
         const navigationList: IAsideNavigationItem[] = store.state.Configuration.asideNavigate
         showedNavigations.forEach((item, index) => item.showed = navigationList[index].showed);
-      
+
+        // Set backgrond avatar.
+        const currentBackgrondAvatar = store.state.User.userInfo.avatarParams.bgAvatar;
+        avatarParams.bgAvatar = currentBackgrondAvatar;
+
         // Set additional params.
         asideBackgroundColor.value = configuration.asideBackgroundColor;
 

@@ -4,9 +4,7 @@
     :class="{ 'aside-minimize': minimizeAside }"
   >
     <div class="aside__logo">
-      <img 
-        class="aside__logo-picture"
-        src="@/assets/img/logo.svg" alt="Logo" />
+      <img class="aside__logo-picture" src="@/assets/img/logo.svg" alt="" />
     </div>
     <div class="aside__content">
       <Loader v-if="!showContent" :size="defaultLoaderSize" inline />
@@ -19,6 +17,7 @@
           <Input
             type="search" 
             light-theme
+            name="searchContent"
             label="Поиск" 
             v-model="searchInput"
           />
@@ -104,6 +103,8 @@ import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
 import User from "@/components/user/Container.vue";
 import SwitchTheme from "@/components/ui/SwitchTheme.vue";
 
+import packageJson from 'package.json'
+
 export default defineComponent({
   components: {
     User,
@@ -120,7 +121,7 @@ export default defineComponent({
     }
   },
   emits: ["update:minimizeAside"],
-  setup(context, { emit }) {
+  setup(_, { emit }) {
     const store = useStore();
 
     const searchInput = ref("");
@@ -160,7 +161,7 @@ export default defineComponent({
       return store.state.Configuration.asideNavigate;
     });
   
-    const applicationVersion = `v ${ require('/package.json').version }`;
+    const applicationVersion = `v ${ packageJson.version }`;
 
     onMounted((): void => {
       if(window.innerWidth > Layout.Laptop) {

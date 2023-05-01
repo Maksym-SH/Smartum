@@ -17,6 +17,7 @@
           :min="userInfo.firstName ? TextLength : LengthNone"
           :maxLength="MaxLength"
           label="Имя"
+          name="userFirstName"
         />
       </div>
       <div class="profile-tab__form_form-item last-name">
@@ -26,6 +27,7 @@
           :min="userInfo.lastName ? TextLength : LengthNone" 
           :maxLength="MaxLength"
           label="Фамилия"
+          name="userLastName"
         />
       </div>
       <div class="profile-tab__form_form-item textarea">
@@ -33,6 +35,7 @@
           v-model.trim="userInfo.about" 
           :max="TextareaLength"
           label="Дополнительная информация"
+          name="userAbout"
         />
       </div>
       <div class="profile-tab__form_form-item phone">
@@ -42,6 +45,7 @@
           v-model.trim="userInfo.phone"
           isPhone
           label="Телефон"
+          name="userPhone"
         />
       </div>
       <div class="profile-tab__form_form-item email">
@@ -50,6 +54,7 @@
           isEmail
           v-model="userInfo.email" 
           label="Электронный адрес"
+          name="userEmail"
         />
       </div>
       <div class="profile-tab__form_form-item new-password">
@@ -59,6 +64,7 @@
           type="password"
           :min="userInfo.newPassword ? PasswordLength : LengthNone"
           label="Новый пароль"
+          name="userPassword"
         />
       </div>
       <div class="profile-tab__form_buttons-wrapper">
@@ -70,13 +76,15 @@
           @click="saveChanges"
           title="Сохранить"
         />
-        <Button 
-          v-if="showDeleteAccountButton"
-          @click="deleteConfirm"
-          class="btn-delete"
-          variant="danger"
-          title="Удалить аккаунт"
-        />
+        <transition name="toggle-content">
+          <Button 
+            v-if="showDeleteAccountButton"
+            @click="deleteConfirm"
+            class="btn-delete"
+            variant="danger"
+            title="Удалить аккаунт"
+          />
+        </transition>
       </div>
     </form>
   </div>

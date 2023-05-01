@@ -1,7 +1,6 @@
 <template>
   <div class="no-notifications">
     <img 
-      svg-inline
       class="no-notifications__icon"
       src="@/assets/img/icons/sad-smile.svg" 
       alt=""
@@ -20,7 +19,6 @@
   &__icon {
     width: 70px;
     height: 70px;
-    fill: var(--color-text);
   }
   &__title {
     color:var(--color-text);

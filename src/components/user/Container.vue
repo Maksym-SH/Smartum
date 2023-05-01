@@ -19,13 +19,14 @@
 <script lang="ts">
 import { defineComponent, reactive, computed } from "vue";
 import { useStore } from "vuex";
+import { SelectElements } from "@/types";
+import { useContainerProps } from "./use/useProps";
+import { User } from "@firebase/auth";
+
+import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";
-import { SelectElements } from "@/types";
-import { useContainerProps } from "./use/useProps";
-import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
-import { User } from "@firebase/auth";
 
 export default defineComponent({
   components: {
@@ -34,7 +35,7 @@ export default defineComponent({
   },
   emits: ["user-menu-picked"],
   props: useContainerProps,
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const store = useStore();
 
     const currentUser = computed((): User => store.state.User.currentUser);

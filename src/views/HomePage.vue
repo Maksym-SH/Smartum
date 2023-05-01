@@ -2,7 +2,7 @@
   <div class="home-page">
     <c-aside v-model:minimizeAside="minimizeAside" :notification-count="notificationsSize" />
     <div class="home-page__wrapper" 
-      @click.capture="toggleAsideShow(false, true)"
+      @click.capture="toggleAsideVisible(false, true)"
       :class="{ 'minimize-info': minimizeAside }"
     >
       <c-header class="home-page__header" />
@@ -40,7 +40,7 @@ import { ObjectNotEmpty } from "@/helpers/methods";
 import { ILanguage, IMetaName } from "@/interfaces/index";
 import { RouterMeta, DynamicDescription } from "@/types";
 
-import * as DescriptionJSON from "@/helpers/content/tabs.json";
+import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
 import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
 import useNotifications from "@/composables/useNotifications";
@@ -66,7 +66,7 @@ export default defineComponent({
     const showTabContent = computed((): boolean => ObjectNotEmpty(store.state.User.currentUser))
     // Aside
     const minimizeAside = ref(true);
-    const toggleAsideShow = (value: boolean, capture: boolean = false): void => {
+    const toggleAsideVisible = (value: boolean, capture: boolean = false): void => {
       if (!capture) {
         minimizeAside.value = value;
       }
@@ -101,7 +101,7 @@ export default defineComponent({
       notificationList,
       notificationsSize,
       showTabContent,
-      toggleAsideShow,
+      toggleAsideVisible,
       notifyAction,
       showLoading: computed(() => store.state.loadingStatus),
     };

@@ -17,7 +17,7 @@
     <transition name="toggle-selectActive" mode="in-out">
       <div class="c-select__picker" v-if="selectActive">
         <span class="c-select__picker--caret"></span>
-        <template v-for="(item, index) in items" :key="index">
+        <template v-for="item in items" :key="item.title">
           <Button
             v-if="item.displaying"
             transparent

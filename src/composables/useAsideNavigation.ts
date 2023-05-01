@@ -6,7 +6,7 @@ import router from "@/router";
 import store from "@/store";
 
 export default function Navigation(): AsideNavigationItems {
-  const Dashboard: IAsideNavigationItem = {
+  const DashboardTab: IAsideNavigationItem = {
     id: 0,
     showed: true,
     alwaysDisplay: true,
@@ -17,7 +17,7 @@ export default function Navigation(): AsideNavigationItems {
     }
   };
 
-  const Configuration: IAsideNavigationItem = {
+  const ConfigurationTab: IAsideNavigationItem = {
     id: 2,
     showed: true,
     alwaysDisplay: true,
@@ -28,7 +28,7 @@ export default function Navigation(): AsideNavigationItems {
     }
   };
 
-  const Notification: IAsideNavigationItem = {
+  const NotificationTab: IAsideNavigationItem = {
     id: 1,
     showed: true,
     title: "Уведомления",
@@ -41,7 +41,7 @@ export default function Navigation(): AsideNavigationItems {
 
   
 
-  const Reports: IAsideNavigationItem = {
+  const ReportsTab: IAsideNavigationItem = {
     id: 3,
     showed: true,
     title: "Отчёты",
@@ -62,7 +62,7 @@ export default function Navigation(): AsideNavigationItems {
     ]
   };
 
-  const Statistics: IAsideNavigationItem = {
+  const StatisticsTab: IAsideNavigationItem = {
     id: 4,
     showed: true,
     title: "Статистика",
@@ -72,7 +72,7 @@ export default function Navigation(): AsideNavigationItems {
     }
   }
 
-  const Author: IAsideNavigationItem = {
+  const AuthorTab: IAsideNavigationItem = {
     id: 5,
     showed: true,
     title: "Связь с автором",
@@ -93,7 +93,7 @@ export default function Navigation(): AsideNavigationItems {
     ]
   }
 
-  const ConditionUse: IAsideNavigationItem = {
+  const ConditionUseTab: IAsideNavigationItem = {
     id: 6,
     showed: true,
     title: "Об использовании",
@@ -117,12 +117,12 @@ export default function Navigation(): AsideNavigationItems {
   }
 
   return [
-    Dashboard,
-    Configuration,
-    Notification,
-    Statistics,
-    Reports,
-    ConditionUse,
-    Author
+    DashboardTab,
+    ConfigurationTab,
+    NotificationTab,
+    StatisticsTab,
+    ReportsTab,
+    ConditionUseTab,
+    AuthorTab
   ]
 }

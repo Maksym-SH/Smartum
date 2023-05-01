@@ -5,7 +5,7 @@
       v-if="showImageTemplate"
       class="file-upload--delete"
       variant="danger"
-      @click.stop="deleteImage"
+      @click.stop="deleteImgPopup"
     >
       <span class="mdi mdi-delete-outline"></span>
     </Button>
@@ -18,7 +18,6 @@
       :src="currentImgPath"
     ></v-img>
     <img
-      svg-inline
       class="file-upload--icon"
       src="@/assets/img/icons/upload.svg"
       alt="Upload"
@@ -60,7 +59,7 @@ export default defineComponent({
 
     const imageSource = ref<ImageSource>(props.avatarParams);
 
-    // File upload.
+    // File load.
     const fileUpload = (): void => {
       const reader = new FileReader();
       const file = upload.value?.files?.[0];
@@ -86,7 +85,7 @@ export default defineComponent({
       }
     }
 
-    const deleteImage = ():void => {
+    const deleteImgPopup = ():void => {
       OpenPopup({
         title: "Удалить фото?",
         buttons: {
@@ -108,7 +107,7 @@ export default defineComponent({
       currentImgPath,
       imgDeleted,
       showImageTemplate,
-      deleteImage,
+      deleteImgPopup,
       fileUpload,
       imgLoad,
     };

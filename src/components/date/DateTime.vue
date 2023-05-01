@@ -1,16 +1,11 @@
 <template>
   <div class="date">
-    <Loader 
-      v-if="!showTemplate"
-      :size="40" 
-      inline  
-    />
-    <div class="date__wrapper" v-else>
+    <div class="date__wrapper" v-if="showTemplate">
       <h3 class="date__title">
         <span class="date__icon">
-          <img :src="require(`@/assets/img/icons/${imageType}.svg`)" alt="" />
+          <img :src="`src/assets/img/icons/${imageType}.svg`" alt="" />
         </span>
-        {{ WelcomeText }}
+        {{ welcomeText }}
       </h3>
       <div class="date__timestamp">
         <time class="date__timestamp--time">
@@ -33,7 +28,7 @@ import timestamp from "@/helpers/date/timestamp";
 
 export default defineComponent({
   setup() {
-    const WelcomeText = ref<WelcomeText>("Добрый вечер");
+    const welcomeText = ref<WelcomeText>("Добрый вечер");
 
     const updateTimeInterval = ref<ReturnType<typeof setInterval> | null>(null);
 
@@ -41,7 +36,7 @@ export default defineComponent({
     const date = ref("");
 
     const imageType = computed((): Icon => {
-      if (WelcomeText.value !== "Добрый вечер") return "sun";
+      if (welcomeText.value !== "Добрый вечер") return "sun";
 
       return "moon";
     });
@@ -50,14 +45,16 @@ export default defineComponent({
 
     // Changing text depending on the time of day.
     watch((): string  => time.value, (): void => {
-      const currentTime = Number(time.value.split("").slice(0, 2).join("")); // Between 0 - 23.
+      // Get current hour between 0 - 23.
+      const currentTime = time.value; 
+      const currentTimeHours = Number(currentTime.split("").slice(0, 2).join(""));
 
-      if (currentTime < Numbers.EveningRU && currentTime > Numbers.MorningRU) {
-        // If the time is later than 16:00 and later than 4:00.
-        WelcomeText.value = "Добрый день";
+      // If the time is later than 16:00 and later than 4:00.
+      if (currentTimeHours < Numbers.EveningRU && currentTimeHours > Numbers.MorningRU) {
+        welcomeText.value = "Добрый день";
       }
       else {
-        WelcomeText.value = "Добрый вечер";
+        welcomeText.value = "Добрый вечер";
       }
     });
 
@@ -79,7 +76,7 @@ export default defineComponent({
     return {
       time,
       date,
-      WelcomeText,
+      welcomeText,
       imageType,
       showTemplate,
     };

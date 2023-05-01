@@ -35,12 +35,12 @@ import { defineComponent, PropType, reactive, computed } from 'vue';
 import { IPictureParams, INotificationItem, INotificationDate } from '@/interfaces';
 import { GetBetweenDateString } from '@/helpers/date/getDate';
 import { Language, NotificationActionType, Numbers } from '@/enums';
-import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
+import { useStore } from 'vuex';
 
+import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
 import Avatar from '@/components/user/Avatar.vue';
 import useTimestamp from '@/helpers/date/timestamp';
 import router from '@/router';
-import { useStore } from 'vuex';
 
 export default defineComponent({
   emits:["deleteNotification", "readNotification"],

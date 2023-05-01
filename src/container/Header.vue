@@ -3,12 +3,15 @@
     <div class="c-header__wrapper">
       <div class="c-header__search-content not-mobile">
         <Input 
-          type="search" 
-           placeholder="Поиск" 
+          type="search"
+          name="searchContent" 
+          placeholder="Поиск" 
           v-model="searchInput"
         />
       </div>
-      <Date v-show="showDateTemplate" />
+      <transition name="toggle-content">
+        <Date v-show="showDateTemplate" />
+      </transition>
       <SwitchTheme class="not-mobile"/>
     </div>
   </header>
@@ -45,6 +48,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .c-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   padding: 10px 20px 10px 50px;
   background-color: var(--color-background-secondary);
   box-shadow: 0 2px 1px rgba($color-black, 0.1);

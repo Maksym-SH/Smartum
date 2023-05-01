@@ -40,7 +40,7 @@ export default {
         })
       })
     },
-    getAllNotifications(context: ModuleCtx<INotificationState>, unicID: string): Promise<any> {
+    getAllNotifications(_: any, unicID: string): Promise<any> {
       const profileRef = doc(database, DataCollection.Notifications, unicID);
 
       return new Promise((resolve, reject) => {

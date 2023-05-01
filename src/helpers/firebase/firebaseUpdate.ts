@@ -28,7 +28,7 @@ export const PasswordUpdate = (user: User, password: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     updateEmail(user, email).then(() => {
       notify({
-        title: "Ваш электронный адресс был изменен!"
+        title: "Ваш электронный адрес был изменен!"
       })
       resolve("resolve");
     }).catch((error) => { 

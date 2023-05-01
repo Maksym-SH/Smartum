@@ -123,7 +123,7 @@ export default defineComponent({
           color: $color-white5;
           &::before {
             background-color: $color-green;
-            background-image: url(~@/assets/img/icons/check.svg);
+            background-image: url(@/assets/img/icons/check.svg);
             background-position: center center;
           }
         }

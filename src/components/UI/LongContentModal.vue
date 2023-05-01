@@ -34,7 +34,6 @@ import { defineComponent, ref, PropType, computed, watch } from 'vue';
 import { IModalContent } from "@/interfaces";
 import { ModalContentType, ModalContentLanguage, ModalLanguageType } from "@/types";
 import { useStore } from 'vuex';
-import { Confirmation, DeleteAccountPopup } from '@/helpers/methods';
 
 import TermsOfUse from "@/helpers/content/TermsOfUse.json";
 import Confidentially from "@/helpers/content/Сonfidentiality.json";
