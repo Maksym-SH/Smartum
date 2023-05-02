@@ -1,6 +1,6 @@
 import { DataCollection } from "@/enums";
 import { ICreateNotifyList, INotificationItem, INotificationState, IUpdateNotifications } from "@/interfaces";
-import { database } from "@/main";
+import { database } from "@/helpers/firebase/firebaseInitialize";
 import { ErrorCode, ModuleCtx } from "@/types";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 

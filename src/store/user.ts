@@ -12,7 +12,7 @@ import {
 import { ErrorCode, IUserFieldsUpdate, ModuleCtx } from "@/types"; 
 import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"; 
-import { database } from "@/main";
+import { database } from "@/helpers/firebase/firebaseInitialize";
 import { DataCollection } from "@/enums";
 import { SetTheme } from "@/helpers/methods";
 

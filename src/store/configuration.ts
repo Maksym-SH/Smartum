@@ -6,7 +6,7 @@ import {
   INavigationListUpdate 
 } from "@/interfaces";
 import { ErrorCode, ModuleCtx } from "@/types";
-import { database } from "@/main";
+import { database } from "@/helpers/firebase/firebaseInitialize";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { Colors, DataCollection } from "@/enums";
 

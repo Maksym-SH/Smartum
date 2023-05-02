@@ -3,11 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-// Firebase
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { firebaseConfig } from "./helpers/firebase/firebaseConfig";
-import { getFirestore } from "firebase/firestore";
+// Firebase initilialize
+import { firebaseApp } from "./helpers/firebase/firebaseInitialize";
+firebaseApp;
 
 // Components
 import Button from "./components/ui/Button.vue";
@@ -18,10 +16,7 @@ import Loader from "./components/ui/Loader.vue";
 import Select from "./components/ui/Select.vue";
 import ExpPanel from "./components/ui/ExpansionPanel.vue";
 
-// Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(firebaseApp);
-export const database = getFirestore(firebaseApp);
+
 
 import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 refreshUserInfo();
