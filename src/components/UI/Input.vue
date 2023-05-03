@@ -131,7 +131,12 @@ export default defineComponent({
       }
     );
 
-    const isAutoComplete = computed((): AutoComplete => props.autoComplete ? "on" : "off");
+    const isAutoComplete = computed((): AutoComplete => {
+      if(typeof props.autoComplete === 'boolean') {
+        return props.autoComplete ? "on" : "off";
+      }
+      return "new-password"
+    });
 
     const labelAttachedToTop = computed(() => props.modelValue || errorText.value && !props.transparent);
 

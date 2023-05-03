@@ -31,16 +31,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, computed } from 'vue';
-import { IPictureParams, INotificationItem, INotificationDate } from '@/interfaces';
-import { GetBetweenDateString } from '@/helpers/date/getDate';
-import { Language, NotificationActionType, Numbers } from '@/enums';
+import { defineComponent, PropType, reactive } from 'vue';
+import { IPictureParams, INotificationItem, IServerDate } from '@/interfaces';
+
+import { NotificationActionType } from '@/enums';
 import { useStore } from 'vuex';
 
 import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
 import Avatar from '@/components/user/Avatar.vue';
-import useTimestamp from '@/helpers/date/timestamp';
 import router from '@/router';
+import useDateParseToString from "@/composables/useDateParse";
 
 export default defineComponent({
   emits:["deleteNotification", "readNotification"],
@@ -49,7 +49,7 @@ export default defineComponent({
   },
   props: {
     params: {
-      type: Object as PropType<INotificationItem<INotificationDate>>,
+      type: Object as PropType<INotificationItem<IServerDate>>,
       required: true
     }
   },
@@ -60,21 +60,11 @@ export default defineComponent({
     const store = useStore();
     const currentUser = store.state.User.currentUser;
 
-    const dateSent = computed((): string => {
-      const propsDate = props.params.date?.seconds;
-
-      const recievedDate = propsDate ? new Date(Number(propsDate) * Numbers.Second) : props.params.date;
-
-      const dateBetween: string = GetBetweenDateString(recievedDate as Date);
-      const time: string = useTimestamp(recievedDate as Date, Language.Russian, 
-                                                          props.params.date.seconds).time;
-
-      return `${ dateBetween } в ${ time }` // 'Сегодня в 22:00:00' as an example.
-    })
-
     const deleteNotification = (id: number): void => {
       emit("deleteNotification", id);
     }
+
+    const dateSent = useDateParseToString(props.params.date);
 
     const readNotification = (): void => {
       emit("readNotification", props.params.id);
@@ -97,7 +87,8 @@ export default defineComponent({
         case NotificationActionType.Configuration:
           router.push({ name: "Configuration" });
           break;
-        case NotificationActionType.Default: 
+        case NotificationActionType.Default:
+          case NotificationActionType.Dashboard: // ToDo.
           return;
         // ToDo: Users page.
         // case NotificationActionType.User: 
@@ -154,6 +145,7 @@ export default defineComponent({
     font-size: 14px;
     white-space: nowrap;
     margin-left: 10px;
+    line-height: 25px;
     color: $color-dark-grey4;
   }
   &__description { 

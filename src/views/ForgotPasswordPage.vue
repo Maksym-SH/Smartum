@@ -13,6 +13,7 @@
       <form class="forgot-page__window-content" @submit.prevent="submitForm">
         <Input
           label="Введите адрес электронной почты"
+          name="userEmail"
           v-model="email"
           isEmail
           required

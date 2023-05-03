@@ -44,7 +44,7 @@ export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword
 
 // Props
 
-export type AutoComplete = "on" | "off";
+export type AutoComplete = "on" | "off" | "new-password";
 
 export type ButtonSize = "sm" | "md" | "lg";
 
@@ -77,6 +77,8 @@ export type NotificationCategory = NotificationActionType;
 export type NotifyAction = "deleteNotification" | "readNotification";
 
 export type UserName = Pick<IUserReg, "firstName" | "lastName">;
+
+export type EmptyListType = "notification" | "dashboard";
 
 // Store
 

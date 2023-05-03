@@ -53,7 +53,7 @@ export const useInputProps = {
     default: ""
   },
   autoComplete: {
-    type: Boolean,
+    type: [Boolean, String],
     default: true,
   },
 };

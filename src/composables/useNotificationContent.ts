@@ -3,7 +3,7 @@ import { NotificationType, NotificationActionType } from "@/enums";
 import userStore from "@/store/user";
 import { User } from "firebase/auth";
 
-const useNewNotificationContent = (type: NotificationType): INotificationItem<Date> | never => {
+const useNewNotificationContent = (type: NotificationType, title?: string): INotificationItem<Date> | never => {
   let currentContent: Partial<INotificationItem<Date>>;
   
   switch(type) {
@@ -40,6 +40,15 @@ const useNewNotificationContent = (type: NotificationType): INotificationItem<Da
         image: import.meta.env.BASE_URL + "notifyIcons/mail.svg",
         type: NotificationActionType.Default
       }
+      break;
+    case NotificationType.DashboardCreate:
+      currentContent = {
+        title: "Рабочее пространство",
+        description: `Рабочая доска "${ title }" была успешно создана, вы можете пригласить других участников в рабочее пространство!`,
+        status: "not read",
+        image: import.meta.env.BASE_URL + "notifyIcons/dashboard.jpg",
+        type: NotificationActionType.Dashboard
+      } 
       break;
     default: throw new Error("Notification not supported.")
   }

@@ -39,7 +39,8 @@ export enum Numbers {
   EveningRU = 16,
   EveningENG = "4 AM",
   MorningRU = 4,
-  MorningENG = "4 PM"
+  MorningENG = "4 PM",
+  JoinCodeSize = 16
 }
 
 export enum Layout {
@@ -51,6 +52,7 @@ export enum Layout {
 }
 
 export enum DataCollection {
+  Dashboard="dashboard",
   Profile = "profile",
   Notifications="notifications",
   Configuration="configuration"
@@ -75,11 +77,17 @@ export enum NotificationType {
   PasswordChange,
   WelcomeText,
   ConfigurationChange,
-  EmailConfirm
+  EmailConfirm,
+  DashboardCreate,
 }
 
 export enum Colors {
   Grey="#283342",
-  MaxColorHEXValue=256,
-  MaxHexDigits=2
+  // Gradients
+  GradientBlue="#020024 linear-gradient(90deg, #020024 0%, #090979 25%, #00d4ff 100%)",
+  GradientBluePink="#00edff linear-gradient(90deg, #00edff 29%, #d700f7 100%)",
+  GradientGreen="#22c1c3 linear-gradient(0deg, #22c1c3 0%, #2aec96 29%, #2dfd84 100%)",
+  GradientLightBlue="#eeaeca radial-gradient(circle, #eeaeca 0%, #94bbe9 100%)",
+  GradientGray="#7a7d89 linear-gradient(90deg, #7a7d89 0%, #222e48 100%)",
+  GradientRedBlue="#ff2a00 linear-gradient(90deg, #ff2a00 20%, #0057ff 100%)",
 }

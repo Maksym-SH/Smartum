@@ -26,8 +26,11 @@
   --color-dark-notification-background-new: #062b4e;
   --color-light-notification-background-new: #bdd6ee;
 
-  --color-disable-light: #cad1e1;
+  --color-disable-light: #bdc4d5;
   --color-disable-dark: #69727e; 
+
+  --color-dasboard-card-light: #c5f7ff;
+  --color-dasboard-card-dark: #303256;
 }
 
 // Dark theme.
@@ -44,6 +47,7 @@ body[data-theme='dark'] {
   --color-background-notification-new: var(--color-dark-notification-background-new);
   --color-background-modal: var(--color-dark-modal-background);
   --color-disable: var(--color-disable-dark);
+  --color-dasboard-card: var(--color-dasboard-card-dark);
 }
 
 // Light theme.
@@ -60,4 +64,5 @@ body[data-theme='light'] {
   --color-background-notification-new: var(--color-light-notification-background-new);
   --color-background-modal: var(--color-light-modal-background);
   --color-disable: var(--color-disable-light);
+  --color-dasboard-card: var(--color-dasboard-card-light);
 }

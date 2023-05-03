@@ -13,7 +13,7 @@ export default function Navigation(): AsideNavigationItems {
     title: "Рабочие доски",
     icon: "view-dashboard",
     callback() {
-      console.log("dashboard")
+      router.push({ name: "Dashboard" })
     }
   };
 

@@ -83,6 +83,30 @@ const routes: Routes = [
         },
         component: () => import("@/views/tabs/ConfigurationTab.vue"),
       },
+      {
+        name: "Configuration",
+        path: "/configuration",
+        meta: {
+          tabName: {
+            eng: "Configuration",
+            ru: "Конфигурация",
+          },
+          protected: true,
+        },
+        component: () => import("@/views/tabs/ConfigurationTab.vue"),
+      },
+      {
+        name: "Dashboard",
+        path: "/dashboard",
+        meta: {
+          tabName: {
+            eng: "Dashboard",
+            ru: "Рабочие доски",
+          },
+          protected: true,
+        },
+        component: () => import("@/views/tabs/DashboardTab.vue"),
+      },
     ],
   },
 ];

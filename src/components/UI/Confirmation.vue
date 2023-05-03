@@ -12,6 +12,7 @@
         <Input 
           label="Ваш пароль"
           type="password"
+          name="userPassword"
           :min="PasswordLength"
           v-model="password"
         />

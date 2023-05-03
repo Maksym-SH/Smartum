@@ -50,8 +50,8 @@ export default defineComponent({
 .c-header {
   position: sticky;
   top: 0;
-  z-index: 2;
-  padding: 10px 20px 10px 50px;
+  z-index: 3;
+  padding: 10px 20px 10px 40px;
   background-color: var(--color-background-secondary);
   box-shadow: 0 2px 1px rgba($color-black, 0.1);
   width: 100%;
@@ -74,7 +74,7 @@ export default defineComponent({
     }
   }
 
-  @include responsive($lg, max) {
+  @include responsive($xs, max) {
     padding: 10px 5px 10px 50px;
     &__search-content {
       width: 40%;

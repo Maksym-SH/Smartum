@@ -20,6 +20,7 @@
     </transition-group>
     <EmptyList 
       v-else-if="!showLoading"
+      type="notification"
       class="notifications-tab__empty-list" 
     />
   </div>
@@ -28,11 +29,11 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue';
 import { NotifyAction } from "@/types";
-import { INotificationDate, INotificationItem } from '@/interfaces';
+import { IServerDate, INotificationItem } from '@/interfaces';
 import { useStore } from 'vuex';
 
 import NotificationItem from '@/components/notification/NotificationItem.vue';
-import NotificationEmptyList from "@/components/notification/NotificationsEmptyList.vue";
+import NotificationEmptyList from "@/components/ui/EmptyList.vue";
 
 export default defineComponent({
   emits:["readNotification", "deleteNotification"],
@@ -42,7 +43,7 @@ export default defineComponent({
   },
   props: {
     notificationList: {
-      type: Array as PropType<INotificationItem<INotificationDate>[]>,
+      type: Array as PropType<INotificationItem<IServerDate>[]>,
       required: true,
     }
   },

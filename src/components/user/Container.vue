@@ -54,7 +54,7 @@ export default defineComponent({
         callback: () => verifyEmail(currentUser.value),
         icon: "mdi-email-check-outline",
         variant: "info",
-        displaying: !emailVerified.value // Not verified.
+        displaying: computed(() => !emailVerified.value) // Not verified.
       },
       {
         title: "Выйти с аккаунта",
@@ -70,8 +70,10 @@ export default defineComponent({
       callback();
     };
 
+
     return {
       actions,
+      emailVerified,
       selected,
     };
   },

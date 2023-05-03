@@ -1,3 +1,4 @@
+import { Colors } from "@/enums";
 import { 
   OmitUserInfo, 
   AsideExpPanelNavigation, 
@@ -6,14 +7,19 @@ import {
   NotificationCategory
 } from "@/types/index";
 import { User, EmailAuthCredential, UserCredential } from "firebase/auth";
+import { ComputedRef } from "vue";
 
+export interface IServerDate {
+  seconds: number;
+  nanoseconds: number;
+}
 // Components
 export interface ISelectElem {
   title: string;
   callback: () => void;
   icon?: string;
   variant?: "info" | string;
-  displaying: boolean
+  displaying: boolean | ComputedRef<boolean>
 }
 export interface IAsideNavigationItem {
   id: number;
@@ -61,6 +67,40 @@ export interface FileResult {
 export interface IDateFormat {
   time: string;
   date: string;
+}
+
+// Dashboard 
+export interface IBackgroundPhotos {
+  forest: string;
+  lake: string;
+  lakeWithForest: string;
+  mountains: string;
+  river: string;
+};
+export interface IBackgroundGradient {
+  backgroundBlue: Colors;
+  backgroundBluePink: Colors,
+  backgrondGreen: Colors;
+  backgroundLightBlue: Colors;
+  backgrondGray: Colors;
+  backgroundRedBlue: Colors;
+}
+
+export interface IBackgroundDashboard {
+  photos: IBackgroundPhotos;
+  gradients: IBackgroundGradient;
+};
+export interface IWorkingBoardItem<Type = IServerDate> {
+  title: string;
+  background: string;
+  tasks: any[];
+  dateOfCreation: Type;
+  joinCode: string;
+  members: number;
+}
+export interface ICreateBoardParams {
+  board: IWorkingBoardItem<Date>,
+  unicID: string;
 }
 
 // User
@@ -111,12 +151,8 @@ export interface INotificationItem<T> {
   type: NotificationCategory;
 }
 export interface IUpdateNotifications {
-  notifications: INotificationItem<INotificationDate>[];
+  notifications: INotificationItem<IServerDate>[];
   unicID: string;
-}
-export interface INotificationDate {
-  seconds: number;
-  nanoseconds: number;
 }
 export interface ICreateNotifyList {
   unicID: string;
@@ -175,12 +211,21 @@ export interface IRootState {
   openConfirmPopup: boolean;
   modalContentType: ModalContentType | "";
 }
+
+// Notification state.
 export interface INotificationState {
-  newNotification: INotificationItem<INotificationDate> | {};
+  newNotification: INotificationItem<IServerDate> | {};
 }
+
+// Configuration state.
 export interface IConfigState {
   asideNavigate: IAsideNavigationItem[];
   additionalParams: Omit<IConfiguration, "navigations">;
+}
+
+// Dashboard state.
+export interface IDashboardState {
+  allDashboards: IWorkingBoardItem<Date | IServerDate>[]; 
 }
 
 //Router

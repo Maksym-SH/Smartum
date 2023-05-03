@@ -1,5 +1,5 @@
 import { watch, reactive, watchEffect, computed } from "vue";
-import { INotificationDate, INotificationItem } from "@/interfaces";
+import { IServerDate, INotificationItem } from "@/interfaces";
 import { useStore } from "vuex";
 import { ObjectHasValues } from "@/helpers/methods";
 import { NotifyAction } from "@/types";
@@ -7,7 +7,7 @@ import { NotifyAction } from "@/types";
 const useNotifications = () => {
   const store = useStore();
 
-  const notificationList: INotificationItem<INotificationDate | Date>[] = reactive([]); 
+  const notificationList: INotificationItem<IServerDate | Date>[] = reactive([]); 
 
   const notificationsSize = computed(() => {
     return notificationList.length
@@ -33,7 +33,7 @@ const useNotifications = () => {
   // Get all notifications.
   watchEffect(() => {
     const unicID = store.state.User.currentUser?.uid;
-    if (unicID) {
+    if (unicID && !ObjectHasValues(notificationList)) { // Get all if the list is initially empty.
       store.dispatch("getAllNotifications", unicID)
       .then((notifications) => {
         notificationList.push(...notifications.collection)
@@ -48,11 +48,12 @@ const useNotifications = () => {
   })
 
   // Update database.
-  watch(notificationList, (newValue) => {
-    if (newValue) {
+  watch(notificationList, (newCollection) => {
+    if (newCollection) {
+      console.log(newCollection)
       store.dispatch("updateNotifications", {
         unicID: store.state.User.currentUser.uid,
-        notifications: newValue
+        notifications: newCollection
       })
     }
   })

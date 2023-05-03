@@ -62,6 +62,7 @@
           v-model.trim="userInfo.newPassword" 
           @keydown.enter.prevent
           type="password"
+          :disabled="passwordFieldDisable"
           :min="userInfo.newPassword ? PasswordLength : LengthNone"
           label="Новый пароль"
           name="userPassword"
@@ -126,10 +127,8 @@ export default defineComponent({
       avatarParams: {
         url: ""
       },
-      emailVerified: currentUser.emailVerified,
       newPassword: "",
     })
-
 
     // Actions
     const validForm = computed((): boolean => {
@@ -145,6 +144,15 @@ export default defineComponent({
     })
 
     const btnSaveDisable = ref(true);
+
+    // Password
+    const passwordFieldDisable = computed((): boolean => !store.state.User.currentUser.emailVerified);
+    const passwordFieldLabel = computed((): string => {
+      if (passwordFieldDisable.value) {
+        return "Для изменения пароля нужна подтвержденный электронный адрес"
+      }
+      return ""
+    })
     const passwordChanged = computed((): boolean => userInfo.newPassword != "");
 
     const showDeleteAccountButton = computed((): boolean => {
@@ -239,6 +247,8 @@ export default defineComponent({
       MaxLength: Length.Maximum,
       validForm,
       btnSaveDisable,
+      passwordFieldDisable,
+      passwordFieldLabel,
       showDeleteAccountButton,
       saveChangesButtonToFullScreen,
       updatePhoto,

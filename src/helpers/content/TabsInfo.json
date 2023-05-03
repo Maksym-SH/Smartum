@@ -14,5 +14,9 @@
   "Configuration": {
     "ru": "Настройте приложение под свои удобства.",
     "eng": "Сustomize the application for your convenience."
+  },
+  "Dashboard": {
+    "ru": "Управляйте своим рабочим пространством и приглашайте других пользователей.",
+    "eng": "Manage your workspace and invite other users."
   }
 }

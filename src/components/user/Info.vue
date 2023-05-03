@@ -22,17 +22,17 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    const emailVerified: boolean = store.state.User.currentUser.emailVerified;
+    const emailVerified = computed((): boolean => store.state.User.currentUser.emailVerified);
 
     const showVerifiedTemplate = computed((): Boolean => 
                                             store.state.Configuration.additionalParams.showEmailConfirm);
 
     const userStatusText = computed((): EmailVerify => {
-      if (emailVerified) return "Адрес подтверждён"
+      if (emailVerified.value) return "Адрес подтверждён"
       return "Адрес не подтверждён"
     })
 
-    const statusIcon: StatusVueIcon = emailVerified ? "mdi-email-check" : "mdi-email-alert"
+    const statusIcon: StatusVueIcon = emailVerified.value ? "mdi-email-check" : "mdi-email-alert"
 
     return {
       statusIcon,

@@ -45,6 +45,18 @@ export const GenerateLightColorHexFormat = (): string => {
   }
 }
 
+export const GenerateRandomString = (length: number) => {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return result;
+}
+
 let ConfirmCallback: Function;
 export const Confirmation = (toggle: boolean, callback?: Function | void): Promise<any> | void => {
   store.commit("setConfirmPopup", toggle);
