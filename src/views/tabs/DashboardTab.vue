@@ -23,8 +23,8 @@
       >
         <transition name="toggle-content">
           <LockAccess v-if="showLockAccess"/>
+          <EmptyList v-else-if="showEmptyList" type="dashboard" />
         </transition>
-        <EmptyList v-if="showEmptyList" type="dashboard" />
       </div>
     </div>
   </div>
