@@ -344,15 +344,16 @@ export default defineComponent({
     z-index: 3;
     width: 100%;
     padding: 10px 0;
-    background-color: $color-dark-grey3;
+    background-color: $color-grey;
     color: $color-white1;
     &_description {
       display: flex;
       justify-content: space-between;
       margin: 0 auto;
+      font-style: italic;
       font-size: 10px;
       padding: 0 23px;
-      
+      user-select: none;
     }
   }
 

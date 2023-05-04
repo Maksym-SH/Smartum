@@ -1,10 +1,5 @@
 <template>
   <div class="card-element-item">
-    <header class="card-element-item__header">
-      <h4 class="card-element-item__title text-ellipsis">
-        {{ element.title }}
-      </h4>
-    </header>
     <div class="card-element-item__background">
       <BoardImageResult 
         :background="element.background" 
@@ -12,16 +7,21 @@
         :image="element.background" 
       />
     </div>
-    <footer class="card-element-item__footer">
-      <p v-if="element.members" class="members-count"> 
-        <span class="mdi mdi-account-multiple icon"></span>
-        Участников: {{ element.members }}
-      </p>
-      <time v-if="element.dateOfCreation" class="date-of-create">
-        <span class="mdi mdi-clock-edit icon"></span>
-        {{ dateOfCreate }}
-      </time>
-    </footer>
+    <div class="card-element-item__content">
+      <h4 class="card-element-item__title text-ellipsis">
+        {{ element.title }}
+      </h4>
+      <div class="card-element-item__description">
+        <p v-if="element.members" class="members-count"> 
+          <span class="mdi mdi-account-multiple icon"></span>
+          Участников: {{ element.members }}
+        </p>
+        <time v-if="element.dateOfCreation" class="date-of-create">
+          <span class="mdi mdi-clock-edit icon"></span>
+          {{ dateOfCreate }}
+        </time>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -60,32 +60,32 @@ export default defineComponent({
   min-width: 240px;
   cursor:  pointer;
   box-shadow: 0 10px 5px rgba($color-black, 0.2);
-  &__header {
-    border-radius: 5px 5px 0 0;
+  &__content {
+    border-radius: 0 0 5px 5px;
     padding: 5px 10px;
     background-color:var(--color-dasboard-card);
   }
   &__title {
     font-weight: 500;
+    padding-left: 6px;
     color: var(--color-text);
   }
   &__background {
     :deep(.background-result__wrapper) {
       width: 100%;
-      border-radius: 0;
+      border-radius: 4px 4px 0 0;
       .background-result__image {
         width: 100%;
       }
     }
   }
-  &__footer {
+  &__description {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 5px;
     border: 1px solid var(--color-dasboard-card);
     background-color: var(--color-dasboard-card);
-    border-radius: 0 0 5px 5px;
     .members-count, .date-of-create {
       font-size: 11px;
       color: var(--color-text);

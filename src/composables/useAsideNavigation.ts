@@ -4,6 +4,7 @@ import { Links } from "@/enums";
 
 import router from "@/router";
 import store from "@/store";
+import { notify } from "@kyvg/vue3-notification";
 
 export default function Navigation(): AsideNavigationItems {
   const DashboardTab: IAsideNavigationItem = {
@@ -39,8 +40,6 @@ export default function Navigation(): AsideNavigationItems {
     }
   };
 
-  
-
   const ReportsTab: IAsideNavigationItem = {
     id: 3,
     showed: true,
@@ -50,13 +49,19 @@ export default function Navigation(): AsideNavigationItems {
       {
         title: "Отчёт об использовании",
         callback() {
-          console.log("use report")
+          notify({
+            title: "Страница в разработке!",
+            type: "success"
+          })
         }
       },
       {
         title: "Отчёт приложения",
         callback() {
-          console.log("app report");
+          notify({
+            title: "Страница в разработке!",
+            type: "success"
+          })
         }
       }
     ]
@@ -68,7 +73,10 @@ export default function Navigation(): AsideNavigationItems {
     title: "Статистика",
     icon: "chart-bar",
     callback(): void {
-      console.log("settings")
+      notify({
+        title: "Страница в разработке!",
+        type: "success"
+      })
     }
   }
 

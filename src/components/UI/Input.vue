@@ -194,7 +194,7 @@ export default defineComponent({
       -webkit-text-fill-color: var(--color-text);
       -webkit-box-shadow: 0 0 0 1000px var(--color-background) inset;
       & + .label {
-        color: $color-green;
+        color: $color-green !important;
       }
     }
 

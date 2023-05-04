@@ -5,7 +5,10 @@
       <h2 class="blocked-access__title">Доступ запрещён!</h2>
       <p class="blocked-access__description">
         Чтобы воспользоваться данной услугой приложения, вам необходимо подтвердить электронный адрес учётной записи, сделать это можно в меню настроек (возле данных пользователя), либо нажать 
-        <span class="blocked-access--email-confirm">
+        <span 
+          class="blocked-access--email-confirm"
+          @click="verifyEmail"
+        >
           Здесь
         </span>
       </p>
@@ -13,6 +16,25 @@
   </div>
 </template>
 
+<script lang="ts">
+import { defineComponent } from 'vue';
+import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
+import userStore from "@/store/user";
+import { User } from '@firebase/auth';
+
+export default defineComponent({ 
+  setup() {
+    const verifyEmail = () => {
+      const currentUser: User = userStore.state.currentUser as User;
+      VerifyEmail(currentUser);
+    }
+    return {
+      verifyEmail
+    }
+  }
+})
+
+</script>
 
 <style lang="scss" scoped>
 .blocked-access {
@@ -35,6 +57,7 @@
   &--email-confirm {
     color: $color-blue;
     font-size: 14px;
+    cursor: pointer;
   }
 }
 </style>

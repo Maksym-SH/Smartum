@@ -30,6 +30,7 @@ const routes: Routes = [
   {
     name: "Home",
     path: "/",
+    redirect: "/dashboard",
     meta: {
       protected: true,
     },

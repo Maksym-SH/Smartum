@@ -69,7 +69,7 @@ const firebaseAuth = (): IUserAuth => {
           });
 
           store.commit("setCurrentUser", getAuth().currentUser);
-          router.push({ name: "Home" });
+          router.push({ name: "Notifications" });
         })
         .catch((error: ErrorCode): void => ShowErrorMessage(error))
         .finally((): void => store.commit("setLoadingStatus", false));

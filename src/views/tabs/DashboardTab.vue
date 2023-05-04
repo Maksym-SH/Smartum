@@ -154,8 +154,7 @@ export default defineComponent({
   }
   @include mobile(max) {
     &__cards {
-      display: flex;
-      flex-direction: column;
+      grid-template-columns: 1fr;
     }
   }
 }
