@@ -8,7 +8,7 @@
     <div class="card-element-item__background">
       <BoardImageResult 
         :background="element.background" 
-        image-decor="src/assets/img/icons/dashboard-template.webp" 
+        image-decor="/images/icons/dashboard-template.webp" 
         :image="element.background" 
       />
     </div>

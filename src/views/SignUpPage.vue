@@ -4,12 +4,12 @@
       <div class="sign-up__window--welcome">
         <img
           class="sign-up__window--welcome__grid-image"
-          src="@/assets/img/icons/grid.svg"
+          src="/images/icons/grid.svg"
           alt="Grid"
         />
         <img
           class="sign-up__window--welcome__tasks-image"
-          src="@/assets/img/icons/list-task.svg"
+          src="/images/icons/list-task.svg"
           alt="Tasks"
         />
 
@@ -20,7 +20,7 @@
         <div class="sign-up__window--welcome-logo">
           <img
             class="sign-up__window--welcome-logo_image"
-            src="@/assets/img/logo.svg" alt="Logo" />
+            src="/images/icons/logo.svg" alt="Logo" />
         </div>
       </div>
       <div class="sign-up__window--content content">

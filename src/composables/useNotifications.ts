@@ -50,7 +50,6 @@ const useNotifications = () => {
   // Update database.
   watch(notificationList, (newCollection) => {
     if (newCollection) {
-      console.log(newCollection)
       store.dispatch("updateNotifications", {
         unicID: store.state.User.currentUser.uid,
         notifications: newCollection

@@ -9,7 +9,7 @@
       <slot>
         <img 
           class="c-select__icon"
-          src="@/assets/img/icons/dots-vertical.svg" 
+          src="/images/icons/dots-vertical.svg" 
           alt="" 
         />
       </slot>

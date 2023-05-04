@@ -4,7 +4,7 @@
     :class="{ 'aside-minimize': minimizeAside }"
   >
     <div class="aside__logo">
-      <img class="aside__logo-picture" src="@/assets/img/logo.svg" alt="" />
+      <img class="aside__logo-picture" src="/images/icons/logo.svg" alt="" />
     </div>
     <div class="aside__content">
       <Loader v-if="!showContent" :size="defaultLoaderSize" inline />
@@ -81,7 +81,7 @@
     </footer>
     <div class="aside__collapse" @click="collapseToggle">
       <span class="aside__collapse--toggle"
-        ><img src="@/assets/img/icons/caret.svg" alt="" />
+        ><img src="/images/icons/caret.svg" alt="" />
       </span>
       <v-badge
         v-if="notificationCount > 0 && minimizeAside" 

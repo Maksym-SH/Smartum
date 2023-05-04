@@ -2,7 +2,7 @@
   <div class="auth">
     <div class="auth__window">
       <div class="auth__window--logo">
-        <img src="@/assets/img/logo.svg" alt="Logo" />
+        <img src="/images/icons/logo.svg" alt="Logo" />
       </div>
       <div class="auth__window-form">
         <form class="auth__window-form_wrapper" @submit.prevent="submitForm">

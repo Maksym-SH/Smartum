@@ -3,7 +3,7 @@
     <div class="date__wrapper" v-if="showTemplate">
       <h3 class="date__title">
         <span class="date__icon">
-          <img :src="`src/assets/img/icons/${imageType}.svg`" alt="" />
+          <img :src="`/images/icons/${imageType}.svg`" alt="" />
         </span>
         {{ welcomeText }}
       </h3>

@@ -19,7 +19,7 @@
             <div class="v-card__wrapper">
               <BoardImageResult 
                 :background="String(newBoard.background)" 
-                image-decor="src/assets/img/icons/dashboard-template.webp" 
+                image-decor="/images/icons/dashboard-template.webp" 
                 :image="newBoard.background" 
               />
               <Input

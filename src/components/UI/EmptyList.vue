@@ -2,7 +2,7 @@
   <div class="empty-list">
     <img 
       class="empty-list__icon"
-      src="@/assets/img/icons/sad-smile.svg" 
+      src="/images/icons/sad-smile.svg" 
       alt=""
     />
     <h2 class="empty-list__title">

@@ -19,7 +19,7 @@
     ></v-img>
     <img
       class="file-upload--icon"
-      src="@/assets/img/icons/upload.svg"
+      src="/images/icons/upload.svg"
       alt="Upload"
     />
   </div>
