@@ -4,7 +4,7 @@ export enum Language {
 }
 
 export enum Length {
-  Text = 3,
+  Text = 2,
   Password = 8,
   None = 0,
   Textarea = 255,
@@ -36,8 +36,8 @@ export enum Numbers {
   Second = 1000,
   MillisecondsInDay = 86400000,
   AppearElement = 400,
-  EveningRU = 16,
-  EveningENG = "4 AM",
+  EveningRU = 18,
+  EveningENG = "6 AM",
   MorningRU = 4,
   MorningENG = "4 PM",
   JoinCodeSize = 16

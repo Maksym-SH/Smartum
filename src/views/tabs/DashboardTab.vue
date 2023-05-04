@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-tab">
     <div class="dashboard-tab__content">
-      <div class="dashboard-tab__content--create-new">
+      <div class="dashboard-tab__content--create-new" v-if="!showLockAccess">
         <CreateNewBoard @create-new="createNewBoard" />
       </div>
       <transition-group 
@@ -16,16 +16,16 @@
           :element="board" 
         />
       </transition-group>
-      <div 
-        v-if="centeringContent"
-        class="dashboard-tab__content--single" 
-        :class="{'centering': centeringContent }"
-      >
-        <transition name="toggle-content">
-          <LockAccess v-if="showLockAccess"/>
+      <transition name="single-content">
+        <div 
+          v-show="centeringContent"
+          class="dashboard-tab__content--single" 
+          :class="{'centering': centeringContent }"
+        >
+          <LockAccess v-if="showLockAccess && !showPreload" />
           <EmptyList v-else-if="showEmptyList" type="dashboard" />
-        </transition>
-      </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>

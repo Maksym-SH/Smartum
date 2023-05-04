@@ -18,11 +18,13 @@
         @deleteNotification ="notifyAction($event, 'deleteNotification')"
       />
     </transition-group>
-    <EmptyList 
-      v-else-if="!showLoading"
-      type="notification"
-      class="notifications-tab__empty-list" 
-    />
+    <transition name="single-content">
+      <EmptyList 
+        v-show="!showList && !showLoading"
+        type="notification"
+        class="notifications-tab__empty-list" 
+      />
+    </transition>
   </div>
 </template>
 

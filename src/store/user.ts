@@ -134,7 +134,7 @@ export default {
           if (currentUserAvatar) {
             dispatch("deleteUserAvatar", unicID)
           }
-          dispatch("deleleNotificationList", unicID)
+          dispatch("deleteNotificationList", unicID)
           dispatch("deleteUserConfiguration", unicID);
           resolve();
         })

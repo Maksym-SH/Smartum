@@ -110,4 +110,16 @@ body {
 .toggle-popup-leave-to {
   opacity: 0;
 }
+
+.single-content-enter-active,
+.single-content-leave-active {
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.single-content-enter-from,
+.single-content-leave-to {
+  opacity: 0;
+}
+
 </style>

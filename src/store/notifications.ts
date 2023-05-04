@@ -44,8 +44,11 @@ export default {
       const profileRef = doc(database, DataCollection.Notifications, unicID);
 
       return new Promise((resolve, reject) => {
-        getDoc(profileRef).then((notifications) => {
-          resolve(notifications.data())
+        getDoc(profileRef).then((response) => {
+          const notifications = response.data();
+          if (notifications) {
+            resolve(notifications.collection)
+          }
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
@@ -53,7 +56,7 @@ export default {
         })
       })
     },
-    deleleNotificationList({ commit }: ModuleCtx<INotificationState>, unicID: string): Promise<void> {
+    deleteNotificationList({ commit }: ModuleCtx<INotificationState>, unicID: string): Promise<void> {
       const deleteNotificationList = doc(database, DataCollection.Notifications, unicID);
 
       commit("setLoadingStatus", true);

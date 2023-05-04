@@ -279,6 +279,7 @@ export default defineComponent({
 
   &__logo {
     padding: 4.76px 25px;
+    min-height: 66.8px;
     background-color: $color-dark-grey;
     width: 100%;
     text-align: center;

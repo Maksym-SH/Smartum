@@ -21,8 +21,7 @@ const useNotifications = () => {
           foundNotification.status = "read";
           break;
         case "deleteNotification": 
-          const notificationIndex: number = notificationList
-                                              .findIndex((item) => item === foundNotification);
+          const notificationIndex: number = notificationList.findIndex((item) => item === foundNotification);
           notificationList.splice(notificationIndex, 1);
           break;
         default: return
@@ -34,10 +33,13 @@ const useNotifications = () => {
   watchEffect(() => {
     const unicID = store.state.User.currentUser?.uid;
     if (unicID && !ObjectHasValues(notificationList)) { // Get all if the list is initially empty.
+      store.commit("setLoadingStatus", true);
+
       store.dispatch("getAllNotifications", unicID)
       .then((notifications) => {
-        notificationList.push(...notifications.collection)
+        notificationList.push(...notifications)
       })
+      .finally(() => store.commit("setLoadingStatus", false))
     }
   })
   watch(() => store.state.Notifications.newNotification, (newNotification: INotificationItem<Date>): void => {
