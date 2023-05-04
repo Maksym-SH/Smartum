@@ -25,9 +25,9 @@ import { useStore } from "vuex";
 import { ObjectNotEmpty } from "./helpers/methods";
 import { ModalContentType } from "./types";
 
-import Popup from "@/components/ui/Popup.vue";
-import ConfirmationPopup from "@/components/ui/Confirmation.vue";
-import LongContentModal from "@/components/ui/LongContentModal.vue";
+import Popup from "@/components/UI/Popup.vue";
+import ConfirmationPopup from "@/components/UI/Confirmation.vue";
+import LongContentModal from "@/components/UI/LongContentModal.vue";
 
 export default defineComponent({
   components: {

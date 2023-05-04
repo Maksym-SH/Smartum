@@ -1,7 +1,7 @@
 import { IDateFormat } from "@/interfaces";
 import { Language, Numbers } from "@/enums";
 
-import useTimestamp from "./timestamp";
+import useTimestamp from "./stamp";
 import RegExp from "@/helpers/regExp";
 
 export const GetDate = (date: string, lang: Language = Language.Russian, onlyDate = false): IDateFormat => {

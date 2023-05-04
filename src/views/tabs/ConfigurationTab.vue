@@ -148,7 +148,7 @@ import { defineComponent } from 'vue';
 
 import Card from "@/container/Card.vue";
 import Avatar from "@/components/user/Avatar.vue";
-import ColorPalette from '@/components/ui/ColorPalette.vue';
+import ColorPalette from '@/components/UI/ColorPalette.vue';
 import useConfiguration from "@/composables/useConfiguration";
 
 export default defineComponent({

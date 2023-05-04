@@ -33,7 +33,7 @@ import { IServerDate, INotificationItem } from '@/interfaces';
 import { useStore } from 'vuex';
 
 import NotificationItem from '@/components/notification/NotificationItem.vue';
-import NotificationEmptyList from "@/components/ui/EmptyList.vue";
+import NotificationEmptyList from "@/components/UI/EmptyList.vue";
 
 export default defineComponent({
   emits:["readNotification", "deleteNotification"],

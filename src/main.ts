@@ -8,13 +8,13 @@ import { firebaseApp } from "./helpers/firebase/firebaseInitialize";
 firebaseApp;
 
 // Components
-import Button from "./components/ui/Button.vue";
-import Input from "./components/ui/Input.vue";
-import Textarea from "./components/ui/Textarea.vue";
-import Checkbox from "./components/ui/Checkbox.vue";
-import Loader from "./components/ui/Loader.vue";
-import Select from "./components/ui/Select.vue";
-import ExpPanel from "./components/ui/ExpansionPanel.vue";
+import Button from "@/components/UI/Button.vue";
+import Input from "@/components/UI/Input.vue";
+import Textarea from "@/components/UI/Textarea.vue";
+import Checkbox from "@/components/UI/Checkbox.vue";
+import Loader from "@/components/UI/Loader.vue";
+import Select from "@/components/UI/Select.vue";
+import ExpPanel from "@/components/UI/ExpansionPanel.vue";
 
 
 

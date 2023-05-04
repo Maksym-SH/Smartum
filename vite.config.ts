@@ -10,16 +10,10 @@ export default defineConfig({
     Vue()
   ],
   resolve: {
-    alias: [
-      {
-        find: '@',
-        replacement: path.resolve(__dirname, 'src')
-      },
-      { 
-        find: 'package.json', 
-        replacement: path.resolve(__dirname, 'package.json')
-      }
-    ]
+    alias: {
+      '@/': `${path.resolve(__dirname, 'src')}/`,
+      'package.json': `${path.resolve(__dirname, 'package.json')}/`,
+    },
   },
   css: {
     preprocessorOptions: {

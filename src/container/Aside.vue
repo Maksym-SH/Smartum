@@ -101,7 +101,7 @@ import { IAsideNavigationItem, IUserCreated } from "@/interfaces";
 import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
 
 import User from "@/components/user/Container.vue";
-import SwitchTheme from "@/components/ui/SwitchTheme.vue";
+import SwitchTheme from "@/components/UI/SwitchTheme.vue";
 
 import packageJson from 'package.json'
 

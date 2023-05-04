@@ -22,7 +22,7 @@ import { computed, defineComponent, ref } from "vue";
 import { useStore } from "vuex";
 
 import Date from "@/components/date/DateTime.vue";
-import SwitchTheme from "@/components/ui/SwitchTheme.vue";
+import SwitchTheme from "@/components/UI/SwitchTheme.vue";
 
 export default defineComponent({
   components: {

@@ -1,8 +1,8 @@
 import { IServerDate } from "@/interfaces";
 import { computed } from "vue";
-import { GetBetweenDateString } from '@/helpers/date/getDate';
+import { GetBetweenDateString } from '@/helpers/dateTime/getDate';
 import { Numbers, Language } from "@/enums";
-import useTimestamp from '@/helpers/date/timestamp';
+import useTimestamp from '@/helpers/dateTime/stamp';
 
 const useDateParseToString = (date: Date | IServerDate): string => {
   const dateSent = computed((): string => {

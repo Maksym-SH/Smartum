@@ -24,7 +24,7 @@ import { defineComponent, ref, computed, onMounted, onUnmounted, watch } from "v
 import { WelcomeText, Icon } from "@/types";
 import { Numbers } from "@/enums";
 
-import timestamp from "@/helpers/date/timestamp";
+import timestamp from "@/helpers/dateTime/stamp";
 
 export default defineComponent({
   setup() {

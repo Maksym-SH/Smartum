@@ -39,7 +39,7 @@ import { notify } from "@kyvg/vue3-notification";
 import { NotificationType } from "@/enums";
 
 import LockAccess from "@/components/dashboard/NeedEmailConfirmation.vue";
-import EmptyList from "@/components/ui/EmptyList.vue";
+import EmptyList from "@/components/UI/EmptyList.vue";
 import CreateNewBoard from "@/components/dashboard/modals/CreateNew.vue";
 import BoardCard from "@/components/dashboard/BoardItem.vue";
 import newNotificationContent from "@/composables/useNotificationContent";
