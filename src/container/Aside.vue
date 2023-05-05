@@ -80,15 +80,19 @@
       </article> 
     </footer>
     <div class="aside__collapse" @click="collapseToggle">
-      <span class="aside__collapse--toggle"
-        ><img src="/images/icons/caret.svg" alt="" />
-      </span>
-      <v-badge
-        v-if="notificationCount > 0 && minimizeAside" 
-        class="aside__collapse--notify-badge"
-        :content="notificationCount"
-      >
-      </v-badge>
+      <div class="aside__collapse-wrapper">
+        <span class="aside__collapse--toggle">
+          <img src="/images/icons/caret.svg" alt="" />
+        </span>
+      </div>
+      <transition name="toggle-content">
+        <v-badge
+          v-show="showNotificationBadge" 
+          class="aside__collapse--notify-badge"
+          :content="notificationCount"
+        >
+        </v-badge>
+      </transition>
     </div>
   </aside>
 </template>
@@ -121,7 +125,7 @@ export default defineComponent({
     }
   },
   emits: ["update:minimizeAside"],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const store = useStore();
 
     const searchInput = ref("");
@@ -139,7 +143,11 @@ export default defineComponent({
                 ObjectNotEmpty(store.state.User.currentUser) && 
                   ObjectNotEmpty(navigationList.value)
     });
+    // AsideNavigate[2] - 2 on the list is notification navigation.
+    const notificationNavShowed = computed(() => store.state.Configuration.asideNavigate[2]?.showed); 
 
+    const showNotificationBadge = computed(() => 
+                  props.notificationCount > 0 && props.minimizeAside && notificationNavShowed.value)
 
     const userInfo = computed((): IUserCreated => store.state.User.userInfo);
 
@@ -179,6 +187,7 @@ export default defineComponent({
       navigationList,
       defaultLoaderSize,
       applicationVersion,
+      showNotificationBadge,
       collapseToggle,
       navigationCallbackHandler,
       setMinimizeValue,
@@ -210,7 +219,7 @@ export default defineComponent({
     display: flex;
     text-align: start;
     padding-left: 23px;
-    color: $color-white1 !important;
+    color: $color-white1 !important; 
     margin: 0;
     box-shadow: 0px 3px 2px -1px rgba($color-black, 0.5);
     .icon {
@@ -278,12 +287,12 @@ export default defineComponent({
   }
 
   &__logo {
-    padding: 4.76px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-height: 66.8px;
     background-color: $color-dark-grey;
     width: 100%;
-    text-align: center;
-
     &-picture {
       width: 140px;
     }
@@ -319,11 +328,13 @@ export default defineComponent({
   &__collapse {
     position: absolute;
     bottom: 34px;
-    right: -27px;
+    right: -26.9px;
     cursor: pointer;
-    background-color: $color-grey;
-    padding: 15px 10px;
-    clip-path: polygon(0 0, 100% 21%, 100% 76%, 0% 100%);
+    &-wrapper {
+      background-color: $color-grey;
+      padding: 15px 10px;
+      clip-path: polygon(0 0, 100% 21%, 100% 76%, 0% 100%);
+    }
     &--toggle {
       img {
         width: 7px;
@@ -331,7 +342,7 @@ export default defineComponent({
     }
     &--notify-badge {
       position: absolute;
-      top: 60px;
+      top: 10px;
       right: 0;
       pointer-events: none;
       .v-badge__badge {
@@ -366,19 +377,23 @@ export default defineComponent({
       top: 0%;
       right: -45px;
       bottom: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: rgba($color-light-grey, 0.8);
-      clip-path: none;
-      border-radius: 0 10px 10px 0;
-      width: 45px;
-      height: 64px;
-
+      &-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba($color-light-grey, 0.78);
+        clip-path: none;
+        border-radius: 0 10px 10px 0;
+        width: 45px;
+        height: 66px;
+      } 
       &--toggle {
         img {
-          width: 10px;
+          width: 12px;
         }
+      }
+      &--notify-badge {
+        right: 3px;
       }
     }
   }
@@ -389,6 +404,11 @@ export default defineComponent({
     &__user {
       min-height: 89px;
       padding: 10px 24px;
+    }
+    &__collapse {
+      &-wrapper {
+        height: 63px;
+      } 
     }
   }
 }

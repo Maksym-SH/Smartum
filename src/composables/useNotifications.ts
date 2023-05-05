@@ -13,6 +13,10 @@ const useNotifications = () => {
     return notificationList.length
   });
 
+  const clearAll = (): void => {
+    notificationList.splice(0); // Clear all
+  }
+
   const notifyAction = (id: number, action: NotifyAction): void => {
     const foundNotification = notificationList.find((notify) => notify.id === id);
     if (foundNotification) {
@@ -62,7 +66,8 @@ const useNotifications = () => {
   return {
     notificationsSize,
     notificationList,
-    notifyAction
+    notifyAction,
+    clearAll
   }
 }
 

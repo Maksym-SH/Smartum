@@ -12,7 +12,7 @@
       alt=""
     /> 
     <span
-      v-else-if="firstName"
+      v-else-if="firstName && !showPreload"
       class="user-avatar--initials"
       :style="sizeInitials"
     >

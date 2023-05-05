@@ -23,6 +23,7 @@
               :notification-list="notificationList"
               @readNotification="notifyAction($event, 'readNotification')"
               @deleteNotification="notifyAction($event, 'deleteNotification')"
+              @clearAllNotifications="clearAll"
             />
           </transition>
         </router-view>
@@ -36,7 +37,7 @@ import { defineComponent, watch, reactive, ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { Layout } from "@/enums";
-import { ObjectNotEmpty } from "@/helpers/methods";
+import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 import { ILanguage, IMetaName } from "@/interfaces/index";
 import { RouterMeta, DynamicDescription } from "@/types";
 
@@ -54,7 +55,7 @@ export default defineComponent({
     const router = useRoute();
     const store = useStore();
    
-    const { notificationsSize, notificationList, notifyAction } = useNotifications();
+    const { notificationsSize, notificationList, notifyAction, clearAll } = useNotifications();
 
     const tabName: ILanguage = reactive({ eng: "", ru: "" });
 
@@ -62,8 +63,12 @@ export default defineComponent({
 
     const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
 
-    // Note: ObjectFull - custom method.
-    const showTabContent = computed((): boolean => ObjectNotEmpty(store.state.User.currentUser))
+
+    const currentUserPresent = computed((): boolean => ObjectNotEmpty(store.state.User.currentUser));
+    const additionalUserInfoPresent = computed((): boolean => ObjectHasValues(store.state.User.userInfo))
+    const showTabContent = computed((): boolean => currentUserPresent.value && additionalUserInfoPresent.value);
+
+
     // Aside
     const minimizeAside = ref(true);
     const toggleAsideVisible = (value: boolean, capture: boolean = false): void => {
@@ -102,6 +107,7 @@ export default defineComponent({
       notificationsSize,
       showTabContent,
       toggleAsideVisible,
+      clearAll,
       notifyAction,
       showLoading: computed(() => store.state.loadingStatus),
     };

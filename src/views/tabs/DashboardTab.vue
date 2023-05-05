@@ -87,7 +87,8 @@ export default defineComponent({
 
     // Get all boards.
     onMounted((): void => {
-      store.dispatch("getAllWorkingBoards", unicID.value).then((boards: IWorkingBoardItem[]) => {
+      store.dispatch("getAllWorkingBoards", unicID.value)
+      .then((boards: IWorkingBoardItem[]) => {
         allBoards.push(...boards);
       })
     })

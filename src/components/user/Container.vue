@@ -27,6 +27,7 @@ import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";
+import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
   components: {
@@ -58,7 +59,13 @@ export default defineComponent({
       },
       {
         title: "Выйти с аккаунта",
-        callback: () => store.dispatch("userLogout"),
+        callback: () => {
+          store.dispatch("userLogout").then(() => {
+            notify({
+              title: "До скорого!"
+            })
+          })
+        },
         icon: "mdi-logout",
         variant: "danger",
         displaying: true

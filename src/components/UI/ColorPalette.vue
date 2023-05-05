@@ -50,7 +50,8 @@ export default defineComponent({
       transform: translateY(-60%);
       width: 20px;
       height: 20px;
-      background-image: url("/images/icons/brush.svg");
+      background-image: url("/images/icons/color-palette.svg");
+      background-size: 18px 18px;
     }
   }
 }

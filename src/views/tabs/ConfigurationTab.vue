@@ -204,7 +204,8 @@ export default defineComponent({
           }
           &--params {
             .color-picker {
-              width: 100%;
+              max-width: 90px;
+              margin-left: auto;
               height: 40px;
             }
           }
@@ -253,6 +254,7 @@ export default defineComponent({
     }
     &-avatar-settings {
       .c-button {
+        min-width: 90px;
         margin-left: 30px;
       }
     }
@@ -313,9 +315,15 @@ export default defineComponent({
     }
   }
   @include mobile(max) {
+    padding-top: 0;
     &__content {
       .card {
         width: 100%;
+        &-info {
+          &__title.center {
+            padding-right: 50px;
+          }
+        }
       }
     }
   }
@@ -362,7 +370,9 @@ export default defineComponent({
           }
           &__additional-settings-item {
             font-size: 12px;
-            padding-right: 2px;
+          }
+          &__additional-settings-title {
+            padding-right: 5px;
           }
         }
       }
@@ -390,7 +400,7 @@ export default defineComponent({
         }
         &-info {
           &__title, &__title--settings-avatar {
-            font-size: 12.5px;
+            font-size: 12px;
             padding: 5px;
           }
           &__change-background-avatar {

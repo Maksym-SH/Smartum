@@ -2,7 +2,12 @@
   <div 
     class="notifications-tab"
     :class="{ 'empty': !showList }" 
-  >
+  > 
+    <div v-if="showList" class="notifications-tab__filters">
+      <v-btn variant="flat" @click="clearAll">
+        Очистить все
+      </v-btn>
+    </div>
     <transition-group
       v-if="showList"
       class="notifications-tab__container"
@@ -38,7 +43,7 @@ import NotificationItem from '@/components/notification/NotificationItem.vue';
 import NotificationEmptyList from "@/components/UI/EmptyList.vue";
 
 export default defineComponent({
-  emits:["readNotification", "deleteNotification"],
+  emits:["readNotification", "deleteNotification", "clearAllNotifications"],
   components: {
     Notification: NotificationItem,
     EmptyList: NotificationEmptyList
@@ -61,7 +66,12 @@ export default defineComponent({
       }
     }
 
+    const clearAll = (): void => {
+      emit("clearAllNotifications");
+    }
+
     return {
+      clearAll,
       notifyAction,
       showList,
       showLoading: computed(() => store.state.loadingStatus),
@@ -84,6 +94,11 @@ export default defineComponent({
     padding-top: 20px;
     width: 100%;
     height: 100%;
+  }
+  &__filters {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
   }
 }
 </style>

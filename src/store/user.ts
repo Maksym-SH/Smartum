@@ -258,12 +258,6 @@ export default {
         if (!router.currentRoute.value.meta.notAuthorized) {
           router.push({ name: "SignIn" });
           localStorage.removeItem("smartumToken");
-
-          notify({
-            text: "До скорого!",
-            type: "success",
-            ignoreDuplicates: true
-          });
         }
       })
       .catch((error: ErrorCode) => notify({

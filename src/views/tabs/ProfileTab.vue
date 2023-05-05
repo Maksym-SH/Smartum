@@ -10,7 +10,7 @@
           @deleted="deletePhoto"
         />
       </div>
-      <div class="profile-tab__form_form-item first-name">
+      <div class="profile-tab__form_item first-name">
         <Input 
           v-model.trim="userInfo.firstName"
           @keydown.enter.prevent
@@ -20,7 +20,7 @@
           name="userFirstName"
         />
       </div>
-      <div class="profile-tab__form_form-item last-name">
+      <div class="profile-tab__form_item last-name">
         <Input 
           v-model.trim="userInfo.lastName" 
           @keydown.enter.prevent
@@ -30,7 +30,7 @@
           name="userLastName"
         />
       </div>
-      <div class="profile-tab__form_form-item textarea">
+      <div class="profile-tab__form_item textarea">
         <Textarea 
           v-model.trim="userInfo.about" 
           :max="TextareaLength"
@@ -38,7 +38,7 @@
           name="userAbout"
         />
       </div>
-      <div class="profile-tab__form_form-item phone">
+      <div class="profile-tab__form_item phone">
         <Input 
           class="phone"
           @keydown.enter.prevent
@@ -48,7 +48,7 @@
           name="userPhone"
         />
       </div>
-      <div class="profile-tab__form_form-item email">
+      <div class="profile-tab__form_item email">
         <Input 
           disabled
           isEmail
@@ -57,12 +57,17 @@
           name="userEmail"
         />
       </div>
-      <div class="profile-tab__form_form-item new-password">
+      <div class="profile-tab__form_item new-password">
+        <Hint 
+          v-if="emailNotVerified"
+          content="Для изменения пароля подтвердите электронный адрес." 
+          variant="danger"
+        />
         <Input 
           v-model.trim="userInfo.newPassword" 
           @keydown.enter.prevent
           type="password"
-          :disabled="passwordFieldDisable"
+          :disabled="emailNotVerified"
           :min="userInfo.newPassword ? PasswordLength : LengthNone"
           label="Новый пароль"
           name="userPassword"
@@ -73,14 +78,13 @@
           variant="info"
           class="btn-save"
           :class="{'full-width-mobile': saveChangesButtonToFullScreen }"
-          :disabled="btnSaveDisable"
           @click="saveChanges"
           title="Сохранить"
         />
         <transition name="toggle-content">
           <Button 
             v-if="showDeleteAccountButton"
-            @click="deleteConfirm"
+            @click="deleteAccountConfirm"
             class="btn-delete"
             variant="danger"
             title="Удалить аккаунт"
@@ -92,7 +96,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, reactive, watch, onMounted } from "vue";
+import { defineComponent, computed, ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 import { Length, NotificationType } from "@/enums";
 import { IUserInfo } from "@/interfaces";
@@ -105,19 +109,21 @@ import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
 import newNotificationContent from "@/composables/useNotificationContent";
+import Hint from "@/components/UI/Hint.vue";
 
 export default defineComponent({
   components: {
     Avatar,
     ImageUpload: FileUpload,
-    Card
+    Card,
+    Hint
   },
   setup() {
     const store = useStore();
     // User info.
     const currentUser = store.state.User.currentUser;
 
-    const userInfo: IUserInfo = reactive({
+    const userInfo = reactive<IUserInfo>({
       firstName: "",
       lastName: "",
       phone: "",
@@ -143,16 +149,8 @@ export default defineComponent({
       return false;
     })
 
-    const btnSaveDisable = ref(true);
+    const emailNotVerified = computed((): boolean => !store.state.User.currentUser.emailVerified);
 
-    // Password
-    const passwordFieldDisable = computed((): boolean => !store.state.User.currentUser.emailVerified);
-    const passwordFieldLabel = computed((): string => {
-      if (passwordFieldDisable.value) {
-        return "Для изменения пароля нужна подтвержденный электронный адрес"
-      }
-      return ""
-    })
     const passwordChanged = computed((): boolean => userInfo.newPassword != "");
 
     const showDeleteAccountButton = computed((): boolean => {
@@ -160,11 +158,6 @@ export default defineComponent({
     })
 
     const saveChangesButtonToFullScreen = computed(() => !showDeleteAccountButton.value);
-
-    // Enable save changes button.
-    watch(userInfo, () => {
-      btnSaveDisable.value = false;
-    })
 
     // Update methods.
     const updatePhoto = (file: File) => {
@@ -192,7 +185,8 @@ export default defineComponent({
         ...userInfo,
         uid: currentUser.uid
       }
-      store.dispatch("updateUserInfo", infoToUpdate).then((): void => notify({
+      store.dispatch("updateUserInfo", infoToUpdate)
+      .then((): void => notify({
         title: "Ваши данные были успешно обновлены!"
       }))
     }
@@ -218,24 +212,22 @@ export default defineComponent({
       DeleteAccountPopup(currentUser.uid)();
     }
 
-    const deleteConfirm = (): void => {
+    const deleteAccountConfirm = (): void => {
       if (showConfirmation.value) {
         Confirmation(true, deleteAccountPopup);
       }
       else deleteAccountPopup();
     }
 
-    onMounted(():void => {
-      store.dispatch("getUserProfile").then((): void => {
-        const field = store.state.User.userInfo;  
+    onMounted((): void => {
+      const profileInfo = store.state.User.userInfo;  
 
-        userInfo.firstName = field.firstName;
-        userInfo.lastName = field.lastName;
-        userInfo.about = field.about;
-        userInfo.avatarParams.url = field.avatarParams.url || "";
-        userInfo.phone = field.phone;
+      userInfo.firstName = profileInfo.firstName;
+      userInfo.lastName = profileInfo.lastName;
+      userInfo.about = profileInfo.about;
+      userInfo.avatarParams.url = profileInfo.avatarParams.url || "";
+      userInfo.phone = profileInfo.phone;
 
-      }).then(():boolean => btnSaveDisable.value = true)
     })
 
     return {
@@ -246,15 +238,13 @@ export default defineComponent({
       TextareaLength: Length.Textarea,
       MaxLength: Length.Maximum,
       validForm,
-      btnSaveDisable,
-      passwordFieldDisable,
-      passwordFieldLabel,
+      emailNotVerified,
       showDeleteAccountButton,
       saveChangesButtonToFullScreen,
       updatePhoto,
       deletePhoto,
       saveChanges,
-      deleteConfirm,
+      deleteAccountConfirm,
     };
   },
 });
@@ -270,6 +260,20 @@ export default defineComponent({
     gap: 22px 25px;
     padding-bottom: 20px;
     max-width: 1200px;
+    &_item {
+      position: relative;
+      &.new-password {
+        .c-hint {
+          top: -15%;
+          right: 0;
+          width: 100%;
+          min-width: fit-content;
+          @include responsive(600px, max) {
+            right: -10%;
+          }
+        }
+      }
+    }
     &--upload {
       .label {
         font-size: 13px;
@@ -323,6 +327,13 @@ export default defineComponent({
           max-height: 170px; 
         }
       }
+      &_item {
+        &.new-password {
+          .c-hint {
+            font-size: 9px;
+          }
+        }
+      }
       .c-textarea {
         height: 110px !important; 
       }
@@ -357,10 +368,17 @@ export default defineComponent({
           }
         }
       }
-      &_form-item {
+      &_item {
         margin: 0 auto;
         width: 100%;
         max-width: 440px;
+        &.new-password {
+          .c-hint {
+            font-size: 11px;
+            top: -9px;
+            right: 0;
+          }
+        }
       }
       &_buttons-wrapper {
         gap: 20px;
@@ -382,4 +400,5 @@ export default defineComponent({
     }
   }
 }
+
 </style>

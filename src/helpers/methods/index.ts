@@ -3,13 +3,20 @@ import { getAuth } from "@firebase/auth";
 import { Theme } from "@/types";
 
 import store from "@/store";
+import { notify } from "@kyvg/vue3-notification";
 
 export const ObjectFull = (object: object): boolean => {
   return Object.values(object).every((item) => item);
 }
-export const ObjectHasValues = (object: object): boolean => {
-  return Object.values(object).some((item) => item);
-}
+
+export const ObjectHasValues = (object: Object): boolean => {
+  return Object.values(object).some((value) => {
+    if (typeof value === 'object' && value !== null) {
+      return Object.values(value).some((nestedValue) => !!nestedValue);
+    }
+    return !!value;
+  });
+} 
 
 export const ObjectNotEmpty = (object: object): boolean => {
   return Object.keys(object).length > 0;
@@ -87,6 +94,11 @@ export const DeleteAccountPopup = (uid: string, params?: Partial<IPopupParams>):
           getAuth().currentUser?.delete()
           .then(() => {
             store.dispatch("userLogout");
+            
+            notify({
+              title: "Ваш аккаунт был успешно удален!",
+              text: "Вы можете авторизоваться другим аккаунтом либо создать новый."
+            })
           });
         })
       }

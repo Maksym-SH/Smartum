@@ -83,7 +83,6 @@ import RegExp from "@/helpers/regExp";
 
 export default defineComponent({
   inheritAttrs: false,
-
   props: useInputProps,
   emits: ["invalid", "update:modelValue", "click"],
 
@@ -206,6 +205,10 @@ export default defineComponent({
       color: $color-brown;
       &::placeholder {
         color: $color-brown;
+      }
+      & ~ .c-input--toggle-password {
+        color: $color-brown;
+        pointer-events: none;
       }
     }
 

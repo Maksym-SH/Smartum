@@ -122,4 +122,12 @@ body {
   opacity: 0;
 }
 
+// Notifications design.
+.vue-notification-wrapper {
+  margin-top: 8px;
+  .vue-notification-template {
+    border-radius: 4px;
+  }
+}
+
 </style>
