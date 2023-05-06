@@ -42,6 +42,9 @@ export default defineComponent({
   background-color: transparent;
   color: $color-white1;
   border-radius: 0;
+  &:hover {
+    background-color: $color-dark-grey3;
+  }
   &-text {
     background-color: $color-dark-grey;
     cursor: pointer;

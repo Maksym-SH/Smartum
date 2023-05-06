@@ -64,8 +64,8 @@
         v-if="type === 'search'"
         class="c-input--search-btn"
         @click="$emit('click')"
-        transparent
-        round
+        variant="text"
+        rounded
       >
         <span class="mdi mdi-magnify c-input--search-btn_icon"></span>
       </Button>
@@ -218,8 +218,8 @@ export default defineComponent({
       & + .label {
         color:  $color-white1;
       }
-      & ~ .c-input--search-btn {
-        color: $color-white1;
+      & ~ .c-button {
+        color: $color-white1 !important;
       }
     }
     &--phone {
@@ -287,12 +287,12 @@ export default defineComponent({
   &--search-btn {
     position: absolute;
     top: 50%;
-    height: 30px;
+    height: 30px !important;
     min-width: 22px;
     transform: translate(0, -50%);
     right: 10px;
     font-size: 22px;
-    color: var(--color-text);
+    color: var(--color-text) !important;
     &:hover {
       color: var(--color-text);
     }

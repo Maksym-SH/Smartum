@@ -23,7 +23,7 @@
           :class="{'centering': centeringContent }"
         >
           <LockAccess v-if="showLockAccess && !showPreload" />
-          <EmptyList v-else-if="showEmptyList" type="dashboard" />
+          <EmptyList v-else-if="emptyList" type="dashboard" />
         </div>
       </transition>
     </div>
@@ -31,9 +31,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, reactive, onMounted } from "vue";
+import { defineComponent, computed, reactive, onMounted, ref } from "vue";
 import { useStore } from "vuex";
-import { ObjectNotEmpty } from "@/helpers/methods";
 import { IWorkingBoardItem } from "@/interfaces";
 import { notify } from "@kyvg/vue3-notification";
 import { NotificationType } from "@/enums";
@@ -56,14 +55,14 @@ export default defineComponent({
 
     const unicID = computed((): string => store.state.User.currentUser.uid);
 
-    const showLockAccess = computed((): boolean => !store.state.User.currentUser.emailVerified);
-    const showEmptyList = computed((): boolean => !ObjectNotEmpty(allBoards) && !showPreload.value)
-
     const showPreload = computed(() => store.state.loadingStatus);
 
     const allBoards = reactive<IWorkingBoardItem[]>([])
 
-    const centeringContent = computed(() => (showLockAccess.value || showEmptyList.value) 
+    const showLockAccess = computed((): boolean => !store.state.User.currentUser.emailVerified);
+    const emptyList = ref(false);
+
+    const centeringContent = computed(() => (showLockAccess.value || emptyList.value) 
                                                                           && !showPreload.value);
 
     const createNewBoard = (board: IWorkingBoardItem): void => {
@@ -78,7 +77,9 @@ export default defineComponent({
           text: `Рабочая доска ${ newBoard.title } была успешно создана!`,
           type: "success"
         })
-        
+
+        emptyList.value = false;
+
         // Add new notification.
         const notification = newNotificationContent(NotificationType.DashboardCreate, newBoard.title);
         store.commit("setNewNotification", notification);
@@ -89,7 +90,14 @@ export default defineComponent({
     onMounted((): void => {
       store.dispatch("getAllWorkingBoards", unicID.value)
       .then((boards: IWorkingBoardItem[]) => {
-        allBoards.push(...boards);
+        const noBoards = boards.length === 0;
+
+        if (noBoards) {
+          emptyList.value = true;
+        }
+        else {
+          allBoards.push(...boards);
+        }
       })
     })
 
@@ -97,7 +105,7 @@ export default defineComponent({
       centeringContent,
       showPreload,
       showLockAccess,
-      showEmptyList,
+      emptyList,
       allBoards,
       createNewBoard
     }
@@ -157,6 +165,24 @@ export default defineComponent({
     &__cards {
       grid-template-columns: 1fr;
     }
+    @include mobile(max) {
+    height: 100%;
+    padding-bottom: 45px;
+    &__container {
+      padding-top: 0;
+    }
+    &__content--create-new {
+      z-index: 3;
+      position: fixed;
+      bottom: 10px;
+      justify-content: center;
+      width: calc(100% - 25px);
+
+      :deep(.v-btn) {
+        width: 100% !important;
+      }
+    }
+  }
   }
 }
 </style>

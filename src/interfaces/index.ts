@@ -4,7 +4,8 @@ import {
   AsideExpPanelNavigation, 
   ModalContentType, 
   NotificationStatus,
-  NotificationCategory
+  NotificationCategory,
+  ButtonVariant
 } from "@/types/index";
 import { User, EmailAuthCredential, UserCredential } from "firebase/auth";
 import { ComputedRef } from "vue";
@@ -13,12 +14,13 @@ export interface IServerDate {
   seconds: number;
   nanoseconds: number;
 }
+
 // Components
 export interface ISelectElem {
   title: string;
   callback: () => void;
   icon?: string;
-  variant?: "info" | string;
+  color?: Colors;
   displaying: boolean | ComputedRef<boolean>
 }
 export interface IAsideNavigationItem {
@@ -36,12 +38,14 @@ export interface IPopupParams {
   text?: string;
   buttons: {
     no?: {
-      variant?: string;
+      variant?: ButtonVariant;
       text?: string;
+      color?: Colors;
     },
     yes: {
-      variant?: string;
+      variant?: ButtonVariant;
       text?: string;
+      color?: Colors;
     }
   },
   callback: () => any;
@@ -228,7 +232,7 @@ export interface IDashboardState {
   allDashboards: IWorkingBoardItem<Date | IServerDate>[]; 
 }
 
-//Router
+// Router
 export interface IMetaName {
   protected: boolean;
   tabName: ILanguage;

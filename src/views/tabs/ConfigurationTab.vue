@@ -47,8 +47,8 @@
             <template #header>
               <h2 class="card-info__title--settings-avatar">
                 Изменить цвет фона профиля
-                <Button
-                  size="sm"
+                <Button 
+                  size="small"
                   @click="saveBackgroundAvatar"
                   title="Сохранить"
                 />
@@ -177,6 +177,10 @@ export default defineComponent({
       flex-direction: column;
       gap: 50px;
     }
+    .c-button {
+      color: $color-white1;
+      text-transform: none;
+    }
     
     .card {
       width: fit-content;
@@ -204,7 +208,7 @@ export default defineComponent({
           }
           &--params {
             .color-picker {
-              max-width: 90px;
+              max-width: 94px;
               margin-left: auto;
               height: 40px;
             }
@@ -228,7 +232,7 @@ export default defineComponent({
             justify-content: space-between;
             align-items: center;
             .color-picker {
-              width: 90px;
+              width: 94px;
               height: 40px;
             }
           }

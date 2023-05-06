@@ -13,9 +13,13 @@
           alt="Tasks"
         />
 
-        <h3 class="sign-up__window--welcome-title">Добро пожаловать!</h3>
+        <h3 class="sign-up__window--welcome-title">
+          Добро пожаловать!
+        </h3>
         <div class="sign-up__window-content">
-          <h4 class="sign-up__window--welcome-description">Заполните форму чтобы создать аккаунт.</h4>
+          <h4 class="sign-up__window--welcome-description">
+            Заполните форму чтобы создать аккаунт.
+          </h4>
         </div>
         <div class="sign-up__window--welcome-logo">
           <img
@@ -24,22 +28,24 @@
         </div>
       </div>
       <div class="sign-up__window--content content">
-        <h2 class="sign-up__window--content-title">Создание аккаунта</h2>
+        <h2 class="sign-up__window--content-title">
+          Создание аккаунта
+        </h2>
         <form @submit.prevent="submitForm" class="sign-up__window-form-inputs">
           <Input
             v-model.trim="userData.firstName"
             required
             label="Имя"
             name="userFirstName"
-            :maxLength="MaxLength"
-            :min="LengthText"
+            :maxLength="Length.Maximum"
+            :min="Length.Text"
             transparent
           />
           <Input
             v-model.trim="userData.lastName"
-            :min="userData.lastName ? LengthText : LengthNone"
+            :min="userData.lastName ? Length.Text : Length.None"
             name="userLastName"
-            :maxLength="MaxLength"
+            :maxLength="Length.Maximum"
             label="Фамилия"
             transparent
           />
@@ -59,13 +65,13 @@
             type="password"
             name="userPassword"
             transparent
-            :min="LengthPassword"
+            :min="Length.Password"
             label="Пароль"
             autocomplete="new-password"
           />
 
           <div class="sign-up__window-form-inputs__send">
-            <Button title="Регистрация" />
+            <Button title="Регистрация" type="submit" />
           </div>
           <small class="sign-up__window-description">
             Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте согласие на
@@ -84,7 +90,9 @@
         <div class="content__swap-type-entry">
           <span>
             Уже зарегистрированы?
-            <router-link :to="{ name: 'SignIn' }"> Авторизация </router-link>
+            <router-link :to="{ name: 'SignIn' }"> 
+              Авторизация 
+            </router-link>
           </span>
         </div>
       </div>
@@ -144,10 +152,7 @@ export default defineComponent({
 
     return {
       userData,
-      LengthText,
-      LengthPassword,
-      LengthNone: Length.None,
-      MaxLength: Length.Maximum,
+      Length,
       submitForm,
       showTermsOfUse,
       showConfidentiality

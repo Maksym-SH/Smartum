@@ -38,8 +38,8 @@ export enum Numbers {
   AppearElement = 400,
   EveningRU = 18,
   EveningENG = "6 AM",
-  MorningRU = 4,
-  MorningENG = "4 PM",
+  MorningRU = 6,
+  MorningENG = "6 PM",
   JoinCodeSize = 16
 }
 
@@ -82,6 +82,10 @@ export enum NotificationType {
 }
 
 export enum Colors {
+  Default="#1D242E",
+  Success="#2ed47a",
+  Danger="#f0483e",
+  Info="#21A8F4",
   Grey="#283342",
   // Gradients
   GradientBlue="#020024 linear-gradient(90deg, #020024 0%, #090979 25%, #00d4ff 100%)",

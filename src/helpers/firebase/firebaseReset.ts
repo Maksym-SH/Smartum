@@ -18,7 +18,12 @@ const firebaseReset = (email: string): void => {
         text: "Сообщение восстановления пароля отправлено вам на почту!",
         type: "success",
       });
-      router.push({ name: "SignIn" });
+      if (window.history.length >= 2) {
+        router.go(-1); // Navigate to previous page.
+      }
+      else {
+        getAuth().currentUser ? router.push({ name : "Profile" }) : router.push({ name: "SignIn" });
+      }
     })
     .catch((error: ErrorCode) => ShowErrorMessage(error))
     .finally(() => store.commit("setLoadingStatus", false));

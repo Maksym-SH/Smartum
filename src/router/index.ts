@@ -110,6 +110,11 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    name: "NotFound",
+    path: "/:pathMath(.*)*",
+    redirect: "/dashboard"
+  },
 ];
 
 const router = createRouter({

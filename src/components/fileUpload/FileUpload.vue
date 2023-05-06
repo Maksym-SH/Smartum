@@ -4,7 +4,7 @@
     <Button 
       v-if="showImageTemplate"
       class="file-upload--delete"
-      variant="danger"
+      :color="Colors.Danger"
       @click.stop="deleteImgPopup"
     >
       <span class="mdi mdi-delete-outline"></span>
@@ -29,6 +29,7 @@
 import { defineComponent, ref, PropType, computed } from "vue";
 import { RefElement, FileType, ImageSource } from "@/types";
 import { OpenPopup } from "@/helpers/methods";
+import { Colors } from "@/enums";
 
 import fileValidate from "@/helpers/file/validate";
 
@@ -91,7 +92,7 @@ export default defineComponent({
         buttons: {
           yes: {
             text: "Удалить",
-            variant: "danger"
+            color: Colors.Danger
           },
         },
         callback: (): void => {
@@ -110,6 +111,7 @@ export default defineComponent({
       deleteImgPopup,
       fileUpload,
       imgLoad,
+      Colors,
     };
   },
 });
@@ -133,7 +135,8 @@ export default defineComponent({
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 25px;
+    padding: 5px;
+    color: $color-white1;
     height: 25px;
     border: 1px solid $color-black;
     border-radius: 4px;

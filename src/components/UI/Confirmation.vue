@@ -19,7 +19,7 @@
         <div class="confirmation__window-forgot-password">
           <router-link 
             class="confirmation__window-forgot-password--go-page"
-            :to="{name: 'Forgot'}" 
+            :to="{ name: 'Forgot' }" 
             @click="result(false)"
           >
             Забыли пароль?
@@ -28,19 +28,17 @@
         <div class="confirmation__button">
           <Button 
             @click="result(false)"
-            outline
-            variant="info"
-            size="sm"
+            variant="outlined"
             class="confirmation__button--no">
             Отмена
           </Button>
           <Button
             @click="result(true)"
-            variant="info"
-            size="sm"
+            type="submit"
             :disabled="btnConfirmDisable"
-            class="confirmation__buttons--yes">
-              Подтвердить
+            class="confirmation__buttons--yes"
+          >
+            Подтвердить
           </Button>
         </div>
       </form>  
@@ -148,9 +146,9 @@ export default defineComponent({
       display: flex;
       gap: 15px;
       justify-content: center;
-
+      color: $color-white1;
       .c-button {
-        min-width: 49%;
+        min-width: 49% !important;
       }
     }
   }

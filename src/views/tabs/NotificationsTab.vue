@@ -4,9 +4,13 @@
     :class="{ 'empty': !showList }" 
   > 
     <div v-if="showList" class="notifications-tab__filters">
-      <v-btn variant="flat" @click="clearAll">
+      <Button 
+        :color="Colors.Info"
+        variant="flat" 
+        @click="clearAll"
+      >
         Очистить все
-      </v-btn>
+      </Button>
     </div>
     <transition-group
       v-if="showList"
@@ -38,6 +42,7 @@ import { defineComponent, PropType, computed } from 'vue';
 import { NotifyAction } from "@/types";
 import { IServerDate, INotificationItem } from '@/interfaces';
 import { useStore } from 'vuex';
+import { Colors } from '@/enums';
 
 import NotificationItem from '@/components/notification/NotificationItem.vue';
 import NotificationEmptyList from "@/components/UI/EmptyList.vue";
@@ -75,6 +80,7 @@ export default defineComponent({
       notifyAction,
       showList,
       showLoading: computed(() => store.state.loadingStatus),
+      Colors
     }
   }
 })
@@ -98,7 +104,25 @@ export default defineComponent({
   &__filters {
     display: flex;
     justify-content: flex-end;
-    gap: 20px;
+    color: $color-white1;
+  }
+  @include mobile(max) {
+    height: 100%;
+    padding-bottom: 45px;
+    &__container {
+      padding-top: 0;
+    }
+    &__filters {
+      z-index: 2;
+      position: fixed;
+      bottom: 10px;
+      justify-content: center;
+      width: calc(100% - 25px);
+
+      .v-btn {
+        width: 100%;
+      }
+    }
   }
 }
 </style>

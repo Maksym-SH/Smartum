@@ -46,7 +46,7 @@ export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword
 
 export type AutoComplete = "on" | "off" | "new-password";
 
-export type ButtonSize = "sm" | "md" | "lg";
+export type ButtonSize = "x-small" | "small" | "large" | "x-large" | "default";
 
 export type ExpansionPanelVariant = "accordion" | "default" | "inset" | "popout";
 
@@ -59,6 +59,8 @@ export type AsideExpPanelNavigation = Required<OmitAsideNavigation>;
 export type ModalContentType = "termsOfUse" | "confidentiality";
 
 export type Variant = "info" | "danger" | "success";
+
+export type ButtonVariant = "elevated" | "flat" | "tonal" | "outlined" | "text" | "plain";
 
 export type PopupButtons = IPopupParams["buttons"];
 

@@ -1,8 +1,9 @@
 <template>
   <div class="c-select" :class="{ active: selectActive }">
     <Button 
-      transparent 
-      round 
+      rounded
+      variant="text"
+      size="small"
       @click="togglePicker" 
       @blur="selectActive = false"
     >
@@ -20,11 +21,12 @@
         <template v-for="item in items" :key="item.title">
           <Button
             v-if="item.displaying"
-            transparent
             :class="{ 'no-icon': !item.icon }"
-            :variant="item.variant"
+            :color="item.color"
             :icon="item.icon"
+            variant="text"
             :title="item.title"
+            :rounded="4"
             @click="$emit('selected', item.callback)"
           />
         </template>
@@ -36,6 +38,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
 import { SelectElements, Position } from "@/types";
+import { Colors } from "@/enums";
 
 export default defineComponent({
   props: {
@@ -58,6 +61,7 @@ export default defineComponent({
     return {
       selectActive,
       togglePicker,
+      Colors,
     };
   },
 });
@@ -68,8 +72,12 @@ export default defineComponent({
   position: relative;
   &.active {
     > .c-button {
-      background-color: $color-black;
+      background-color: $color-black !important;
     }
+  }
+  > .c-button {
+    width: 30px;
+    height: 30px;
   }
   &__icon {
     width: 25px;
@@ -77,19 +85,23 @@ export default defineComponent({
   }
   &__picker {
     position: absolute;
-    right: 5px;
+    right: 0;
     top: 50px;
     z-index: 3;
     background-color: $color-white2;
     border-radius: 4px;
     border: 1px solid $color-black;
     .c-button {
-      padding: 15px 16px;
+      display: flex;
+      justify-content: flex-start;
       margin: 0;
       width: 100%;
-      text-align: start;
-      border-bottom: 1px solid $color-black;
       white-space: nowrap;
+      padding-left: 30px;
+      padding: 15px 16px !important;
+      height: auto !important;
+      text-transform:none;
+      border-bottom: 1px solid $color-black;
       &.no-icon {
         padding-left: 44px !important;
       }
@@ -100,9 +112,15 @@ export default defineComponent({
         background-color: $color-white3;
         border-radius: 4px;
       }
+      :deep() {
+        .v-icon {
+          margin-right: 10px;
+        }
+      }
+      
     }
     .btn-icon {
-      margin-right: 10px;
+      margin-right: 110px;
       width: 12px;
       height: 12px;
     }

@@ -4,6 +4,7 @@ import { Theme } from "@/types";
 
 import store from "@/store";
 import { notify } from "@kyvg/vue3-notification";
+import { Colors } from "@/enums";
 
 export const ObjectFull = (object: object): boolean => {
   return Object.values(object).every((item) => item);
@@ -86,7 +87,7 @@ export const DeleteAccountPopup = (uid: string, params?: Partial<IPopupParams>):
       buttons: {
         yes: {
           text: "Удалить аккаунт",
-          variant: "danger"
+          color: Colors.Danger
         },
       },
       callback: (): void => {

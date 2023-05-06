@@ -1,132 +1,40 @@
 <template>
-  <button
+  <v-btn
     class="c-button"
-    :class="[
-      `c-button--${size} c-button--${variant}`,
-      {
-        'c-button--disabled': disabled,
-        'c-button--transparent': transparent,
-        'c-button--round': round,
-        'c-button--outline': outline
-      },
-    ]"
+    :color="color"
+    :variant="variant"
     :disabled="disabled"
+    :rounded="rounded"
+    :size="size"
   >
-    <v-icon class="c-button__icon" v-if="icon" :icon="icon"></v-icon>
+    <v-icon v-if="icon" :icon="icon"></v-icon>
     <slot>{{ title }}</slot>
-  </button>
+  </v-btn>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useButtonProps } from "./use/useProps";
+import { Colors } from "@/enums";
 
 export default defineComponent({
   props: useButtonProps,
+  setup() {
+    return {
+      Colors
+    }
+  }
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .c-button {
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  color: $color-white2;
-  border-bottom: 1px solid transparent;
-  transition: all 0.2s ease-in-out; 
-  &:hover {
-    color: $color-white1;
-  }
+  min-width: auto !important;
+
   &:disabled {
-    pointer-events: none;
-    user-select: none;
-    filter: grayscale(70%);
-  }
-  &__icon {
-    display: none;
-    margin: -5px 5px 0 0;
-    font-size: 20px !important;
-  }
-  &--outline {
-    background-color: transparent !important;
-    border: 1.5px solid transparent;
-    &.c-button--info {
-      @include button-outline-color($color-blue, $color-blue, $color-blue-hover,
-                                      $color-blue-hover, $color-white1);
+    :deep(.v-btn__content) {
+      color: $color-white1;
     }
-    &.c-button--danger {
-      @include button-outline-color($color-red, $color-red, $color-red-hover,
-                                      $color-red-hover, $color-white1);
-    }
-    &.c-button--warning {
-      @include button-outline-color($color-yellow, $color-yellow, $color-yellow-hover,
-                                      $color-yellow-hover, $color-white1);
-    }
-    &.c-button--success {
-      @include button-outline-color($color-green, $color-green, $color-green-hover,
-                                      $color-green-hover, $color-white1);
-    }
-  }
-  // Variant
-  &--default {
-    &.c-button--transparent {
-      color: $color-dark-grey;
-
-      &:hover {
-        color: $color-grey;
-      }
-    }
-  }
-  &--info {
-    @include button-color($color-blue, $color-blue-hover);
-  }
-  &--danger {
-    @include button-color($color-red, $color-red-hover);
-  }
-  &--warning {
-    @include button-color($color-yellow, $color-yellow-hover);
-  }
-  &--success {
-    @include button-color($color-green, $color-green-hover);
-  }
-  &--transparent {
-    border-radius: 0;
-    background-color: transparent;
-    margin: 0 5px;
-    color: $color-white5;
-    &.active {
-      color: $color-white2;
-    }
-    &:hover {
-      background-color: transparent;
-    }
-  }
-  &--round {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    transition: all 0.2s;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &:hover {
-      background-color: transparent;
-    }
-  }
-
-  // Size
-  &--sm {
-    padding: 5px 7px;
-    font-size: 14px;
-  }
-  &--md {
-    padding: 10px;
-    font-size: 16px;
-  }
-  &--lg {
-    padding: 12px;
-    font-size: 18px;
   }
 }
 </style>

@@ -20,7 +20,7 @@
           light-theme
           @invalid="errorEmail = true"
         />
-        <Button class="submit-form" title="Отправить" size="lg" />
+        <Button class="submit-form" title="Отправить" type="submit" />
       </form>
       <div class="forgot-page__window-link">
         <a
@@ -57,7 +57,7 @@ export default defineComponent({
         router.go(-1); // Navigate to previous page.
       }
       else {
-        router.push({ name : "Home" })
+        router.push({ name : "Profile" })
       }
     }
 

@@ -1,6 +1,11 @@
 import { PropType } from "vue";
-import { ButtonSize, Variant, ExpansionPanelVariant, AsideExpPanelNavigation  } from "@/types/index";
-import { Length } from "@/enums";
+import { 
+  ButtonSize, 
+  ExpansionPanelVariant, 
+  AsideExpPanelNavigation, 
+  ButtonVariant  
+} from "@/types/index";
+import { Colors, Length } from "@/enums";
 
 // Input.vue
 export const useInputProps = {
@@ -109,19 +114,19 @@ export const useButtonProps = {
     default: "",
   },
   variant: {
-    type: String as PropType<Variant>,
-    default: "info",
+    type: String as PropType<ButtonVariant>,
+    default: "elevated",
   },
-  round: {
-    type: Boolean,
-    default: false,
+  color: {
+    type: String as PropType<Colors>,
+    default: Colors.Info
   },
   transparent: {
     type: Boolean,
     default: false,
   },
-  outline: {
-    type: Boolean,
+  rounded: {
+    type: [Boolean, Number],
     default: false,
   },
   disabled: {
@@ -130,7 +135,7 @@ export const useButtonProps = {
   },
   size: {
     type: String as PropType<ButtonSize>,
-    default: "md",
+    default: "default",
   },
 };
 

@@ -5,7 +5,7 @@
     v-model="showDialog"
   >
     <template v-slot:activator="{ props }">
-      <Button v-bind="props">
+      <Button class="create-dashboard-btn" v-bind="props">
         Создать новую доску
       </Button>
     </template>
@@ -27,7 +27,7 @@
                 label="Заголовок доски" 
                 required
                 name="DashboardHeader"
-                :min="MinLength"
+                :min="Length.Text"
               />
             </div>
             <div class="v-card__wrapper-background-select">
@@ -55,20 +55,20 @@
             </div>
           </v-card-text>
           <v-card-actions class="v-card__footer-action">
-            <v-btn
+            <Button
               class="v-card--cancel-create"
               variant="text"
               @click="showDialog = false"
             >
               Отмена
-            </v-btn>
-            <v-btn
+            </Button>
+            <Button
               class="v-card--create-board"
               variant="text"
               type="submit"
             >
               Создать
-            </v-btn>
+            </Button>
           </v-card-actions>
         </form>
       </v-card>
@@ -116,7 +116,7 @@ export default defineComponent({
      
       newBoard.joinCode = GenerateRandomString(Numbers.JoinCodeSize);  // Set join code for working board.
 
-      emit("createNew", newBoard);
+      emit("createNew", Object.assign({}, newBoard));
 
       showDialog.value = false;
     }
@@ -125,7 +125,7 @@ export default defineComponent({
       showDialog,
       newBoard,
       backgrounds,
-      MinLength: Length.Text,
+      Length,
       createNewBoard
     }
   }
@@ -135,8 +135,17 @@ export default defineComponent({
 
 
 <style lang="scss" scoped>
+.create-dashboard-btn {
+  color: $color-white1;
+}
 .v-dialog {
   z-index: 90 !important;
+
+  :deep(.v-overlay__scrim) {
+    opacity: 1;
+    background: $color-transp-black;
+  }
+
   .v-card {
     background-color: var(--color-background);
     &-header__title {
@@ -169,7 +178,7 @@ export default defineComponent({
       color: $color-blue;
     }
     &--cancel-create {
-      color: var(--color-text);
+      color: var(--color-text) !important;
     }
   }
   

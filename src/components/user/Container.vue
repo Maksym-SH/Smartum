@@ -28,6 +28,7 @@ import router from "@/router";
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";
 import { notify } from "@kyvg/vue3-notification";
+import { Colors } from "@/enums";
 
 export default defineComponent({
   components: {
@@ -47,27 +48,28 @@ export default defineComponent({
         title: "Мой профиль",
         callback: () => router.push("/profile"),
         icon: "mdi-account",
-        variant: "default",
+        color: Colors.Default,
         displaying: true,
       },
       {
         title: "Подтвердить адрес",
         callback: () => verifyEmail(currentUser.value),
         icon: "mdi-email-check-outline",
-        variant: "info",
+        color: Colors.Info,
         displaying: computed(() => !emailVerified.value) // Not verified.
       },
       {
         title: "Выйти с аккаунта",
         callback: () => {
-          store.dispatch("userLogout").then(() => {
+          store.dispatch("userLogout")
+          .then(() => {
             notify({
               title: "До скорого!"
             })
           })
         },
         icon: "mdi-logout",
-        variant: "danger",
+        color: Colors.Danger,
         displaying: true
       },
     ]);
@@ -99,7 +101,7 @@ export default defineComponent({
     :deep(.c-select) {
       position: absolute;
       top: 2px;
-      right: -40px;
+      right: -30px;
       .c-button--round {
         img {
           width: 22px;

@@ -1,6 +1,9 @@
 <template>
   <div class="home-page">
-    <c-aside v-model:minimizeAside="minimizeAside" :notification-count="notificationsSize" />
+    <c-aside
+      v-model:minimizeAside="minimizeAside" 
+      :notification-count="notificationsSize" 
+    />
     <div class="home-page__wrapper" 
       @click.capture="toggleAsideVisible(false, true)"
       :class="{ 'minimize-info': minimizeAside }"

@@ -28,9 +28,9 @@ export default createStore<IRootState>({
     },
   },
   modules: {
-    User,
     Notifications,
     Configuration,
-    Dashboard
+    Dashboard,
+    User
   },
 });

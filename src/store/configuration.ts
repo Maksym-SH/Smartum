@@ -53,11 +53,11 @@ export default {
       })  
     },
     deleteUserConfiguration( { commit }: ModuleCtx<IConfigState>, unicID: string): Promise<void> {
-      const deleteNotificationList = doc(database, DataCollection.Configuration, unicID);
+      const configurationRef = doc(database, DataCollection.Configuration, unicID);
 
       commit("setLoadingStatus", true);
       return new Promise((resolve, reject) => {
-        deleteDoc(deleteNotificationList)
+        deleteDoc(configurationRef)
         .then(() => resolve())
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);

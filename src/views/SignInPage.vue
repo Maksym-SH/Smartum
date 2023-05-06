@@ -24,7 +24,7 @@
               label="Пароль"
               v-model="userData.password"
               transparent
-              :min="LengthPassword"
+              :min="Length.Password"
               autocomplete
             />
             <div class="auth__window-form__forgot">
@@ -38,14 +38,16 @@
             </div>
           </div>
           <div class="auth__window-form__inputs--send">
-            <Button title="Войти" />
+            <Button title="Войти" type="submit" />
           </div>
         </form>
         <div class="auth__window-form--actions">
           <div class="auth__swap-entry-type">
             <span class="auth__description" :key="authType">
               Нет аккаунта?
-              <router-link :to="{ name: 'SignUp' }"> Регистрация </router-link>
+              <router-link :to="{ name: 'SignUp' }"> 
+                Регистрация 
+              </router-link>
             </span>
           </div>
         </div>
@@ -86,7 +88,7 @@ export default defineComponent({
     return {
       userData,
       authType,
-      LengthPassword: Length.Password,
+      Length,
       submitForm,
     };
   },
@@ -142,6 +144,7 @@ export default defineComponent({
           text-align: center;
           margin-top: 80px;
           .c-button {
+            color: $color-white1;
             width: 150px;
           }
         }

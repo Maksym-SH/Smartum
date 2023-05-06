@@ -18,15 +18,18 @@
           @click="result(false)"
           outline
           :variant="btnParam.no?.variant"
-          size="sm"
-          class="popup__button--no">
+          :color="btnParam.no?.color"
+          class="popup__button--no"
+        >
           {{ btnParam.no?.text }}
         </Button>
         <Button
           @click="result(true)"
           :variant="btnParam.yes.variant"
-          size="sm"
-          class="popup__buttons--yes">
+          :color="btnParam.yes?.color"
+          class="popup__buttons--yes"
+          type="submit"
+        >
           {{ btnParam.yes.text }}
         </Button>
       </div>
@@ -35,6 +38,7 @@
 </template>
 
 <script lang="ts">
+import { Colors } from '@/enums';
 import { ObjectFull } from '@/helpers/methods';
 import { IPopupParams } from '@/interfaces';
 import { PopupButtons } from "@/types";
@@ -52,11 +56,13 @@ export default defineComponent({
       return {
         yes: {
           text: params.buttons.yes?.text || "Подтвердить",
-          variant: params.buttons.yes?.variant || "info"
+          variant: params.buttons.yes?.variant || "elevated",
+          color: params.buttons.yes?.color || Colors.Info
         },
         no: {
           text: params.buttons.no?.text || "Отмена",
-          variant: params.buttons.no?.variant || "info"
+          variant: params.buttons.no?.variant || "outlined",
+          color: params.buttons.no?.color || Colors.Info
         }
       }
     })
@@ -130,8 +136,9 @@ export default defineComponent({
     display: flex;
     gap: 15px;
     justify-content: center;
+    color: $color-white1;
     .c-button {
-      min-width: 49%;
+      width: 49%;
     }
   }
 

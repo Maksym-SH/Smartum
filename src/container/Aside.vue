@@ -44,18 +44,24 @@
                 :icon="item.icon" 
                 :content="item.panels"
               />
-              <Button 
+              <v-list-item 
                 v-else
-                class="aside__navigation-btn" 
-                transparent
+                class="aside__navigation-list-item" 
                 @click="navigationCallbackHandler(item?.callback?.())"
               >
-                <span 
-                  v-if="item.icon"
-                  class="icon" 
-                  :class="['mdi', `mdi-${ item.icon }`]"
-                ></span>
-                <span :class="{ 'no-icon': !item.icon }">{{ item.title }}</span>
+                <div>
+                  <span 
+                    v-if="item.icon"
+                    class="icon" 
+                    :class="['mdi', `mdi-${ item.icon }`]"
+                  ></span>
+                  <span 
+                    class="navigation-title" 
+                    :class="{ 'no-icon': !item.icon }"
+                  >
+                    {{ item.title }}
+                  </span>
+                </div>
                 <v-badge
                   v-show="notificationCount >= 0 && item.notify" 
                   class="notify"
@@ -63,7 +69,7 @@
                   :content="notificationCount"
                 >
                 </v-badge>
-              </Button>
+              </v-list-item>
             </template>
           </template>
         </transition-group>
@@ -215,13 +221,21 @@ export default defineComponent({
     transform: translateX(-261px);
   }
 
-  &__navigation-btn {
+  &__navigation-list-item {
     display: flex;
+    width: 100%;
+    align-items: center !important;
     text-align: start;
     padding-left: 23px;
+    height: 48px;
     color: $color-white1 !important; 
     margin: 0;
     box-shadow: 0px 3px 2px -1px rgba($color-black, 0.5);
+    .v-list-item__content {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
     .icon {
       width: 14px;
       max-height: 14px;
@@ -236,7 +250,7 @@ export default defineComponent({
       height: 20px;
       font-size: 10px;
       margin-left: auto;
-      margin-right: 24px;
+      margin-right: 18px;
       .v-badge__badge {
         background-color: $color-red;
       }

@@ -14,8 +14,8 @@
         <Input 
           v-model.trim="userInfo.firstName"
           @keydown.enter.prevent
-          :min="userInfo.firstName ? TextLength : LengthNone"
-          :maxLength="MaxLength"
+          :min="userInfo.firstName ? Length.Text : Length.None"
+          :maxLength="Length.Maximum"
           label="Имя"
           name="userFirstName"
         />
@@ -24,8 +24,8 @@
         <Input 
           v-model.trim="userInfo.lastName" 
           @keydown.enter.prevent
-          :min="userInfo.lastName ? TextLength : LengthNone" 
-          :maxLength="MaxLength"
+          :min="userInfo.lastName ? Length.Text : Length.None" 
+          :maxLength="Length.Maximum"
           label="Фамилия"
           name="userLastName"
         />
@@ -33,7 +33,7 @@
       <div class="profile-tab__form_item textarea">
         <Textarea 
           v-model.trim="userInfo.about" 
-          :max="TextareaLength"
+          :max="Length.Textarea"
           label="Дополнительная информация"
           name="userAbout"
         />
@@ -68,14 +68,13 @@
           @keydown.enter.prevent
           type="password"
           :disabled="emailNotVerified"
-          :min="userInfo.newPassword ? PasswordLength : LengthNone"
+          :min="userInfo.newPassword ? Length.Password : Length.None"
           label="Новый пароль"
           name="userPassword"
         />
       </div>
       <div class="profile-tab__form_buttons-wrapper">
         <Button 
-          variant="info"
           class="btn-save"
           :class="{'full-width-mobile': saveChangesButtonToFullScreen }"
           @click="saveChanges"
@@ -86,7 +85,7 @@
             v-if="showDeleteAccountButton"
             @click="deleteAccountConfirm"
             class="btn-delete"
-            variant="danger"
+            :color="Colors.Danger"
             title="Удалить аккаунт"
           />
         </transition>
@@ -103,6 +102,7 @@ import { IUserInfo } from "@/interfaces";
 import { Confirmation, DeleteAccountPopup } from "@/helpers/methods";
 import { PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
 import { notify } from "@kyvg/vue3-notification";
+import { Colors } from "@/enums";
 
 import RegExp from "@/helpers/regExp";
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
@@ -232,15 +232,12 @@ export default defineComponent({
 
     return {
       userInfo,
-      TextLength: Length.Text,
-      PasswordLength: Length.Password,
-      LengthNone: Length.None,
-      TextareaLength: Length.Textarea,
-      MaxLength: Length.Maximum,
+      Length,
       validForm,
       emailNotVerified,
       showDeleteAccountButton,
       saveChangesButtonToFullScreen,
+      Colors,
       updatePhoto,
       deletePhoto,
       saveChanges,
@@ -307,6 +304,8 @@ export default defineComponent({
       justify-content: space-between;
       grid-area: 4/1/4/4;
       .btn-save, .btn-delete {
+        color: $color-white1;
+        text-transform: none;
         width: 30%;
         max-width: 200px;
       }
@@ -381,13 +380,12 @@ export default defineComponent({
         }
       }
       &_buttons-wrapper {
-        gap: 20px;
         width: 100%;
         max-width: 440px;
         justify-content: space-between;
         .btn-save, .btn-delete {
-          font-size: 14px;
-          width: 100%;
+          font-size: 13px;
+          width: 47%;
           max-width: none;
         }
         .btn-save {

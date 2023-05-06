@@ -49,7 +49,7 @@ export default defineComponent({
       const currentTime = time.value; 
       const currentTimeHours = Number(currentTime.split("").slice(0, 2).join(""));
 
-      // If the time is later than 16:00 and later than 4:00.
+      // If the time is later than 16:00 and later than 6:00.
       if (currentTimeHours < Numbers.EveningRU && currentTimeHours > Numbers.MorningRU) {
         welcomeText.value = "Добрый день";
       }
