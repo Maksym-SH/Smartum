@@ -21,14 +21,14 @@ import { defineComponent, reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { SelectElements } from "@/types";
 import { useContainerProps } from "./use/useProps";
-import { User } from "@firebase/auth";
+import { notify } from "@kyvg/vue3-notification";
+import { Colors } from "@/enums";
 
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";
-import { notify } from "@kyvg/vue3-notification";
-import { Colors } from "@/enums";
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
 
 export default defineComponent({
   components: {
@@ -40,7 +40,7 @@ export default defineComponent({
   setup(_, { emit }) {
     const store = useStore();
 
-    const currentUser = computed((): User => store.state.User.currentUser);
+    const { currentUser } = useCurrentUserInfo();
     const emailVerified = computed((): boolean => currentUser.value.emailVerified);
 
     const actions = reactive<SelectElements>([

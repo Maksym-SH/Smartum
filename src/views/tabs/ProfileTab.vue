@@ -110,6 +110,7 @@ import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
 import newNotificationContent from "@/composables/useNotificationContent";
 import Hint from "@/components/UI/Hint.vue";
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
 
 export default defineComponent({
   components: {
@@ -121,14 +122,14 @@ export default defineComponent({
   setup() {
     const store = useStore();
     // User info.
-    const currentUser = store.state.User.currentUser;
+    const { currentUser, unicID } = useCurrentUserInfo();
 
     const userInfo = reactive<IUserInfo>({
       firstName: "",
       lastName: "",
       phone: "",
       about: "",
-      email: currentUser.email,
+      email: currentUser.value.email as string,
       photoFile: null,
       avatarParams: {
         url: ""
@@ -149,7 +150,7 @@ export default defineComponent({
       return false;
     })
 
-    const emailNotVerified = computed((): boolean => !store.state.User.currentUser.emailVerified);
+    const emailNotVerified = computed((): boolean => !currentUser.value.emailVerified);
 
     const passwordChanged = computed((): boolean => userInfo.newPassword != "");
 
@@ -168,7 +169,7 @@ export default defineComponent({
       userInfo.avatarParams.url = "";
     }
     const updatePassword = (): void => {
-      PasswordUpdate(currentUser, userInfo.newPassword).then((): void => {
+      PasswordUpdate(currentUser.value, userInfo.newPassword).then((): void => {
 
         store.commit("setNewNotification", newNotificationContent(NotificationType.PasswordChange))
         userInfo.newPassword = ""; // After update password reset input value.
@@ -183,7 +184,7 @@ export default defineComponent({
     const profileUpdate = async(): Promise<any> => {
       const infoToUpdate = {
         ...userInfo,
-        uid: currentUser.uid
+        uid: unicID.value
       }
       store.dispatch("updateUserInfo", infoToUpdate)
       .then((): void => notify({
@@ -209,7 +210,7 @@ export default defineComponent({
 
     const deleteAccountPopup = (): void => {
       showConfirmation.value = false;
-      DeleteAccountPopup(currentUser.uid)();
+      DeleteAccountPopup(unicID.value)();
     }
 
     const deleteAccountConfirm = (): void => {

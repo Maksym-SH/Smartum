@@ -4,8 +4,12 @@ import { useStore } from "vuex";
 import { ObjectHasValues } from "@/helpers/methods";
 import { NotifyAction } from "@/types";
 
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+
 const useNotifications = () => {
   const store = useStore();
+
+  const { unicID } = useCurrentUserInfo();
 
   const notificationList: INotificationItem<IServerDate | Date>[] = reactive([]); 
 
@@ -14,7 +18,7 @@ const useNotifications = () => {
   });
 
   const clearAll = (): void => {
-    notificationList.splice(0); // Clear all
+    notificationList.splice(0); // Clear all.
   }
 
   const notifyAction = (id: number, action: NotifyAction): void => {
@@ -57,7 +61,7 @@ const useNotifications = () => {
   watch(notificationList, (newCollection) => {
     if (newCollection) {
       store.dispatch("updateNotifications", {
-        unicID: store.state.User.currentUser.uid,
+        unicID: unicID.value,
         notifications: newCollection
       })
     }

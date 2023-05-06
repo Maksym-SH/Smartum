@@ -12,9 +12,12 @@ import {
 } from '@/interfaces';
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import useNewNotificationContent from "./useNotificationContent";
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
 
 const useConfiguration = () => {
   const store = useStore();
+
+  const { unicID } = useCurrentUserInfo();
 
   const showedNavigations = reactive<IAsideNavigationItem[]>([
     ...useAsideNavigation()
@@ -48,7 +51,7 @@ const useConfiguration = () => {
   const saveBackgroundAvatar = () => {
     store.dispatch("updateUserBackgroundAvatar", {
       bgAvatar: avatarParams.bgAvatar,
-      unicID: store.state.User.currentUser.uid
+      unicID: unicID.value
     }).then(() => {
       notify({
         title: "Фон вашего фото профиля был успешно обнолен!"
@@ -62,7 +65,7 @@ const useConfiguration = () => {
         ...additionalParams,
         asideBackgroundColor: asideBackgroundColor.value
       },
-      unicID: store.state.User.currentUser.uid
+      unicID: unicID.value
     }).then(() => {
       notify({
         title: "Настройки конфигурации были успешно сохранены!"
@@ -78,7 +81,7 @@ const useConfiguration = () => {
   const saveNavigationList = () => {
     store.dispatch("updateNavigateItem", {
       navigations: showedNavigations.map((item) => item.showed),
-      unicID: store.state.User.currentUser.uid
+      unicID: unicID.value
     }).then(() => {
       notify({
         title: "Список отображаемых страниц был успешно сохранен!"
@@ -92,26 +95,23 @@ const useConfiguration = () => {
   }
   // Get info.
   watchEffect(() => {
-    const unicID: string = store.state.User.currentUser?.uid;
-    if (unicID) {
-      store.dispatch("getUserConfiguration", unicID)
-      .then((configuration: Omit<IConfiguration, "navigations">) => {
-        
-        const navigationList: IAsideNavigationItem[] = store.state.Configuration.asideNavigate
-        showedNavigations.forEach((item, index) => item.showed = navigationList[index].showed);
+    store.dispatch("getUserConfiguration", unicID.value)
+    .then((configuration: Omit<IConfiguration, "navigations">) => {
+      
+      const navigationList: IAsideNavigationItem[] = store.state.Configuration.asideNavigate
+      showedNavigations.forEach((item, index) => item.showed = navigationList[index].showed);
 
-        // Set backgrond avatar.
-        const currentBackgrondAvatar = store.state.User.userInfo.avatarParams.bgAvatar;
-        avatarParams.bgAvatar = currentBackgrondAvatar;
+      // Set backgrond avatar.
+      const currentBackgrondAvatar = store.state.User.userInfo.avatarParams.bgAvatar;
+      avatarParams.bgAvatar = currentBackgrondAvatar;
 
-        // Set additional params.
-        asideBackgroundColor.value = configuration.asideBackgroundColor;
+      // Set additional params.
+      asideBackgroundColor.value = configuration.asideBackgroundColor;
 
-        additionalParams.showDeleteAccountButton = configuration.showDeleteAccountButton;
-        additionalParams.showCurrentDate = configuration.showCurrentDate;
-        additionalParams.showEmailConfirm = configuration.showEmailConfirm;
-      })
-    }
+      additionalParams.showDeleteAccountButton = configuration.showDeleteAccountButton;
+      additionalParams.showCurrentDate = configuration.showCurrentDate;
+      additionalParams.showEmailConfirm = configuration.showEmailConfirm;
+    })
   })
 
   return {

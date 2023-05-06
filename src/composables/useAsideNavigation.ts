@@ -1,10 +1,10 @@
 import { AsideNavigationItems, ModalContentType } from "@/types";
 import { IAsideNavigationItem } from "@/interfaces";
 import { Links } from "@/enums";
+import { notify } from "@kyvg/vue3-notification";
 
 import router from "@/router";
 import store from "@/store";
-import { notify } from "@kyvg/vue3-notification";
 
 export default function Navigation(): AsideNavigationItems {
   const DashboardTab: IAsideNavigationItem = {

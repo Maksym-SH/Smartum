@@ -48,6 +48,7 @@ import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
 import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
 import useNotifications from "@/composables/useNotifications";
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
 
 export default defineComponent({
   components: {
@@ -57,7 +58,9 @@ export default defineComponent({
   setup() {
     const router = useRoute();
     const store = useStore();
-   
+    
+    const { currentUser } = useCurrentUserInfo(); 
+
     const { notificationsSize, notificationList, notifyAction, clearAll } = useNotifications();
 
     const tabName: ILanguage = reactive({ eng: "", ru: "" });
@@ -67,7 +70,7 @@ export default defineComponent({
     const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
 
 
-    const currentUserPresent = computed((): boolean => ObjectNotEmpty(store.state.User.currentUser));
+    const currentUserPresent = computed((): boolean => ObjectNotEmpty(currentUser));
     const additionalUserInfoPresent = computed((): boolean => ObjectHasValues(store.state.User.userInfo))
     const showTabContent = computed((): boolean => currentUserPresent.value && additionalUserInfoPresent.value);
 

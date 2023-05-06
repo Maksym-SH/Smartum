@@ -33,14 +33,13 @@
 <script lang="ts">
 import { defineComponent, PropType, reactive } from 'vue';
 import { IPictureParams, INotificationItem, IServerDate } from '@/interfaces';
-
 import { NotificationActionType } from '@/enums';
-import { useStore } from 'vuex';
 
 import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
 import Avatar from '@/components/user/Avatar.vue';
 import router from '@/router';
 import useDateParseToString from "@/composables/useDateParse";
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
 
 export default defineComponent({
   emits:["deleteNotification", "readNotification"],
@@ -57,8 +56,7 @@ export default defineComponent({
     const image = reactive<IPictureParams>({
       url: props.params.image || "",
     })
-    const store = useStore();
-    const currentUser = store.state.User.currentUser;
+    const { currentUser } = useCurrentUserInfo();
 
     const deleteNotification = (id: number): void => {
       emit("deleteNotification", id);
@@ -76,7 +74,7 @@ export default defineComponent({
         //  router.push({ name: "Dashboard" });
         //  break;
         case NotificationActionType.Verify:
-          VerifyEmail(currentUser);
+          VerifyEmail(currentUser.value);
           break;
         case NotificationActionType.Profile: 
           router.push({ name: "Profile" });

@@ -18,15 +18,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+
 import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
-import userStore from "@/store/user";
-import { User } from '@firebase/auth';
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
 
 export default defineComponent({ 
   setup() {
     const verifyEmail = () => {
-      const currentUser: User = userStore.state.currentUser as User;
-      VerifyEmail(currentUser);
+      const { currentUser } = useCurrentUserInfo();
+      VerifyEmail(currentUser.value);
     }
     return {
       verifyEmail
