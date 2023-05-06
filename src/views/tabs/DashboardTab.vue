@@ -32,16 +32,17 @@
 
 <script lang="ts">
 import { defineComponent, computed, reactive, onMounted, ref } from "vue";
-import { useStore } from "vuex";
 import { IWorkingBoardItem } from "@/interfaces";
 import { notify } from "@kyvg/vue3-notification";
 import { NotificationType } from "@/enums";
+import { User } from "@firebase/auth";
 
 import LockAccess from "@/components/dashboard/NeedEmailConfirmation.vue";
 import EmptyList from "@/components/UI/EmptyList.vue";
 import CreateNewBoard from "@/components/dashboard/modals/CreateNew.vue";
 import BoardCard from "@/components/dashboard/BoardItem.vue";
 import newNotificationContent from "@/composables/useNotificationContent";
+import useStores from "@/composables/useStores";
 
 export default defineComponent({ 
   components: {
@@ -51,25 +52,23 @@ export default defineComponent({
     BoardCard
   },
   setup() {
-    const store = useStore();
+    const { notificationStore, dashboardStore, userStore, commonStore } = useStores();
 
-    const unicID = computed((): string => store.state.User.currentUser.uid);
+    const unicID = computed((): string => (userStore.currentUser as User).uid);
 
-    const showPreload = computed(() => store.state.loadingStatus);
+    const showPreload = computed(() => commonStore.loadingStatus);
 
     const allBoards = reactive<IWorkingBoardItem[]>([])
 
-    const showLockAccess = computed((): boolean => !store.state.User.currentUser.emailVerified);
+    const showLockAccess = computed((): boolean => !(userStore.currentUser as User).emailVerified);
     const emptyList = ref(false);
 
     const centeringContent = computed(() => (showLockAccess.value || emptyList.value) 
                                                                           && !showPreload.value);
 
     const createNewBoard = (board: IWorkingBoardItem): void => {
-      store.dispatch("createNewWorkingBoard", {
-        board: board,
-        unicID: unicID.value
-      }).then((newBoard: IWorkingBoardItem): void => {
+      dashboardStore.createNewWorkingBoard(board, unicID.value)
+      .then((newBoard: IWorkingBoardItem): void => {
         allBoards.push(newBoard);
 
         notify({ 
@@ -82,13 +81,14 @@ export default defineComponent({
 
         // Add new notification.
         const notification = newNotificationContent(NotificationType.DashboardCreate, newBoard.title);
-        store.commit("setNewNotification", notification);
+
+        notificationStore.setNewNotification(notification);
       })
     }
 
     // Get all boards.
     onMounted((): void => {
-      store.dispatch("getAllWorkingBoards", unicID.value)
+      dashboardStore.getAllWorkingBoards(unicID.value)
       .then((boards: IWorkingBoardItem[]) => {
         const noBoards = boards.length === 0;
 

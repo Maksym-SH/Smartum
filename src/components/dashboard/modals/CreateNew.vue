@@ -100,7 +100,7 @@ export default defineComponent({
 
     const showDialog = ref(false);
 
-    const newBoard = reactive<Partial<IWorkingBoardItem<Date>>>({
+    const newBoard = reactive<Partial<IWorkingBoardItem>>({
       title: "",
       background: Colors.GradientBluePink as string,
       tasks: [],

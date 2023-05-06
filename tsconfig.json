@@ -17,6 +17,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,

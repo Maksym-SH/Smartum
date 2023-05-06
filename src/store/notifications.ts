@@ -1,88 +1,102 @@
+import { ref } from "vue";
+import { defineStore } from "pinia";
+
 import { DataCollection } from "@/enums";
-import { ICreateNotifyList, INotificationItem, INotificationState, IUpdateNotifications } from "@/interfaces";
+import { INotification, IServerDate } from "@/interfaces";
 import { database } from "@/helpers/firebase/firebaseInitialize";
-import { ErrorCode, ModuleCtx } from "@/types";
+import { ErrorCode } from "@/types";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
+import useStores from "@/composables/useStores";
 
-export default {
-  state: {
-    newNotification: {}
-  },
-  mutations: {
-    setNewNotification(state: INotificationState, notification: INotificationItem<Date>): void {
-      state.newNotification = notification;
-    },
-    clearNewNotification(state: INotificationState): void {
-      state.newNotification = {}
-    }
-  },
-  actions: {
-    updateNotifications({ dispatch }: ModuleCtx<INotificationState>,
-                                                      data: IUpdateNotifications): Promise<void> {
+const useNotificationStore = defineStore("notification", () => {
+  const { commonStore } = useStores();
 
-      const notificationRef = doc(database, DataCollection.Notifications, data.unicID)
+  const newNotification = ref<INotification<IServerDate> | {}>({});
 
-      return new Promise((resolve, reject) => {
-        updateDoc(notificationRef, {
-          collection: data.notifications 
-        })
-        .then(() => {
-          dispatch("getAllNotifications", data.unicID)
-          .then((notifications) => {
-            resolve(notifications)
-          })
-          .catch((error: ErrorCode) => {
-            ShowErrorMessage(error);
-            reject(error);
-          })
-        })
+
+  const setNewNotification = (notification: INotification<Date>): void => {
+    newNotification.value = notification;
+  };
+  const clearNewNotification = (): void => {
+    newNotification.value = {}
+  };
+  const updateNotifications = (notifications: INotification<IServerDate | Date>[], unicID: string)
+                                                                  : Promise<INotification<IServerDate>[]> => {
+    const notificationRef = doc(database, DataCollection.Notifications, unicID)
+
+    return new Promise((resolve, reject) => {
+      updateDoc(notificationRef, {
+        collection: notifications 
       })
-    },
-    getAllNotifications(_: any, unicID: string): Promise<any> {
-      const profileRef = doc(database, DataCollection.Notifications, unicID);
-
-      return new Promise((resolve, reject) => {
-        getDoc(profileRef).then((response) => {
-          const notifications = response.data();
-          if (notifications) {
-            resolve(notifications.collection)
-          }
+      .then(() => {
+        getAllNotifications(unicID)
+        .then((notifications: INotification<IServerDate>[]) => {
+          resolve(notifications)
         })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error)
-        })
-      })
-    },
-    deleteNotificationList({ commit }: ModuleCtx<INotificationState>, unicID: string): Promise<void> {
-      const deleteNotificationList = doc(database, DataCollection.Notifications, unicID);
-
-      commit("setLoadingStatus", true);
-      return new Promise((resolve, reject) => {
-        deleteDoc(deleteNotificationList)
-        .then(() => resolve())
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error)
-        })
-        .finally(() => commit("setLoadingStatus", false))
-      })
-    },
-    createNotificationList({ commit }: ModuleCtx<INotificationState>, info: ICreateNotifyList): Promise<void> {
-      commit("setLoadingStatus", true);
-      return new Promise((resolve, reject) => {
-        setDoc(doc(database, DataCollection.Notifications, info.unicID), {
-          collection: [info.item]
-        })
-        .then(() => resolve())
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
           reject(error);
         })
-        .finally((): void => commit("setLoadingStatus", false))
-      })  
-    }
+      })
+    })
+  };
+  const getAllNotifications =(unicID: string): Promise<any> => {
+    const profileRef = doc(database, DataCollection.Notifications, unicID);
+
+    return new Promise((resolve, reject) => {
+      getDoc(profileRef).then((response) => {
+        const notifications = response.data();
+        if (notifications) {
+          resolve(notifications.collection)
+        }
+      })
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        reject(error)
+      })
+    })
+  };
+  const deleteNotificationList = (unicID: string): Promise<void> => {
+    const deleteNotificationList = doc(database, DataCollection.Notifications, unicID);
+
+    commonStore.setLoadingStatus(true);
+    return new Promise((resolve, reject) => {
+      deleteDoc(deleteNotificationList)
+      .then(() => resolve())
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        reject(error)
+      })
+      .finally(() => commonStore.setLoadingStatus(false))
+    })
+  };
+  const createNotificationList = (item: INotification<Date>, unicID: string): Promise<void> => {
+    commonStore.setLoadingStatus(true);
+    return new Promise((resolve, reject) => {
+      setDoc(doc(database, DataCollection.Notifications, unicID), {
+        collection: [ item ]
+      })
+      .then(() => resolve())
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        reject(error);
+      })
+      .finally((): void => commonStore.setLoadingStatus(false))
+    })  
   }
-}
+
+  return {
+    newNotification,
+    setNewNotification,
+    clearNewNotification,
+    updateNotifications,
+    deleteNotificationList,
+    createNotificationList,
+    getAllNotifications
+  }
+})
+
+
+export default useNotificationStore;

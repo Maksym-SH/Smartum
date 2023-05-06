@@ -18,7 +18,6 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from "vue";
-import { useStore } from "vuex";
 import { SelectElements } from "@/types";
 import { useContainerProps } from "./use/useProps";
 import { notify } from "@kyvg/vue3-notification";
@@ -29,6 +28,7 @@ import router from "@/router";
 import Avatar from "@/components/user/Avatar.vue";
 import Info from "@/components/user/Info.vue";
 import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   components: {
@@ -38,7 +38,7 @@ export default defineComponent({
   emits: ["user-menu-picked"],
   props: useContainerProps,
   setup(_, { emit }) {
-    const store = useStore();
+    const { userStore } = useStores();
 
     const { currentUser } = useCurrentUserInfo();
     const emailVerified = computed((): boolean => currentUser.value.emailVerified);
@@ -61,7 +61,7 @@ export default defineComponent({
       {
         title: "Выйти с аккаунта",
         callback: () => {
-          store.dispatch("userLogout")
+          userStore.userLogout()
           .then(() => {
             notify({
               title: "До скорого!"

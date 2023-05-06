@@ -1,82 +1,93 @@
-import { IDashboardState, IWorkingBoardItem, ICreateBoardParams } from "@/interfaces";
-import { ErrorCode, ModuleCtx } from "@/types";
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import { IWorkingBoardItem } from "@/interfaces";
+import { ErrorCode } from "@/types";
 import { database } from "@/helpers/firebase/firebaseInitialize"; 
 import { DataCollection } from "@/enums";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { NewObjectLink } from "@/helpers/methods";
 
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
+import useStores from "@/composables/useStores";
 
-export default {
-  state: {
-    allDashboards: []
-  },
-  mutations: {
-    setAllDashboard(state: IDashboardState, dashboards: IWorkingBoardItem[]): void {
-      state.allDashboards = dashboards;
-    },
-    addNewBoard(state: IDashboardState, item: IWorkingBoardItem): void {
-      state.allDashboards.push(item);
-    }
-  },
-  actions: {
-    createNewWorkingBoard({ state, commit }: ModuleCtx<IDashboardState>, data: ICreateBoardParams): Promise<IWorkingBoardItem<Date>> {
-      const dashboardRef = doc(database, DataCollection.Dashboard, data.unicID);
+const useDashboardStore = defineStore("dashboard", () => {
+  const { commonStore } = useStores();
 
-      commit("setLoadingStatus", true);
+  const allDashboards = ref<IWorkingBoardItem[]>([]);
 
-      return new Promise((resolve, reject) => {
-        getDoc(dashboardRef).then((docSnap) => {
-          if (docSnap.exists()) {
-            const currentCollectionDasboard = NewObjectLink(state.allDashboards);
-            currentCollectionDasboard.push(data.board);
 
-            updateDoc(dashboardRef, "collection", currentCollectionDasboard)
-            .then(() => {
-              commit("addNewBoard", data.board);
-              resolve(data.board);
-            })
-            .catch((error: ErrorCode) => {
-              ShowErrorMessage(error);
-              reject(error);
-            })
-            .finally(() => commit("setLoadingStatus", false))
-          }
-          else {
-            setDoc(doc(database, DataCollection.Dashboard, data.unicID), {
-              collection: [data.board]
-            })
-            .then(() => {
-              commit("addNewBoard", data.board);
-              resolve(data.board);
-            })
-            .catch((error: ErrorCode) => {
-              ShowErrorMessage(error);
-              reject(error);
-            })
-            .finally(() => commit("setLoadingStatus", false))
-          }
-        })
+  const setAllDashboard = (dashboards: IWorkingBoardItem[]): void => {
+    allDashboards.value = dashboards;
+  };
+  const addNewBoard = (item: IWorkingBoardItem): void => {
+    allDashboards.value.push(item);
+  };
+  const createNewWorkingBoard = (board: IWorkingBoardItem, unicID: string): Promise<IWorkingBoardItem> => {
+    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+
+    commonStore.setLoadingStatus(true);
+
+    return new Promise((resolve, reject) => {
+      getDoc(dashboardRef).then((docSnap) => {
+        if (docSnap.exists()) {
+          const currentCollectionDasboard = NewObjectLink(allDashboards.value);
+          currentCollectionDasboard.push(board);
+
+          updateDoc(dashboardRef, "collection", currentCollectionDasboard)
+          .then(() => {
+            addNewBoard(board);
+            resolve(board);
+          })
+          .catch((error: ErrorCode) => {
+            ShowErrorMessage(error);
+            reject(error);
+          })
+          .finally(() => commonStore.setLoadingStatus(false))
+        }
+        else {
+          setDoc(doc(database, DataCollection.Dashboard, unicID), {
+            collection: [board]
+          })
+          .then(() => { 
+            addNewBoard(board);
+            resolve(board);
+          })
+          .catch((error: ErrorCode) => {
+            ShowErrorMessage(error);
+            reject(error);
+          })
+          .finally(() => commonStore.setLoadingStatus(false))
+        }
       })
-    },
-    getAllWorkingBoards({ commit }: ModuleCtx<IDashboardState>, unicID: string): Promise<IWorkingBoardItem[]> {
-      const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+    })
+  };
+  const getAllWorkingBoards = (unicID: string): Promise<IWorkingBoardItem[]> => {
+    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
 
-      commit("setLoadingStatus", true);
-      return new Promise((resolve, reject) => {
-        getDoc(dashboardRef).then((dashboards) => {
-          const allDashboards = dashboards.data()?.collection;
-          if (allDashboards) {
-            commit("setAllDashboard", allDashboards);
-            resolve(allDashboards as IWorkingBoardItem[]);
-          }
-        })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error)
-        })
-        .finally(() => commit("setLoadingStatus", false))
+    commonStore.setLoadingStatus(true);
+    return new Promise((resolve, reject) => {
+      getDoc(dashboardRef).then((dashboards) => {
+        const allDashboards = dashboards.data()?.collection;
+        if (allDashboards) {
+          setAllDashboard(allDashboards);
+          resolve(allDashboards as IWorkingBoardItem[]);
+        }
       })
-    }
-  },
-}
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        reject(error)
+      })
+      .finally(() => commonStore.setLoadingStatus(false))
+    })
+  };
+
+  return {
+    allDashboards,
+     setAllDashboard,
+     addNewBoard,
+     createNewWorkingBoard,
+     getAllWorkingBoards
+  }
+})
+
+export default useDashboardStore;

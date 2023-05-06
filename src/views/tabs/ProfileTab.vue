@@ -96,7 +96,6 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, reactive, onMounted } from "vue";
-import { useStore } from "vuex";
 import { Length, NotificationType } from "@/enums";
 import { IUserInfo } from "@/interfaces";
 import { Confirmation, DeleteAccountPopup } from "@/helpers/methods";
@@ -111,6 +110,7 @@ import Card from "@/container/Card.vue";
 import newNotificationContent from "@/composables/useNotificationContent";
 import Hint from "@/components/UI/Hint.vue";
 import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   components: {
@@ -120,7 +120,8 @@ export default defineComponent({
     Hint
   },
   setup() {
-    const store = useStore();
+    const { userStore, configurationStore, notificationStore } = useStores();
+
     // User info.
     const { currentUser, unicID } = useCurrentUserInfo();
 
@@ -155,7 +156,7 @@ export default defineComponent({
     const passwordChanged = computed((): boolean => userInfo.newPassword != "");
 
     const showDeleteAccountButton = computed((): boolean => {
-      return store.state.Configuration.additionalParams.showDeleteAccountButton;
+      return configurationStore.additionalParams.showDeleteAccountButton;
     })
 
     const saveChangesButtonToFullScreen = computed(() => !showDeleteAccountButton.value);
@@ -170,8 +171,9 @@ export default defineComponent({
     }
     const updatePassword = (): void => {
       PasswordUpdate(currentUser.value, userInfo.newPassword).then((): void => {
+        const notification = newNotificationContent(NotificationType.PasswordChange);
 
-        store.commit("setNewNotification", newNotificationContent(NotificationType.PasswordChange))
+        notificationStore.setNewNotification(notification);
         userInfo.newPassword = ""; // After update password reset input value.
         profileUpdate();
       })
@@ -186,7 +188,7 @@ export default defineComponent({
         ...userInfo,
         uid: unicID.value
       }
-      store.dispatch("updateUserInfo", infoToUpdate)
+      userStore.updateUserInfo(infoToUpdate)
       .then((): void => notify({
         title: "Ваши данные были успешно обновлены!"
       }))
@@ -221,7 +223,7 @@ export default defineComponent({
     }
 
     onMounted((): void => {
-      const profileInfo = store.state.User.userInfo;  
+      const profileInfo = userStore.userInfo as Required<IUserInfo>;  
 
       userInfo.firstName = profileInfo.firstName;
       userInfo.lastName = profileInfo.lastName;

@@ -1,17 +1,18 @@
 import { watch, reactive, watchEffect, computed } from "vue";
-import { IServerDate, INotificationItem } from "@/interfaces";
-import { useStore } from "vuex";
+import { IServerDate, INotification } from "@/interfaces";
 import { ObjectHasValues } from "@/helpers/methods";
 import { NotifyAction } from "@/types";
+import { User } from "firebase/auth";
 
+import useStores from "./useStores";
 import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
 
 const useNotifications = () => {
-  const store = useStore();
+  const { commonStore, notificationStore, userStore }  = useStores();
 
   const { unicID } = useCurrentUserInfo();
 
-  const notificationList: INotificationItem<IServerDate | Date>[] = reactive([]); 
+  const notificationList: INotification<IServerDate | Date>[] = reactive([]); 
 
   const notificationsSize = computed(() => {
     return notificationList.length
@@ -39,31 +40,28 @@ const useNotifications = () => {
 
   // Get all notifications.
   watchEffect(() => {
-    const unicID = store.state.User.currentUser?.uid;
+    const unicID = (userStore.currentUser as User).uid;
     if (unicID && !ObjectHasValues(notificationList)) { // Get all if the list is initially empty.
-      store.commit("setLoadingStatus", true);
+      commonStore.setLoadingStatus(true);
 
-      store.dispatch("getAllNotifications", unicID)
+      notificationStore.getAllNotifications(unicID)
       .then((notifications) => {
         notificationList.push(...notifications)
       })
-      .finally(() => store.commit("setLoadingStatus", false))
+      .finally(() => commonStore.setLoadingStatus(false))
     }
   })
-  watch(() => store.state.Notifications.newNotification, (newNotification: INotificationItem<Date>): void => {
+  watch(() => notificationStore.newNotification, (newNotification): void => {
     if (ObjectHasValues(newNotification)) {
-      notificationList.push(newNotification);
-      store.commit("clearNewNotification");
+      notificationList.push(newNotification as INotification<IServerDate | Date>);
+      notificationStore.clearNewNotification();
     }
   })
 
   // Update database.
   watch(notificationList, (newCollection) => {
     if (newCollection) {
-      store.dispatch("updateNotifications", {
-        unicID: unicID.value,
-        notifications: newCollection
-      })
+      notificationStore.updateNotifications(newCollection, unicID.value)
     }
   })
 

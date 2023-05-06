@@ -1,270 +1,284 @@
+import { defineStore } from "pinia";
+import { ref } from "vue";
+
 import { getAuth, User } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { 
-  IUserCreated, 
-  IUserState, 
-  ICreateUser, 
-  IAvatarUpdate, 
-  IPictureParams, 
-  IUpdatePictureBG 
-} from "@/interfaces";
+import { IUserCreated, ICreateUser, IPictureParams, IUserInfo,} from "@/interfaces";
 
-import { ErrorCode, IUserFieldsUpdate, ModuleCtx } from "@/types"; 
+import { ErrorCode, IUserFieldsUpdate } from "@/types"; 
 import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"; 
+import { getStorage, ref as Refference, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"; 
 import { database } from "@/helpers/firebase/firebaseInitialize";
 import { DataCollection } from "@/enums";
 import { SetTheme } from "@/helpers/methods";
 
 import router from "@/router";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
+import useStores from "@/composables/useStores";
 
-export default {
-  state: {
-    currentUser: {},
-    userInfo: {
-      firstName: "",
-      lastName: "",
-      about: "",
-      phone: "",
-      avatarParams: {
-        url: "",
-        bgAvatar: ""
-      }
+const useUserStore = defineStore("user", () => {
+  const { commonStore, notificationStore, configurationStore } = useStores();
+
+  const storage = getStorage();
+
+  const currentUser = ref<User | {}>({});
+  const userInfo = ref<IUserCreated>({
+    firstName: "",
+    lastName: "",
+    about: "",
+    phone: "",
+    avatarParams: {
+      url: "",
+      bgAvatar: ""
     }
-  },
-  mutations: {
-    setCurrentUser(state: IUserState, user: User): void {
-      state.currentUser = user;
-    },
-    setUserInfo(state: IUserState, params: IUserCreated): void {
-      state.userInfo = params;
-    },
-    setBackgroundAvatar(state: IUserState, background: string): void {
-      state.userInfo.avatarParams.bgAvatar = background;
-    }
-  },
-  actions: {
-    createUserProfile({ commit }: ModuleCtx<IUserState>, info: ICreateUser): Promise<void> {
-      const unicID = info.uid; // Unic id for database field access.
+  })
 
-      commit("setLoadingStatus", true)
-      return new Promise((resolve, reject) => {
-        // Create new profile collection.
-        setDoc(doc(database, DataCollection.Profile, unicID), {
-            firstName: info.firstName,
-            lastName: info.lastName || "",
-            avatarParams: {
-              url: "",
-              bgAvatar: info.avatarParams.bgAvatar
-            },
-            about: "",
-            phone: "",
-        })
-        .then(() => resolve())
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error);
-        })
-        .finally(() => commit("setLoadingStatus", false));
-      })
-    },
-    async updateUserInfo({ state, commit, dispatch }: ModuleCtx<IUserState>,
-                                                   data: Required<IUserCreated>): Promise<void> {
-      const unicID = data.uid; // Unic id for database field access.
-      const profileRef = doc(database, DataCollection.Profile, unicID);
 
-      const { firstName, lastName, avatarParams, photoFile, about, phone }: IUserCreated = data;
+  const setCurrentUser = (user: User | {}): void => {
+    currentUser.value = user;
+  };
+  const setUserInfo = (params: IUserCreated): void => {
+    userInfo.value = params;
+  };
+  const setBackgroundAvatar = (background: string): void => {
+    userInfo.value.avatarParams.bgAvatar = background;
+  };
+  const createUserProfile = (info: Partial<ICreateUser>): Promise<void> => {
+    const unicID = info.uid as string; // Unic id for database field access.
 
-      const fieldsToUpdate: IUserFieldsUpdate = {
-        firstName,
-        lastName,
+    commonStore.setLoadingStatus(true)
+    return new Promise((resolve, reject) => {
+      // Create new profile collection.
+      setDoc(doc(database, DataCollection.Profile, unicID), {
+        firstName: info.firstName,
+        lastName: info.lastName || "",
         avatarParams: {
-          url: avatarParams.url,
-          bgAvatar: state.userInfo.avatarParams.bgAvatar
+          url: "",
+          bgAvatar: info.avatarParams?.bgAvatar
         },
-        about,
-        phone,
-      }
-
-      commit("setLoadingStatus", true);
-
-      // New upload image.
-      if (photoFile !== null) 
-      {
-        await dispatch("updateUserAvatar", {
-          file: photoFile,
-          uid: unicID
-        }).then((photo) => {
-          if(fieldsToUpdate.avatarParams) {
-            fieldsToUpdate.avatarParams.url = photo;
-          }
-        })
-      }
-      // Photo has been removed.
-      else if(!avatarParams.url && state.userInfo.avatarParams.url) { 
-        await dispatch("deleteUserAvatar", unicID)
-        .then(() => {
-          if (fieldsToUpdate.avatarParams) {
-            fieldsToUpdate.avatarParams.url = "";
-          }
-        })
-      }
-
-      return new Promise((resolve, reject) => {
-        updateDoc(profileRef, fieldsToUpdate).then(() => {
-          dispatch("getUserProfile").then(() => resolve())
-        })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          commit("setLoadingStatus", false);
-          reject(error);
-        })
-        .finally(() => commit("setLoadingStatus", false))
+        about: "",
+        phone: "",
       })
-    },
-    deleteUserProfile({ state, dispatch, commit }: ModuleCtx<IUserState>, unicID: string): Promise<void> {
-      commit("setLoadingStatus", true);
-
-      return new Promise((resolve, reject) => {
-        const deleteUserProfile = doc(database, DataCollection.Profile, unicID);
-        const currentUserAvatar = state.userInfo.avatarParams.url;
-
-        deleteDoc(deleteUserProfile).then(() => {
-          if (currentUserAvatar) {
-            dispatch("deleteUserAvatar", unicID)
-          }
-          dispatch("deleteNotificationList", unicID)
-          dispatch("deleteUserConfiguration", unicID);
-          resolve();
-        })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error);
-        })
-        .finally(() => commit("setLoadingStatus", false));
+      .then(() => resolve())
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        reject(error);
       })
-    },
-    getUserProfile({ state, commit, dispatch }: ModuleCtx<IUserState>): Promise<any> {
-      const unicID = state.currentUser!.uid; // Unic id for database field access.
+      .finally(() => commonStore.setLoadingStatus(false));
+    })
+  };
+  const updateUserInfo = async(data: IUserInfo): Promise<void> => {
+    const unicID = data.uid as string; // Unic id for database field access.
+    const profileRef = doc(database, DataCollection.Profile, unicID);
 
-      // Profile document by unicID in database. 
-      const profileRef = doc(database, DataCollection.Profile, unicID);
+    const { 
+      firstName, 
+      lastName, 
+      avatarParams, 
+      photoFile, 
+      about, 
+      phone 
+    }: IUserInfo = data;
 
-      commit("setLoadingStatus", true);
+    const fieldsToUpdate: IUserFieldsUpdate = {
+      firstName,
+      lastName,
+      avatarParams: {
+        url: avatarParams.url,
+        bgAvatar: userInfo.value.avatarParams.bgAvatar
+      },
+      about,
+      phone,
+    }
 
-      return new Promise((resolve, reject) => {
-        // Get profile info.
-        getDoc(profileRef).then(async(response) => {
-          const info = response.data();
-          if (info) {
-            // Get user avatar.
-            if (info.avatarParams.url) {
-              await dispatch("getUserAvatar", unicID)
-              .then((photo: string) => info.avatarParams.url = photo);
-            }
-            commit("setUserInfo", info);
-            resolve(info);
-          }
-        })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error);
-        })
-        .finally(() => commit("setLoadingStatus", false))
-      })
-    },
-    updateUserAvatar({ state, dispatch }: ModuleCtx<IUserState>, info: IAvatarUpdate):
-                                                                     Promise<string> | IPictureParams {
-      if (!info.file) return state.userInfo.avatarParams;
-
-      const unicID = state.currentUser.uid; // Unic id for database field access.
-
-      const storage = getStorage();
-      const storageRef = ref(storage, unicID);
-      return new Promise((resolve, reject) => {
-        if (info.file) {
-          uploadBytes(storageRef, info.file)
-          .then(() => {
-            // Get image url after upload.
-            dispatch("getUserAvatar", unicID).then((url) => resolve(url))
-          })
-          .catch((error: ErrorCode) => {
-            ShowErrorMessage(error);
-            reject(error);
-          })
+    commonStore.setLoadingStatus(true);
+    // New upload image.
+    if (photoFile !== null) 
+    {
+      await (updateUserAvatar(photoFile, unicID) as Promise<string>)
+      .then((photo: string) => {
+        if(fieldsToUpdate.avatarParams) {
+          fieldsToUpdate.avatarParams.url = photo;
         }
       })
-    },
-    updateUserBackgroundAvatar({ state, commit }: ModuleCtx<IUserState>, info: IUpdatePictureBG): Promise<void> {
-      const profileRef = doc(database, DataCollection.Profile, info.unicID);
-      
-      commit("setLoadingStatus", true);
-
-      return new Promise((resolve, reject) => {
-        updateDoc(profileRef, {
-          avatarParams: {
-            url: state.userInfo.avatarParams.url,
-            bgAvatar: info.bgAvatar,
-          }
-        }).then(() => {
-          resolve();
-          commit("setBackgroundAvatar", info.bgAvatar);
-        })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          commit("setLoadingStatus", false);
-          reject(error);
-        })
-        .finally(() => commit("setLoadingStatus", false))
-      })
-    },
-    deleteUserAvatar(_: any, unicID: string): Promise<void> {
-      const storage = getStorage();
-      const deleteAvatarRef = ref(storage, unicID);
-      return new Promise((resolve, reject) => {
-        deleteObject(deleteAvatarRef).then(() => {
-          resolve();
-        }).catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error)
-        })
-      })
-    },
-    getUserAvatar(_: any, unicID: string): Promise<string> {
-      const storage = getStorage();
-      const avatarRef = ref(storage, unicID);
-      return new Promise((resolve) => {
-        getDownloadURL(avatarRef).then((avatarParams) => {
-          resolve(avatarParams)
-        })
-      })
-    },
-    userLogout({ commit }: ModuleCtx<IUserState>): Awaited<void> {
-      getAuth().signOut().then(() => {
-        commit("setCurrentUser", {});
-        commit("setConfirmPopup", false);
-        commit("setUserInfo", {
-          firstName: "",
-          lastName: "",
-          about: "",
-          phone: "",
-          avatarParams: ""
-        });
-        // Set dark theme by default.
-        SetTheme("dark");
-        localStorage.removeItem("smartumTheme");
-
-        if (!router.currentRoute.value.meta.notAuthorized) {
-          router.push({ name: "SignIn" });
-          localStorage.removeItem("smartumToken");
+    }
+    // Photo has been removed.
+    else if(!avatarParams.url && userInfo.value.avatarParams.url) { 
+      await deleteUserAvatar(unicID).then(() => {
+        if (fieldsToUpdate.avatarParams) {
+          fieldsToUpdate.avatarParams.url = "";
         }
       })
-      .catch((error: ErrorCode) => notify({
-          title: "Произошла ошибка!",
-          text: String(error),
-        })
-      ).finally(() => commit("setLoadingStatus", false))
-    },
-  },
-}
+    }
+
+    return new Promise((resolve, reject) => {
+      updateDoc(profileRef, fieldsToUpdate).then(() => {
+        getUserProfile(unicID).then(() => resolve())
+      })
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        commonStore.setLoadingStatus(false);
+        reject(error);
+      })
+      .finally(() => commonStore.setLoadingStatus(false))
+    })
+  };
+  const deleteUserProfile = (unicID: string): Promise<void> => {
+    commonStore.setLoadingStatus(true);
+
+    return new Promise((resolve, reject) => {
+      const deleteUserProfile = doc(database, DataCollection.Profile, unicID);
+      const currentUserAvatar = userInfo.value.avatarParams.url;
+
+      deleteDoc(deleteUserProfile).then(() => {
+        if (currentUserAvatar) {
+          deleteUserAvatar(unicID)
+        }
+        notificationStore.deleteNotificationList(unicID);
+        configurationStore.deleteUserConfiguration(unicID);
+        resolve();
+      })
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        reject(error);
+      })
+      .finally(() => commonStore.setLoadingStatus(false));
+    })
+  };
+  const getUserProfile = (unicID: string): Promise<IUserCreated> => {
+    // Profile document by unicID in database. 
+    const profileRef = doc(database, DataCollection.Profile, unicID);
+
+    commonStore.setLoadingStatus(true);
+
+    return new Promise((resolve, reject) => {
+      // Get profile info.
+      getDoc(profileRef).then(async(response) => {
+        const info = response.data() as IUserCreated;
+        if (info) {
+          // Get user avatar.
+          if (info.avatarParams.url) {
+            await getUserAvatar(unicID)
+            .then((photo: string) => info.avatarParams.url = photo);
+          }
+          setUserInfo(info);
+          resolve(info);
+        }
+      })
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        reject(error);
+      })
+      .finally(() => commonStore.setLoadingStatus(false))
+    })
+  };
+  const updateUserAvatar = (file: File | null, unicID: string): Promise<string> | IPictureParams => {
+    if (!file) return userInfo.value.avatarParams;
+
+    const storageRef = Refference(storage, unicID);
+    return new Promise((resolve, reject) => {
+      uploadBytes(storageRef, file)
+      .then(() => {
+        // Get image url after upload.
+        getUserAvatar(unicID).then((url: string) => resolve(url))
+      })
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        reject(error);
+      })
+    })
+  };
+  const updateUserBackgroundAvatar = (bgAvatar: string, unicID: string): Promise<void> => {
+    const profileRef = doc(database, DataCollection.Profile, unicID);
+    
+    commonStore.setLoadingStatus(true);
+
+    return new Promise((resolve, reject) => {
+      updateDoc(profileRef, {
+        avatarParams: {
+          url: userInfo.value.avatarParams.url,
+          bgAvatar: bgAvatar,
+        }
+      }).then(() => {
+        resolve();
+        setBackgroundAvatar(bgAvatar);
+      })
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        commonStore.setLoadingStatus(false);
+        reject(error);
+      })
+      .finally(() => commonStore.setLoadingStatus(false))
+    })
+  };
+  const getUserAvatar = (unicID: string): Promise<string> => {
+    const storage = getStorage();
+    const avatarRef = Refference(storage, unicID);
+    return new Promise((resolve) => {
+      getDownloadURL(avatarRef).then((avatarParams) => {
+        resolve(avatarParams)
+      })
+    })
+  };
+  const deleteUserAvatar = (unicID: string): Promise<void> => {
+    const deleteAvatarRef = Refference(storage, unicID);
+    return new Promise((resolve, reject) => {
+      deleteObject(deleteAvatarRef).then(() => {
+        resolve();
+      }).catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+        reject(error)
+      })
+    })
+  };
+  const userLogout = async(): Promise<void> => {
+    return await getAuth().signOut().then(() => {
+      setCurrentUser({});
+
+      commonStore.setConfirmPopupVisibillity(false);
+
+      setUserInfo({
+        firstName: "",
+        lastName: "",
+        about: "",
+        phone: "",
+        avatarParams: {
+          url: "",
+          bgAvatar: ""
+        }
+      });
+      // Set dark theme by default.
+      SetTheme("dark");
+      localStorage.removeItem("smartumTheme");
+
+      if (!router.currentRoute.value.meta.notAuthorized) {
+        router.push({ name: "SignIn" });
+        localStorage.removeItem("smartumToken");
+      }
+    })
+    .catch((error: ErrorCode) => notify({
+        title: "Произошла ошибка!",
+        text: String(error),
+      })
+    ).finally(() => commonStore.setLoadingStatus(false))
+  }
+
+  return {
+    currentUser,
+    userInfo,
+    setCurrentUser,
+    setUserInfo,
+    setBackgroundAvatar,
+    createUserProfile,
+    updateUserInfo,
+    deleteUserProfile,
+    getUserProfile,
+    updateUserAvatar,
+    updateUserBackgroundAvatar,
+    deleteUserAvatar,
+    getUserAvatar,
+    userLogout
+  }
+})
+
+export default useUserStore;

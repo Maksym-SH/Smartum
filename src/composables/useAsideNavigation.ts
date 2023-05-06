@@ -4,9 +4,11 @@ import { Links } from "@/enums";
 import { notify } from "@kyvg/vue3-notification";
 
 import router from "@/router";
-import store from "@/store";
+import useStores from "./useStores";
 
 export default function Navigation(): AsideNavigationItems {
+  const { commonStore } = useStores();
+
   const DashboardTab: IAsideNavigationItem = {
     id: 0,
     showed: true,
@@ -111,14 +113,14 @@ export default function Navigation(): AsideNavigationItems {
         title:"Пользовательское соглашение",
         callback(): void {
           const termsOfUse: ModalContentType = "termsOfUse";
-          store.commit("setModalContentType", termsOfUse);
+          commonStore.setModalContentType(termsOfUse);
         }
       },
       {
         title: "Конфидециальность",
         callback(): void {
           const confidentiality: ModalContentType = "confidentiality";
-          store.commit("setModalContentType", confidentiality);
+          commonStore.setModalContentType(confidentiality);
         },
       }
     ]

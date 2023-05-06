@@ -105,15 +105,14 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from "vue";
-import { useStore } from "vuex";
 import { Numbers, Layout } from "@/enums";
 import { IAsideNavigationItem, IUserCreated } from "@/interfaces";
 import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
 
 import User from "@/components/user/Container.vue";
 import SwitchTheme from "@/components/UI/SwitchTheme.vue";
-
 import packageJson from 'package.json'
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   components: {
@@ -132,7 +131,7 @@ export default defineComponent({
   },
   emits: ["update:minimizeAside"],
   setup(props, { emit }) {
-    const store = useStore();
+    const { userStore, configurationStore } = useStores();
 
     const searchInput = ref("");
 
@@ -141,21 +140,21 @@ export default defineComponent({
     const defaultLoaderSize = 40;
 
     const asideBackgroundColor = computed((): string => {
-      return store.state.Configuration.additionalParams.asideBackgroundColor;
+      return configurationStore.additionalParams.asideBackgroundColor;
     })
 
     const showContent = computed((): boolean => {
-      return ObjectHasValues(store.state.User.userInfo) && 
-                ObjectNotEmpty(store.state.User.currentUser) && 
+      return ObjectHasValues(userStore.userInfo) && 
+                ObjectNotEmpty(userStore.currentUser) && 
                   ObjectNotEmpty(navigationList.value)
     });
     // AsideNavigate[2] - 2 on the list is notification navigation.
-    const notificationNavShowed = computed(() => store.state.Configuration.asideNavigate[2]?.showed); 
+    const notificationNavShowed = computed(() => configurationStore.asideNavigate[2]?.showed); 
 
     const showNotificationBadge = computed(() => 
                   props.notificationCount > 0 && props.minimizeAside && notificationNavShowed.value)
 
-    const userInfo = computed((): IUserCreated => store.state.User.userInfo);
+    const userInfo = computed((): IUserCreated => userStore.userInfo);
 
     const collapseToggle = (): void => setMinimizeValue(!minimize.value);
 
@@ -172,7 +171,7 @@ export default defineComponent({
     };
 
     const navigationList = computed((): IAsideNavigationItem[] => {
-      return store.state.Configuration.asideNavigate;
+      return configurationStore.asideNavigate;
     });
   
     const applicationVersion = `v ${ packageJson.version }`;

@@ -27,7 +27,7 @@
 
 
 <script lang="ts">
-import { IServerDate, IWorkingBoardItem } from '@/interfaces';
+import { IWorkingBoardItem } from '@/interfaces';
 import { defineComponent, PropType } from 'vue';
 
 import BoardImageResult from "@/components/dashboard/BoardImageResult.vue";
@@ -39,7 +39,7 @@ export default defineComponent({
   },
   props: {
     element: {
-      type: Object as PropType<IWorkingBoardItem<Date | IServerDate>>,
+      type: Object as PropType<IWorkingBoardItem>,
       required: true,
     }
   },

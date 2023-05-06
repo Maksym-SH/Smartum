@@ -33,10 +33,10 @@
 import { defineComponent, ref, PropType, computed, watch } from 'vue';
 import { IModalContent } from "@/interfaces";
 import { ModalContentType, ModalContentLanguage, ModalLanguageType } from "@/types";
-import { useStore } from 'vuex';
 
 import TermsOfUse from "@/helpers/content/TermsOfUse.json";
 import Confidentially from "@/helpers/content/Сonfidentiality.json";
+import useStores from '@/composables/useStores';
 
 export default defineComponent({
   props: {
@@ -46,7 +46,8 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const store = useStore();
+    const { commonStore } = useStores();
+    
     const dialog = ref(true);
     const switchLanguage = ref(false); // "Русский" by default.
     
@@ -58,11 +59,11 @@ export default defineComponent({
     })
 
     const closeModal = (): void => {
-      store.commit("setModalContentType", "");
+      commonStore.setModalContentType("");
     } 
 
     watch(dialog, (value) => {
-      if (!value) store.commit("setModalContentType", "");
+      if (!value) commonStore.setModalContentType("");
     })
 
     const currentLanguage = computed((): ModalLanguageType  => {

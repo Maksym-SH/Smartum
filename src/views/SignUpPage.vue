@@ -106,13 +106,13 @@ import * as emailValidator from "email-validator";
 import { IUserReg } from "@/interfaces";
 import { ModalContentType } from "@/types";
 import { Length } from "@/enums";
-import { useStore } from "vuex";
 
+import useStores from "@/composables/useStores";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 export default defineComponent({
   setup() {
-    const store = useStore();
+    const { commonStore } = useStores();
 
     const userData: IUserReg = reactive({
       firstName: "",
@@ -143,11 +143,11 @@ export default defineComponent({
 
     const showTermsOfUse = () => {
       const type: ModalContentType = "termsOfUse";
-      store.commit("setModalContentType", type);
+      commonStore.setModalContentType(type);
     }
     const showConfidentiality = () => {
       const type: ModalContentType = "confidentiality";
-      store.commit("setModalContentType", type);
+      commonStore.setModalContentType(type);
     }
 
     return {

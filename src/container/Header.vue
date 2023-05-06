@@ -19,10 +19,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { useStore } from "vuex";
 
 import Date from "@/components/date/DateTime.vue";
 import SwitchTheme from "@/components/UI/SwitchTheme.vue";
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   components: {
@@ -30,12 +30,12 @@ export default defineComponent({
     SwitchTheme
   },
   setup() {
-    const store = useStore();
+    const { configurationStore } = useStores();
 
     const searchInput = ref("");
 
     const showDateTemplate = computed((): boolean => {
-      return store.state.Configuration.additionalParams.showCurrentDate;
+      return configurationStore.additionalParams.showCurrentDate;
     })
 
     return {

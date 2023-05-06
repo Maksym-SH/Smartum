@@ -1,11 +1,9 @@
-import { INotificationItem } from "@/interfaces";
+import { INotification } from "@/interfaces";
 import { NotificationType, NotificationActionType } from "@/enums";
-import userStore from "@/store/user";
-import { User } from "firebase/auth";
 
-const useNewNotificationContent = (type: NotificationType, title?: string): INotificationItem<Date> | never => {
-  let currentContent: Partial<INotificationItem<Date>>;
-  
+const useNewNotificationContent = (type: NotificationType, title?: string): INotification<Date> | never => {
+  let currentContent: Partial<INotification<Date>>;
+
   switch(type) {
     case NotificationType.WelcomeText:
       currentContent = {
@@ -32,10 +30,9 @@ const useNewNotificationContent = (type: NotificationType, title?: string): INot
       }
       break;
     case NotificationType.EmailConfirm: 
-      const emailToConfirm = (userStore.state.currentUser as User).email;
       currentContent = {
         title: "Подтверждение адреса электронной почты",
-        description: `Сообщение с инструкциями для подтверждения учётной записи было выслано вам на электронный адрес ${ emailToConfirm }.`,
+        description: `Сообщение с инструкциями для подтверждения учётной записи было выслано вам на электронный адрес ${ title }.`,
         status: "not read",
         image: import.meta.env.BASE_URL + "images/notifyIcons/mail.svg",
         type: NotificationActionType.Default
@@ -54,7 +51,7 @@ const useNewNotificationContent = (type: NotificationType, title?: string): INot
   }
 
   return {
-    ...currentContent as Required<INotificationItem<Date>>,
+    ...currentContent as Required<INotification<Date>>,
     id: Date.now(),
     status: "not read",
     date: new Date()

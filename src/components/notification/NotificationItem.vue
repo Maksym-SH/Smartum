@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, reactive } from 'vue';
-import { IPictureParams, INotificationItem, IServerDate } from '@/interfaces';
+import { IPictureParams, INotification, IServerDate } from '@/interfaces';
 import { NotificationActionType } from '@/enums';
 
 import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
@@ -48,7 +48,7 @@ export default defineComponent({
   },
   props: {
     params: {
-      type: Object as PropType<INotificationItem<IServerDate>>,
+      type: Object as PropType<INotification<IServerDate>>,
       required: true
     }
   },

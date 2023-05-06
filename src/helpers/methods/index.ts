@@ -1,10 +1,10 @@
 import { IPopupParams } from "@/interfaces";
 import { getAuth } from "@firebase/auth";
 import { Theme } from "@/types";
-
-import store from "@/store";
 import { notify } from "@kyvg/vue3-notification";
 import { Colors } from "@/enums";
+
+import useStores from "@/composables/useStores";
 
 export const ObjectFull = (object: object): boolean => {
   return Object.values(object).every((item) => item);
@@ -28,7 +28,8 @@ export const NewObjectLink = <Type>(object: Type): Type => {
 }
 
 export const OpenPopup = (params: IPopupParams): void => { 
-  store.commit("setPopupParams", params);
+  const { commonStore } = useStores();
+  commonStore.setPopupParams(params);
 }
 
 export const SetTheme = (theme: Theme): void => {
@@ -67,7 +68,9 @@ export const GenerateRandomString = (length: number) => {
 
 let ConfirmCallback: Function;
 export const Confirmation = (toggle: boolean, callback?: Function | void): Promise<any> | void => {
-  store.commit("setConfirmPopup", toggle);
+  const { commonStore } = useStores();
+  commonStore.setConfirmPopupVisibillity(toggle);
+
   if (callback && toggle) {
     ConfirmCallback = callback;
   } 
@@ -77,6 +80,7 @@ export const Confirmation = (toggle: boolean, callback?: Function | void): Promi
 }
 
 export const DeleteAccountPopup = (uid: string, params?: Partial<IPopupParams>): Function => {
+  const { userStore } = useStores();
   const userUID: string = uid;
   const popupParams: Partial<IPopupParams> | null = params ?? null;
 
@@ -91,11 +95,11 @@ export const DeleteAccountPopup = (uid: string, params?: Partial<IPopupParams>):
         },
       },
       callback: (): void => {
-        store.dispatch("deleteUserProfile", userUID).then(() => {
-          getAuth().currentUser?.delete()
+        userStore.deleteUserProfile(userUID)
+        .then(() => { getAuth().currentUser?.delete()
           .then(() => {
-            store.dispatch("userLogout");
-            
+            userStore.userLogout();
+
             notify({
               title: "Ваш аккаунт был успешно удален!",
               text: "Вы можете авторизоваться другим аккаунтом либо создать новый."

@@ -48,19 +48,19 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useStore } from 'vuex';
 import { EmailAuthCredential, EmailAuthProvider, User } from "firebase/auth";
 import { Length } from '@/enums';
 import { computed } from '@vue/reactivity';
 import { Confirmation } from '@/helpers/methods';
 
 import firebaseAuth from '@/helpers/firebase/firebaseAuth';
+import useStores from '@/composables/useStores';
 
 export default defineComponent({
   setup() {
-    const store = useStore();
-    
-    const userInfo: User = store.state.User.currentUser;
+    const { commonStore, userStore } = useStores(); 
+
+    const userInfo: User = userStore.currentUser as User;
 
     const userEmail = userInfo.email;
     const password = ref("");
@@ -75,7 +75,7 @@ export default defineComponent({
           Confirmation(false);
         })
       }
-      else store.commit("setConfirmPopup", false);
+      else commonStore.setConfirmPopupVisibillity(false);
     }
     
     return {
@@ -148,6 +148,7 @@ export default defineComponent({
       justify-content: center;
       color: $color-white1;
       .c-button {
+        text-transform: none;
         min-width: 49% !important;
       }
     }

@@ -1,5 +1,4 @@
 import { watchEffect, reactive, ref, computed } from "vue";
-import { useStore } from "vuex";
 import { notify } from '@kyvg/vue3-notification';
 import { Colors, NotificationType } from '@/enums';
 import { UserName } from "@/types";
@@ -8,14 +7,17 @@ import {
   IAsideNavigationItem, 
   IConfiguration, 
   IConfigurationAdditional, 
-  IPictureParams 
+  IPictureParams, 
+  IUserInfo
 } from '@/interfaces';
+
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import useNewNotificationContent from "./useNotificationContent";
 import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import useStores from "./useStores";
 
 const useConfiguration = () => {
-  const store = useStore();
+  const { userStore, configurationStore, notificationStore } = useStores();
 
   const { unicID } = useCurrentUserInfo();
 
@@ -40,7 +42,7 @@ const useConfiguration = () => {
   const asideBackgroundColor= ref(Colors.Grey as string);
 
   const userName = computed((): UserName => {
-    const { firstName, lastName } = store.state.User.userInfo;
+    const { firstName, lastName } = userStore.userInfo as Required<IUserInfo>;
     return {
       firstName,
       lastName
@@ -49,10 +51,8 @@ const useConfiguration = () => {
 
   // Save card methods.
   const saveBackgroundAvatar = () => {
-    store.dispatch("updateUserBackgroundAvatar", {
-      bgAvatar: avatarParams.bgAvatar,
-      unicID: unicID.value
-    }).then(() => {
+    userStore.updateUserBackgroundAvatar(avatarParams.bgAvatar, unicID.value)
+    .then(() => {
       notify({
         title: "Фон вашего фото профиля был успешно обнолен!"
       })
@@ -60,49 +60,53 @@ const useConfiguration = () => {
   }
 
   const saveAdditional = () => {
-    store.dispatch("updateAdditionalParams", {
-      additional: {
-        ...additionalParams,
-        asideBackgroundColor: asideBackgroundColor.value
-      },
-      unicID: unicID.value
-    }).then(() => {
+    configurationStore.updateAdditionalParams({
+      ...additionalParams,
+      asideBackgroundColor: asideBackgroundColor.value
+    }, unicID.value)
+    .then(() => {
       notify({
         title: "Настройки конфигурации были успешно сохранены!"
       })
 
       if (!notificationAdded.value) {
-        store.commit("setNewNotification", useNewNotificationContent(NotificationType.ConfigurationChange));
+        const notification = useNewNotificationContent(NotificationType.ConfigurationChange);
+
+        notificationStore.setNewNotification(notification);
       }
       notificationAdded.value = true;
     })
   }
 
   const saveNavigationList = () => {
-    store.dispatch("updateNavigateItem", {
-      navigations: showedNavigations.map((item) => item.showed),
-      unicID: unicID.value
-    }).then(() => {
+    const navigations = showedNavigations.map((item) => item.showed);
+
+    configurationStore.updateNavigateItem(navigations, unicID.value)
+    .then(() => {
       notify({
         title: "Список отображаемых страниц был успешно сохранен!"
       })
 
       if (!notificationAdded.value) {
-        store.commit("setNewNotification", useNewNotificationContent(NotificationType.ConfigurationChange));
+        const notification = useNewNotificationContent(NotificationType.ConfigurationChange);
+
+        notificationStore.setNewNotification(notification);
       }
+
       notificationAdded.value = true;
     })
   }
+
   // Get info.
   watchEffect(() => {
-    store.dispatch("getUserConfiguration", unicID.value)
+    configurationStore.getUserConfiguration(unicID.value)
     .then((configuration: Omit<IConfiguration, "navigations">) => {
       
-      const navigationList: IAsideNavigationItem[] = store.state.Configuration.asideNavigate
+      const navigationList: IAsideNavigationItem[] = configurationStore.asideNavigate;
       showedNavigations.forEach((item, index) => item.showed = navigationList[index].showed);
 
       // Set backgrond avatar.
-      const currentBackgrondAvatar = store.state.User.userInfo.avatarParams.bgAvatar;
+      const currentBackgrondAvatar = userStore.userInfo.avatarParams.bgAvatar as Required<string>;
       avatarParams.bgAvatar = currentBackgrondAvatar;
 
       // Set additional params.

@@ -13,19 +13,19 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { useStore } from "vuex";
 import { EmailVerify, StatusVueIcon } from "@/types";
 import { useInfoProps } from "./use/useProps";
+import { User } from "@firebase/auth";
+
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   props: useInfoProps,
   setup() {
-    const store = useStore();
+    const { userStore, configurationStore } = useStores();
 
-    const emailVerified = computed((): boolean => store.state.User.currentUser.emailVerified);
-
-    const showVerifiedTemplate = computed((): Boolean => 
-                                            store.state.Configuration.additionalParams.showEmailConfirm);
+    const emailVerified = computed((): boolean => (userStore.currentUser as User).emailVerified);
+    const showVerifiedTemplate = computed((): boolean => configurationStore.additionalParams.showEmailConfirm);
 
     const userStatusText = computed((): EmailVerify => {
       if (emailVerified.value) return "Адрес подтверждён"

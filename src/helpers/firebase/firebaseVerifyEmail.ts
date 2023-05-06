@@ -4,16 +4,21 @@ import { ErrorCode } from "@/types";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 import ShowErrorMessage from "./firebaseErrorMessage";
 import { NotificationType, Numbers } from "@/enums";
-import store from "@/store";
+
+import useStores from "@/composables/useStores";
 
 const VerifyEmail = (userInfo: User): void => {
+  const { notificationStore, userStore } = useStores();
+
   sendEmailVerification(userInfo)
   .then(() => {
     notify({
       title: "Успешно!",
       text: "Сообщение для подтверждения было отправлено вам на электронный адрес!"
     })
-    store.commit("setNewNotification", useNewNotificationContent(NotificationType.EmailConfirm));
+    const notification = useNewNotificationContent(NotificationType.EmailConfirm, userInfo.email as string);
+
+    notificationStore.setNewNotification(notification);
 
     // Check email verify real time.
     const checkForVerifiedInterval: ReturnType<typeof setInterval> = setInterval(() => {
@@ -22,10 +27,11 @@ const VerifyEmail = (userInfo: User): void => {
           if (getAuth().currentUser && getAuth().currentUser?.emailVerified) {
             const emailVerified = getAuth().currentUser?.emailVerified;
 
-            store.commit("setCurrentUser", {
+            userStore.setCurrentUser({
               ...getAuth().currentUser,
               emailVerified 
             })
+
             clearInterval(checkForVerifiedInterval)
           }
         })

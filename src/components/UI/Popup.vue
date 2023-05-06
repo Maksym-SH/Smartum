@@ -43,12 +43,13 @@ import { ObjectFull } from '@/helpers/methods';
 import { IPopupParams } from '@/interfaces';
 import { PopupButtons } from "@/types";
 import { defineComponent, computed } from 'vue';
-import { useStore } from 'vuex';
+import useStores from '@/composables/useStores';
 
 export default defineComponent({
   setup() {
-    const store = useStore();
-    const params: IPopupParams = store.state.popupParams;
+    const { commonStore } = useStores();
+
+    const params: IPopupParams = commonStore.popupParams as IPopupParams;
 
     const showTemplate: boolean = ObjectFull(params);
 
@@ -68,7 +69,7 @@ export default defineComponent({
     })
 
     const ClosePopup = (): void => {
-      store.commit("setPopupParams", {})
+      commonStore.setPopupParams({})
     };
 
     const result = (result: boolean): void => {
@@ -138,6 +139,7 @@ export default defineComponent({
     justify-content: center;
     color: $color-white1;
     .c-button {
+      text-transform: none;
       width: 49%;
     }
   }

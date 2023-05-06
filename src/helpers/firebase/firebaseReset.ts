@@ -2,14 +2,16 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 import { ErrorCode } from "@/types";
 
-import store from "@/store";
+import useStores from "@/composables/useStores";
 import router from "@/router";
 import ShowErrorMessage from "./firebaseErrorMessage";
 
 const firebaseReset = (email: string): void => {
+  const { commonStore } = useStores();
+  
   if (!email) return;
 
-  store.commit("setLoadingStatus", true);
+  commonStore.setLoadingStatus(true);
 
   sendPasswordResetEmail(getAuth(), email)
     .then(() => {
@@ -26,7 +28,7 @@ const firebaseReset = (email: string): void => {
       }
     })
     .catch((error: ErrorCode) => ShowErrorMessage(error))
-    .finally(() => store.commit("setLoadingStatus", false));
+    .finally(() => commonStore.setLoadingStatus(false));
 };
 
 export default firebaseReset;

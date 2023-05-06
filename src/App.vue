@@ -21,13 +21,13 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { useStore } from "vuex";
 import { ObjectNotEmpty } from "./helpers/methods";
 import { ModalContentType } from "./types";
 
 import Popup from "@/components/UI/Popup.vue";
 import ConfirmationPopup from "@/components/UI/Confirmation.vue";
 import LongContentModal from "@/components/UI/LongContentModal.vue";
+import useStores from "./composables/useStores";
 
 export default defineComponent({
   components: {
@@ -36,13 +36,13 @@ export default defineComponent({
     LongContentModal
   },
   setup() {
-    const store = useStore();
+    const { commonStore } = useStores();
 
     return {
-      loadingStatus: computed((): boolean => store.state.loadingStatus),
-      showPopup: computed((): boolean  => ObjectNotEmpty(store.state.popupParams)),
-      showConfirmPopup: computed((): boolean => store.state.openConfirmPopup),
-      modalContentType: computed((): ModalContentType | "" => store.state.modalContentType)
+      loadingStatus: computed((): boolean => commonStore.loadingStatus),
+      showPopup: computed((): boolean  => ObjectNotEmpty(commonStore.popupParams)),
+      showConfirmPopup: computed((): boolean => commonStore.openConfirmPopup),
+      modalContentType: computed((): ModalContentType => commonStore.modalContentType)
     };
   },
 });

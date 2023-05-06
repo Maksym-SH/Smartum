@@ -4,7 +4,6 @@ import {
   ILanguage, 
   IError,
   IUserCreated, 
-  IRootState,
   IPopupParams,
   IAsideNavigationItem,
   IModalContent,
@@ -12,7 +11,6 @@ import {
 } from "@/interfaces/index";
 
 import { RouteRecordRaw } from "vue-router";
-import { ActionContext } from "vuex";
 
 // Components
 
@@ -56,7 +54,7 @@ export type OmitAsideNavigation = Omit<IAsideNavigationItem, "icon" | "notify" |
 
 export type AsideExpPanelNavigation = Required<OmitAsideNavigation>;
 
-export type ModalContentType = "termsOfUse" | "confidentiality";
+export type ModalContentType = "termsOfUse" | "confidentiality" | "";
 
 export type Variant = "info" | "danger" | "success";
 
@@ -81,12 +79,6 @@ export type NotifyAction = "deleteNotification" | "readNotification";
 export type UserName = Pick<IUserReg, "firstName" | "lastName">;
 
 export type EmptyListType = "notification" | "dashboard";
-
-// Store
-
-export type RootContext = ActionContext<IRootState, IRootState>;
-
-export type ModuleCtx<State> = ActionContext<State, IRootState>;
 
 // Router
 

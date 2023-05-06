@@ -2,7 +2,6 @@ import { Colors } from "@/enums";
 import { 
   OmitUserInfo, 
   AsideExpPanelNavigation, 
-  ModalContentType, 
   NotificationStatus,
   NotificationCategory,
   ButtonVariant
@@ -94,16 +93,16 @@ export interface IBackgroundDashboard {
   photos: IBackgroundPhotos;
   gradients: IBackgroundGradient;
 };
-export interface IWorkingBoardItem<Type = IServerDate> {
+export interface IWorkingBoardItem {
   title: string;
   background: string;
   tasks: any[];
-  dateOfCreation: Type;
+  dateOfCreation: IServerDate | Date;
   joinCode: string;
   members: number;
 }
 export interface ICreateBoardParams {
-  board: IWorkingBoardItem<Date>,
+  board: IWorkingBoardItem,
   unicID: string;
 }
 
@@ -137,15 +136,12 @@ export interface IUserInfo extends Omit<IUserReg, "password"> {
   avatarParams: IPictureParams;
   emailVerified?: boolean;
   newPassword: string;
+  uid?: string;
 }
 export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
   uid: string;
 }
-export interface IAvatarUpdate {
-  file: File | null;
-  uid: string;
-}
-export interface INotificationItem<T> {
+export interface INotification<T> {
   id: number;
   title: string;
   status: NotificationStatus;
@@ -154,14 +150,6 @@ export interface INotificationItem<T> {
   description: string;
   type: NotificationCategory;
 }
-export interface IUpdateNotifications {
-  notifications: INotificationItem<IServerDate>[];
-  unicID: string;
-}
-export interface ICreateNotifyList {
-  unicID: string;
-  item: INotificationItem<Date>;
-}
 export interface  IConfiguration {
   navigations: string[];
   showEmailConfirm: boolean;
@@ -169,18 +157,14 @@ export interface  IConfiguration {
   showCurrentDate: boolean;
   showDeleteAccountButton: boolean;
 }
+export interface IConfigurationResponse extends Omit<IConfiguration, 'navigations'> {
+  navigationsShowValues: boolean[]
+}
 export interface IConfigurationAdditional {
   showEmailConfirm: boolean;
   showCurrentDate: boolean; // Time and date in app header.
   showDeleteAccountButton: boolean;
-}
-export interface IAdditionalUpdate {
-  additional: IConfigurationAdditional;
-  unicID: string;
-}
-export interface INavigationListUpdate {
-  navigations: IAsideNavigationItem[];
-  unicID: string;
+  asideBackgroundColor?: string;
 }
 
 // Response
@@ -193,13 +177,6 @@ export interface IUserResponse {
   accessToken?: string,
   displayName: string | null;
 }
-
-// Store
-export interface IUserState {
-  currentUser: User;
-  openConfirmPopup: boolean;
-  userInfo: IUserCreated;
-}
 export interface IUserCreated {
   firstName: string;
   lastName?: string;
@@ -208,28 +185,6 @@ export interface IUserCreated {
   avatarParams: IPictureParams;
   photoFile?: File;
   uid?: string;
-}
-export interface IRootState {
-  loadingStatus: boolean;
-  popupParams: IPopupParams | {};
-  openConfirmPopup: boolean;
-  modalContentType: ModalContentType | "";
-}
-
-// Notification state.
-export interface INotificationState {
-  newNotification: INotificationItem<IServerDate> | {};
-}
-
-// Configuration state.
-export interface IConfigState {
-  asideNavigate: IAsideNavigationItem[];
-  additionalParams: Omit<IConfiguration, "navigations">;
-}
-
-// Dashboard state.
-export interface IDashboardState {
-  allDashboards: IWorkingBoardItem<Date | IServerDate>[]; 
 }
 
 // Router

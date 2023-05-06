@@ -9,7 +9,7 @@ import {
 } from "firebase/auth";
 
 import { 
-  INotificationItem,
+  INotification,
   IUserAuth, 
   IUserLogin, 
   IUserReg, 
@@ -21,17 +21,19 @@ import { GenerateLightColorHexFormat } from "@/helpers/methods";
 import { NotificationType } from "@/enums";
 import { notify } from "@kyvg/vue3-notification";
 
-import store from "@/store";
 import router from "@/router";
 import ShowErrorMessage from "./firebaseErrorMessage";
 import notificationContent from "@/composables/useNotificationContent";
+import useStores from "@/composables/useStores";
 
 const firebaseAuth = (): IUserAuth => {
+  const { commonStore, userStore, notificationStore, configurationStore } = useStores()
+
   const useAuth = {
     signUp: (userData: IUserReg, validate: boolean): void => {
       if (!validate) return;
 
-      store.commit("setLoadingStatus", true);
+      commonStore.setLoadingStatus(true);
 
       createUserWithEmailAndPassword(getAuth(), userData.email, userData.password)
         .then(async (response) => {
@@ -43,7 +45,7 @@ const firebaseAuth = (): IUserAuth => {
           }
 
           if (currentUser) {
-            store.dispatch("createUserProfile", {
+            userStore.createUserProfile({
               uid: currentUser.uid,
               firstName: userData.firstName,
               lastName: userData.lastName,
@@ -53,14 +55,12 @@ const firebaseAuth = (): IUserAuth => {
               }
             })
 
-            const confirmEmailNotify: INotificationItem<Date> = notificationContent(NotificationType.WelcomeText);
-            // Create user notifications field in database.
-            store.dispatch("createNotificationList", {
-              unicID: currentUser.uid,
-              item: confirmEmailNotify
-            });
+            const notification: INotification<Date> = notificationContent(NotificationType.WelcomeText);
+
+            notificationStore.createNotificationList(notification, currentUser.uid);
+
             // Create user configuration field in database.
-            store.dispatch("createUserConfiguration", currentUser.uid);
+            configurationStore.createUserConfiguration(currentUser.uid);
           }
 
           notify({
@@ -68,17 +68,17 @@ const firebaseAuth = (): IUserAuth => {
             type: "success",
           });
 
-          store.commit("setCurrentUser", getAuth().currentUser);
+          userStore.setCurrentUser(getAuth().currentUser as User);
           router.push({ name: "Notifications" });
         })
         .catch((error: ErrorCode): void => ShowErrorMessage(error))
-        .finally((): void => store.commit("setLoadingStatus", false));
+        .finally((): void => commonStore.setLoadingStatus(false));
     },
 
     signIn: (userData: IUserLogin, validate: boolean): void => {
       if (!validate) return;
 
-      store.commit("setLoadingStatus", true);
+      commonStore.setLoadingStatus(true);
       signInWithEmailAndPassword(getAuth(), userData.email, userData.password)
         .then((response) => {
           const user: IUserResponse = response.user;
@@ -87,7 +87,7 @@ const firebaseAuth = (): IUserAuth => {
             localStorage.setItem("smartumToken", user.accessToken);
           }
 
-          store.commit("setCurrentUser", getAuth().currentUser);
+          userStore.setCurrentUser(getAuth().currentUser as User);
           notify({
             title: "Вы успешно вошли в аккаунт.",
             type: "success",
@@ -95,10 +95,10 @@ const firebaseAuth = (): IUserAuth => {
           router.push({ name: "Home" });
         })
         .catch((error): void => ShowErrorMessage(error))
-        .finally((): void => store.commit("setLoadingStatus", false));
+        .finally((): void => commonStore.setLoadingStatus(false));
     },
     reauthorization:(userInfo: User, credential: EmailAuthCredential): Promise<UserCredential> =>  {
-      store.commit("setLoadingStatus", true);
+      commonStore.setLoadingStatus(true);
 
       return new Promise((resolve, reject) => {
         reauthenticateWithCredential(userInfo, credential)
@@ -107,7 +107,7 @@ const firebaseAuth = (): IUserAuth => {
           ShowErrorMessage(error);
           reject(error);
         })  
-        .finally(() => store.commit("setLoadingStatus", false));
+        .finally(() => commonStore.setLoadingStatus(false));
       })
     }
   };

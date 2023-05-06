@@ -1,11 +1,13 @@
 import { User, updatePassword } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 
-import store from "@/store";
+import useStores from "@/composables/useStores";
 import ShowErrorMessage from "./firebaseErrorMessage";
 
 export const PasswordUpdate = (user: User, password: string): Promise<void> => {
-  store.commit("setLoadingStatus", true);
+  const { commonStore } = useStores();
+
+  commonStore.setLoadingStatus(true);
   return new Promise((resolve, reject) => {
     updatePassword(user, password)
     .then(() => {
@@ -18,7 +20,7 @@ export const PasswordUpdate = (user: User, password: string): Promise<void> => {
       ShowErrorMessage(error);
       reject();
     })
-    .finally(() => store.commit('setLoadingStatus', false))
+    .finally(() => commonStore.setLoadingStatus(false))
   })
 }
 

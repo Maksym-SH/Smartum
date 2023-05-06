@@ -40,12 +40,12 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue';
 import { NotifyAction } from "@/types";
-import { IServerDate, INotificationItem } from '@/interfaces';
-import { useStore } from 'vuex';
+import { IServerDate, INotification } from '@/interfaces';
 import { Colors } from '@/enums';
 
 import NotificationItem from '@/components/notification/NotificationItem.vue';
 import NotificationEmptyList from "@/components/UI/EmptyList.vue";
+import useStores from '@/composables/useStores';
 
 export default defineComponent({
   emits:["readNotification", "deleteNotification", "clearAllNotifications"],
@@ -55,14 +55,15 @@ export default defineComponent({
   },
   props: {
     notificationList: {
-      type: Array as PropType<INotificationItem<IServerDate>[]>,
+      type: Array as PropType<INotification<IServerDate>[]>,
       required: true,
     }
   },
   setup(props, { emit }) {
-    const store = useStore();
+    const { commonStore } = useStores();
 
     const showList = computed((): boolean => props.notificationList.length > 0);
+    const showLoading = computed((): boolean => commonStore.loadingStatus);
 
     const notifyAction = (id: number, action: NotifyAction): void => {
       const foundNotification = props.notificationList.find((notify) => notify.id === id);
@@ -79,7 +80,7 @@ export default defineComponent({
       clearAll,
       notifyAction,
       showList,
-      showLoading: computed(() => store.state.loadingStatus),
+      showLoading,
       Colors
     }
   }

@@ -37,7 +37,6 @@
 
 <script lang="ts">
 import { defineComponent, watch, reactive, ref, computed } from "vue";
-import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { Layout } from "@/enums";
 import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
@@ -49,6 +48,7 @@ import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
 import useNotifications from "@/composables/useNotifications";
 import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   components: {
@@ -56,8 +56,9 @@ export default defineComponent({
     cAside,
   },
   setup() {
+    const { commonStore, userStore } = useStores(); 
+
     const router = useRoute();
-    const store = useStore();
     
     const { currentUser } = useCurrentUserInfo(); 
 
@@ -71,7 +72,7 @@ export default defineComponent({
 
 
     const currentUserPresent = computed((): boolean => ObjectNotEmpty(currentUser));
-    const additionalUserInfoPresent = computed((): boolean => ObjectHasValues(store.state.User.userInfo))
+    const additionalUserInfoPresent = computed((): boolean => ObjectHasValues(userStore.userInfo))
     const showTabContent = computed((): boolean => currentUserPresent.value && additionalUserInfoPresent.value);
 
 
@@ -115,7 +116,7 @@ export default defineComponent({
       toggleAsideVisible,
       clearAll,
       notifyAction,
-      showLoading: computed(() => store.state.loadingStatus),
+      showLoading: computed(() => commonStore.loadingStatus),
     };
   },
 });

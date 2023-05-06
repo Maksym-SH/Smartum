@@ -1,7 +1,9 @@
 import { createApp } from "vue";
+import { createPinia } from 'pinia'
+
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
+import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 
 // Firebase initilialize
 import { firebaseApp } from "./helpers/firebase/firebaseInitialize";
@@ -15,11 +17,6 @@ import Checkbox from "@/components/UI/Checkbox.vue";
 import Loader from "@/components/UI/Loader.vue";
 import Select from "@/components/UI/Select.vue";
 import ExpPanel from "@/components/UI/ExpansionPanel.vue";
-
-
-
-import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
-refreshUserInfo();
 
 // Vuetify
 import { createVuetify } from "vuetify";
@@ -37,6 +34,8 @@ const vuetify = createVuetify({
   components,
   directives,
 });
+
+const pinia = createPinia();
 const app = createApp(App);
 
 // Global components
@@ -50,8 +49,11 @@ app.component("ExpPanel", ExpPanel);
 
 // Plugins
 app.use(router);
-app.use(store);
+app.use(pinia);
 app.use(vuetify);
 app.use(notifications);
 
 app.mount("#app");
+
+
+refreshUserInfo();

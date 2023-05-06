@@ -48,7 +48,7 @@ export default defineComponent({
     const initials = computed((): string | null => {
       if(props.firstName) {
         const firstNameInitial = props.firstName[0].toUpperCase();
-        const lastNameInitial = props.lastName[0].toUpperCase() ?? "";
+        const lastNameInitial = props.lastName[0]?.toUpperCase() ?? "";
         
         return firstNameInitial + lastNameInitial;
       }
