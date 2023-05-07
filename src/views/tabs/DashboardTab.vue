@@ -161,11 +161,12 @@ export default defineComponent({
       grid-template-columns: repeat(2, 49%);
     }
   }
-  @include mobile(max) {
+  @include tablet(max) {
     &__cards {
       grid-template-columns: 1fr;
     }
-    @include mobile(max) {
+  }
+  @include tablet(max) {
     height: 100%;
     padding-bottom: 45px;
     &__container {
@@ -176,13 +177,17 @@ export default defineComponent({
       position: fixed;
       bottom: 10px;
       justify-content: center;
-      width: calc(100% - 25px);
+      width: calc(100% - 45px);
 
       :deep(.v-btn) {
         width: 100% !important;
       }
     }
   }
+  @include mobile(max) {
+    &__content--create-new {
+      width: calc(100% - 20px);
+    }
   }
 }
 </style>

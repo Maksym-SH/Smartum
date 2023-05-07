@@ -123,7 +123,7 @@ export default defineComponent({
       }
     }
   }
-  @include mobile(max) {
+  @include tablet(max) {
     height: 100%; 
     min-height: 300px;
     &__window {

@@ -392,6 +392,7 @@ export default defineComponent({
           max-width: none;
         }
         .btn-save {
+          order: 2;
           &.full-width-mobile {
             width: 100%;
             max-width: 400px;

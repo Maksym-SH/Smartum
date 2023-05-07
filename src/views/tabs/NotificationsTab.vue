@@ -107,7 +107,7 @@ export default defineComponent({
     justify-content: flex-end;
     color: $color-white1;
   }
-  @include mobile(max) {
+  @include tablet(max) {
     height: 100%;
     padding-bottom: 45px;
     &__container {
@@ -118,11 +118,16 @@ export default defineComponent({
       position: fixed;
       bottom: 10px;
       justify-content: center;
-      width: calc(100% - 25px);
+      width: calc(100% - 45px);
 
       .v-btn {
         width: 100%;
       }
+    }
+  }
+  @include mobile(max) {
+    &__filters {
+      width: calc(100% - 25px);
     }
   }
 }

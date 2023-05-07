@@ -27,8 +27,8 @@
             src="/images/icons/logo.svg" alt="Logo" />
         </div>
       </div>
-      <div class="sign-up__window--content content">
-        <h2 class="sign-up__window--content-title">
+      <div class="sign-up__window_content content">
+        <h2 class="sign-up__window_content-title">
           Создание аккаунта
         </h2>
         <form @submit.prevent="submitForm" class="sign-up__window-form-inputs">
@@ -172,6 +172,7 @@ export default defineComponent({
       position: relative;
       background-color: $color-dark-blue;
       overflow: hidden;
+      min-width: 385px;
       height: 611px;
       padding: 65px 30px 20px 30px;
       color: $color-white3;
@@ -213,7 +214,7 @@ export default defineComponent({
         }
       }
     }
-    &--content {
+    &_content {
       width: 60%;
       padding: 20px;
       color: $color-white3;
@@ -263,19 +264,19 @@ export default defineComponent({
       &--welcome {
         display: none;
       }
-      &--content {
+      &_content {
         width: 100%;
       }
     }
   }
-  @include mobile(max) {
+  @include tablet(max) {
     height: 100%;
     min-height: 660px; 
     &__window {
       margin: 0;
       width: 100%;
       height: 100%;
-      &--content {
+      &_content {
         border-radius: 0;
         min-height: 100%;
         .content__swap-type-entry {
@@ -285,8 +286,10 @@ export default defineComponent({
         .sign-up__window-description {
           margin-top: 0;
           margin-bottom: 15px;
-          font-size: 11px;
-          line-height: 22px;
+          max-width: 80%;
+          min-width: 300px;
+          font-size: 12px;
+          line-height: 17px;
         }
       }
       &-form-inputs {
