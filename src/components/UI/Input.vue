@@ -188,12 +188,12 @@ export default defineComponent({
     &:-webkit-autofill,
     &:-webkit-autofill:hover, 
     &:-webkit-autofill:focus {
-      border: 1px solid $color-green;
+      border: 1px solid $color-blue;
       border-radius: 4px;
       -webkit-text-fill-color: var(--color-text);
       -webkit-box-shadow: 0 0 0 1000px var(--color-background) inset;
       & + .label {
-        color: $color-green !important;
+        color: $color-blue !important;
       }
     }
 
