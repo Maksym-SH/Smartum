@@ -2,7 +2,7 @@
   <div 
     class="image-example" 
     @click="selectExample"
-    :style="{ 'width': width + 'px', 'background': background }">
+    :style="[size, { 'background': background }]">
     <img 
       v-if="image" 
       :src="image"
@@ -15,7 +15,8 @@
 
 <script lang="ts">
 import { Colors } from "@/enums";
-import { defineComponent, PropType } from 'vue';
+import { computed } from "@vue/reactivity";
+import { CSSProperties, defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   emits: ["select"],
@@ -28,18 +29,30 @@ export default defineComponent({
       type: Number,
       default: 64
     },
+    height: {
+      type: Number,
+      default: 32
+    },
     background: {
-      type: String as PropType<Colors>,
+      type: String as PropType<Colors | string>,
       default: ""
     }
   },
   setup(props, { emit }) {
+    const size = computed((): CSSProperties => {
+      return {
+        width: props.width + "px",
+        height: props.height + "px"
+      }
+    })
+
     const selectExample = () => {
       const emitTarget = props.background ? props.background : props.image;
       emit("select", emitTarget);
     }
 
     return {
+      size,
       selectExample
     }
   }
@@ -49,7 +62,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .image-example {
-  height: 32px;
   max-width: 80px;
   border-radius: 4px;
   cursor: pointer;

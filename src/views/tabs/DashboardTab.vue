@@ -39,7 +39,7 @@ import { User } from "@firebase/auth";
 
 import LockAccess from "@/components/dashboard/NeedEmailConfirmation.vue";
 import EmptyList from "@/components/UI/EmptyList.vue";
-import CreateNewBoard from "@/components/dashboard/modals/CreateNew.vue";
+import CreateNewBoard from "@/components/dialogs/CreateNewBoard.vue";
 import BoardCard from "@/components/dashboard/BoardItem.vue";
 import newNotificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";

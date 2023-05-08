@@ -22,6 +22,8 @@ export type WelcomeText = "Добрый день" | "Добрый вечер";
 
 export type EmailVerify = "Адрес подтверждён" | "Адрес не подтверждён";
 
+export type ColorThemeText = "Тёмный" | "Светлый";
+
 export type Icon = "moon" | "sun";
 
 export type StatusVueIcon = "mdi-email-check" | "mdi-email-alert";

@@ -412,7 +412,7 @@ export default defineComponent({
   }
   @include mobile(max) {
     &__logo {
-      max-height: 64px;
+      min-height: 63px;
     }
     &__user {
       min-height: 89px;

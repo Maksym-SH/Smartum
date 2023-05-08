@@ -87,6 +87,8 @@ export enum Colors {
   Danger="#f0483e",
   Info="#21A8F4",
   Grey="#283342",
+  Black="#000000",
+  White="#ffffff",
   // Gradients
   GradientBlue="#020024 linear-gradient(90deg, #020024 0%, #090979 25%, #00d4ff 100%)",
   GradientBluePink="#00edff linear-gradient(90deg, #00edff 29%, #d700f7 100%)",

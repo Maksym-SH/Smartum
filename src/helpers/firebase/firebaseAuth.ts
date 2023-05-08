@@ -17,7 +17,7 @@ import {
 } from "@/interfaces";
 
 import { ErrorCode } from "@/types";
-import { GenerateLightColorHexFormat } from "@/helpers/methods";
+import { GenerateColorHexFormat } from "@/helpers/methods";
 import { NotificationType } from "@/enums";
 import { notify } from "@kyvg/vue3-notification";
 
@@ -51,7 +51,7 @@ const firebaseAuth = (): IUserAuth => {
               lastName: userData.lastName,
               avatarParams: {
                 url: "",
-                bgAvatar: GenerateLightColorHexFormat()
+                bgAvatar: GenerateColorHexFormat('light')
               }
             })
 

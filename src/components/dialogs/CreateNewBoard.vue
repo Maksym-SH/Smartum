@@ -14,7 +14,7 @@
         <v-toolbar color="primary">
           <h4 class="v-card-header__title">Создание новой доски</h4>
         </v-toolbar>
-        <form @submit.prevent="createNewBoard">
+        <form class="v-card__form" @submit.prevent="createNewBoard">
           <v-card-text>
             <div class="v-card__wrapper">
               <BoardImageResult 
@@ -85,7 +85,7 @@ import { Colors, Length, Numbers } from '@/enums';
 import { GenerateRandomString } from "@/helpers/methods";
 
 import useDashboardItemBackgroundTemplate from '@/composables/useDashboardItemBackground';
-import ImageBackgroundExample from '@/components/dashboard/ImageBackgroundExample.vue';
+import ImageBackgroundExample from '@/components/UI/BackgroundItem.vue';
 
 
 export default defineComponent({
@@ -183,10 +183,29 @@ export default defineComponent({
   }
   
   @include mobile(max) {
+    :deep(.v-overlay__content) {
+      max-width: 100%;
+      max-height: 100%;
+      width: 100% !important;
+      height: 100%;
+      margin: 0;
+    }
     .v-card {
+      height: 100%;
       &__wrapper {
         display: flex;
+        margin: 0 auto;
+        max-width: 370px;
         flex-direction: column;
+      }
+      &__form {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
+      &__footer-action {
+        margin-top: auto;
       }
     }
   }

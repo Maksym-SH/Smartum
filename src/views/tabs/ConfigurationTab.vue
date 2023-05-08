@@ -67,10 +67,13 @@
                 </div>
                 <div class="card-info__change-background-avatar--params">
                   <h5>Изменить цвет</h5>
-                  <ColorPalette v-model="avatarParams.bgAvatar" />
+                  <ColorPicker 
+                    v-model="avatarParams.bgAvatar" 
+                    theme="light" 
+                  />
                 </div>
                 <small class="change-avatar-hint">
-                  Примечание: выбирайте более светлые тона, чтобы ваши инициалы были различимы.
+                  Примечание: другие пользователи увидят выбраный вами цвет.
                 </small>
               </div>
             </template>
@@ -89,7 +92,10 @@
                   <h4 class="card-info__additional-settings-title">
                     Изменить фон боковой панели
                   </h4>
-                  <ColorPalette v-model="asideBackgroundColor" />
+                  <ColorPicker 
+                    v-model="asideBackgroundColor" 
+                    theme="dark" 
+                  />
                 </div>
                 <div class="card-info__additional-settings-item">
                   <h4 class="card-info__additional-settings-title">
@@ -148,14 +154,14 @@ import { defineComponent } from 'vue';
 
 import Card from "@/container/Card.vue";
 import Avatar from "@/components/user/Avatar.vue";
-import ColorPalette from '@/components/UI/ColorPalette.vue';
+import ColorPicker from '@/components/dialogs/SelectColor.vue';
 import useConfiguration from "@/composables/useConfiguration";
 
 export default defineComponent({
   components: { 
     Card,
     Avatar,
-    ColorPalette
+    ColorPicker
   },
   setup() {
 
@@ -206,19 +212,12 @@ export default defineComponent({
           .user-avatar {
             border: 1px solid var(--color-text);
           }
-          &--params {
-            .color-picker {
-              max-width: 94px;
-              margin-left: auto;
-              height: 40px;
-            }
-          }
           .change-avatar-hint {
             position: absolute;
             bottom: 0;
             font-size: 10px;
             right: -20px;
-            max-width: 220px;
+            text-align: end;
           }
         }
         &__additional-settings {
@@ -231,10 +230,6 @@ export default defineComponent({
             font-size: 14px;
             justify-content: space-between;
             align-items: center;
-            .color-picker {
-              width: 94px;
-              height: 40px;
-            }
           }
         }
       }
@@ -367,6 +362,7 @@ export default defineComponent({
             padding-bottom: 20px;
             .change-avatar-hint {
               right: 0;
+              bottom: 15px;
               font-size: 11px;
               width: 60%;
               text-align: end;

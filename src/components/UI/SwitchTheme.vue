@@ -49,11 +49,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 .toggle-theme-switch {
   position: relative;
-  width: 70px;
+  width: 50px;
   &__label {
     position: absolute;
     width: 100%;
-    height: 28.5px;
+    height: 25px;
     background-color: $color-dark-grey4;
     border-radius: 50px;
     cursor: pointer;
@@ -65,7 +65,7 @@ export default defineComponent({
       ~ .toggle-theme-switch__icon {
         background-color: $color-dark-grey4;
         &::before {
-          transform: translateX(40px);
+          transform: translateX(26.5px);
           background-color: $color-yellow;
           box-shadow: none;
         }
@@ -82,8 +82,8 @@ export default defineComponent({
   &__icon::before {
     content: "";
     position: absolute;
-    top: 2px;
-    left: 2px;
+    top: 0;
+    left: -1px;
     width: 25px;
     height: 25px;
     border-radius: 50%;

@@ -37,17 +37,19 @@ export const SetTheme = (theme: Theme): void => {
 }
 
 // Random light color generation.
-export const GenerateLightColorHexFormat = (): string => {
+export const GenerateColorHexFormat = (Theme: Theme): string => {
+  const rangeColor = Theme === "dark" ? 0 : 128; // Dark or light generate color.
+
   // Generate random values for RGB components.
-  const r = Math.floor(Math.random() * 128) + 128;
-  const g = Math.floor(Math.random() * 128) + 128;
-  const b = Math.floor(Math.random() * 128) + 128;
+  const r = Math.floor(Math.random() * 128) + rangeColor;
+  const g = Math.floor(Math.random() * 128) + rangeColor;
+  const b = Math.floor(Math.random() * 128) + rangeColor;
 
   const colorHex = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 
   return colorHex;
   
-   // Helper function to convert component values to HEX.
+  // Helper function to convert component values to HEX.
   function componentToHex(c: number) {
     const hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;

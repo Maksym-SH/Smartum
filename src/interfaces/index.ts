@@ -4,7 +4,8 @@ import {
   AsideExpPanelNavigation, 
   NotificationStatus,
   NotificationCategory,
-  ButtonVariant
+  ButtonVariant,
+  ColorThemeText
 } from "@/types/index";
 import { User, EmailAuthCredential, UserCredential } from "firebase/auth";
 import { ComputedRef } from "vue";
@@ -165,6 +166,11 @@ export interface IConfigurationAdditional {
   showCurrentDate: boolean; // Time and date in app header.
   showDeleteAccountButton: boolean;
   asideBackgroundColor?: string;
+}
+// Color picker.
+export interface IColorPickerParams {
+  textColor: Colors;
+  target: ColorThemeText;
 }
 
 // Response
