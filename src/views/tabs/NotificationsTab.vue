@@ -43,9 +43,10 @@ import { NotifyAction } from "@/types";
 import { IServerDate, INotification } from '@/interfaces';
 import { Colors } from '@/enums';
 
+import useStores from '@/composables/useStores';
 import NotificationItem from '@/components/notification/NotificationItem.vue';
 import NotificationEmptyList from "@/components/UI/EmptyList.vue";
-import useStores from '@/composables/useStores';
+
 
 export default defineComponent({
   emits:["readNotification", "deleteNotification", "clearAllNotifications"],

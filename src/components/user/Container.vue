@@ -25,10 +25,10 @@ import { Colors } from "@/enums";
 
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
-import Avatar from "@/components/user/Avatar.vue";
-import Info from "@/components/user/Info.vue";
 import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
 import useStores from "@/composables/useStores";
+import Avatar from "./Avatar.vue";
+import Info from "./Info.vue";
 
 export default defineComponent({
   components: {

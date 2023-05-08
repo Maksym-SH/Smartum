@@ -85,7 +85,7 @@ import { Colors } from '@/enums';
 import { IColorPickerParams } from '@/interfaces';
 import { GenerateColorHexFormat } from '@/helpers/methods';
 
-import BackgroundItem from '@/components/UI/BackgroundItem.vue';
+import BackgroundItem from '../UI/BackgroundItem.vue';
 
 export default defineComponent({
   components: {
@@ -157,24 +157,24 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .color-picker {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    .c-button {
-      text-transform: none;
-    }
-    &__palette {
-    width: 15px;
-    }
-    &--generate {
-      margin-top: 5px;
-      color: $color-blue;
-      font-size: 11px;
-      white-space: nowrap;
-      cursor: pointer;
-      user-select: none;
-    }
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  .c-button {
+    text-transform: none;
   }
+  &__palette {
+    width: 15px;
+  }
+  &--generate {
+    margin-top: 5px;
+    color: $color-blue;
+    font-size: 11px;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+}
 .v-dialog {
   :deep(.v-overlay__scrim) {
     opacity: 1;

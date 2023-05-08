@@ -104,13 +104,13 @@ import { notify } from "@kyvg/vue3-notification";
 import { Colors } from "@/enums";
 
 import RegExp from "@/helpers/regExp";
+import newNotificationContent from "@/composables/useNotificationContent";
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import useStores from "@/composables/useStores";
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import Card from "@/container/Card.vue";
-import newNotificationContent from "@/composables/useNotificationContent";
 import Hint from "@/components/UI/Hint.vue";
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
-import useStores from "@/composables/useStores";
 
 export default defineComponent({
   components: {

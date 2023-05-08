@@ -79,13 +79,13 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import BoardImageResult from '@/components/dashboard/BoardImageResult.vue';
 import { IBackgroundDashboard, IWorkingBoardItem } from '@/interfaces';
 import { Colors, Length, Numbers } from '@/enums';
 import { GenerateRandomString } from "@/helpers/methods";
 
 import useDashboardItemBackgroundTemplate from '@/composables/useDashboardItemBackground';
-import ImageBackgroundExample from '@/components/UI/BackgroundItem.vue';
+import BoardImageResult from '../dashboard/BoardImageResult.vue';
+import ImageBackgroundExample from '../UI/BackgroundItem.vue';
 
 
 export default defineComponent({

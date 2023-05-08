@@ -183,6 +183,7 @@ export default defineComponent({
         top: -50px;
         left: -65px;
         opacity: 0.1;
+        user-select: none;
       }
       &__tasks-image {
         outline: none;
@@ -191,6 +192,7 @@ export default defineComponent({
         position: absolute;
         bottom: -88px;
         right: -100px;
+        user-select: none;
       }
       &-title {
         text-align: center;

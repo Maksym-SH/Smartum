@@ -36,10 +36,10 @@ import { IPictureParams, INotification, IServerDate } from '@/interfaces';
 import { NotificationActionType } from '@/enums';
 
 import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
-import Avatar from '@/components/user/Avatar.vue';
 import router from '@/router';
 import useDateParseToString from "@/composables/useDateParse";
 import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import Avatar from '../user/Avatar.vue';
 
 export default defineComponent({
   emits:["deleteNotification", "readNotification"],

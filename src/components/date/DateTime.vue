@@ -110,6 +110,8 @@ export default defineComponent({
       position: relative;
       padding-right: 2px;
       margin-right: 10px;
+      min-width: 52px;
+      display: inline-block;
       &::after {
         content: "";
         position: absolute;

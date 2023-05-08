@@ -44,11 +44,11 @@ import { ILanguage, IMetaName } from "@/interfaces/index";
 import { RouterMeta, DynamicDescription } from "@/types";
 
 import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
-import cHeader from "@/container/Header.vue";
-import cAside from "@/container/Aside.vue";
 import useNotifications from "@/composables/useNotifications";
 import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
 import useStores from "@/composables/useStores";
+import cHeader from "@/container/Header.vue";
+import cAside from "@/container/Aside.vue";
 
 export default defineComponent({
   components: {
