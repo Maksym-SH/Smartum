@@ -20,20 +20,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, defineAsyncComponent } from "vue";
 import { ObjectNotEmpty } from "./helpers/methods";
 import { ModalContentType } from "./types";
 
-import Popup from "@/components/UI/Popup.vue";
-import ConfirmationPopup from "@/components/UI/Confirmation.vue";
-import LongContentModal from "@/components/UI/LongContentModal.vue";
 import useStores from "./composables/useStores";
 
 export default defineComponent({
   components: {
-    Popup,
-    ConfirmationPopup,
-    LongContentModal
+    Popup: defineAsyncComponent(() => import("@/components/UI/Popup.vue")),
+    ConfirmationPopup: defineAsyncComponent(() => import("@/components/UI/Confirmation.vue")),
+    LongContentModal: defineAsyncComponent(() =>import("@/components/UI/LongContentModal.vue")),
   },
   setup() {
     const { commonStore } = useStores();

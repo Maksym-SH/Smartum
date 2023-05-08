@@ -108,9 +108,8 @@ export default defineComponent({
     font-size: 12px;
     &--time {
       position: relative;
-      padding-right: 2px;
       margin-right: 10px;
-      min-width: 52px;
+      min-width: 51px;
       display: inline-block;
       &::after {
         content: "";
