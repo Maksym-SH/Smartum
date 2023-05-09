@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import { SetTheme } from "@/helpers/methods";
-import { Theme } from '@/types';
+import { Theme } from '@/types/types';
 
 export default defineComponent({
   props: {

@@ -32,8 +32,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, reactive } from 'vue';
-import { IPictureParams, INotification, IServerDate } from '@/interfaces';
-import { NotificationActionType } from '@/enums';
+import { IPictureParams, INotification, IServerDate } from '@/types/interfaces';
+import { NotificationActionType } from '@/types/enums';
 
 import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
 import router from '@/router';

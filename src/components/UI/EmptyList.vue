@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import { EmptyListType } from "@/types";
+import { EmptyListType } from "@/types/types";
 
 export default defineComponent({
   props: {

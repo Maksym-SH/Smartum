@@ -1,4 +1,4 @@
-import { ErrorCode } from "@/types";
+import { ErrorCode } from "@/types/types";
 import { notify } from "@kyvg/vue3-notification";
 
 const ShowErrorMessage = (errorCode: ErrorCode): void => {

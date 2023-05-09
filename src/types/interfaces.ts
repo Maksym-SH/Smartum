@@ -1,4 +1,4 @@
-import { Colors } from "@/enums";
+import { Colors } from "./enums";
 import { 
   OmitUserInfo, 
   AsideExpPanelNavigation, 
@@ -6,7 +6,7 @@ import {
   NotificationCategory,
   ButtonVariant,
   ColorThemeText
-} from "@/types/index";
+} from "./types";
 import { User, EmailAuthCredential, UserCredential } from "firebase/auth";
 import { ComputedRef } from "vue";
 

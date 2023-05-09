@@ -21,8 +21,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted, watch } from "vue";
-import { WelcomeText, Icon } from "@/types";
-import { Numbers } from "@/enums";
+import { WelcomeText, Icon } from "@/types/types";
+import { Numbers } from "@/types/enums";
 
 import timestamp from "@/helpers/dateTime/stamp";
 

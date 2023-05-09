@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useButtonProps } from "./use/useProps";
-import { Colors } from "@/enums";
+import { Colors } from "@/types/enums";
 
 export default defineComponent({
   props: useButtonProps,

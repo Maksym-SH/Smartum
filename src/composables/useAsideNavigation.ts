@@ -1,6 +1,6 @@
-import { AsideNavigationItems, ModalContentType } from "@/types";
-import { IAsideNavigationItem } from "@/interfaces";
-import { Links } from "@/enums";
+import { AsideNavigationItems, ModalContentType } from "@/types/types";
+import { IAsideNavigationItem } from "@/types/interfaces";
+import { Links } from "@/types/enums";
 import { notify } from "@kyvg/vue3-notification";
 
 import router from "@/router";

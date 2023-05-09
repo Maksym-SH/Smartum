@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { EmailVerify, StatusVueIcon } from "@/types";
+import { EmailVerify, StatusVueIcon } from "@/types/types";
 import { useInfoProps } from "./use/useProps";
 import { User } from "@firebase/auth";
 

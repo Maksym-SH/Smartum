@@ -3,13 +3,13 @@ import { ref } from "vue";
 
 import { getAuth, User } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { IUserCreated, ICreateUser, IPictureParams, IUserInfo,} from "@/interfaces";
+import { IUserCreated, ICreateUser, IPictureParams, IUserInfo,} from "@/types/interfaces";
 
-import { ErrorCode, IUserFieldsUpdate } from "@/types"; 
+import { ErrorCode, IUserFieldsUpdate } from "@/types/types"; 
 import { doc, updateDoc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 import { getStorage, ref as Refference, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"; 
 import { database } from "@/helpers/firebase/firebaseInitialize";
-import { DataCollection } from "@/enums";
+import { DataCollection } from "@/types/enums";
 import { SetTheme } from "@/helpers/methods";
 
 import router from "@/router";

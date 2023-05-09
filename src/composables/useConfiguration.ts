@@ -1,7 +1,7 @@
 import { watchEffect, reactive, ref, computed } from "vue";
 import { notify } from '@kyvg/vue3-notification';
-import { Colors, NotificationType } from '@/enums';
-import { UserName } from "@/types";
+import { Colors, NotificationType } from '@/types/enums';
+import { UserName } from "@/types/types";
 
 import { 
   IAsideNavigationItem, 
@@ -9,7 +9,7 @@ import {
   IConfigurationAdditional, 
   IPictureParams, 
   IUserInfo
-} from '@/interfaces';
+} from '@/types/interfaces';
 
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import useNewNotificationContent from "./useNotificationContent";

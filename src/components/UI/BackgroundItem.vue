@@ -14,7 +14,7 @@
 
 
 <script lang="ts">
-import { Colors } from "@/enums";
+import { Colors } from "@/types/enums";
 import { computed } from "@vue/reactivity";
 import { CSSProperties, defineComponent, PropType } from 'vue';
 

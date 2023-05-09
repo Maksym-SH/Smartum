@@ -58,9 +58,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, reactive, computed } from "vue";
-import { IUserLogin } from "@/interfaces";
+import { IUserLogin } from "@/types/interfaces";
 import * as emailValidator from "email-validator";
-import { Length } from "@/enums/index";
+import { Length } from "@/types/enums";
 
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 

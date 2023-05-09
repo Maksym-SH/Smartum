@@ -1,8 +1,8 @@
-import { IPopupParams } from "@/interfaces";
+import { IPopupParams } from "@/types/interfaces";
 import { getAuth } from "@firebase/auth";
-import { Theme } from "@/types";
+import { Theme } from "@/types/types";
 import { notify } from "@kyvg/vue3-notification";
-import { Colors } from "@/enums";
+import { Colors } from "@/types/enums";
 
 import useStores from "@/composables/useStores";
 

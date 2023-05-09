@@ -1,4 +1,4 @@
-import { NotificationActionType } from "@/enums";
+import { NotificationActionType } from "./enums";
 import { 
   ISelectElem,
   ILanguage, 
@@ -8,7 +8,7 @@ import {
   IAsideNavigationItem,
   IModalContent,
   IUserReg,
-} from "@/interfaces/index";
+} from "./interfaces";
 
 import { RouteRecordRaw } from "vue-router";
 

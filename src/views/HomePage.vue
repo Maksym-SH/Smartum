@@ -38,10 +38,10 @@
 <script lang="ts">
 import { defineComponent, watch, reactive, ref, computed } from "vue";
 import { useRoute } from "vue-router";
-import { Layout } from "@/enums";
+import { Layout } from "@/types/enums";
 import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
-import { ILanguage, IMetaName } from "@/interfaces/index";
-import { RouterMeta, DynamicDescription } from "@/types";
+import { ILanguage, IMetaName } from "@/types/interfaces";
+import { RouterMeta, DynamicDescription } from "@/types/types";
 
 import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
 import useNotifications from "@/composables/useNotifications";

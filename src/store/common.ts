@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { IPopupParams } from "@/interfaces";
-import { ModalContentType } from "@/types";
+import { IPopupParams } from "@/types/interfaces";
+import { ModalContentType } from "@/types/types";
 
 const useCommonStore = defineStore("common", () => {
   const loadingStatus = ref(false);

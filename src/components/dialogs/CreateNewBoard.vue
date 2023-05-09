@@ -79,8 +79,8 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import { IBackgroundDashboard, IWorkingBoardItem } from '@/interfaces';
-import { Colors, Length, Numbers } from '@/enums';
+import { IBackgroundDashboard, IWorkingBoardItem } from '@/types/interfaces';
+import { Colors, Length, Numbers } from '@/types/enums';
 import { GenerateRandomString } from "@/helpers/methods";
 
 import useDashboardItemBackgroundTemplate from '@/composables/useDashboardItemBackground';

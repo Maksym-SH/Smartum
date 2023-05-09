@@ -1,5 +1,5 @@
-import { IDateFormat } from "@/interfaces";
-import { Language, Numbers } from "@/enums";
+import { IDateFormat } from "@/types/interfaces";
+import { Language, Numbers } from "@/types/enums";
 
 import useTimestamp from "./stamp";
 import RegExp from "@/helpers/regExp";

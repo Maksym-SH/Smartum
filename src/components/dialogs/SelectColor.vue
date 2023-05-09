@@ -79,10 +79,10 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed } from 'vue';
-import { Theme } from '@/types';
+import { Theme } from '@/types/types';
 import { LightColors, DarkColors } from '@/helpers/colors';
-import { Colors } from '@/enums';
-import { IColorPickerParams } from '@/interfaces';
+import { Colors } from '@/types/enums';
+import { IColorPickerParams } from '@/types/interfaces';
 import { GenerateColorHexFormat } from '@/helpers/methods';
 
 import BackgroundItem from '../UI/BackgroundItem.vue';

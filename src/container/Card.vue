@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Variant } from '@/types';
+import { Variant } from '@/types/types';
 
 export default defineComponent({
   props: {

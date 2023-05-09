@@ -1,10 +1,10 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-import { DataCollection } from "@/enums";
-import { INotification, IServerDate } from "@/interfaces";
+import { DataCollection } from "@/types/enums";
+import { INotification, IServerDate } from "@/types/interfaces";
 import { database } from "@/helpers/firebase/firebaseInitialize";
-import { ErrorCode } from "@/types";
+import { ErrorCode } from "@/types/types";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";

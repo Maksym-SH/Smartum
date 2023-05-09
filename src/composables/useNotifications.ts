@@ -1,7 +1,7 @@
 import { watch, reactive, watchEffect, computed } from "vue";
-import { IServerDate, INotification } from "@/interfaces";
+import { IServerDate, INotification } from "@/types/interfaces";
 import { ObjectHasValues } from "@/helpers/methods";
-import { NotifyAction } from "@/types";
+import { NotifyAction } from "@/types/types";
 import { User } from "firebase/auth";
 
 import useStores from "./useStores";

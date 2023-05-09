@@ -40,7 +40,7 @@
 <script lang="ts">
 import { defineComponent, watch, ref, computed } from "vue";
 import { useTextareaProps } from "./use/useProps";
-import { RefElement, ModelValue } from "@/types";
+import { RefElement, ModelValue } from "@/types/types";
 
 export default defineComponent({
   inheritAttrs: false,

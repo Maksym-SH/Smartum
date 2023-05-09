@@ -1,5 +1,5 @@
 import { PropType } from "vue"
-import { IPictureParams } from "@/interfaces";
+import { IPictureParams } from "@/types/interfaces";
 // Avatar.vue
 export const useAvatarProps = {
   avatar: {

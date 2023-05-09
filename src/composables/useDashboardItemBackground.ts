@@ -1,5 +1,5 @@
-import { Colors } from "@/enums";
-import { IBackgroundDashboard } from "@/interfaces";
+import { Colors } from "@/types/enums";
+import { IBackgroundDashboard } from "@/types/interfaces";
 
 const useDashboardItemBackgroundTemplate = (): IBackgroundDashboard => {
   return {

@@ -31,8 +31,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType, computed, watch } from 'vue';
-import { IModalContent } from "@/interfaces";
-import { ModalContentType, ModalContentLanguage, ModalLanguageType } from "@/types";
+import { IModalContent } from "@/types/interfaces";
+import { ModalContentType, ModalContentLanguage, ModalLanguageType } from "@/types/types";
 
 import TermsOfUse from "@/helpers/content/TermsOfUse.json";
 import Confidentially from "@/helpers/content/Сonfidentiality.json";

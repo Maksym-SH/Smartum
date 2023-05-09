@@ -1,6 +1,6 @@
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { ErrorCode } from "@/types";
+import { ErrorCode } from "@/types/types";
 
 import useStores from "@/composables/useStores";
 import router from "@/router";

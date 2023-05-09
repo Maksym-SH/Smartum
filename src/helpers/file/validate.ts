@@ -1,6 +1,6 @@
 import { notify } from "@kyvg/vue3-notification";
-import { /* FileFormat, */ Numbers } from "@/enums";
-import { FileType } from "@/types";
+import { /* FileFormat, */ Numbers } from "@/types/enums";
+import { FileType } from "@/types/types";
 
 /* const Format = [ 
   FileFormat.APP_GZIP, 

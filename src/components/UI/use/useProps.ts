@@ -4,8 +4,8 @@ import {
   ExpansionPanelVariant, 
   AsideExpPanelNavigation, 
   ButtonVariant  
-} from "@/types/index";
-import { Colors, Length } from "@/enums";
+} from "@/types/types";
+import { Colors, Length } from "@/types/enums";
 
 // Input.vue
 export const useInputProps = {

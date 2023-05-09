@@ -105,8 +105,8 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted } from "vue";
-import { Numbers, Layout } from "@/enums";
-import { IAsideNavigationItem, IUserCreated } from "@/interfaces";
+import { Numbers, Layout } from "@/types/enums";
+import { IAsideNavigationItem, IUserCreated } from "@/types/interfaces";
 import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
 
 import User from "@/components/user/Container.vue";

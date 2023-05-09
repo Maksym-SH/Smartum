@@ -22,7 +22,7 @@
 <script lang="ts">
 import { defineComponent, computed, defineAsyncComponent } from "vue";
 import { ObjectNotEmpty } from "./helpers/methods";
-import { ModalContentType } from "./types";
+import { ModalContentType } from "./types/types";
 
 import useStores from "./composables/useStores";
 

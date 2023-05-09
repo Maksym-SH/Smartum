@@ -76,7 +76,7 @@
 <script lang="ts">
 import { defineComponent, watch, ref, computed } from "vue";
 import { useInputProps } from "./use/useProps";
-import { RefElement, ModelValue, AutoComplete } from "@/types";
+import { RefElement, ModelValue, AutoComplete } from "@/types/types";
 
 import * as emailValidator from "email-validator";
 import RegExp from "@/helpers/regExp";

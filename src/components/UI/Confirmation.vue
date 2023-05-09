@@ -49,7 +49,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { EmailAuthCredential, EmailAuthProvider, User } from "firebase/auth";
-import { Length } from '@/enums';
+import { Length } from '@/types/enums';
 import { computed } from '@vue/reactivity';
 import { Confirmation } from '@/helpers/methods';
 

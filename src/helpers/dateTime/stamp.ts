@@ -1,6 +1,6 @@
-import { LangFormatType } from "@/types";
-import { Language, LangFormat } from "@/enums";
-import { IDateFormat } from "@/interfaces";
+import { LangFormatType } from "@/types/types";
+import { Language, LangFormat } from "@/types/enums";
+import { IDateFormat } from "@/types/interfaces";
 
 import RegExp from "@/helpers/regExp";
 

@@ -32,9 +32,9 @@
 
 <script lang="ts">
 import { defineComponent, computed, reactive, onMounted, ref } from "vue";
-import { IWorkingBoardItem } from "@/interfaces";
+import { IWorkingBoardItem } from "@/types/interfaces";
 import { notify } from "@kyvg/vue3-notification";
-import { NotificationType } from "@/enums";
+import { NotificationType } from "@/types/enums";
 import { User } from "@firebase/auth";
 
 import LockAccess from "@/components/dashboard/NeedEmailConfirmation.vue";

@@ -27,9 +27,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType, computed } from "vue";
-import { RefElement, FileType, ImageSource } from "@/types";
+import { RefElement, FileType, ImageSource } from "@/types/types";
 import { OpenPopup } from "@/helpers/methods";
-import { Colors } from "@/enums";
+import { Colors } from "@/types/enums";
 
 import fileValidate from "@/helpers/file/validate";
 

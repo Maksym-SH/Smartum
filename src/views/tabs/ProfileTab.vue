@@ -96,12 +96,12 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, reactive, onMounted } from "vue";
-import { Length, NotificationType } from "@/enums";
-import { IUserInfo } from "@/interfaces";
+import { Length, NotificationType } from "@/types/enums";
+import { IUserInfo } from "@/types/interfaces";
 import { Confirmation, DeleteAccountPopup } from "@/helpers/methods";
 import { PasswordUpdate } from "@/helpers/firebase/firebaseUpdate";
 import { notify } from "@kyvg/vue3-notification";
-import { Colors } from "@/enums";
+import { Colors } from "@/types/enums";
 
 import RegExp from "@/helpers/regExp";
 import newNotificationContent from "@/composables/useNotificationContent";

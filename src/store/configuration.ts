@@ -1,16 +1,16 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-import { ErrorCode } from "@/types";
+import { ErrorCode } from "@/types/types";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { Colors, DataCollection } from "@/enums";
+import { Colors, DataCollection } from "@/types/enums";
 import { 
   IAsideNavigationItem, 
   IConfiguration,
   IConfigurationResponse,
   IConfigurationAdditional
-} from "@/interfaces";
+} from "@/types/interfaces";
 
 import useStores from "@/composables/useStores";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";

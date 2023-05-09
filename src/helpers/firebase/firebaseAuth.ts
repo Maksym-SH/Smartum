@@ -14,11 +14,11 @@ import {
   IUserLogin, 
   IUserReg, 
   IUserResponse 
-} from "@/interfaces";
+} from "@/types/interfaces";
 
-import { ErrorCode } from "@/types";
+import { ErrorCode } from "@/types/types";
 import { GenerateColorHexFormat } from "@/helpers/methods";
-import { NotificationType } from "@/enums";
+import { NotificationType } from "@/types/enums";
 import { notify } from "@kyvg/vue3-notification";
 
 import router from "@/router";

@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { ErrorCode } from "@/types";
+import { ErrorCode } from "@/types/types";
 
 import useStores from "@/composables/useStores";
 import ShowErrorMessage from "./firebaseErrorMessage";

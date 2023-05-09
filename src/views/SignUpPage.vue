@@ -103,9 +103,9 @@
 <script lang="ts">
 import { defineComponent, reactive, computed } from "vue";
 import * as emailValidator from "email-validator";
-import { IUserReg } from "@/interfaces";
-import { ModalContentType } from "@/types";
-import { Length } from "@/enums";
+import { IUserReg } from "@/types/interfaces";
+import { ModalContentType } from "@/types/types";
+import { Length } from "@/types/enums";
 
 import useStores from "@/composables/useStores";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
@@ -172,9 +172,8 @@ export default defineComponent({
       position: relative;
       background-color: $color-dark-blue;
       overflow: hidden;
-      min-width: 385px;
-      height: 611px;
-      padding: 65px 30px 20px 30px;
+      max-width: 385px;
+      padding: 60px 30px 20px 30px;
       color: $color-white3;
       &__grid-image {
         outline: none;
@@ -206,7 +205,7 @@ export default defineComponent({
       }
       &-logo {
         position: absolute;
-        bottom: 5px;
+        bottom: 0;
         width: 100%;
         left: 0;
         text-align: center;

@@ -1,5 +1,5 @@
-import { INotification } from "@/interfaces";
-import { NotificationType, NotificationActionType } from "@/enums";
+import { INotification } from "@/types/interfaces";
+import { NotificationType, NotificationActionType } from "@/types/enums";
 
 const useNewNotificationContent = (type: NotificationType, title?: string): INotification<Date> | never => {
   let currentContent: Partial<INotification<Date>>;

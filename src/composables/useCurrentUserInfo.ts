@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { User } from "firebase/auth";
-import { IUserCreated } from "@/interfaces";
+import { IUserCreated } from "@/types/interfaces";
 import useStores from "./useStores";
 
 const useUserUnicId = () => {

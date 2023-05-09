@@ -27,7 +27,7 @@
 
 
 <script lang="ts">
-import { IWorkingBoardItem } from '@/interfaces';
+import { IWorkingBoardItem } from '@/types/interfaces';
 import { defineComponent, PropType } from 'vue';
 
 import BoardImageResult from "@/components/dashboard/BoardImageResult.vue";

@@ -39,9 +39,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue';
-import { NotifyAction } from "@/types";
-import { IServerDate, INotification } from '@/interfaces';
-import { Colors } from '@/enums';
+import { NotifyAction } from "@/types/types";
+import { IServerDate, INotification } from '@/types/interfaces';
+import { Colors } from '@/types/enums';
 
 import useStores from '@/composables/useStores';
 import NotificationItem from '@/components/notification/NotificationItem.vue';

@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { IWorkingBoardItem } from "@/interfaces";
-import { ErrorCode } from "@/types";
+import { IWorkingBoardItem } from "@/types/interfaces";
+import { ErrorCode } from "@/types/types";
 import { database } from "@/helpers/firebase/firebaseInitialize"; 
-import { DataCollection } from "@/enums";
+import { DataCollection } from "@/types/enums";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { NewObjectLink } from "@/helpers/methods";
 

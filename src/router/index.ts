@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { Routes } from "@/types";
+import { Routes } from "@/types/types";
 
 const routes: Routes = [
   {

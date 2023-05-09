@@ -1,9 +1,9 @@
 import { sendEmailVerification, User, getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { ErrorCode } from "@/types";
+import { ErrorCode } from "@/types/types";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 import ShowErrorMessage from "./firebaseErrorMessage";
-import { NotificationType, Numbers } from "@/enums";
+import { NotificationType, Numbers } from "@/types/enums";
 
 import useStores from "@/composables/useStores";
 

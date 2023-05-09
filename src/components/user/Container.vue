@@ -18,10 +18,10 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from "vue";
-import { SelectElements } from "@/types";
+import { SelectElements } from "@/types/types";
 import { useContainerProps } from "./use/useProps";
 import { notify } from "@kyvg/vue3-notification";
-import { Colors } from "@/enums";
+import { Colors } from "@/types/enums";
 
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";

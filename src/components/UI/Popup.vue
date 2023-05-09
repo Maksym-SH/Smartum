@@ -38,10 +38,10 @@
 </template>
 
 <script lang="ts">
-import { Colors } from '@/enums';
+import { Colors } from '@/types/enums';
 import { ObjectFull } from '@/helpers/methods';
-import { IPopupParams } from '@/interfaces';
-import { PopupButtons } from "@/types";
+import { IPopupParams } from '@/types/interfaces';
+import { PopupButtons } from "@/types/types";
 import { defineComponent, computed } from 'vue';
 import useStores from '@/composables/useStores';
 

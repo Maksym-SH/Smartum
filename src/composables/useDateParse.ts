@@ -1,7 +1,7 @@
-import { IServerDate } from "@/interfaces";
+import { IServerDate } from "@/types/interfaces";
 import { computed } from "vue";
 import { GetBetweenDateString } from '@/helpers/dateTime/getDate';
-import { Numbers, Language } from "@/enums";
+import { Numbers, Language } from "@/types/enums";
 
 import useTimestamp from '@/helpers/dateTime/stamp';
 

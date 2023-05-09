@@ -37,8 +37,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
-import { SelectElements, Position } from "@/types";
-import { Colors } from "@/enums";
+import { SelectElements, Position } from "@/types/types";
+import { Colors } from "@/types/enums";
 
 export default defineComponent({
   props: {
