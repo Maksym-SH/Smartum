@@ -41,109 +41,107 @@
           </template>
         </Card>
       </div>
-      <div class="configuration-tab__content-wrapper">
-        <div class="configuration-tab__content-avatar-settings">
-          <Card>
-            <template #header>
-              <h2 class="card-info__title--settings-avatar">
-                Изменить цвет фона профиля
-                <Button 
-                  size="small"
-                  @click="saveBackgroundAvatar"
-                  title="Сохранить"
-                />
-              </h2> 
-            </template>
-            <template #content>
-              <div class="card-info__change-background-avatar">
-                <div class="card-info__change-background-avatar--result">
-                  <h5 class="card-info__avatar-title">Результат:</h5>
-                  <Avatar 
-                    :size="80"
-                    :avatar="avatarParams"
-                    :firstName="userName.firstName"
-                    :lastName="userName.lastName"
-                  />
-                </div>
-                <div class="card-info__change-background-avatar--params">
-                  <h5>Изменить цвет</h5>
-                  <ColorPicker 
-                    v-model="avatarParams.bgAvatar" 
-                    theme="light" 
-                  />
-                </div>
-                <small class="change-avatar-hint">
-                  Примечание: другие пользователи увидят выбраный вами цвет.
-                </small>
-              </div>
-            </template>
-          </Card>
-        </div>
-        <div class="configuration-tab__content-additional-settings">
-          <Card>
-            <template #header>
-              <h2 class="card-info__title">
-                Дополнительные настройки
-              </h2> 
-            </template>
-            <template #content>
-              <div class="card-info__additional-settings">
-                <div class="card-info__additional-settings-item">
-                  <h4 class="card-info__additional-settings-title">
-                    Изменить фон боковой панели
-                  </h4>
-                  <ColorPicker 
-                    v-model="asideBackgroundColor" 
-                    theme="dark" 
-                  />
-                </div>
-                <div class="card-info__additional-settings-item">
-                  <h4 class="card-info__additional-settings-title">
-                    Статус подтверждения адреса
-                  </h4>
-                  <Checkbox  
-                    switchBox
-                    name="ToggleStatus" 
-                    label="Показать"
-                    secondaryLabel="Скрыть" 
-                    v-model="additionalParams.showEmailConfirm"
-                  />
-                </div>
-                <div class="card-info__additional-settings-item">
-                  <h4 class="card-info__additional-settings-title">
-                    Дата и время
-                  </h4>
-                  <Checkbox  
-                    switchBox
-                    name="ToggleTime" 
-                    label="Показать"
-                    secondaryLabel="Скрыть" 
-                    v-model="additionalParams.showCurrentDate"
-                  />
-                </div>
-                <div class="card-info__additional-settings-item">
-                  <h4 class="card-info__additional-settings-title">
-                    Кнопка "Удалить аккаунт"
-                  </h4>
-                  <Checkbox  
-                    switchBox
-                    name="ToggleDeleteAccount" 
-                    label="Показать"
-                    secondaryLabel="Скрыть" 
-                    v-model="additionalParams.showDeleteAccountButton"
-                  />
-                </div>
-              </div>
-            </template>
-            <template #custom>
+      <div class="configuration-tab__content-avatar-settings">
+        <Card>
+          <template #header>
+            <h2 class="card-info__title--settings-avatar">
+              Изменить цвет фона профиля
               <Button 
-                @click="saveAdditional"
-                class="card-info--save-changes"
+                size="small"
+                @click="saveBackgroundAvatar"
                 title="Сохранить"
               />
-            </template>
-          </Card>
-        </div>
+            </h2> 
+          </template>
+          <template #content>
+            <div class="card-info__change-background-avatar">
+              <div class="card-info__change-background-avatar--result">
+                <h5 class="card-info__avatar-title">Результат:</h5>
+                <Avatar 
+                  :size="80"
+                  :avatar="avatarParams"
+                  :firstName="userName.firstName"
+                  :lastName="userName.lastName"
+                />
+              </div>
+              <div class="card-info__change-background-avatar--params">
+                <h5>Изменить цвет</h5>
+                <ColorPicker 
+                  v-model="avatarParams.bgAvatar" 
+                  theme="light" 
+                />
+              </div>
+              <small class="change-avatar-hint">
+                Примечание: другие пользователи увидят выбраный вами цвет.
+              </small>
+            </div>
+          </template>
+        </Card>
+      </div>
+      <div class="configuration-tab__content-additional-settings">
+        <Card>
+          <template #header>
+            <h2 class="card-info__title">
+              Дополнительные настройки
+            </h2> 
+          </template>
+          <template #content>
+            <div class="card-info__additional-settings">
+              <div class="card-info__additional-settings-item">
+                <h4 class="card-info__additional-settings-title">
+                  Изменить фон боковой панели
+                </h4>
+                <ColorPicker 
+                  v-model="asideBackgroundColor" 
+                  theme="dark" 
+                />
+              </div>
+              <div class="card-info__additional-settings-item">
+                <h4 class="card-info__additional-settings-title">
+                  Статус подтверждения адреса
+                </h4>
+                <Checkbox  
+                  switchBox
+                  name="ToggleStatus" 
+                  label="Показать"
+                  secondaryLabel="Скрыть" 
+                  v-model="additionalParams.showEmailConfirm"
+                />
+              </div>
+              <div class="card-info__additional-settings-item">
+                <h4 class="card-info__additional-settings-title">
+                  Дата и время
+                </h4>
+                <Checkbox  
+                  switchBox
+                  name="ToggleTime" 
+                  label="Показать"
+                  secondaryLabel="Скрыть" 
+                  v-model="additionalParams.showCurrentDate"
+                />
+              </div>
+              <div class="card-info__additional-settings-item">
+                <h4 class="card-info__additional-settings-title">
+                  Кнопка "Удалить аккаунт"
+                </h4>
+                <Checkbox  
+                  switchBox
+                  name="ToggleDeleteAccount" 
+                  label="Показать"
+                  secondaryLabel="Скрыть" 
+                  v-model="additionalParams.showDeleteAccountButton"
+                />
+              </div>
+            </div>
+          </template>
+          <template #custom>
+            <Button 
+              @click="saveAdditional"
+              class="card-info--save-changes"
+              title="Сохранить"
+            />
+          </template>
+        </Card>
       </div>
     </div>
   </div>
@@ -175,21 +173,19 @@ export default defineComponent({
 .configuration-tab {
   padding: 20px 0 20px 0;
   &__content {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 480px);
     gap: 50px;
     color: var(--color-text);
-    &-wrapper {
+    &-navigation-filter {
+      grid-area: 1/1/3/1;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      gap: 50px;
-    }
-    .c-button {
-      color: $color-white1;
-      text-transform: none;
-    }
-    
-    .card {
-      width: fit-content;
       &-info {
         &__title {
           &.center {
@@ -201,9 +197,11 @@ export default defineComponent({
           }
         }
         &--save-changes {
-          margin: 0 10px 10px auto;
+          margin: auto 10px 10px auto;
           display: block;
           min-width: 40%;
+          color: $color-white1;
+          text-transform: none;
         }
         &__change-background-avatar {
           display: flex;
