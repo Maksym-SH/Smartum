@@ -113,7 +113,7 @@ const routes: Routes = [
   {
     name: "NotFound",
     path: "/:pathMath(.*)*",
-    redirect: "/dashboard"
+    redirect: "/dashboard",
   },
 ];
 
@@ -130,8 +130,7 @@ router.beforeEach(async (to, _, next): Promise<void> => {
   if (to.meta.protected || to.meta.free) {
     if (protectedRoute) {
       token ? next() : next({ name: "SignIn" });
-    } 
-    else {
+    } else {
       next();
     }
   } else if (notAuthorizedRoute && token) {

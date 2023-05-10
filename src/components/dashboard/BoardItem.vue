@@ -1,10 +1,10 @@
 <template>
   <div class="card-element-item">
     <div class="card-element-item__background">
-      <BoardImageResult 
-        :background="element.background" 
-        image-decor="/images/icons/dashboard-template.webp" 
-        :image="element.background" 
+      <BoardImageResult
+        :background="element.background"
+        image-decor="/images/icons/dashboard-template.webp"
+        :image="element.background"
       />
     </div>
     <div class="card-element-item__content">
@@ -12,7 +12,7 @@
         {{ element.title }}
       </h4>
       <div class="card-element-item__description">
-        <p v-if="element.members" class="members-count"> 
+        <p v-if="element.members" class="members-count">
           <span class="mdi mdi-account-multiple icon"></span>
           Участников: {{ element.members }}
         </p>
@@ -25,45 +25,42 @@
   </div>
 </template>
 
-
 <script lang="ts">
-import { IWorkingBoardItem } from '@/types/interfaces';
-import { defineComponent, PropType } from 'vue';
+import { IWorkingBoardItem } from "@/types/interfaces";
+import { defineComponent, PropType } from "vue";
 
 import BoardImageResult from "@/components/dashboard/BoardImageResult.vue";
-import useDateParseToString from '@/composables/useDateParse';
+import useDateParseToString from "@/composables/useDateParse";
 
-export default defineComponent({ 
+export default defineComponent({
   components: {
-    BoardImageResult
+    BoardImageResult,
   },
   props: {
     element: {
       type: Object as PropType<IWorkingBoardItem>,
       required: true,
-    }
+    },
   },
   setup(props) {
     const dateOfCreate = useDateParseToString(props.element.dateOfCreation);
 
     return {
-      dateOfCreate
-    }
-  }
-})
-
+      dateOfCreate,
+    };
+  },
+});
 </script>
-
 
 <style lang="scss" scoped>
 .card-element-item {
   min-width: 240px;
-  cursor:  pointer;
+  cursor: pointer;
   box-shadow: 0 10px 5px rgba($color-black, 0.2);
   &__content {
     border-radius: 0 0 5px 5px;
     padding: 5px 10px;
-    background-color:var(--color-dasboard-card);
+    background-color: var(--color-dasboard-card);
   }
   &__title {
     font-weight: 500;
@@ -86,7 +83,8 @@ export default defineComponent({
     padding: 5px;
     border: 1px solid var(--color-dasboard-card);
     background-color: var(--color-dasboard-card);
-    .members-count, .date-of-create {
+    .members-count,
+    .date-of-create {
       font-size: 11px;
       color: var(--color-text);
       opacity: 0.7;

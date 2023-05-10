@@ -1,11 +1,11 @@
 import { Colors } from "./enums";
-import { 
-  OmitUserInfo, 
-  AsideExpPanelNavigation, 
+import {
+  OmitUserInfo,
+  AsideExpPanelNavigation,
   NotificationStatus,
   NotificationCategory,
   ButtonVariant,
-  ColorThemeText
+  ColorThemeText,
 } from "./types";
 import { User, EmailAuthCredential, UserCredential } from "firebase/auth";
 import { ComputedRef } from "vue";
@@ -21,7 +21,7 @@ export interface ISelectElem {
   callback: () => void;
   icon?: string;
   color?: Colors;
-  displaying: boolean | ComputedRef<boolean>
+  displaying: boolean | ComputedRef<boolean>;
 }
 export interface IAsideNavigationItem {
   id: number;
@@ -41,24 +41,24 @@ export interface IPopupParams {
       variant?: ButtonVariant;
       text?: string;
       color?: Colors;
-    },
+    };
     yes: {
       variant?: ButtonVariant;
       text?: string;
       color?: Colors;
-    }
-  },
+    };
+  };
   callback: () => any;
 }
 export interface IModalContent {
   ru: {
     title: string;
     text: string;
-  },
+  };
   eng: {
     title: string;
     text: string;
-  }
+  };
 }
 export interface ILanguage {
   eng: string;
@@ -73,17 +73,17 @@ export interface IDateFormat {
   date: string;
 }
 
-// Dashboard 
+// Dashboard
 export interface IBackgroundPhotos {
   forest: string;
   lake: string;
   lakeWithForest: string;
   mountains: string;
   river: string;
-};
+}
 export interface IBackgroundGradient {
   backgroundBlue: Colors;
-  backgroundBluePink: Colors,
+  backgroundBluePink: Colors;
   backgrondGreen: Colors;
   backgroundLightBlue: Colors;
   backgrondGray: Colors;
@@ -93,7 +93,7 @@ export interface IBackgroundGradient {
 export interface IBackgroundDashboard {
   photos: IBackgroundPhotos;
   gradients: IBackgroundGradient;
-};
+}
 export interface IWorkingBoardItem {
   title: string;
   background: string;
@@ -103,7 +103,7 @@ export interface IWorkingBoardItem {
   members: number;
 }
 export interface ICreateBoardParams {
-  board: IWorkingBoardItem,
+  board: IWorkingBoardItem;
   unicID: string;
 }
 
@@ -119,7 +119,10 @@ export interface IUserReg extends IUserLogin {
 export interface IUserAuth {
   signUp: (userData: IUserReg, validate: boolean) => void;
   signIn: (userData: IUserLogin, validate: boolean) => void;
-  reauthorization: (userInfo: User, credential: EmailAuthCredential) => Promise<UserCredential>;
+  reauthorization: (
+    userInfo: User,
+    credential: EmailAuthCredential
+  ) => Promise<UserCredential>;
 }
 export interface IPictureParams {
   url: string;
@@ -151,15 +154,16 @@ export interface INotification<T> {
   description: string;
   type: NotificationCategory;
 }
-export interface  IConfiguration {
+export interface IConfiguration {
   navigations: string[];
   showEmailConfirm: boolean;
-  asideBackgroundColor: string,
+  asideBackgroundColor: string;
   showCurrentDate: boolean;
   showDeleteAccountButton: boolean;
 }
-export interface IConfigurationResponse extends Omit<IConfiguration, 'navigations'> {
-  navigationsShowValues: boolean[]
+export interface IConfigurationResponse
+  extends Omit<IConfiguration, "navigations"> {
+  navigationsShowValues: boolean[];
 }
 export interface IConfigurationAdditional {
   showEmailConfirm: boolean;
@@ -180,7 +184,7 @@ export interface IError {
   code?: number;
 }
 export interface IUserResponse {
-  accessToken?: string,
+  accessToken?: string;
   displayName: string | null;
 }
 export interface IUserCreated {

@@ -1,63 +1,57 @@
 <template>
-  <div 
-    class="image-example" 
+  <div
+    class="image-example"
     @click="selectExample"
-    :style="[size, { 'background': background }]">
-    <img 
-      v-if="image" 
-      :src="image"
-      class="image-example__picture"  
-      alt=""
-    />
+    :style="[size, { background: background }]"
+  >
+    <img v-if="image" :src="image" class="image-example__picture" alt="" />
   </div>
 </template>
-
 
 <script lang="ts">
 import { Colors } from "@/types/enums";
 import { computed } from "@vue/reactivity";
-import { CSSProperties, defineComponent, PropType } from 'vue';
+import { CSSProperties, defineComponent, PropType } from "vue";
 
 export default defineComponent({
   emits: ["select"],
   props: {
     image: {
       type: String,
-      default: ""
+      default: "",
     },
     width: {
       type: Number,
-      default: 64
+      default: 64,
     },
     height: {
       type: Number,
-      default: 32
+      default: 32,
     },
     background: {
       type: String as PropType<Colors | string>,
-      default: ""
-    }
+      default: "",
+    },
   },
   setup(props, { emit }) {
     const size = computed((): CSSProperties => {
       return {
         width: props.width + "px",
-        height: props.height + "px"
-      }
-    })
+        height: props.height + "px",
+      };
+    });
 
     const selectExample = () => {
       const emitTarget = props.background ? props.background : props.image;
       emit("select", emitTarget);
-    }
+    };
 
     return {
       size,
-      selectExample
-    }
-  }
-})
-
+      selectExample,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -81,5 +75,4 @@ export default defineComponent({
     object-fit: cover;
   }
 }
-
 </style>

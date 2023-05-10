@@ -19,10 +19,9 @@ export const LightColors = () => {
     banano: "#FAE7B5",
     paleGold: "#EEE8AA",
     gold: "#FFCF48",
-    sky: "#7FC7FF"
-  }
-}
-
+    sky: "#7FC7FF",
+  };
+};
 
 export const DarkColors = () => {
   return {
@@ -46,6 +45,5 @@ export const DarkColors = () => {
     redPurple: "#480854",
     darkAzure: "#084054",
     spruce: "#085446",
-  }
-}
-
+  };
+};

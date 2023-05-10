@@ -2,17 +2,17 @@
   <header class="c-header">
     <div class="c-header__wrapper">
       <div class="c-header__search-content not-mobile">
-        <Input 
+        <Input
           type="search"
-          name="searchContent" 
-          placeholder="Поиск" 
+          name="searchContent"
+          placeholder="Поиск"
           v-model="searchInput"
         />
       </div>
       <transition name="toggle-content">
         <Date v-show="showDateTemplate" />
       </transition>
-      <SwitchTheme class="not-mobile"/>
+      <SwitchTheme class="not-mobile" />
     </div>
   </header>
 </template>
@@ -27,7 +27,7 @@ import useStores from "@/composables/useStores";
 export default defineComponent({
   components: {
     Date,
-    SwitchTheme
+    SwitchTheme,
   },
   setup() {
     const { configurationStore } = useStores();
@@ -36,7 +36,7 @@ export default defineComponent({
 
     const showDateTemplate = computed((): boolean => {
       return configurationStore.additionalParams.showCurrentDate;
-    })
+    });
 
     return {
       searchInput,

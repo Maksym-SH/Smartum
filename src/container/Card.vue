@@ -17,11 +17,11 @@
           <slot name="table-header" />
         </tr>
       </thead>
-      
+
       <slot name="table-body" v-if="$slots['table-body']"></slot>
-      
-      <tfoot 
-        class="card__table-footer" 
+
+      <tfoot
+        class="card__table-footer"
         v-if="$slots['table-body'] || $slots['table-footer']"
       >
         <slot name="table-footer-titles"></slot>
@@ -33,21 +33,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { Variant } from '@/types/types';
+import { defineComponent, PropType } from "vue";
+import { Variant } from "@/types/types";
 
 export default defineComponent({
   props: {
     variant: {
       type: String as PropType<Variant>,
-      default: "info"
+      default: "info",
     },
     table: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>
@@ -62,34 +62,37 @@ export default defineComponent({
   &__footer {
     border-top: 1px solid var(--color-border-card);
   }
-  &__header, &__content, &__footer {
+  &__header,
+  &__content,
+  &__footer {
     padding: 13px 30px;
   }
   &__table {
     width: 100%;
     border-collapse: collapse;
-    &-header, &-footer {
+    &-header,
+    &-footer {
       border-bottom: 1px solid var(--color-border-card);
       :deep(th) {
         font-size: 18px;
         color: var(--color-text);
         text-align: start;
         padding: 15px 30px;
-      } 
+      }
     }
     &-footer {
       border-top: 1px solid var(--color-border-card);
       ::deep(td) {
         color: var(--color-text);
         text-align: start;
-        padding: 15px 30px;  
+        padding: 15px 30px;
       }
     }
     :deep(td) {
       color: var(--color-text);
       text-align: start;
       padding: 15px 30px;
-    } 
+    }
   }
 }
 </style>

@@ -1,16 +1,16 @@
 <template>
   <span
-    class="user-avatar" 
+    class="user-avatar"
     :style="avatarStyles"
-    :class="{'user-avatar--circle': circle }"
+    :class="{ 'user-avatar--circle': circle }"
   >
     <Loader v-show="showPreload" inline :size="30" />
     <img
-      v-if="!showPreload && avatar.url" 
+      v-if="!showPreload && avatar.url"
       class="user-avatar__picture"
       :src="avatar.url"
       alt=""
-    /> 
+    />
     <span
       v-else-if="firstName && !showPreload"
       class="user-avatar--initials"
@@ -18,10 +18,7 @@
     >
       {{ initials }}
     </span>
-    <span 
-      v-show="online" 
-      class="user-avatar--online"
-    ></span>
+    <span v-show="online" class="user-avatar--online"></span>
   </span>
 </template>
 
@@ -33,33 +30,38 @@ export default defineComponent({
   props: useAvatarProps,
 
   setup(props) {
-    const showPreload = computed(() => (!initials && !props.avatar.url) ||
-                                               (!props.avatar.bgAvatar && !props.noBackground));
+    const showPreload = computed(
+      () =>
+        (!initials && !props.avatar.url) ||
+        (!props.avatar.bgAvatar && !props.noBackground)
+    );
 
     const avatarStyles = computed((): CSSProperties => {
       return {
         width: `${props.size}px`,
         minWidth: `${props.size}px`,
         height: `${props.size}px`,
-        backgroundColor: props.avatar.bgAvatar
-      }
+        backgroundColor: props.avatar.bgAvatar,
+      };
     });
 
     const initials = computed((): string | null => {
-      if(props.firstName) {
+      if (props.firstName) {
         const firstNameInitial = props.firstName[0].toUpperCase();
         const lastNameInitial = props.lastName[0]?.toUpperCase() ?? "";
-        
+
         return firstNameInitial + lastNameInitial;
       }
 
       return null;
     });
 
-    const imgLoad = (): boolean => imgLoaded.value = true;
+    const imgLoad = (): boolean => (imgLoaded.value = true);
     const imgLoaded = ref(false);
 
-    const sizeInitials = computed((): string => `font-size: ${ props.size / 2.2 }px;`);
+    const sizeInitials = computed(
+      (): string => `font-size: ${props.size / 2.2}px;`
+    );
 
     return {
       avatarStyles,

@@ -11,16 +11,18 @@
         <v-btn icon dark @click="closeModal">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-toolbar-title class="modal__header-title">{{ modalContent.title }}</v-toolbar-title>
+        <v-toolbar-title class="modal__header-title">{{
+          modalContent.title
+        }}</v-toolbar-title>
       </v-toolbar>
       <v-list>
         <v-list-subheader class="modal__header">
-          <Checkbox  
-            switchBox 
-            name="language" 
-            label="English" 
-            secondaryLabel="Русский" 
-            v-model="switchLanguage" 
+          <Checkbox
+            switchBox
+            name="language"
+            label="English"
+            secondaryLabel="Русский"
+            v-model="switchLanguage"
           />
         </v-list-subheader>
         <div class="modal__content" v-html="modalContent.text"></div>
@@ -30,56 +32,63 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType, computed, watch } from 'vue';
+import { defineComponent, ref, PropType, computed, watch } from "vue";
 import { IModalContent } from "@/types/interfaces";
-import { ModalContentType, ModalContentLanguage, ModalLanguageType } from "@/types/types";
+import {
+  ModalContentType,
+  ModalContentLanguage,
+  ModalLanguageType,
+} from "@/types/types";
 
 import TermsOfUse from "@/helpers/content/TermsOfUse.json";
 import Confidentially from "@/helpers/content/Сonfidentiality.json";
-import useStores from '@/composables/useStores';
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   props: {
     contentType: {
       type: String as PropType<ModalContentType>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const { commonStore } = useStores();
-    
+
     const dialog = ref(true);
     const switchLanguage = ref(false); // "Русский" by default.
-    
+
     const currentContentType = computed((): IModalContent => {
-      if (props.contentType === 'termsOfUse') {
+      if (props.contentType === "termsOfUse") {
         return TermsOfUse;
       }
       return Confidentially;
-    })
+    });
 
     const closeModal = (): void => {
       commonStore.setModalContentType("");
-    } 
+    };
 
     watch(dialog, (value) => {
       if (!value) commonStore.setModalContentType("");
-    })
+    });
 
-    const currentLanguage = computed((): ModalLanguageType  => {
+    const currentLanguage = computed((): ModalLanguageType => {
       return !switchLanguage.value ? "ru" : "eng"; // "Русский" / "English"
-    })
+    });
 
-    const modalContent = computed((): ModalContentLanguage => currentContentType.value[currentLanguage.value]);
+    const modalContent = computed(
+      (): ModalContentLanguage =>
+        currentContentType.value[currentLanguage.value]
+    );
 
     return {
       dialog,
       modalContent,
       switchLanguage,
-      closeModal
-    }
+      closeModal,
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>
@@ -156,7 +165,7 @@ export default defineComponent({
           }
         }
       }
-    } 
+    }
   }
 }
 </style>

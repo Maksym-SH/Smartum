@@ -11,14 +11,16 @@ export default async function refreshUserInfo(): Promise<void> {
 
   await getAuth().onAuthStateChanged((user) => {
     if (user) {
-      getAuth().currentUser?.getIdToken(true).then(() => {
-        userStore.setCurrentUser(user);
+      getAuth()
+        .currentUser?.getIdToken(true)
+        .then(() => {
+          userStore.setCurrentUser(user);
 
-        userStore.getUserProfile(user.uid).then(() => {
-          configurationStore.getUserConfiguration(user.uid);
+          userStore.getUserProfile(user.uid).then(() => {
+            configurationStore.getUserConfiguration(user.uid);
+          });
         })
-      })
-      .catch((error: ErrorCode): void => ShowErrorMessage(error));
+        .catch((error: ErrorCode): void => ShowErrorMessage(error));
     } else {
       userStore.userLogout();
     }

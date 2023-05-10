@@ -1,10 +1,6 @@
 <template>
   <div class="empty-list">
-    <img 
-      class="empty-list__icon"
-      src="/images/icons/sad-smile.svg" 
-      alt=""
-    />
+    <img class="empty-list__icon" src="/images/icons/sad-smile.svg" alt="" />
     <h2 class="empty-list__title">
       {{ descriptionContent }}
     </h2>
@@ -12,34 +8,32 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from "vue";
 import { EmptyListType } from "@/types/types";
 
 export default defineComponent({
   props: {
     type: {
       type: String as PropType<EmptyListType>,
-      required: true
-    }
+      required: true,
+    },
   },
-  setup(props) { 
+  setup(props) {
     const descriptionContent = computed((): string => {
-      if(props.type === "dashboard") {
-        return "Список рабочих досок пуст."
-      }
-      else if (props.type === "notification") {
-        return "Список уведомлений пуст."
+      if (props.type === "dashboard") {
+        return "Список рабочих досок пуст.";
+      } else if (props.type === "notification") {
+        return "Список уведомлений пуст.";
       }
       // ToDo: smt else
-      return ""
-    })
+      return "";
+    });
 
     return {
-      descriptionContent
-    }
-  }
-})
-
+      descriptionContent,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -52,13 +46,13 @@ export default defineComponent({
     height: 70px;
   }
   &__title {
-    color:var(--color-text);
+    color: var(--color-text);
     margin-top: 10px;
     font-size: 22px;
     font-weight: 500;
   }
   @include mobile(max) {
-    &__icon { 
+    &__icon {
       width: 60px;
       height: 60px;
     }

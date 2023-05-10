@@ -1,15 +1,13 @@
 <template>
   <div class="confirmation" @click.self="result(false)">
     <div class="confirmation__window">
-      <h2 class="confirmation__window-title">
-        Подтверждение действия
-      </h2>
+      <h2 class="confirmation__window-title">Подтверждение действия</h2>
       <p class="confirmation__window-description">
-        Нам нужно убедиться что это действительно вы, 
-        введите пароль указанный вами при регистрации в поле ниже.
+        Нам нужно убедиться что это действительно вы, введите пароль указанный
+        вами при регистрации в поле ниже.
       </p>
       <form class="confirmation__window-input-field" @submit.prevent>
-        <Input 
+        <Input
           label="Ваш пароль"
           type="password"
           name="userPassword"
@@ -17,19 +15,20 @@
           v-model="password"
         />
         <div class="confirmation__window-forgot-password">
-          <router-link 
+          <router-link
             class="confirmation__window-forgot-password--go-page"
-            :to="{ name: 'Forgot' }" 
+            :to="{ name: 'Forgot' }"
             @click="result(false)"
           >
             Забыли пароль?
           </router-link>
         </div>
         <div class="confirmation__button">
-          <Button 
+          <Button
             @click="result(false)"
             variant="outlined"
-            class="confirmation__button--no">
+            class="confirmation__button--no"
+          >
             Отмена
           </Button>
           <Button
@@ -41,51 +40,57 @@
             Подтвердить
           </Button>
         </div>
-      </form>  
+      </form>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref } from "vue";
 import { EmailAuthCredential, EmailAuthProvider, User } from "firebase/auth";
-import { Length } from '@/types/enums';
-import { computed } from '@vue/reactivity';
-import { Confirmation } from '@/helpers/methods';
+import { Length } from "@/types/enums";
+import { computed } from "@vue/reactivity";
+import { Confirmation } from "@/helpers/methods";
 
-import firebaseAuth from '@/helpers/firebase/firebaseAuth';
-import useStores from '@/composables/useStores';
+import firebaseAuth from "@/helpers/firebase/firebaseAuth";
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   setup() {
-    const { commonStore, userStore } = useStores(); 
+    const { commonStore, userStore } = useStores();
 
     const userInfo: User = userStore.currentUser as User;
 
     const userEmail = userInfo.email;
     const password = ref("");
 
-    const btnConfirmDisable = computed((): boolean => password.value.length < Length.Password);
+    const btnConfirmDisable = computed(
+      (): boolean => password.value.length < Length.Password
+    );
 
     const result = (value: boolean): void => {
       if (value && userEmail) {
-        const credential: EmailAuthCredential = EmailAuthProvider.credential(userEmail, password.value);
+        const credential: EmailAuthCredential = EmailAuthProvider.credential(
+          userEmail,
+          password.value
+        );
 
-        firebaseAuth().reauthorization(userInfo, credential).then(() => {
-          Confirmation(false);
-        })
-      }
-      else commonStore.setConfirmPopupVisibillity(false);
-    }
-    
+        firebaseAuth()
+          .reauthorization(userInfo, credential)
+          .then(() => {
+            Confirmation(false);
+          });
+      } else commonStore.setConfirmPopupVisibillity(false);
+    };
+
     return {
       password,
       PasswordLength: Length.Password,
       btnConfirmDisable,
-      result
-    }
-  }
-})
+      result,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -168,7 +173,7 @@ export default defineComponent({
         width: 100%;
         margin: 20px auto 0 auto;
       }
-      &-forgot-password { 
+      &-forgot-password {
         padding-top: 10px;
         &--go-page {
           font-size: 13px;
@@ -178,7 +183,7 @@ export default defineComponent({
         margin-top: 0;
         .c-button {
           min-width: 48%;
-          padding:  10px;
+          padding: 10px;
         }
       }
     }

@@ -1,17 +1,17 @@
 <template>
   <div class="c-select" :class="{ active: selectActive }">
-    <Button 
+    <Button
       rounded
       variant="text"
       size="small"
-      @click="togglePicker" 
+      @click="togglePicker"
       @blur="selectActive = false"
     >
       <slot>
-        <img 
+        <img
           class="c-select__icon"
-          src="/images/icons/dots-vertical.svg" 
-          alt="" 
+          src="/images/icons/dots-vertical.svg"
+          alt=""
         />
       </slot>
     </Button>
@@ -46,7 +46,8 @@ export default defineComponent({
       type: Array as PropType<SelectElements>,
       default: () => [],
     },
-    location: { //ToDo
+    location: {
+      //ToDo
       type: String as PropType<Position>,
       default: "end",
     },
@@ -100,7 +101,7 @@ export default defineComponent({
       padding-left: 30px;
       padding: 15px 16px !important;
       height: auto !important;
-      text-transform:none;
+      text-transform: none;
       border-bottom: 1px solid $color-black;
       &.no-icon {
         padding-left: 44px !important;
@@ -117,7 +118,6 @@ export default defineComponent({
           margin-right: 10px;
         }
       }
-      
     }
     .btn-icon {
       margin-right: 110px;

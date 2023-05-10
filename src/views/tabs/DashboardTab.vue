@@ -4,23 +4,23 @@
       <div class="dashboard-tab__content--create-new" v-if="!showLockAccess">
         <CreateNewBoard @create-new="createNewBoard" />
       </div>
-      <transition-group 
-        tag="div" 
+      <transition-group
+        tag="div"
         class="dashboard-tab__cards"
         mode="out-in"
         name="toggle-content"
       >
-        <BoardCard 
-          v-for="board in allBoards" 
-          :key="board.joinCode" 
-          :element="board" 
+        <BoardCard
+          v-for="board in allBoards"
+          :key="board.joinCode"
+          :element="board"
         />
       </transition-group>
       <transition name="single-content">
-        <div 
+        <div
           v-show="centeringContent"
-          class="dashboard-tab__content--single" 
-          :class="{'centering': centeringContent }"
+          class="dashboard-tab__content--single"
+          :class="{ centering: centeringContent }"
         >
           <LockAccess v-if="showLockAccess && !showPreload" />
           <EmptyList v-else-if="emptyList" type="dashboard" />
@@ -44,62 +44,70 @@ import BoardCard from "@/components/dashboard/BoardItem.vue";
 import newNotificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
 
-export default defineComponent({ 
+export default defineComponent({
   components: {
     LockAccess,
     EmptyList,
     CreateNewBoard,
-    BoardCard
+    BoardCard,
   },
   setup() {
-    const { notificationStore, dashboardStore, userStore, commonStore } = useStores();
+    const { notificationStore, dashboardStore, userStore, commonStore } =
+      useStores();
 
     const unicID = computed((): string => (userStore.currentUser as User).uid);
 
     const showPreload = computed(() => commonStore.loadingStatus);
 
-    const allBoards = reactive<IWorkingBoardItem[]>([])
+    const allBoards = reactive<IWorkingBoardItem[]>([]);
 
-    const showLockAccess = computed((): boolean => !(userStore.currentUser as User).emailVerified);
+    const showLockAccess = computed(
+      (): boolean => !(userStore.currentUser as User).emailVerified
+    );
     const emptyList = ref(false);
 
-    const centeringContent = computed(() => (showLockAccess.value || emptyList.value) 
-                                                                          && !showPreload.value);
+    const centeringContent = computed(
+      () => (showLockAccess.value || emptyList.value) && !showPreload.value
+    );
 
     const createNewBoard = (board: IWorkingBoardItem): void => {
-      dashboardStore.createNewWorkingBoard(board, unicID.value)
-      .then((newBoard: IWorkingBoardItem): void => {
-        allBoards.push(newBoard);
+      dashboardStore
+        .createNewWorkingBoard(board, unicID.value)
+        .then((newBoard: IWorkingBoardItem): void => {
+          allBoards.push(newBoard);
 
-        notify({ 
-          title: "Успешно!",
-          text: `Рабочая доска ${ newBoard.title } была успешно создана!`,
-          type: "success"
-        })
+          notify({
+            title: "Успешно!",
+            text: `Рабочая доска ${newBoard.title} была успешно создана!`,
+            type: "success",
+          });
 
-        emptyList.value = false;
+          emptyList.value = false;
 
-        // Add new notification.
-        const notification = newNotificationContent(NotificationType.DashboardCreate, newBoard.title);
+          // Add new notification.
+          const notification = newNotificationContent(
+            NotificationType.DashboardCreate,
+            newBoard.title
+          );
 
-        notificationStore.setNewNotification(notification);
-      })
-    }
+          notificationStore.setNewNotification(notification);
+        });
+    };
 
     // Get all boards.
     onMounted((): void => {
-      dashboardStore.getAllWorkingBoards(unicID.value)
-      .then((boards: IWorkingBoardItem[]) => {
-        const noBoards = boards.length === 0;
+      dashboardStore
+        .getAllWorkingBoards(unicID.value)
+        .then((boards: IWorkingBoardItem[]) => {
+          const noBoards = boards.length === 0;
 
-        if (noBoards) {
-          emptyList.value = true;
-        }
-        else {
-          allBoards.push(...boards);
-        }
-      })
-    })
+          if (noBoards) {
+            emptyList.value = true;
+          } else {
+            allBoards.push(...boards);
+          }
+        });
+    });
 
     return {
       centeringContent,
@@ -107,11 +115,10 @@ export default defineComponent({
       showLockAccess,
       emptyList,
       allBoards,
-      createNewBoard
-    }
-  }
-})
-
+      createNewBoard,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

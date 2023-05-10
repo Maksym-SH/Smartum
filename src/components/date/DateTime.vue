@@ -20,7 +20,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, onUnmounted, watch } from "vue";
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  onUnmounted,
+  watch,
+} from "vue";
 import { WelcomeText, Icon } from "@/types/types";
 import { Numbers } from "@/types/enums";
 
@@ -44,19 +51,26 @@ export default defineComponent({
     const showTemplate = computed(() => time.value && date.value);
 
     // Changing text depending on the time of day.
-    watch((): string  => time.value, (): void => {
-      // Get current hour between 0 - 23.
-      const currentTime = time.value; 
-      const currentTimeHours = Number(currentTime.split("").slice(0, 2).join(""));
+    watch(
+      (): string => time.value,
+      (): void => {
+        // Get current hour between 0 - 23.
+        const currentTime = time.value;
+        const currentTimeHours = Number(
+          currentTime.split("").slice(0, 2).join("")
+        );
 
-      // If the time is later than 16:00 and later than 6:00.
-      if (currentTimeHours < Numbers.EveningRU && currentTimeHours > Numbers.MorningRU) {
-        welcomeText.value = "Добрый день";
+        // If the time is later than 16:00 and later than 6:00.
+        if (
+          currentTimeHours < Numbers.EveningRU &&
+          currentTimeHours > Numbers.MorningRU
+        ) {
+          welcomeText.value = "Добрый день";
+        } else {
+          welcomeText.value = "Добрый вечер";
+        }
       }
-      else {
-        welcomeText.value = "Добрый вечер";
-      }
-    });
+    );
 
     onMounted((): void => {
       updateTimeInterval.value = setInterval((): void => {
@@ -68,8 +82,8 @@ export default defineComponent({
     });
 
     onUnmounted((): void => {
-      if(updateTimeInterval.value) {
-        clearInterval(updateTimeInterval.value)
+      if (updateTimeInterval.value) {
+        clearInterval(updateTimeInterval.value);
       }
     });
 

@@ -1,9 +1,9 @@
 import { NotificationActionType } from "./enums";
-import { 
+import {
   ISelectElem,
-  ILanguage, 
+  ILanguage,
   IError,
-  IUserCreated, 
+  IUserCreated,
   IPopupParams,
   IAsideNavigationItem,
   IModalContent,
@@ -40,7 +40,11 @@ export type ModalContentLanguage = IModalContent[ModalLanguageType];
 
 export type DynamicDescription = { [key: string]: ILanguage };
 
-export type OmitUserInfo = "email" | "password" | "emailVerified" | "newPassword";
+export type OmitUserInfo =
+  | "email"
+  | "password"
+  | "emailVerified"
+  | "newPassword";
 
 // Props
 
@@ -48,11 +52,18 @@ export type AutoComplete = "on" | "off" | "new-password";
 
 export type ButtonSize = "x-small" | "small" | "large" | "x-large" | "default";
 
-export type ExpansionPanelVariant = "accordion" | "default" | "inset" | "popout";
+export type ExpansionPanelVariant =
+  | "accordion"
+  | "default"
+  | "inset"
+  | "popout";
 
 export type AsideNavigationItems = IAsideNavigationItem[];
 
-export type OmitAsideNavigation = Omit<IAsideNavigationItem, "icon" | "notify" | "panels" | "avatar">;
+export type OmitAsideNavigation = Omit<
+  IAsideNavigationItem,
+  "icon" | "notify" | "panels" | "avatar"
+>;
 
 export type AsideExpPanelNavigation = Required<OmitAsideNavigation>;
 
@@ -60,7 +71,13 @@ export type ModalContentType = "termsOfUse" | "confidentiality" | "";
 
 export type Variant = "info" | "danger" | "success";
 
-export type ButtonVariant = "elevated" | "flat" | "tonal" | "outlined" | "text" | "plain";
+export type ButtonVariant =
+  | "elevated"
+  | "flat"
+  | "tonal"
+  | "outlined"
+  | "text"
+  | "plain";
 
 export type PopupButtons = IPopupParams["buttons"];
 

@@ -9,15 +9,14 @@ const useCommonStore = defineStore("common", () => {
   const openConfirmPopup = ref(false);
   const modalContentType = ref<ModalContentType>("");
 
-
   const setLoadingStatus = (status: boolean): void => {
     loadingStatus.value = status;
   };
-  
+
   const setPopupParams = (params: IPopupParams | {}): void => {
-    popupParams.value = params
+    popupParams.value = params;
   };
-  
+
   const setConfirmPopupVisibillity = (toggle: boolean) => {
     openConfirmPopup.value = toggle;
   };
@@ -35,7 +34,7 @@ const useCommonStore = defineStore("common", () => {
     setPopupParams,
     setConfirmPopupVisibillity,
     setModalContentType,
-  }
-})
+  };
+});
 
 export default useCommonStore;

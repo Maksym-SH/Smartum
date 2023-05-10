@@ -1,19 +1,19 @@
 <template>
-  <span class="c-checkbox" :class="{'switch': switchBox }">
-    <input 
-      class="c-checkbox__input" 
-      v-model="checked" 
+  <span class="c-checkbox" :class="{ switch: switchBox }">
+    <input
+      class="c-checkbox__input"
+      v-model="checked"
       type="checkbox"
-      :disabled="disabled" 
+      :disabled="disabled"
       :id="name"
-    >
+    />
     <!-- Text -->
     <label
-      v-if="secondaryLabel && switchBox"  
-      class="label secondary-label" 
-      :class="{ 
+      v-if="secondaryLabel && switchBox"
+      class="label secondary-label"
+      :class="{
         'not-selected': checked,
-        'disabled': disabled 
+        disabled: disabled,
       }"
       @click="checkboxToggle(false)"
     >
@@ -21,30 +21,30 @@
     </label>
 
     <!-- Switch -->
-    <label 
-      class="checkbox-label" 
+    <label
+      class="checkbox-label"
       :for="name"
-      :class="{ 'disabled': disabled }"
+      :class="{ disabled: disabled }"
     ></label>
 
     <!-- Text -->
     <label
       v-if="label"
       class="label main-label"
-      :class="{ 
+      :class="{
         'not-selected': !checked,
-        'disabled': disabled  
+        disabled: disabled,
       }"
       @click="checkboxToggle(true)"
     >
       {{ label }}
-    </label> 
+    </label>
   </span>
 </template>
 
 <script lang="ts">
 import { defineComponent, watch, computed } from "vue";
-import { useCheckboxProps } from  "./use/useProps";
+import { useCheckboxProps } from "./use/useProps";
 
 export default defineComponent({
   props: useCheckboxProps,
@@ -53,28 +53,31 @@ export default defineComponent({
   setup(props, { emit }) {
     const checked = computed({
       get: () => props.modelValue,
-      set: (newValue) => emit("update:modelValue", newValue), 
-    })
+      set: (newValue) => emit("update:modelValue", newValue),
+    });
 
-    const hasTwoLabel = computed((): string | false => props.switchBox && props.label && props.secondaryLabel);
+    const hasTwoLabel = computed(
+      (): string | false =>
+        props.switchBox && props.label && props.secondaryLabel
+    );
 
     const checkboxToggle = (value: boolean): void => {
-      if (hasTwoLabel.value) { // Label [checkbox] Label
+      if (hasTwoLabel.value) {
+        // Label [checkbox] Label
         checked.value = value;
-      }
-      else {
+      } else {
         checked.value = !checked.value;
       }
     };
 
-    watch(checked, () => emit('update:modelValue', checked.value));
+    watch(checked, () => emit("update:modelValue", checked.value));
 
     return {
-      checked, 
-      checkboxToggle
-    }
-  }
-})
+      checked,
+      checkboxToggle,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -90,7 +93,7 @@ export default defineComponent({
       color: $color-brown !important;
     }
     &.disabled {
-      pointer-events: none; 
+      pointer-events: none;
       cursor: default;
       color: var(--color-disable) !important;
     }
@@ -178,7 +181,7 @@ export default defineComponent({
             transform: translateX(16px);
             background-color: $color-blue;
           }
-        }  
+        }
       }
       &:disabled {
         & ~ .checkbox-label {

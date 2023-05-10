@@ -6,13 +6,13 @@ const ShowErrorMessage = (errorCode: ErrorCode): void => {
   if (typeof errorCode === "object") {
     switch (errorCode.code) {
       case "auth/internal-error":
-        errorText = "Произошла непредвиденная ошибка, повторите попытку позже!"
+        errorText = "Произошла непредвиденная ошибка, повторите попытку позже!";
         break;
       case "auth/too-many-requests":
-        errorText = "Слишком много попыток, повторите попытку позже!"
+        errorText = "Слишком много попыток, повторите попытку позже!";
         break;
       case "auth/wrong-password":
-        errorText = "Пароль не верный, повторите попытку!"
+        errorText = "Пароль не верный, повторите попытку!";
         break;
       case "auth/invalid-email":
         errorText = "Введённая почта невалидна!";

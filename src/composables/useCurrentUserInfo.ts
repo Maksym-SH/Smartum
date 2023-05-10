@@ -8,13 +8,13 @@ const useUserUnicId = () => {
 
   const unicID = computed((): string => (userStore.currentUser as User).uid);
   const currentUser = computed((): User => userStore.currentUser as User);
-  const userInfo = computed((): IUserCreated => userStore.userInfo)
+  const userInfo = computed((): IUserCreated => userStore.userInfo);
 
   return {
     unicID,
     userInfo,
-    currentUser
-  }
-}
+    currentUser,
+  };
+};
 
 export default useUserUnicId;

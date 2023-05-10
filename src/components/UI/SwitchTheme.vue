@@ -1,50 +1,50 @@
 <template>
-  <div class="toggle-theme-switch" :class="{ 'small': small }">
+  <div class="toggle-theme-switch" :class="{ small: small }">
     <label class="toggle-theme-switch__label">
-      <input 
+      <input
         class="toggle-theme-switch__input"
-        type="checkbox" 
+        type="checkbox"
         v-model="switchModel"
-      >
+      />
       <span class="toggle-theme-switch__icon"></span>
     </label>
   </div>
 </template>
 
-
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch } from "vue";
 import { SetTheme } from "@/helpers/methods";
-import { Theme } from '@/types/types';
+import { Theme } from "@/types/types";
 
 export default defineComponent({
   props: {
     small: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   setup() {
     const switchModel = ref<boolean>(true);
 
-    watch(switchModel, (value: boolean):void => {
+    watch(switchModel, (value: boolean): void => {
       const currentTheme: Theme = value ? "light" : "dark";
       SetTheme(currentTheme);
       localStorage.setItem("smartumTheme", currentTheme);
-    })
+    });
 
     onMounted(() => {
-      const savedTheme = localStorage.getItem("smartumTheme") as Theme ?? "dark";
-      switchModel.value = savedTheme === 'dark' ? false : true;
+      const savedTheme =
+        (localStorage.getItem("smartumTheme") as Theme) ?? "dark";
+      switchModel.value = savedTheme === "dark" ? false : true;
 
       SetTheme(savedTheme);
-    })
+    });
 
     return {
-      switchModel
-    }
-  }
-})
+      switchModel,
+    };
+  },
+});
 </script>
 <style lang="scss" scoped>
 .toggle-theme-switch {
@@ -91,7 +91,7 @@ export default defineComponent({
     background-color: $color-dark-grey4;
     transition: 0.3s;
   }
-  
+
   &.small {
     width: 50px;
     .toggle-theme-switch__label {

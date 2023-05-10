@@ -2,12 +2,12 @@
   <v-expansion-panels :variant="variant">
     <v-expansion-panel>
       <v-expansion-panel-title>
-        <span v-if="icon" class="icon" :class="['mdi', `mdi-${ icon }`]"></span>
-        <span class="text" :class="{'no-icon': !icon }">{{ name }}</span>
+        <span v-if="icon" class="icon" :class="['mdi', `mdi-${icon}`]"></span>
+        <span class="text" :class="{ 'no-icon': !icon }">{{ name }}</span>
       </v-expansion-panel-title>
       <template v-if="showExpansionPanelContent">
-        <v-expansion-panel-text 
-          v-for="(item, index) in content" 
+        <v-expansion-panel-text
+          v-for="(item, index) in content"
           :key="index"
           @click="item.callback()"
         >
@@ -16,25 +16,26 @@
           </span>
         </v-expansion-panel-text>
       </template>
-     </v-expansion-panel>
+    </v-expansion-panel>
   </v-expansion-panels>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed } from "vue";
 import { useExpansionPanelProps } from "./use/useProps";
 
-export default defineComponent({ 
+export default defineComponent({
   props: useExpansionPanelProps,
   setup(props) {
-    const showExpansionPanelContent = computed((): number => props.content.length);
+    const showExpansionPanelContent = computed(
+      (): number => props.content.length
+    );
 
     return {
-      showExpansionPanelContent
-    }
-  }
-})
-
+      showExpansionPanelContent,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -50,7 +51,7 @@ export default defineComponent({
     cursor: pointer;
     font-size: 13px;
     &:active {
-      background-color:  $color-dark-grey3;
+      background-color: $color-dark-grey3;
     }
     &:hover {
       background-color: $color-dark-grey2;

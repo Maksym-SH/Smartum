@@ -45,9 +45,7 @@
           <div class="auth__swap-entry-type">
             <span class="auth__description" :key="authType">
               Нет аккаунта?
-              <router-link :to="{ name: 'SignUp' }"> 
-                Регистрация 
-              </router-link>
+              <router-link :to="{ name: 'SignUp' }"> Регистрация </router-link>
             </span>
           </div>
         </div>
@@ -183,7 +181,7 @@ export default defineComponent({
           margin-top: 10px;
         }
         &__inputs {
-            &--send {
+          &--send {
             .c-button {
               width: 100%;
             }

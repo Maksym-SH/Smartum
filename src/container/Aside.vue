@@ -1,6 +1,7 @@
 <template>
-  <aside class="aside" 
-    :style="{ 'backgroundColor': asideBackgroundColor }"
+  <aside
+    class="aside"
+    :style="{ backgroundColor: asideBackgroundColor }"
     :class="{ 'aside-minimize': minimizeAside }"
   >
     <div class="aside__logo">
@@ -10,29 +11,26 @@
       <Loader v-if="!showContent" :size="defaultLoaderSize" inline />
       <template v-else>
         <div class="aside__mobile-content mobile-only">
-          <SwitchTheme
-            class="aside__theme-switch"
-            small
-          />
+          <SwitchTheme class="aside__theme-switch" small />
           <Input
-            type="search" 
+            type="search"
             light-theme
             name="searchContent"
-            label="Поиск" 
+            label="Поиск"
             v-model="searchInput"
           />
         </div>
         <div class="aside__user">
-          <User 
+          <User
             @user-menu-picked="setMinimizeValue(true, LayoutLaptop)"
             :firstName="userInfo.firstName"
-            :lastName="userInfo.lastName" 
-            :avatar="userInfo.avatarParams" 
+            :lastName="userInfo.lastName"
+            :avatar="userInfo.avatarParams"
           />
         </div>
-        <transition-group 
-          name="toggle-content" 
-          mode="out-in" 
+        <transition-group
+          name="toggle-content"
+          mode="out-in"
           tag="div"
           class="aside__navigations"
         >
@@ -40,32 +38,32 @@
             <template v-if="item.showed">
               <ExpPanel
                 v-if="item.panels"
-                :name="item.title" 
-                :icon="item.icon" 
+                :name="item.title"
+                :icon="item.icon"
                 :content="item.panels"
               />
-              <v-list-item 
+              <v-list-item
                 v-else
-                class="aside__navigation-list-item" 
+                class="aside__navigation-list-item"
                 @click="navigationCallbackHandler(item?.callback?.())"
               >
                 <div>
-                  <span 
+                  <span
                     v-if="item.icon"
-                    class="icon" 
-                    :class="['mdi', `mdi-${ item.icon }`]"
+                    class="icon"
+                    :class="['mdi', `mdi-${item.icon}`]"
                   ></span>
-                  <span 
-                    class="navigation-title" 
+                  <span
+                    class="navigation-title"
                     :class="{ 'no-icon': !item.icon }"
                   >
                     {{ item.title }}
                   </span>
                 </div>
                 <v-badge
-                  v-show="notificationCount >= 0 && item.notify" 
+                  v-show="notificationCount >= 0 && item.notify"
                   class="notify"
-                  :class="{'empty-list': notificationCount === 0 }"
+                  :class="{ 'empty-list': notificationCount === 0 }"
                   :content="notificationCount"
                 >
                 </v-badge>
@@ -77,13 +75,11 @@
     </div>
     <footer class="aside__about-author">
       <article class="aside__about-author_description">
-        <span>
-          Powered by Maksym-SH © 2023
-        </span>
+        <span> Powered by Maksym-SH © 2023 </span>
         <span>
           {{ applicationVersion }}
         </span>
-      </article> 
+      </article>
     </footer>
     <div class="aside__collapse" @click="collapseToggle">
       <div class="aside__collapse-wrapper">
@@ -93,7 +89,7 @@
       </div>
       <transition name="toggle-content">
         <v-badge
-          v-show="showNotificationBadge" 
+          v-show="showNotificationBadge"
           class="aside__collapse--notify-badge"
           :content="notificationCount"
         >
@@ -111,13 +107,13 @@ import { ObjectNotEmpty, ObjectHasValues } from "@/helpers/methods";
 
 import User from "@/components/user/Container.vue";
 import SwitchTheme from "@/components/UI/SwitchTheme.vue";
-import packageJson from 'package.json'
+import packageJson from "package.json";
 import useStores from "@/composables/useStores";
 
 export default defineComponent({
   components: {
     User,
-    SwitchTheme
+    SwitchTheme,
   },
   props: {
     minimizeAside: {
@@ -127,7 +123,7 @@ export default defineComponent({
     notificationCount: {
       type: Number,
       required: true,
-    }
+    },
   },
   emits: ["update:minimizeAside"],
   setup(props, { emit }) {
@@ -141,18 +137,26 @@ export default defineComponent({
 
     const asideBackgroundColor = computed((): string => {
       return configurationStore.additionalParams.asideBackgroundColor;
-    })
+    });
 
     const showContent = computed((): boolean => {
-      return ObjectHasValues(userStore.userInfo) && 
-                ObjectNotEmpty(userStore.currentUser) && 
-                  ObjectNotEmpty(navigationList.value)
+      return (
+        ObjectHasValues(userStore.userInfo) &&
+        ObjectNotEmpty(userStore.currentUser) &&
+        ObjectNotEmpty(navigationList.value)
+      );
     });
     // AsideNavigate[2] - 2 on the list is notification navigation.
-    const notificationNavShowed = computed(() => configurationStore.asideNavigate[2]?.showed); 
+    const notificationNavShowed = computed(
+      () => configurationStore.asideNavigate[2]?.showed
+    );
 
-    const showNotificationBadge = computed(() => 
-                  props.notificationCount > 0 && props.minimizeAside && notificationNavShowed.value)
+    const showNotificationBadge = computed(
+      () =>
+        props.notificationCount > 0 &&
+        props.minimizeAside &&
+        notificationNavShowed.value
+    );
 
     const userInfo = computed((): IUserCreated => userStore.userInfo);
 
@@ -163,7 +167,7 @@ export default defineComponent({
 
       minimize.value = value;
       emit("update:minimizeAside", minimize.value);
-    }
+    };
 
     const navigationCallbackHandler = (callback: void | (() => void)): void => {
       setMinimizeValue(true, Layout.LargeTablet); // Close aside panel after click navigation item.
@@ -173,19 +177,19 @@ export default defineComponent({
     const navigationList = computed((): IAsideNavigationItem[] => {
       return configurationStore.asideNavigate;
     });
-  
-    const applicationVersion = `v ${ packageJson.version }`;
+
+    const applicationVersion = `v ${packageJson.version}`;
 
     onMounted((): void => {
-      if(window.innerWidth > Layout.Laptop) {
+      if (window.innerWidth > Layout.Laptop) {
         setTimeout((): void => {
           setMinimizeValue(false);
         }, Numbers.AppearElement);
-      } 
+      }
     });
 
     return {
-      userInfo, 
+      userInfo,
       showContent,
       minimize,
       searchInput,
@@ -197,7 +201,7 @@ export default defineComponent({
       navigationCallbackHandler,
       setMinimizeValue,
       asideBackgroundColor,
-      LayoutLaptop: Layout.Laptop
+      LayoutLaptop: Layout.Laptop,
     };
   },
 });
@@ -227,7 +231,7 @@ export default defineComponent({
     text-align: start;
     padding-left: 23px;
     height: 48px;
-    color: $color-white1 !important; 
+    color: $color-white1 !important;
     margin: 0;
     box-shadow: 0px 3px 2px -1px rgba($color-black, 0.5);
     .v-list-item__content {
@@ -399,7 +403,7 @@ export default defineComponent({
         border-radius: 0 10px 10px 0;
         width: 45px;
         height: 66px;
-      } 
+      }
       &--toggle {
         img {
           width: 12px;
@@ -421,7 +425,7 @@ export default defineComponent({
     &__collapse {
       &-wrapper {
         height: 63px;
-      } 
+      }
     }
   }
 }

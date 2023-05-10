@@ -21,9 +21,9 @@ export default defineComponent({
   props: useButtonProps,
   setup() {
     return {
-      Colors
-    }
-  }
+      Colors,
+    };
+  },
 });
 </script>
 

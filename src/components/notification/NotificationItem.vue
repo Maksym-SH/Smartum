@@ -1,66 +1,61 @@
 <template>
-  <div 
-    class="notification-item" 
+  <div
+    class="notification-item"
     :class="{ 'not-read': params.status === 'not read' }"
     @click="readNotification"
   >
-    <Avatar 
-      v-if="image" 
-      :avatar="image" 
-      :size="45"
-      circle
-      noBackground
-    />
+    <Avatar v-if="image" :avatar="image" :size="45" circle noBackground />
     <div class="notification-item__content">
       <div class="notification-item__content-info">
-         <h3 class="notification-item__title">
+        <h3 class="notification-item__title">
           {{ params.title }}
         </h3>
         <time class="notification-item__date">
           {{ dateSent }}
         </time>
-      </div> 
+      </div>
       <p class="notification-item__description">
         {{ params.description }}
       </p>
     </div>
     <span
-      @click.stop="deleteNotification(params.id)" 
-      class="notification-item__close mdi mdi-close-circle"></span>
+      @click.stop="deleteNotification(params.id)"
+      class="notification-item__close mdi mdi-close-circle"
+    ></span>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive } from 'vue';
-import { IPictureParams, INotification, IServerDate } from '@/types/interfaces';
-import { NotificationActionType } from '@/types/enums';
+import { defineComponent, PropType, reactive } from "vue";
+import { IPictureParams, INotification, IServerDate } from "@/types/interfaces";
+import { NotificationActionType } from "@/types/enums";
 
-import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
-import router from '@/router';
+import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
+import router from "@/router";
 import useDateParseToString from "@/composables/useDateParse";
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
-import Avatar from '../user/Avatar.vue';
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
+import Avatar from "../user/Avatar.vue";
 
 export default defineComponent({
-  emits:["deleteNotification", "readNotification"],
+  emits: ["deleteNotification", "readNotification"],
   components: {
-    Avatar
+    Avatar,
   },
   props: {
     params: {
       type: Object as PropType<INotification<IServerDate>>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props, { emit }) {
     const image = reactive<IPictureParams>({
       url: props.params.image || "",
-    })
+    });
     const { currentUser } = useCurrentUserInfo();
 
     const deleteNotification = (id: number): void => {
       emit("deleteNotification", id);
-    }
+    };
 
     const dateSent = useDateParseToString(props.params.date);
 
@@ -68,44 +63,42 @@ export default defineComponent({
       emit("readNotification", props.params.id);
 
       // Action by notification type.
-      switch(props.params.type) {
+      switch (props.params.type) {
         // ToDo: Dashboard page.
-        //case NotificationActionType.Dashboard: 
+        //case NotificationActionType.Dashboard:
         //  router.push({ name: "Dashboard" });
         //  break;
         case NotificationActionType.Verify:
           VerifyEmail(currentUser.value);
           break;
-        case NotificationActionType.Profile: 
+        case NotificationActionType.Profile:
           router.push({ name: "Profile" });
           break;
-        case NotificationActionType.Reset: 
+        case NotificationActionType.Reset:
           router.push({ name: "Forgot" });
           break;
         case NotificationActionType.Configuration:
           router.push({ name: "Configuration" });
           break;
         case NotificationActionType.Default:
-          case NotificationActionType.Dashboard: // ToDo.
+        case NotificationActionType.Dashboard: // ToDo.
           return;
         // ToDo: Users page.
-        // case NotificationActionType.User: 
+        // case NotificationActionType.User:
         //  router.push({ name: "Dashboard/User" })
         //  break;
       }
-      
     };
 
     return {
       deleteNotification,
       readNotification,
       image,
-      dateSent
-    }
-  }
-})
+      dateSent,
+    };
+  },
+});
 </script>
-
 
 <style lang="scss" scoped>
 .notification-item {
@@ -146,7 +139,7 @@ export default defineComponent({
     line-height: 25px;
     color: $color-dark-grey4;
   }
-  &__description { 
+  &__description {
     margin-top: 7px;
     font-size: 13px;
     line-height: 16px;

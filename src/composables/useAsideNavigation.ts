@@ -16,8 +16,8 @@ export default function Navigation(): AsideNavigationItems {
     title: "Рабочие доски",
     icon: "view-dashboard",
     callback() {
-      router.push({ name: "Dashboard" })
-    }
+      router.push({ name: "Dashboard" });
+    },
   };
 
   const ConfigurationTab: IAsideNavigationItem = {
@@ -27,8 +27,8 @@ export default function Navigation(): AsideNavigationItems {
     title: "Конфигурация",
     icon: "tune-vertical-variant",
     callback() {
-      router.push({ name: "Configuration" })
-    }
+      router.push({ name: "Configuration" });
+    },
   };
 
   const NotificationTab: IAsideNavigationItem = {
@@ -38,8 +38,8 @@ export default function Navigation(): AsideNavigationItems {
     icon: "bell",
     notify: true,
     callback() {
-      router.push({ name: "Notifications" })
-    }
+      router.push({ name: "Notifications" });
+    },
   };
 
   const ReportsTab: IAsideNavigationItem = {
@@ -53,20 +53,20 @@ export default function Navigation(): AsideNavigationItems {
         callback() {
           notify({
             title: "Страница в разработке!",
-            type: "success"
-          })
-        }
+            type: "success",
+          });
+        },
       },
       {
         title: "Отчёт приложения",
         callback() {
           notify({
             title: "Страница в разработке!",
-            type: "success"
-          })
-        }
-      }
-    ]
+            type: "success",
+          });
+        },
+      },
+    ],
   };
 
   const StatisticsTab: IAsideNavigationItem = {
@@ -77,10 +77,10 @@ export default function Navigation(): AsideNavigationItems {
     callback(): void {
       notify({
         title: "Страница в разработке!",
-        type: "success"
-      })
-    }
-  }
+        type: "success",
+      });
+    },
+  };
 
   const AuthorTab: IAsideNavigationItem = {
     id: 5,
@@ -98,10 +98,10 @@ export default function Navigation(): AsideNavigationItems {
         title: "Telegram",
         callback(): void {
           window.open(Links.TelegramAccount, "_blank");
-        }
-      }
-    ]
-  }
+        },
+      },
+    ],
+  };
 
   const ConditionUseTab: IAsideNavigationItem = {
     id: 6,
@@ -110,11 +110,11 @@ export default function Navigation(): AsideNavigationItems {
     icon: "shield-alert",
     panels: [
       {
-        title:"Пользовательское соглашение",
+        title: "Пользовательское соглашение",
         callback(): void {
           const termsOfUse: ModalContentType = "termsOfUse";
           commonStore.setModalContentType(termsOfUse);
-        }
+        },
       },
       {
         title: "Конфидециальность",
@@ -122,9 +122,9 @@ export default function Navigation(): AsideNavigationItems {
           const confidentiality: ModalContentType = "confidentiality";
           commonStore.setModalContentType(confidentiality);
         },
-      }
-    ]
-  }
+      },
+    ],
+  };
 
   return [
     DashboardTab,
@@ -133,6 +133,6 @@ export default function Navigation(): AsideNavigationItems {
     StatisticsTab,
     ReportsTab,
     ConditionUseTab,
-    AuthorTab
-  ]
+    AuthorTab,
+  ];
 }

@@ -3,15 +3,15 @@
     <form class="profile-tab__form" @submit.prevent>
       <div class="profile-tab__form--upload">
         <span class="label">Обновить фото профиля</span>
-        <ImageUpload 
-          :fileType="'image'" 
+        <ImageUpload
+          :fileType="'image'"
           :avatarParams="userInfo.avatarParams.url"
           @loaded="updatePhoto"
           @deleted="deletePhoto"
         />
       </div>
       <div class="profile-tab__form_item first-name">
-        <Input 
+        <Input
           v-model.trim="userInfo.firstName"
           @keydown.enter.prevent
           :min="userInfo.firstName ? Length.Text : Length.None"
@@ -21,25 +21,25 @@
         />
       </div>
       <div class="profile-tab__form_item last-name">
-        <Input 
-          v-model.trim="userInfo.lastName" 
+        <Input
+          v-model.trim="userInfo.lastName"
           @keydown.enter.prevent
-          :min="userInfo.lastName ? Length.Text : Length.None" 
+          :min="userInfo.lastName ? Length.Text : Length.None"
           :maxLength="Length.Maximum"
           label="Фамилия"
           name="userLastName"
         />
       </div>
       <div class="profile-tab__form_item textarea">
-        <Textarea 
-          v-model.trim="userInfo.about" 
+        <Textarea
+          v-model.trim="userInfo.about"
           :max="Length.Textarea"
           label="Дополнительная информация"
           name="userAbout"
         />
       </div>
       <div class="profile-tab__form_item phone">
-        <Input 
+        <Input
           class="phone"
           @keydown.enter.prevent
           v-model.trim="userInfo.phone"
@@ -49,22 +49,22 @@
         />
       </div>
       <div class="profile-tab__form_item email">
-        <Input 
+        <Input
           disabled
           isEmail
-          v-model="userInfo.email" 
+          v-model="userInfo.email"
           label="Электронный адрес"
           name="userEmail"
         />
       </div>
       <div class="profile-tab__form_item new-password">
-        <Hint 
+        <Hint
           v-if="emailNotVerified"
-          content="Для изменения пароля подтвердите электронный адрес." 
+          content="Для изменения пароля подтвердите электронный адрес."
           variant="danger"
         />
-        <Input 
-          v-model.trim="userInfo.newPassword" 
+        <Input
+          v-model.trim="userInfo.newPassword"
           @keydown.enter.prevent
           type="password"
           :disabled="emailNotVerified"
@@ -74,14 +74,14 @@
         />
       </div>
       <div class="profile-tab__form_buttons-wrapper">
-        <Button 
+        <Button
           class="btn-save"
-          :class="{'full-width-mobile': saveChangesButtonToFullScreen }"
+          :class="{ 'full-width-mobile': saveChangesButtonToFullScreen }"
           @click="saveChanges"
           title="Сохранить"
         />
         <transition name="toggle-content">
-          <Button 
+          <Button
             v-if="showDeleteAccountButton"
             @click="deleteAccountConfirm"
             class="btn-delete"
@@ -105,7 +105,7 @@ import { Colors } from "@/types/enums";
 
 import RegExp from "@/helpers/regExp";
 import newNotificationContent from "@/composables/useNotificationContent";
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import Avatar from "@/components/user/Avatar.vue";
@@ -117,7 +117,7 @@ export default defineComponent({
     Avatar,
     ImageUpload: FileUpload,
     Card,
-    Hint
+    Hint,
   },
   setup() {
     const { userStore, configurationStore, notificationStore } = useStores();
@@ -133,105 +133,111 @@ export default defineComponent({
       email: currentUser.value.email as string,
       photoFile: null,
       avatarParams: {
-        url: ""
+        url: "",
       },
       newPassword: "",
-    })
+    });
 
     // Actions
     const validForm = computed((): boolean => {
-      if ((userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
-          (!userInfo.firstName || userInfo.firstName.length >= Length.Text) && 
-            (!userInfo.lastName || userInfo.lastName.length >= Length.Text) &&
-              (!userInfo.newPassword || userInfo.newPassword.length >= Length.Password))
-      {
+      if (
+        (userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
+        (!userInfo.firstName || userInfo.firstName.length >= Length.Text) &&
+        (!userInfo.lastName || userInfo.lastName.length >= Length.Text) &&
+        (!userInfo.newPassword ||
+          userInfo.newPassword.length >= Length.Password)
+      ) {
         return true;
       }
 
       return false;
-    })
+    });
 
-    const emailNotVerified = computed((): boolean => !currentUser.value.emailVerified);
+    const emailNotVerified = computed(
+      (): boolean => !currentUser.value.emailVerified
+    );
 
     const passwordChanged = computed((): boolean => userInfo.newPassword != "");
 
     const showDeleteAccountButton = computed((): boolean => {
       return configurationStore.additionalParams.showDeleteAccountButton;
-    })
+    });
 
-    const saveChangesButtonToFullScreen = computed(() => !showDeleteAccountButton.value);
+    const saveChangesButtonToFullScreen = computed(
+      () => !showDeleteAccountButton.value
+    );
 
     // Update methods.
     const updatePhoto = (file: File) => {
       userInfo.photoFile = file;
-    }
+    };
     const deletePhoto = (): void => {
       userInfo.photoFile = null;
       userInfo.avatarParams.url = "";
-    }
+    };
     const updatePassword = (): void => {
       PasswordUpdate(currentUser.value, userInfo.newPassword).then((): void => {
-        const notification = newNotificationContent(NotificationType.PasswordChange);
+        const notification = newNotificationContent(
+          NotificationType.PasswordChange
+        );
 
         notificationStore.setNewNotification(notification);
         userInfo.newPassword = ""; // After update password reset input value.
         profileUpdate();
-      })
+      });
       // Hide confirmation popup.
       showConfirmation.value = false;
-    }
+    };
 
     const showConfirmation = ref(true);
 
-    const profileUpdate = async(): Promise<any> => {
+    const profileUpdate = async (): Promise<any> => {
       const infoToUpdate = {
         ...userInfo,
-        uid: unicID.value
-      }
-      userStore.updateUserInfo(infoToUpdate)
-      .then((): void => notify({
-        title: "Ваши данные были успешно обновлены!"
-      }))
-    }
+        uid: unicID.value,
+      };
+      userStore.updateUserInfo(infoToUpdate).then((): void =>
+        notify({
+          title: "Ваши данные были успешно обновлены!",
+        })
+      );
+    };
 
     const saveChanges = (): void => {
-      if(!validForm.value) return;
+      if (!validForm.value) return;
 
-      if(passwordChanged.value && showConfirmation.value) { // Show confirmation.
-        Confirmation(true, updatePassword)
-      }
-      else {
-        profileUpdate()
-        .then(() => {
+      if (passwordChanged.value && showConfirmation.value) {
+        // Show confirmation.
+        Confirmation(true, updatePassword);
+      } else {
+        profileUpdate().then(() => {
           if (passwordChanged.value) {
             updatePassword();
           }
-        })
+        });
       }
-    }
+    };
 
     const deleteAccountPopup = (): void => {
       showConfirmation.value = false;
       DeleteAccountPopup(unicID.value)();
-    }
+    };
 
     const deleteAccountConfirm = (): void => {
       if (showConfirmation.value) {
         Confirmation(true, deleteAccountPopup);
-      }
-      else deleteAccountPopup();
-    }
+      } else deleteAccountPopup();
+    };
 
     onMounted((): void => {
-      const profileInfo = userStore.userInfo as Required<IUserInfo>;  
+      const profileInfo = userStore.userInfo as Required<IUserInfo>;
 
       userInfo.firstName = profileInfo.firstName;
       userInfo.lastName = profileInfo.lastName;
       userInfo.about = profileInfo.about;
       userInfo.avatarParams.url = profileInfo.avatarParams.url || "";
       userInfo.phone = profileInfo.phone;
-
-    })
+    });
 
     return {
       userInfo,
@@ -306,7 +312,8 @@ export default defineComponent({
       display: flex;
       justify-content: space-between;
       grid-area: 4/1/4/4;
-      .btn-save, .btn-delete {
+      .btn-save,
+      .btn-delete {
         color: $color-white1;
         text-transform: none;
         width: 30%;
@@ -326,7 +333,7 @@ export default defineComponent({
         }
         .file-upload {
           max-width: 170px;
-          max-height: 170px; 
+          max-height: 170px;
         }
       }
       &_item {
@@ -337,10 +344,11 @@ export default defineComponent({
         }
       }
       .c-textarea {
-        height: 110px !important; 
+        height: 110px !important;
       }
       &_buttons-wrapper {
-        .btn-save, .btn-delete {
+        .btn-save,
+        .btn-delete {
           width: 170px;
         }
       }
@@ -386,7 +394,8 @@ export default defineComponent({
         width: 100%;
         max-width: 440px;
         justify-content: space-between;
-        .btn-save, .btn-delete {
+        .btn-save,
+        .btn-delete {
           font-size: 13px;
           width: 47%;
           max-width: none;
@@ -402,5 +411,4 @@ export default defineComponent({
     }
   }
 }
-
 </style>

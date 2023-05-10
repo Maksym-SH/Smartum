@@ -1,7 +1,12 @@
 <template>
   <div class="file-upload" @click="upload?.click()">
-    <input type="file" ref="upload" class="file-upload--input" @change="fileUpload" />
-    <Button 
+    <input
+      type="file"
+      ref="upload"
+      class="file-upload--input"
+      @change="fileUpload"
+    />
+    <Button
       v-if="showImageTemplate"
       class="file-upload--delete"
       :color="Colors.Danger"
@@ -42,21 +47,25 @@ export default defineComponent({
     avatarParams: {
       type: String,
       default: "",
-    }
+    },
   },
-  emits:["loaded", "deleted"],
+  emits: ["loaded", "deleted"],
   setup(props, { emit }) {
     const upload = ref<RefElement>();
-    // Image 
+    // Image
     const imgLoaded = ref(false);
-    
+
     const imgDeleted = ref(false);
 
-    const currentImgPath = computed((): string => String(imageSource.value || props.avatarParams));
-    const showImageTemplate = computed((): string | boolean => 
-                                    (imgLoaded.value || props.avatarParams) && !imgDeleted.value);
+    const currentImgPath = computed((): string =>
+      String(imageSource.value || props.avatarParams)
+    );
+    const showImageTemplate = computed(
+      (): string | boolean =>
+        (imgLoaded.value || props.avatarParams) && !imgDeleted.value
+    );
 
-    const imgLoad = (): boolean => imgLoaded.value = true;
+    const imgLoad = (): boolean => (imgLoaded.value = true);
 
     const imageSource = ref<ImageSource>(props.avatarParams);
 
@@ -65,40 +74,40 @@ export default defineComponent({
       const reader = new FileReader();
       const file = upload.value?.files?.[0];
 
-      if(file) {
-        if(props.fileType == 'image') reader.readAsDataURL(file);
+      if (file) {
+        if (props.fileType == "image") reader.readAsDataURL(file);
 
         reader.onload = (): void => {
-          
-          if(fileValidate(file, props.fileType)) { // Validation was successful.
+          if (fileValidate(file, props.fileType)) {
+            // Validation was successful.
 
-            if(props.fileType == "image") {
+            if (props.fileType == "image") {
               imageSource.value = reader.result;
               imgLoaded.value = true;
               imgDeleted.value = false;
 
-              emit('loaded', file);
+              emit("loaded", file);
 
               upload.value!.value = ""; // Clear input file after image load.
             }
           }
-        }
+        };
       }
-    }
+    };
 
-    const deleteImgPopup = ():void => {
+    const deleteImgPopup = (): void => {
       OpenPopup({
         title: "Удалить фото?",
         buttons: {
           yes: {
             text: "Удалить",
-            color: Colors.Danger
+            color: Colors.Danger,
           },
         },
         callback: (): void => {
           emit("deleted");
           imgDeleted.value = true;
-        }
+        },
       });
     };
 
@@ -126,8 +135,8 @@ export default defineComponent({
   border: 3px dashed $color-blue;
   cursor: pointer;
   @include flex-center;
-  
-  &--delete { 
+
+  &--delete {
     position: absolute;
     top: 2px;
     right: 2px;

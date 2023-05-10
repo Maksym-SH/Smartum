@@ -18,17 +18,18 @@ import { FileType } from "@/types/types";
 const fileValidate = (file: File, needType: FileType): boolean => {
   const currentType: string = file.type.toLowerCase();
 
-  if(needType == "image") {
-    if(file.size < Numbers.ImageSize && currentType.startsWith("image")) {
+  if (needType == "image") {
+    if (file.size < Numbers.ImageSize && currentType.startsWith("image")) {
       return true;
     }
   }
 
   notify({
-    title: "Выбранный файл не поддерживается либо имеет слишком большой размер.",
-    type: "error"
-  })
+    title:
+      "Выбранный файл не поддерживается либо имеет слишком большой размер.",
+    type: "error",
+  });
   return false;
-}
+};
 
 export default fileValidate;

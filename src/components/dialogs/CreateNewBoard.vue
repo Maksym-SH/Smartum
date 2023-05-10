@@ -17,14 +17,14 @@
         <form class="v-card__form" @submit.prevent="createNewBoard">
           <v-card-text>
             <div class="v-card__wrapper">
-              <BoardImageResult 
-                :background="String(newBoard.background)" 
-                image-decor="/images/icons/dashboard-template.webp" 
-                :image="newBoard.background" 
+              <BoardImageResult
+                :background="String(newBoard.background)"
+                image-decor="/images/icons/dashboard-template.webp"
+                :image="newBoard.background"
               />
               <Input
-                v-model="newBoard.title" 
-                label="Заголовок доски" 
+                v-model="newBoard.title"
+                label="Заголовок доски"
                 required
                 name="DashboardHeader"
                 :min="Length.Text"
@@ -33,23 +33,23 @@
             <div class="v-card__wrapper-background-select">
               <h5 class="v-card__title">Фон</h5>
               <div class="v-card__backgrounds">
-                <ImageBackgroundExample 
+                <ImageBackgroundExample
                   v-for="photo in backgrounds.photos"
                   :image="photo"
-                  :key="photo" 
+                  :key="photo"
                   :width="70"
-                  :class="{'active': photo === newBoard.background }" 
+                  :class="{ active: photo === newBoard.background }"
                   @select="newBoard.background = $event"
                 />
               </div>
               <div class="v-card__backgrounds">
-                <ImageBackgroundExample 
-                  v-for="gradient in backgrounds.gradients" 
+                <ImageBackgroundExample
+                  v-for="gradient in backgrounds.gradients"
                   :key="gradient"
-                  :background="gradient" 
+                  :background="gradient"
                   @select="newBoard.background = $event"
                   :width="57.5"
-                  :class="{'active': gradient === newBoard.background }" 
+                  :class="{ active: gradient === newBoard.background }"
                 />
               </div>
             </div>
@@ -62,11 +62,7 @@
             >
               Отмена
             </Button>
-            <Button
-              class="v-card--create-board"
-              variant="text"
-              type="submit"
-            >
+            <Button class="v-card--create-board" variant="text" type="submit">
               Создать
             </Button>
           </v-card-actions>
@@ -76,27 +72,26 @@
   </v-dialog>
 </template>
 
-
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
-import { IBackgroundDashboard, IWorkingBoardItem } from '@/types/interfaces';
-import { Colors, Length, Numbers } from '@/types/enums';
+import { defineComponent, reactive, ref } from "vue";
+import { IBackgroundDashboard, IWorkingBoardItem } from "@/types/interfaces";
+import { Colors, Length, Numbers } from "@/types/enums";
 import { GenerateRandomString } from "@/helpers/methods";
 
-import useDashboardItemBackgroundTemplate from '@/composables/useDashboardItemBackground';
-import BoardImageResult from '../dashboard/BoardImageResult.vue';
-import ImageBackgroundExample from '../UI/BackgroundItem.vue';
-
+import useDashboardItemBackgroundTemplate from "@/composables/useDashboardItemBackground";
+import BoardImageResult from "../dashboard/BoardImageResult.vue";
+import ImageBackgroundExample from "../UI/BackgroundItem.vue";
 
 export default defineComponent({
-  emit:["createNew"],
+  emit: ["createNew"],
   components: {
     BoardImageResult,
-    ImageBackgroundExample
+    ImageBackgroundExample,
   },
 
   setup(_, { emit }) {
-    const backgrounds: IBackgroundDashboard = useDashboardItemBackgroundTemplate();
+    const backgrounds: IBackgroundDashboard =
+      useDashboardItemBackgroundTemplate();
 
     const showDialog = ref(false);
 
@@ -105,34 +100,32 @@ export default defineComponent({
       background: Colors.GradientBluePink as string,
       tasks: [],
       members: 1,
-    })
+    });
 
     const createNewBoard = () => {
       if (newBoard.title!.length <= Length.Text) return;
 
       // Set date of creation working board.
-      const dateOfCreation: Date =  new Date();
+      const dateOfCreation: Date = new Date();
       newBoard.dateOfCreation = dateOfCreation;
-     
-      newBoard.joinCode = GenerateRandomString(Numbers.JoinCodeSize);  // Set join code for working board.
+
+      newBoard.joinCode = GenerateRandomString(Numbers.JoinCodeSize); // Set join code for working board.
 
       emit("createNew", Object.assign({}, newBoard));
 
       showDialog.value = false;
-    }
+    };
 
     return {
       showDialog,
       newBoard,
       backgrounds,
       Length,
-      createNewBoard
-    }
-  }
-})
-
+      createNewBoard,
+    };
+  },
+});
 </script>
-
 
 <style lang="scss" scoped>
 .create-dashboard-btn {
@@ -181,7 +174,7 @@ export default defineComponent({
       color: var(--color-text) !important;
     }
   }
-  
+
   @include mobile(max) {
     :deep(.v-overlay__content) {
       max-width: 100%;

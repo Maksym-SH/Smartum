@@ -1,14 +1,17 @@
 <template>
   <div class="blocked-access">
     <div class="blocked-access__content">
-      <img class="blocked-access__image" src="/images/icons/lock-red.svg" alt="">
+      <img
+        class="blocked-access__image"
+        src="/images/icons/lock-red.svg"
+        alt=""
+      />
       <h2 class="blocked-access__title">Доступ запрещён!</h2>
       <p class="blocked-access__description">
-        Чтобы воспользоваться данной услугой приложения, вам необходимо подтвердить электронный адрес учётной записи, сделать это можно в меню настроек (возле данных пользователя), либо нажать 
-        <span 
-          class="blocked-access--email-confirm"
-          @click="verifyEmail"
-        >
+        Чтобы воспользоваться данной услугой приложения, вам необходимо
+        подтвердить электронный адрес учётной записи, сделать это можно в меню
+        настроек (возле данных пользователя), либо нажать
+        <span class="blocked-access--email-confirm" @click="verifyEmail">
           Здесь
         </span>
       </p>
@@ -17,23 +20,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
-import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail';
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 
-export default defineComponent({ 
+export default defineComponent({
   setup() {
     const verifyEmail = () => {
       const { currentUser } = useCurrentUserInfo();
       VerifyEmail(currentUser.value);
-    }
+    };
     return {
-      verifyEmail
-    }
-  }
-})
-
+      verifyEmail,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

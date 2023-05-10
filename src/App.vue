@@ -3,10 +3,7 @@
   <transition name="toggle-popup" mode="out-in">
     <Popup v-if="showPopup" />
   </transition>
-  <LongContentModal 
-    v-if="modalContentType" 
-    :content-type="modalContentType"
-  />
+  <LongContentModal v-if="modalContentType" :content-type="modalContentType" />
   <transition name="toggle-popup" mode="out-in">
     <ConfirmationPopup v-if="showConfirmPopup" />
   </transition>
@@ -29,17 +26,25 @@ import useStores from "./composables/useStores";
 export default defineComponent({
   components: {
     Popup: defineAsyncComponent(() => import("@/components/UI/Popup.vue")),
-    ConfirmationPopup: defineAsyncComponent(() => import("@/components/UI/Confirmation.vue")),
-    LongContentModal: defineAsyncComponent(() =>import("@/components/UI/LongContentModal.vue")),
+    ConfirmationPopup: defineAsyncComponent(
+      () => import("@/components/UI/Confirmation.vue")
+    ),
+    LongContentModal: defineAsyncComponent(
+      () => import("@/components/UI/LongContentModal.vue")
+    ),
   },
   setup() {
     const { commonStore } = useStores();
 
     return {
       loadingStatus: computed((): boolean => commonStore.loadingStatus),
-      showPopup: computed((): boolean  => ObjectNotEmpty(commonStore.popupParams)),
+      showPopup: computed((): boolean =>
+        ObjectNotEmpty(commonStore.popupParams)
+      ),
       showConfirmPopup: computed((): boolean => commonStore.openConfirmPopup),
-      modalContentType: computed((): ModalContentType => commonStore.modalContentType)
+      modalContentType: computed(
+        (): ModalContentType => commonStore.modalContentType
+      ),
     };
   },
 });
@@ -126,5 +131,4 @@ body {
     border-radius: 4px;
   }
 }
-
 </style>

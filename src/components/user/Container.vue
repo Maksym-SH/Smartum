@@ -3,14 +3,11 @@
     <Avatar
       online
       :firstName="firstName"
-      :lastName="lastName" 
+      :lastName="lastName"
       :avatar="avatar"
     />
     <div class="user-info__content">
-      <Info  
-        :firstName="firstName" 
-        :lastName="lastName" 
-      />
+      <Info :firstName="firstName" :lastName="lastName" />
       <Select :items="actions" @selected="selected" />
     </div>
   </div>
@@ -25,7 +22,7 @@ import { Colors } from "@/types/enums";
 
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
 import Avatar from "./Avatar.vue";
 import Info from "./Info.vue";
@@ -41,7 +38,9 @@ export default defineComponent({
     const { userStore } = useStores();
 
     const { currentUser } = useCurrentUserInfo();
-    const emailVerified = computed((): boolean => currentUser.value.emailVerified);
+    const emailVerified = computed(
+      (): boolean => currentUser.value.emailVerified
+    );
 
     const actions = reactive<SelectElements>([
       {
@@ -56,21 +55,20 @@ export default defineComponent({
         callback: () => verifyEmail(currentUser.value),
         icon: "mdi-email-check-outline",
         color: Colors.Info,
-        displaying: computed(() => !emailVerified.value) // Not verified.
+        displaying: computed(() => !emailVerified.value), // Not verified.
       },
       {
         title: "Выйти с аккаунта",
         callback: () => {
-          userStore.userLogout()
-          .then(() => {
+          userStore.userLogout().then(() => {
             notify({
-              title: "До скорого!"
-            })
-          })
+              title: "До скорого!",
+            });
+          });
         },
         icon: "mdi-logout",
         color: Colors.Danger,
-        displaying: true
+        displaying: true,
       },
     ]);
 
@@ -78,7 +76,6 @@ export default defineComponent({
       emit("user-menu-picked");
       callback();
     };
-
 
     return {
       actions,

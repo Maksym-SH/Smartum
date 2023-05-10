@@ -6,26 +6,21 @@
   >
     <template v-slot:activator="{ props }">
       <div class="color-picker">
-        <Button 
+        <Button
           v-bind="props"
-          size="small" 
-          :color="modelValue" 
-          :style="`color: ${ colorPickParams.textColor }`"
+          size="small"
+          :color="modelValue"
+          :style="`color: ${colorPickParams.textColor}`"
           @click="showDialog = true"
         >
-          <img 
-            class="color-picker__palette" 
-            src="/images/icons/color-palette.svg" 
+          <img
+            class="color-picker__palette"
+            src="/images/icons/color-palette.svg"
             alt=""
-          >
-          <small class="color-picker__button-title">
-            Выбрать цвет 
-          </small>
+          />
+          <small class="color-picker__button-title"> Выбрать цвет </small>
         </Button>
-        <span 
-          class="color-picker--generate"
-          @click="generateColor"
-        >
+        <span class="color-picker--generate" @click="generateColor">
           <span class="mdi mdi-refresh"></span>
           Сгенерировать ({{ colorPickParams.target }})
         </span>
@@ -35,7 +30,7 @@
       <v-card>
         <v-toolbar class="v-card__header">
           <h4 class="v-card__header-title">
-            Выбор цвета 
+            Выбор цвета
             <p class="v-card__header-title--additional">
               ({{ colorPickParams.target }} оттенок)
             </p>
@@ -43,14 +38,14 @@
         </v-toolbar>
         <v-card-text class="v-card-colors__content">
           <div class="v-card-colors__content-grid">
-            <BackgroundItem 
-              v-for="color in colorsCollection" 
+            <BackgroundItem
+              v-for="color in colorsCollection"
               :key="color"
               :background="color"
               :width="80"
               :height="40"
               @select="selectedColor = $event"
-              :class="{ 'active': selectedColor === color }"
+              :class="{ active: selectedColor === color }"
             />
           </div>
         </v-card-text>
@@ -78,68 +73,69 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, computed } from 'vue';
-import { Theme } from '@/types/types';
-import { LightColors, DarkColors } from '@/helpers/colors';
-import { Colors } from '@/types/enums';
-import { IColorPickerParams } from '@/types/interfaces';
-import { GenerateColorHexFormat } from '@/helpers/methods';
+import { defineComponent, PropType, ref, computed } from "vue";
+import { Theme } from "@/types/types";
+import { LightColors, DarkColors } from "@/helpers/colors";
+import { Colors } from "@/types/enums";
+import { IColorPickerParams } from "@/types/interfaces";
+import { GenerateColorHexFormat } from "@/helpers/methods";
 
-import BackgroundItem from '../UI/BackgroundItem.vue';
+import BackgroundItem from "../UI/BackgroundItem.vue";
 
 export default defineComponent({
   components: {
-    BackgroundItem
+    BackgroundItem,
   },
   emits: ["selectColor", "update:modelValue"],
   props: {
     modelValue: {
       type: String,
-      required: true
+      required: true,
     },
     theme: {
       type: String as PropType<Theme>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props, { emit }) {
     const showDialog = ref(false);
 
-    const colorPickParams = computed((): IColorPickerParams =>  {
-      if (props.theme === "dark")  {
+    const colorPickParams = computed((): IColorPickerParams => {
+      if (props.theme === "dark") {
         return {
           textColor: Colors.White,
           target: "Тёмный",
-        }
+        };
       }
-      // Light 
+      // Light
       return {
         textColor: Colors.Black,
-        target: "Светлый"
-      }
-    })
+        target: "Светлый",
+      };
+    });
 
-    const colorsCollection = props.theme === 'dark' ? DarkColors() : LightColors();
+    const colorsCollection =
+      props.theme === "dark" ? DarkColors() : LightColors();
 
     const selectedColor = ref<string>("");
 
     const changeColor = (generatedColor?: string) => {
-      const colorToSave = generatedColor ? generatedColor: selectedColor.value;
-      emit('update:modelValue', colorToSave);
+      const colorToSave = generatedColor ? generatedColor : selectedColor.value;
+      emit("update:modelValue", colorToSave);
 
       closeDialog();
-    }
+    };
 
     const closeDialog = () => {
       selectedColor.value = ""; // Clear selected color after close.
       showDialog.value = false;
-    }
+    };
 
     const generateColor = () => {
       const generatedColor = GenerateColorHexFormat(props.theme);
-      
+
       changeColor(generatedColor);
-    }
+    };
 
     return {
       showDialog,
@@ -149,10 +145,10 @@ export default defineComponent({
       Colors,
       generateColor,
       changeColor,
-      closeDialog
-    }
-  }
-})
+      closeDialog,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -217,7 +213,6 @@ export default defineComponent({
         }
       }
     }
-    
   }
   @include mobile(max) {
     :deep(.v-overlay__content) {
@@ -227,7 +222,7 @@ export default defineComponent({
       height: 100%;
       margin: 0;
     }
-    .v-card  {
+    .v-card {
       height: 100%;
       &__header {
         &-title {

@@ -17,7 +17,7 @@ const useStore = () => {
     notificationStore,
     configurationStore,
     dashboardStore,
-  }
-}
+  };
+};
 
 export default useStore;

@@ -1,14 +1,13 @@
 <template>
   <div class="background-result">
-    <div 
-      class="background-result__wrapper" :style="{ 'background': background }">
-      <img 
-        v-if="imageDecor" 
+    <div class="background-result__wrapper" :style="{ background: background }">
+      <img
+        v-if="imageDecor"
         :src="imageDecor"
-        class="background-result__decor" 
+        class="background-result__decor"
         alt=""
       />
-      <img 
+      <img
         v-if="showSelectedImage"
         :src="image"
         class="background-result__image"
@@ -19,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed } from "vue";
 
 export default defineComponent({
   props: {
@@ -33,22 +32,22 @@ export default defineComponent({
     },
     background: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
-
     const showSelectedImage = computed((): boolean => {
-      return Boolean(props.image) && props.background.includes("dashboardTemplates")
-    })
+      return (
+        Boolean(props.image) && props.background.includes("dashboardTemplates")
+      );
+    });
 
     return {
-      showSelectedImage
-    }
-  }
-})
+      showSelectedImage,
+    };
+  },
+});
 </script>
-
 
 <style lang="scss" scoped>
 .background-result {

@@ -1,5 +1,5 @@
 <template>
-  <div class="c-hint" :class="`c-hint-variant--${ variant }`">
+  <div class="c-hint" :class="`c-hint-variant--${variant}`">
     <span v-html="content"></span>
   </div>
 </template>
@@ -8,19 +8,18 @@
 import { defineComponent, PropType } from "vue";
 import { Variant } from "@/types/types";
 
-export default defineComponent({ 
+export default defineComponent({
   props: {
     content: {
       type: String,
-      required: true
+      required: true,
     },
     variant: {
       type: String as PropType<Variant>,
       required: true,
-    }
-  }
-})
-
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

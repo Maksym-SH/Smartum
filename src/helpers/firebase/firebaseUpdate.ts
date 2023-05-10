@@ -10,19 +10,19 @@ export const PasswordUpdate = (user: User, password: string): Promise<void> => {
   commonStore.setLoadingStatus(true);
   return new Promise((resolve, reject) => {
     updatePassword(user, password)
-    .then(() => {
-      notify({
-        title:"Ваш пароль был изменен!"
+      .then(() => {
+        notify({
+          title: "Ваш пароль был изменен!",
+        });
+        resolve();
       })
-      resolve();
-    })
-    .catch((error) => {
-      ShowErrorMessage(error);
-      reject();
-    })
-    .finally(() => commonStore.setLoadingStatus(false))
-  })
-}
+      .catch((error) => {
+        ShowErrorMessage(error);
+        reject();
+      })
+      .finally(() => commonStore.setLoadingStatus(false));
+  });
+};
 
 /* export const EmailUpdate = (user: User, email: string): Promise<any> => {
   store.commit("setLoadingStatus", true);

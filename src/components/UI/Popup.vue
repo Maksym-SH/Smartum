@@ -1,20 +1,14 @@
 <template>
   <div class="popup" @click.self="result(false)">
-    <div 
-      class="popup__window" 
-      v-if="showTemplate"
-    >
-      <h2 
-        v-if="params.title"
-        class="popup__title"
-      >
+    <div class="popup__window" v-if="showTemplate">
+      <h2 v-if="params.title" class="popup__title">
         {{ params.title }}
       </h2>
       <p class="popup__description">
         {{ params.text }}
-      </p> 
+      </p>
       <div class="popup__button">
-        <Button 
+        <Button
           @click="result(false)"
           outline
           :variant="btnParam.no?.variant"
@@ -38,12 +32,12 @@
 </template>
 
 <script lang="ts">
-import { Colors } from '@/types/enums';
-import { ObjectFull } from '@/helpers/methods';
-import { IPopupParams } from '@/types/interfaces';
+import { Colors } from "@/types/enums";
+import { ObjectFull } from "@/helpers/methods";
+import { IPopupParams } from "@/types/interfaces";
 import { PopupButtons } from "@/types/types";
-import { defineComponent, computed } from 'vue';
-import useStores from '@/composables/useStores';
+import { defineComponent, computed } from "vue";
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   setup() {
@@ -58,38 +52,37 @@ export default defineComponent({
         yes: {
           text: params.buttons.yes?.text || "Подтвердить",
           variant: params.buttons.yes?.variant || "elevated",
-          color: params.buttons.yes?.color || Colors.Info
+          color: params.buttons.yes?.color || Colors.Info,
         },
         no: {
           text: params.buttons.no?.text || "Отмена",
           variant: params.buttons.no?.variant || "outlined",
-          color: params.buttons.no?.color || Colors.Info
-        }
-      }
-    })
+          color: params.buttons.no?.color || Colors.Info,
+        },
+      };
+    });
 
     const ClosePopup = (): void => {
-      commonStore.setPopupParams({})
+      commonStore.setPopupParams({});
     };
 
     const result = (result: boolean): void => {
-      if(!result) {
+      if (!result) {
         ClosePopup(); // Clear data and close popup.
-      }
-      else {
+      } else {
         params.callback();
         ClosePopup();
       }
-    }
+    };
 
     return {
       params,
       btnParam,
       showTemplate,
-      result
-    }
-  }
-})
+      result,
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>

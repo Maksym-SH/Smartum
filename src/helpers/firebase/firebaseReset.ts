@@ -8,7 +8,7 @@ import ShowErrorMessage from "./firebaseErrorMessage";
 
 const firebaseReset = (email: string): void => {
   const { commonStore } = useStores();
-  
+
   if (!email) return;
 
   commonStore.setLoadingStatus(true);
@@ -22,9 +22,10 @@ const firebaseReset = (email: string): void => {
       });
       if (window.history.length >= 2) {
         router.go(-1); // Navigate to previous page.
-      }
-      else {
-        getAuth().currentUser ? router.push({ name : "Profile" }) : router.push({ name: "SignIn" });
+      } else {
+        getAuth().currentUser
+          ? router.push({ name: "Profile" })
+          : router.push({ name: "SignIn" });
       }
     })
     .catch((error: ErrorCode) => ShowErrorMessage(error))

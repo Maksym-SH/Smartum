@@ -1,10 +1,11 @@
 <template>
   <div class="home-page">
     <c-aside
-      v-model:minimizeAside="minimizeAside" 
-      :notification-count="notificationsSize" 
+      v-model:minimizeAside="minimizeAside"
+      :notification-count="notificationsSize"
     />
-    <div class="home-page__wrapper" 
+    <div
+      class="home-page__wrapper"
       @click.capture="toggleAsideVisible(false, true)"
       :class="{ 'minimize-info': minimizeAside }"
     >
@@ -20,8 +21,8 @@
       <div class="home-page__content">
         <router-view v-slot="{ Component }">
           <transition name="router-nav" mode="out-in">
-            <component 
-              v-if="showTabContent" 
+            <component
+              v-if="showTabContent"
               :is="Component"
               :notification-list="notificationList"
               @readNotification="notifyAction($event, 'readNotification')"
@@ -45,7 +46,7 @@ import { RouterMeta, DynamicDescription } from "@/types/types";
 
 import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
 import useNotifications from "@/composables/useNotifications";
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
 import cHeader from "@/container/Header.vue";
 import cAside from "@/container/Aside.vue";
@@ -56,13 +57,14 @@ export default defineComponent({
     cAside,
   },
   setup() {
-    const { commonStore, userStore } = useStores(); 
+    const { commonStore, userStore } = useStores();
 
     const router = useRoute();
-    
-    const { currentUser } = useCurrentUserInfo(); 
 
-    const { notificationsSize, notificationList, notifyAction, clearAll } = useNotifications();
+    const { currentUser } = useCurrentUserInfo();
+
+    const { notificationsSize, notificationList, notifyAction, clearAll } =
+      useNotifications();
 
     const tabName: ILanguage = reactive({ eng: "", ru: "" });
 
@@ -70,24 +72,32 @@ export default defineComponent({
 
     const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
 
-
-    const currentUserPresent = computed((): boolean => ObjectNotEmpty(currentUser));
-    const additionalUserInfoPresent = computed((): boolean => ObjectHasValues(userStore.userInfo))
-    const showTabContent = computed((): boolean => currentUserPresent.value && additionalUserInfoPresent.value);
-
+    const currentUserPresent = computed((): boolean =>
+      ObjectNotEmpty(currentUser)
+    );
+    const additionalUserInfoPresent = computed((): boolean =>
+      ObjectHasValues(userStore.userInfo)
+    );
+    const showTabContent = computed(
+      (): boolean => currentUserPresent.value && additionalUserInfoPresent.value
+    );
 
     // Aside
     const minimizeAside = ref(true);
-    const toggleAsideVisible = (value: boolean, capture: boolean = false): void => {
+    const toggleAsideVisible = (
+      value: boolean,
+      capture: boolean = false
+    ): void => {
       if (!capture) {
         minimizeAside.value = value;
-      }
-      else if (window.innerWidth <= Layout.Laptop) {
+      } else if (window.innerWidth <= Layout.Laptop) {
         minimizeAside.value = capture;
       }
     };
 
-    watch((): IMetaName | RouterMeta => router.meta, (meta): void => {
+    watch(
+      (): IMetaName | RouterMeta => router.meta,
+      (meta): void => {
         const metaName: ILanguage = meta.tabName as ILanguage;
 
         if (metaName) {
@@ -96,15 +106,13 @@ export default defineComponent({
 
           tabDescription.ru = Description[metaName.eng].ru;
           tabDescription.eng = Description[metaName.eng].eng;
-        }
-        else {
+        } else {
           tabName.ru = tabName.eng = "";
           tabDescription.eng = tabDescription.ru = "";
         }
       },
       { immediate: true }
     );
-    
 
     return {
       tabName,
@@ -170,7 +178,7 @@ export default defineComponent({
     &__tab-info {
       padding-left: 20px;
     }
-    &__content{
+    &__content {
       padding-left: 20px;
       padding-right: 20px;
     }

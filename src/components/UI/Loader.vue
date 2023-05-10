@@ -1,18 +1,16 @@
 <template>
-  <div 
-    class="c-loader" 
-    :class="{ 'inline-transparent': inline }"
-  >
+  <div class="c-loader" :class="{ 'inline-transparent': inline }">
     <div class="c-loader__spinner">
       <svg
         class="c-loader__spinner--animation"
         :style="loaderSize"
-        viewBox="-3 -4 39 39">
-        <polygon 
+        viewBox="-3 -4 39 39"
+      >
+        <polygon
           class="c-loader__spinner-polygon"
-          fill="transparent" 
-          strokeWidth="1" 
-          points="16,0 32,32 0,32" 
+          fill="transparent"
+          strokeWidth="1"
+          points="16,0 32,32 0,32"
         />
       </svg>
     </div>
@@ -30,8 +28,8 @@ export default defineComponent({
     },
     size: {
       type: Number,
-      default: 60
-    }
+      default: 60,
+    },
   },
   setup(props) {
     const loaderSize: CSSProperties = reactive({
@@ -40,9 +38,9 @@ export default defineComponent({
     });
 
     return {
-      loaderSize
-    }
-  }
+      loaderSize,
+    };
+  },
 });
 </script>
 

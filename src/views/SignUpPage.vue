@@ -13,9 +13,7 @@
           alt="Tasks"
         />
 
-        <h3 class="sign-up__window--welcome-title">
-          Добро пожаловать!
-        </h3>
+        <h3 class="sign-up__window--welcome-title">Добро пожаловать!</h3>
         <div class="sign-up__window-content">
           <h4 class="sign-up__window--welcome-description">
             Заполните форму чтобы создать аккаунт.
@@ -24,13 +22,13 @@
         <div class="sign-up__window--welcome-logo">
           <img
             class="sign-up__window--welcome-logo_image"
-            src="/images/icons/logo.svg" alt="Logo" />
+            src="/images/icons/logo.svg"
+            alt="Logo"
+          />
         </div>
       </div>
       <div class="sign-up__window_content content">
-        <h2 class="sign-up__window_content-title">
-          Создание аккаунта
-        </h2>
+        <h2 class="sign-up__window_content-title">Создание аккаунта</h2>
         <form @submit.prevent="submitForm" class="sign-up__window-form-inputs">
           <Input
             v-model.trim="userData.firstName"
@@ -74,12 +72,16 @@
             <Button title="Регистрация" type="submit" />
           </div>
           <small class="sign-up__window-description">
-            Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте согласие на
+            Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте
+            согласие на
             <span
-              class="sign-up__window-description--open-modal" @click="showTermsOfUse">
+              class="sign-up__window-description--open-modal"
+              @click="showTermsOfUse"
+            >
               Правила использования
-            </span> и 
-            <span 
+            </span>
+            и
+            <span
               class="sign-up__window-description--open-modal"
               @click="showConfidentiality"
             >
@@ -90,9 +92,7 @@
         <div class="content__swap-type-entry">
           <span>
             Уже зарегистрированы?
-            <router-link :to="{ name: 'SignIn' }"> 
-              Авторизация 
-            </router-link>
+            <router-link :to="{ name: 'SignIn' }"> Авторизация </router-link>
           </span>
         </div>
       </div>
@@ -127,8 +127,7 @@ export default defineComponent({
     const validPersonDate = computed((): boolean => {
       return (
         userData.firstName.length >= LengthText &&
-        (!userData.lastName.length ||
-          userData.lastName.length >= LengthText) &&
+        (!userData.lastName.length || userData.lastName.length >= LengthText) &&
         userData.password.length >= LengthPassword
       );
     });
@@ -144,18 +143,18 @@ export default defineComponent({
     const showTermsOfUse = () => {
       const type: ModalContentType = "termsOfUse";
       commonStore.setModalContentType(type);
-    }
+    };
     const showConfidentiality = () => {
       const type: ModalContentType = "confidentiality";
       commonStore.setModalContentType(type);
-    }
+    };
 
     return {
       userData,
       Length,
       submitForm,
       showTermsOfUse,
-      showConfidentiality
+      showConfidentiality,
     };
   },
 });
@@ -272,7 +271,7 @@ export default defineComponent({
   }
   @include tablet(max) {
     height: 100%;
-    min-height: 660px; 
+    min-height: 660px;
     &__window {
       margin: 0;
       width: 100%;

@@ -1,19 +1,19 @@
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  reauthenticateWithCredential, 
-  EmailAuthCredential, 
-  User, 
-  UserCredential
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  reauthenticateWithCredential,
+  EmailAuthCredential,
+  User,
+  UserCredential,
 } from "firebase/auth";
 
-import { 
+import {
   INotification,
-  IUserAuth, 
-  IUserLogin, 
-  IUserReg, 
-  IUserResponse 
+  IUserAuth,
+  IUserLogin,
+  IUserReg,
+  IUserResponse,
 } from "@/types/interfaces";
 
 import { ErrorCode } from "@/types/types";
@@ -27,7 +27,8 @@ import notificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
 
 const firebaseAuth = (): IUserAuth => {
-  const { commonStore, userStore, notificationStore, configurationStore } = useStores()
+  const { commonStore, userStore, notificationStore, configurationStore } =
+    useStores();
 
   const useAuth = {
     signUp: (userData: IUserReg, validate: boolean): void => {
@@ -35,11 +36,15 @@ const firebaseAuth = (): IUserAuth => {
 
       commonStore.setLoadingStatus(true);
 
-      createUserWithEmailAndPassword(getAuth(), userData.email, userData.password)
+      createUserWithEmailAndPassword(
+        getAuth(),
+        userData.email,
+        userData.password
+      )
         .then(async (response) => {
           const responseUser: IUserResponse = response.user;
           const currentUser = getAuth().currentUser;
-         
+
           if (responseUser.accessToken) {
             localStorage.setItem("smartumToken", responseUser.accessToken);
           }
@@ -51,13 +56,18 @@ const firebaseAuth = (): IUserAuth => {
               lastName: userData.lastName,
               avatarParams: {
                 url: "",
-                bgAvatar: GenerateColorHexFormat('light')
-              }
-            })
+                bgAvatar: GenerateColorHexFormat("light"),
+              },
+            });
 
-            const notification: INotification<Date> = notificationContent(NotificationType.WelcomeText);
+            const notification: INotification<Date> = notificationContent(
+              NotificationType.WelcomeText
+            );
 
-            notificationStore.createNotificationList(notification, currentUser.uid);
+            notificationStore.createNotificationList(
+              notification,
+              currentUser.uid
+            );
 
             // Create user configuration field in database.
             configurationStore.createUserConfiguration(currentUser.uid);
@@ -83,7 +93,7 @@ const firebaseAuth = (): IUserAuth => {
         .then((response) => {
           const user: IUserResponse = response.user;
 
-          if(user.accessToken) {
+          if (user.accessToken) {
             localStorage.setItem("smartumToken", user.accessToken);
           }
 
@@ -97,19 +107,22 @@ const firebaseAuth = (): IUserAuth => {
         .catch((error): void => ShowErrorMessage(error))
         .finally((): void => commonStore.setLoadingStatus(false));
     },
-    reauthorization:(userInfo: User, credential: EmailAuthCredential): Promise<UserCredential> =>  {
+    reauthorization: (
+      userInfo: User,
+      credential: EmailAuthCredential
+    ): Promise<UserCredential> => {
       commonStore.setLoadingStatus(true);
 
       return new Promise((resolve, reject) => {
         reauthenticateWithCredential(userInfo, credential)
-        .then((response: UserCredential) => resolve(response))
-        .catch((error: ErrorCode): void => {
-          ShowErrorMessage(error);
-          reject(error);
-        })  
-        .finally(() => commonStore.setLoadingStatus(false));
-      })
-    }
+          .then((response: UserCredential) => resolve(response))
+          .catch((error: ErrorCode): void => {
+            ShowErrorMessage(error);
+            reject(error);
+          })
+          .finally(() => commonStore.setLoadingStatus(false));
+      });
+    },
   };
 
   return useAuth;

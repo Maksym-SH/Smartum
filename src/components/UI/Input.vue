@@ -9,12 +9,12 @@
           'c-input__field--search': type === 'search',
           'c-input__field--phone': isPhone,
           'c-input__field--password': type === 'password',
-          'c-input__field--light-theme': lightTheme
+          'c-input__field--light-theme': lightTheme,
         }"
         ref="inputRef"
         :name="name"
         :autocomplete="isAutoComplete"
-        :placeholder=placeholder
+        :placeholder="placeholder"
         :type="type"
         :disabled="disabled"
         :value="modelValue"
@@ -24,13 +24,13 @@
         :required="required"
         :min="min"
       />
-      <label 
-        v-if="label && !placeholder" 
+      <label
+        v-if="label && !placeholder"
         :for="name"
         class="label"
         :class="{
           'label-disable': disabled,
-          'top-fixed': labelAttachedToTop
+          'top-fixed': labelAttachedToTop,
         }"
       >
         {{ label }}
@@ -38,7 +38,9 @@
       <span v-if="required" class="c-input--required"></span>
       <span v-if="isPhone" class="phone mdi mdi-phone"></span>
       <Transition name="error-message">
-        <span v-show="errorText" class="c-input--error-text">{{ errorText }}</span>
+        <span v-show="errorText" class="c-input--error-text">{{
+          errorText
+        }}</span>
       </Transition>
       <span
         v-if="type == 'password'"
@@ -46,13 +48,13 @@
         @click="toggleInputType"
       >
         <transition mode="out-in" name="toggle-content">
-          <span 
+          <span
             v-if="!showPassword"
             class="mdi mdi-eye c-input--toggle-password__icon"
             key="open"
           >
           </span>
-          <span 
+          <span
             v-else
             class="mdi mdi-eye-off c-input--toggle-password__icon"
             key="close"
@@ -101,14 +103,15 @@ export default defineComponent({
     const validator = (): void => {
       if (props.isEmail && !emailValidator.validate(model.value as string)) {
         errorText.value = "Введите корректный адрес.";
-      }
-      else if (props.isPhone && !String(model.value).match(RegExp.Phone) && model.value) {
-        errorText.value = "Введите корректный формат."
-      } 
-      else if (props.min && String(model.value).length < props.min) {
+      } else if (
+        props.isPhone &&
+        !String(model.value).match(RegExp.Phone) &&
+        model.value
+      ) {
+        errorText.value = "Введите корректный формат.";
+      } else if (props.min && String(model.value).length < props.min) {
         errorText.value = `Введите не менее ${props.min} символов.`;
-      } 
-      else if (props.type === "password" && String(model.value).match(" ")) {
+      } else if (props.type === "password" && String(model.value).match(" ")) {
         errorText.value = "Пробелы не допускаются.";
       }
     };
@@ -123,21 +126,28 @@ export default defineComponent({
       }
     };
 
-    watch((): ModelValue => props.modelValue, (): string => errorText.value = "");
+    watch(
+      (): ModelValue => props.modelValue,
+      (): string => (errorText.value = "")
+    );
 
-    watch((): string => errorText.value, (value): void => {
+    watch(
+      (): string => errorText.value,
+      (value): void => {
         if (value) emit("invalid");
       }
     );
 
     const isAutoComplete = computed((): AutoComplete => {
-      if(typeof props.autoComplete === 'boolean') {
+      if (typeof props.autoComplete === "boolean") {
         return props.autoComplete ? "on" : "off";
       }
-      return "new-password"
+      return "new-password";
     });
 
-    const labelAttachedToTop = computed(() => props.modelValue || errorText.value && !props.transparent);
+    const labelAttachedToTop = computed(
+      () => props.modelValue || (errorText.value && !props.transparent)
+    );
 
     return {
       errorText,
@@ -186,7 +196,7 @@ export default defineComponent({
     }
 
     &:-webkit-autofill,
-    &:-webkit-autofill:hover, 
+    &:-webkit-autofill:hover,
     &:-webkit-autofill:focus {
       border: 1px solid $color-blue;
       border-radius: 4px;
@@ -216,7 +226,7 @@ export default defineComponent({
       border-color: $color-white1;
       color: $color-white1;
       & + .label {
-        color:  $color-white1;
+        color: $color-white1;
       }
       & ~ .c-button {
         color: $color-white1 !important;
@@ -239,7 +249,7 @@ export default defineComponent({
       background-color: $color-pink;
       &:not(.c-input__field--transparent) {
         color: $color-black !important;
-      } 
+      }
       & + .label {
         color: $color-red !important;
       }

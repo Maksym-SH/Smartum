@@ -6,7 +6,7 @@
         :class="{
           'c-textarea__field--error': errorText,
           'c-textarea__field--required': required,
-          'c-textarea__field--resize': resize
+          'c-textarea__field--resize': resize,
         }"
         ref="textareaRef"
         :name="name"
@@ -19,19 +19,21 @@
         :min="min"
         :maxlength="max"
       />
-      <label 
-        v-if="label" 
+      <label
+        v-if="label"
         :for="name"
         :class="{
           'label-disable': disabled,
-          'top-fixed': modelValue
+          'top-fixed': modelValue,
         }"
       >
         {{ label }}
       </label>
       <span v-if="required" class="c-textarea--required"></span>
       <Transition name="error-message">
-        <span v-if="errorText" class="c-textarea--error-text">{{ errorText }}</span>
+        <span v-if="errorText" class="c-textarea--error-text">{{
+          errorText
+        }}</span>
       </Transition>
     </div>
   </div>
@@ -63,15 +65,19 @@ export default defineComponent({
     const validator = (): void => {
       if (props.min && String(model.value).length < props.min) {
         errorText.value = `Введите не менее ${props.min} символов.`;
-      } 
-      else if (String(model.value).startsWith(" ")) {
+      } else if (String(model.value).startsWith(" ")) {
         errorText.value = "Начальное пустое значение недопустимо.";
       }
     };
 
-    watch((): ModelValue => props.modelValue, (): string => errorText.value = "");
+    watch(
+      (): ModelValue => props.modelValue,
+      (): string => (errorText.value = "")
+    );
 
-    watch((): string => errorText.value, (message): void => {
+    watch(
+      (): string => errorText.value,
+      (message): void => {
         if (message) emit("invalid");
       }
     );
@@ -119,7 +125,7 @@ export default defineComponent({
     &--error {
       border-color: $color-red;
       background-color: $color-pink;
- 
+
       &::placeholder {
         color: $color-grey;
       }
@@ -139,12 +145,12 @@ export default defineComponent({
     }
   }
   &--error-text {
-      color: $color-red;
-      position: absolute;
-      bottom: -11px;
-      font-size: 12px;
-      left: 0;
-    }
+    color: $color-red;
+    position: absolute;
+    bottom: -11px;
+    font-size: 12px;
+    left: 0;
+  }
   &--required {
     display: inline-block;
     width: 3px;
@@ -166,7 +172,7 @@ export default defineComponent({
       top: -18px;
       left: 0;
     }
-  } 
+  }
 }
 
 .error-message-enter-active,

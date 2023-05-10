@@ -5,72 +5,84 @@ import { NotifyAction } from "@/types/types";
 import { User } from "firebase/auth";
 
 import useStores from "./useStores";
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo';
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 
 const useNotifications = () => {
-  const { commonStore, notificationStore, userStore }  = useStores();
+  const { commonStore, notificationStore, userStore } = useStores();
 
   const { unicID } = useCurrentUserInfo();
 
-  const notificationList: INotification<IServerDate | Date>[] = reactive([]); 
+  const notificationList: INotification<IServerDate | Date>[] = reactive([]);
 
   const notificationsSize = computed(() => {
-    return notificationList.length
+    return notificationList.length;
   });
 
   const clearAll = (): void => {
     notificationList.splice(0); // Clear all.
-  }
+  };
 
   const notifyAction = (id: number, action: NotifyAction): void => {
-    const foundNotification = notificationList.find((notify) => notify.id === id);
+    const foundNotification = notificationList.find(
+      (notify) => notify.id === id
+    );
     if (foundNotification) {
-      switch(action) {
+      switch (action) {
         case "readNotification":
           foundNotification.status = "read";
           break;
-        case "deleteNotification": 
-          const notificationIndex: number = notificationList.findIndex((item) => item === foundNotification);
+        case "deleteNotification":
+          const notificationIndex: number = notificationList.findIndex(
+            (item) => item === foundNotification
+          );
           notificationList.splice(notificationIndex, 1);
           break;
-        default: return
+        default:
+          return;
       }
     }
-  }
+  };
 
   // Get all notifications.
   watchEffect(() => {
     const unicID = (userStore.currentUser as User).uid;
-    if (unicID && !ObjectHasValues(notificationList)) { // Get all if the list is initially empty.
+    if (unicID && !ObjectHasValues(notificationList)) {
+      // Get all if the list is initially empty.
       commonStore.setLoadingStatus(true);
 
-      notificationStore.getAllNotifications(unicID)
-      .then((notifications) => {
-        notificationList.push(...notifications)
-      })
-      .finally(() => commonStore.setLoadingStatus(false))
+      notificationStore
+        .getAllNotifications(unicID)
+        .then((notifications) => {
+          notificationList.push(...notifications);
+        })
+        .finally(() => commonStore.setLoadingStatus(false));
     }
-  })
-  watch(() => notificationStore.newNotification, (newNotification): void => {
-    if (ObjectHasValues(newNotification)) {
-      notificationList.push(newNotification as INotification<IServerDate | Date>);
-      notificationStore.clearNewNotification();
+  });
+  watch(
+    () => notificationStore.newNotification,
+    (newNotification): void => {
+      if (ObjectHasValues(newNotification)) {
+        notificationList.push(
+          newNotification as INotification<IServerDate | Date>
+        );
+        notificationStore.clearNewNotification();
+      }
     }
-  })
+  );
 
   // Update database.
   watch(notificationList, (newCollection) => {
     if (newCollection) {
-      notificationStore.updateNotifications(newCollection, unicID.value)
+      notificationStore.updateNotifications(newCollection, unicID.value);
     }
-  })
+  });
 
   return {
     notificationsSize,
     notificationList,
     notifyAction,
-    clearAll
-  }
-}
+    clearAll,
+  };
+};
 
 export default useNotifications;

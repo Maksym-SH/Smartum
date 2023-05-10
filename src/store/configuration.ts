@@ -5,11 +5,11 @@ import { ErrorCode } from "@/types/types";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { Colors, DataCollection } from "@/types/enums";
-import { 
-  IAsideNavigationItem, 
+import {
+  IAsideNavigationItem,
   IConfiguration,
   IConfigurationResponse,
-  IConfigurationAdditional
+  IConfigurationAdditional,
 } from "@/types/interfaces";
 
 import useStores from "@/composables/useStores";
@@ -25,10 +25,11 @@ const useConfigurationStore = defineStore("configuration", () => {
     showEmailConfirm: false,
     showCurrentDate: false, // Time and date in app header.
     showDeleteAccountButton: false,
-  })
+  });
 
-
-  const setAdditionalParams = (params: Omit<IConfiguration, "navigations">): void => {
+  const setAdditionalParams = (
+    params: Omit<IConfiguration, "navigations">
+  ): void => {
     additionalParams.value = params;
   };
   const setNavigateList = (navigationList: IAsideNavigationItem[]): void => {
@@ -45,98 +46,122 @@ const useConfigurationStore = defineStore("configuration", () => {
         asideBackgroundColor: Colors.Grey,
         showCurrentDate: true, // Time and date in app header.
         showDeleteAccountButton: true,
-      }
-      
+      };
+
       setDoc(doc(database, DataCollection.Configuration, unicID), settings)
-      .then(() => resolve())
-      .catch((error: ErrorCode): void => {
-        ShowErrorMessage(error);
-        reject(error);
-      })
-      .finally(() => commonStore.setLoadingStatus(false))
-    })  
+        .then(() => resolve())
+        .catch((error: ErrorCode): void => {
+          ShowErrorMessage(error);
+          reject(error);
+        })
+        .finally(() => commonStore.setLoadingStatus(false));
+    });
   };
   const deleteUserConfiguration = (unicID: string): Promise<void> => {
-    const configurationRef = doc(database, DataCollection.Configuration, unicID);
+    const configurationRef = doc(
+      database,
+      DataCollection.Configuration,
+      unicID
+    );
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
       deleteDoc(configurationRef)
-      .then(() => resolve())
-      .catch((error: ErrorCode) => {
-        ShowErrorMessage(error);
-        reject(error)
-      })
-      .finally(() => commonStore.setLoadingStatus(false))
-    })
+        .then(() => resolve())
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          reject(error);
+        })
+        .finally(() => commonStore.setLoadingStatus(false));
+    });
   };
-  const updateAdditionalParams =(additional: IConfigurationAdditional, unicID: string): Promise<void> => {
-    const configurationRef = doc(database, DataCollection.Configuration, unicID);
+  const updateAdditionalParams = (
+    additional: IConfigurationAdditional,
+    unicID: string
+  ): Promise<void> => {
+    const configurationRef = doc(
+      database,
+      DataCollection.Configuration,
+      unicID
+    );
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
       updateDoc(configurationRef, {
-        ...additional
+        ...additional,
       })
-      .then(() => {
-        getUserConfiguration(unicID);
-        resolve();
-      })
-      .catch((error: ErrorCode) => {
-        ShowErrorMessage(error);
-        reject(error)
-      })
-      .finally(() => commonStore.setLoadingStatus(false))
-    })
+        .then(() => {
+          getUserConfiguration(unicID);
+          resolve();
+        })
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          reject(error);
+        })
+        .finally(() => commonStore.setLoadingStatus(false));
+    });
   };
-  const updateNavigateItem = (navigations: boolean[], unicID: string): Promise<void> => {
-    const configurationRef = doc(database, DataCollection.Configuration, unicID);
+  const updateNavigateItem = (
+    navigations: boolean[],
+    unicID: string
+  ): Promise<void> => {
+    const configurationRef = doc(
+      database,
+      DataCollection.Configuration,
+      unicID
+    );
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
       updateDoc(configurationRef, {
-        navigationsShowValues: navigations
+        navigationsShowValues: navigations,
       })
-      .then(() => {
-        getUserConfiguration(unicID);
-        resolve();
-      })
-      .catch((error: ErrorCode): void => {
-        ShowErrorMessage(error);
-        reject(error)
-      })
-      .finally(() => commonStore.setLoadingStatus(false))
-    })
+        .then(() => {
+          getUserConfiguration(unicID);
+          resolve();
+        })
+        .catch((error: ErrorCode): void => {
+          ShowErrorMessage(error);
+          reject(error);
+        })
+        .finally(() => commonStore.setLoadingStatus(false));
+    });
   };
   const getUserConfiguration = (unicID: string): Promise<any> => {
-    const configurationRef = doc(database, DataCollection.Configuration, unicID);
+    const configurationRef = doc(
+      database,
+      DataCollection.Configuration,
+      unicID
+    );
 
     return new Promise((resolve, reject) => {
       getDoc(configurationRef)
-      .then((configuration): void => {
-        const responseData = configuration.data() as IConfigurationResponse;
+        .then((configuration): void => {
+          const responseData = configuration.data() as IConfigurationResponse;
 
-        if (responseData) {
-          const { navigationsShowValues, ...additionalParams } = responseData;
+          if (responseData) {
+            const { navigationsShowValues, ...additionalParams } = responseData;
 
-          const navigationShowingStatus: boolean[] = navigationsShowValues;
+            const navigationShowingStatus: boolean[] = navigationsShowValues;
 
-          // Set displaying all aside navigation items.
-          const showedNavigations = allAsideNavigations();
-          showedNavigations.forEach((item, index) => item.showed = navigationShowingStatus[index]);
-          setNavigateList(showedNavigations);
+            // Set displaying all aside navigation items.
+            const showedNavigations = allAsideNavigations();
+            showedNavigations.forEach(
+              (item, index) => (item.showed = navigationShowingStatus[index])
+            );
+            setNavigateList(showedNavigations);
 
-          // Set additional params.
-          setAdditionalParams(additionalParams);
-        }
-        resolve(responseData);
-      })
-      .catch((error: ErrorCode) => {
-        ShowErrorMessage(error);
-        reject(error)
-      })
-    })
-  }
+            // Set additional params.
+            setAdditionalParams(additionalParams);
+          }
+          resolve(responseData);
+        })
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          reject(error);
+        });
+    });
+  };
 
   return {
     asideNavigate,
@@ -147,8 +172,8 @@ const useConfigurationStore = defineStore("configuration", () => {
     deleteUserConfiguration,
     updateAdditionalParams,
     updateNavigateItem,
-    getUserConfiguration
-  }
-})
+    getUserConfiguration,
+  };
+});
 
 export default useConfigurationStore;

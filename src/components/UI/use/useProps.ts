@@ -1,9 +1,9 @@
 import { PropType } from "vue";
-import { 
-  ButtonSize, 
-  ExpansionPanelVariant, 
-  AsideExpPanelNavigation, 
-  ButtonVariant  
+import {
+  ButtonSize,
+  ExpansionPanelVariant,
+  AsideExpPanelNavigation,
+  ButtonVariant,
 } from "@/types/types";
 import { Colors, Length } from "@/types/enums";
 
@@ -11,7 +11,7 @@ import { Colors, Length } from "@/types/enums";
 export const useInputProps = {
   modelValue: {
     type: [String, Number],
-    default: ""
+    default: "",
   },
   type: {
     type: String,
@@ -27,7 +27,7 @@ export const useInputProps = {
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   disabled: {
     type: Boolean,
@@ -43,11 +43,11 @@ export const useInputProps = {
   },
   isPhone: {
     type: Boolean,
-    default: false
+    default: false,
   },
   lightTheme: {
     type: Boolean,
-    default:false
+    default: false,
   },
   min: {
     type: Number,
@@ -55,7 +55,7 @@ export const useInputProps = {
   },
   label: {
     type: String,
-    default: ""
+    default: "",
   },
   autoComplete: {
     type: [Boolean, String],
@@ -74,12 +74,12 @@ export const useTextareaProps = {
     default: "",
   },
   required: {
-    type: Boolean, 
-    default: false
+    type: Boolean,
+    default: false,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   disabled: {
     type: Boolean,
@@ -87,7 +87,7 @@ export const useTextareaProps = {
   },
   max: {
     type: Number,
-    default: Length.None
+    default: Length.None,
   },
   label: {
     type: String,
@@ -100,8 +100,8 @@ export const useTextareaProps = {
   resize: {
     type: Boolean,
     default: false,
-  }
-}
+  },
+};
 
 // Button.vue
 export const useButtonProps = {
@@ -119,7 +119,7 @@ export const useButtonProps = {
   },
   color: {
     type: String as PropType<Colors>,
-    default: Colors.Info
+    default: Colors.Info,
   },
   transparent: {
     type: Boolean,
@@ -155,38 +155,38 @@ export const useCheckboxProps = {
   },
   switchBox: {
     type: Boolean,
-    default: false
+    default: false,
   },
   secondaryLabel: {
     type: String,
-    default: ""
+    default: "",
   },
   disabled: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 };
 
 // ExpansionPanel.vue
 export const useExpansionPanelProps = {
   variant: {
     type: String as PropType<ExpansionPanelVariant>,
-    default: "default"
+    default: "default",
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   icon: {
     type: String,
-    default: ""
+    default: "",
   },
   avatar: {
     type: String,
-    default: null
+    default: null,
   },
   content: {
     type: Array as PropType<AsideExpPanelNavigation[]>,
-    default: () => []
-  }
-}
+    default: () => [],
+  },
+};
