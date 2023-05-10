@@ -1,6 +1,6 @@
 <template>
   <div class="popup" @click.self="result(false)">
-    <div class="popup__window" v-if="showTemplate">
+    <div v-if="showTemplate" class="popup__window">
       <h2 v-if="params.title" class="popup__title">
         {{ params.title }}
       </h2>
@@ -8,81 +8,82 @@
         {{ params.text }}
       </p>
       <div class="popup__button">
-        <Button
-          @click="result(false)"
+        <cButton
           outline
           :variant="btnParam.no?.variant"
           :color="btnParam.no?.color"
           class="popup__button--no"
+          @click="result(false)"
         >
           {{ btnParam.no?.text }}
-        </Button>
-        <Button
-          @click="result(true)"
+        </cButton>
+        <cButton
           :variant="btnParam.yes.variant"
           :color="btnParam.yes?.color"
           class="popup__buttons--yes"
           type="submit"
+          @click="result(true)"
         >
           {{ btnParam.yes.text }}
-        </Button>
+        </cButton>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Colors } from "@/types/enums";
-import { ObjectFull } from "@/helpers/methods";
-import { IPopupParams } from "@/types/interfaces";
-import { PopupButtons } from "@/types/types";
-import { defineComponent, computed } from "vue";
-import useStores from "@/composables/useStores";
+import { computed, defineComponent } from 'vue'
+import { Colors } from '@/types/enums'
+import { ObjectFull } from '@/helpers/methods'
+import type { IPopupParams } from '@/types/interfaces'
+import type { PopupButtons } from '@/types/types'
+import useStores from '@/composables/useStores'
 
 export default defineComponent({
   setup() {
-    const { commonStore } = useStores();
+    const { commonStore } = useStores()
 
-    const params: IPopupParams = commonStore.popupParams as IPopupParams;
+    const params: IPopupParams = commonStore.popupParams as IPopupParams
 
-    const showTemplate: boolean = ObjectFull(params);
+    const showTemplate: boolean = ObjectFull(params)
 
     const btnParam = computed((): PopupButtons => {
       return {
         yes: {
-          text: params.buttons.yes?.text || "Подтвердить",
-          variant: params.buttons.yes?.variant || "elevated",
+          text: params.buttons.yes?.text || 'Подтвердить',
+          variant: params.buttons.yes?.variant || 'elevated',
           color: params.buttons.yes?.color || Colors.Info,
         },
         no: {
-          text: params.buttons.no?.text || "Отмена",
-          variant: params.buttons.no?.variant || "outlined",
+          text: params.buttons.no?.text || 'Отмена',
+          variant: params.buttons.no?.variant || 'outlined',
           color: params.buttons.no?.color || Colors.Info,
         },
-      };
-    });
+      }
+    })
 
     const ClosePopup = (): void => {
-      commonStore.setPopupParams({});
-    };
+      commonStore.setPopupParams({})
+    }
 
     const result = (result: boolean): void => {
       if (!result) {
-        ClosePopup(); // Clear data and close popup.
-      } else {
-        params.callback();
-        ClosePopup();
+        ClosePopup() // Clear data and close popup.
       }
-    };
+      else {
+        params.callback()
+        ClosePopup()
+      }
+    }
 
     return {
       params,
       btnParam,
       showTemplate,
       result,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

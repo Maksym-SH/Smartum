@@ -1,11 +1,11 @@
 <template>
   <span class="c-checkbox" :class="{ switch: switchBox }">
     <input
-      class="c-checkbox__input"
+      :id="name"
       v-model="checked"
+      class="c-checkbox__input"
       type="checkbox"
       :disabled="disabled"
-      :id="name"
     />
     <!-- Text -->
     <label
@@ -13,7 +13,7 @@
       class="label secondary-label"
       :class="{
         'not-selected': checked,
-        disabled: disabled,
+        'disabled': disabled,
       }"
       @click="checkboxToggle(false)"
     >
@@ -24,7 +24,7 @@
     <label
       class="checkbox-label"
       :for="name"
-      :class="{ disabled: disabled }"
+      :class="{ disabled }"
     ></label>
 
     <!-- Text -->
@@ -33,7 +33,7 @@
       class="label main-label"
       :class="{
         'not-selected': !checked,
-        disabled: disabled,
+        'disabled': disabled,
       }"
       @click="checkboxToggle(true)"
     >
@@ -43,41 +43,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, computed } from "vue";
-import { useCheckboxProps } from "./use/useProps";
+import { computed, defineComponent, watch } from 'vue'
+import { useCheckboxProps } from './use/useProps'
 
 export default defineComponent({
   props: useCheckboxProps,
-  emits: ["update:modelValue"],
+  emits: ['update:modelValue'],
 
   setup(props, { emit }) {
     const checked = computed({
       get: () => props.modelValue,
-      set: (newValue) => emit("update:modelValue", newValue),
-    });
+      set: newValue => emit('update:modelValue', newValue),
+    })
 
     const hasTwoLabel = computed(
       (): string | false =>
-        props.switchBox && props.label && props.secondaryLabel
-    );
+        props.switchBox && props.label && props.secondaryLabel,
+    )
 
     const checkboxToggle = (value: boolean): void => {
       if (hasTwoLabel.value) {
         // Label [checkbox] Label
-        checked.value = value;
-      } else {
-        checked.value = !checked.value;
+        checked.value = value
       }
-    };
+      else {
+        checked.value = !checked.value
+      }
+    }
 
-    watch(checked, () => emit("update:modelValue", checked.value));
+    watch(checked, () => emit('update:modelValue', checked.value))
 
     return {
       checked,
       checkboxToggle,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

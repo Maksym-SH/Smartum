@@ -1,13 +1,13 @@
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import path from 'node:path'
 
 export default defineConfig({
   server: {
-    port: 8080
+    port: 8080,
   },
   plugins: [
-    Vue()
+    Vue(),
   ],
   resolve: {
     alias: {
@@ -22,8 +22,8 @@ export default defineConfig({
           @import "@/assets/scss/variables.scss";
           @import "@/assets/scss/mixins.scss";
           @import "@/assets/scss/theme.scss";
-        `
-      }
-    }
-  }
+        `,
+      },
+    },
+  },
 })

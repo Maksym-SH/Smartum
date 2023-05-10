@@ -2,23 +2,23 @@
   <div class="c-textarea">
     <div class="c-textarea--relative">
       <textarea
+        ref="textareaRef"
+        v-model="model"
         class="c-textarea__field"
         :class="{
           'c-textarea__field--error': errorText,
           'c-textarea__field--required': required,
           'c-textarea__field--resize': resize,
         }"
-        ref="textareaRef"
         :name="name"
         :placeholder="placeholder"
-        v-model="model"
         :disabled="disabled"
         v-bind="$attrs"
-        @blur="validator()"
         :required="required"
         :min="min"
         :maxlength="max"
-      />
+        @blur="validator()"
+      ></textarea>
       <label
         v-if="label"
         :for="name"
@@ -40,47 +40,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, ref, computed } from "vue";
-import { useTextareaProps } from "./use/useProps";
-import { RefElement, ModelValue } from "@/types/types";
+import { computed, defineComponent, ref, watch } from 'vue'
+import { useTextareaProps } from './use/useProps'
+import type { ModelValue, RefElement } from '@/types/types'
 
 export default defineComponent({
   inheritAttrs: false,
 
   props: useTextareaProps,
-  emits: ["invalid", "update:modelValue", "click"],
+  emits: ['invalid', 'update:modelValue', 'click'],
 
   setup(props, { emit }) {
-    const errorText = ref("");
+    const errorText = ref('')
 
-    const isRequired = ref(false);
+    const isRequired = ref(false)
 
-    const textareaRef = ref<RefElement>(null);
+    const textareaRef = ref<RefElement>(null)
 
     const model = computed({
       get: () => props.modelValue,
-      set: (newValue) => emit("update:modelValue", newValue),
-    });
+      set: newValue => emit('update:modelValue', newValue),
+    })
 
     const validator = (): void => {
-      if (props.min && String(model.value).length < props.min) {
-        errorText.value = `Введите не менее ${props.min} символов.`;
-      } else if (String(model.value).startsWith(" ")) {
-        errorText.value = "Начальное пустое значение недопустимо.";
-      }
-    };
+      if (props.min && String(model.value).length < props.min)
+        errorText.value = `Введите не менее ${props.min} символов.`
+      else if (String(model.value).startsWith(' '))
+        errorText.value = 'Начальное пустое значение недопустимо.'
+    }
 
     watch(
       (): ModelValue => props.modelValue,
-      (): string => (errorText.value = "")
-    );
+      (): string => (errorText.value = ''),
+    )
 
     watch(
       (): string => errorText.value,
       (message): void => {
-        if (message) emit("invalid");
-      }
-    );
+        if (message)
+          emit('invalid')
+      },
+    )
 
     return {
       errorText,
@@ -88,9 +88,9 @@ export default defineComponent({
       textareaRef,
       model,
       validator,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

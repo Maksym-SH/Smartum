@@ -1,18 +1,20 @@
 <template>
   <div class="confirmation" @click.self="result(false)">
     <div class="confirmation__window">
-      <h2 class="confirmation__window-title">Подтверждение действия</h2>
+      <h2 class="confirmation__window-title">
+        Подтверждение действия
+      </h2>
       <p class="confirmation__window-description">
         Нам нужно убедиться что это действительно вы, введите пароль указанный
         вами при регистрации в поле ниже.
       </p>
       <form class="confirmation__window-input-field" @submit.prevent>
-        <Input
+        <cInput
+          v-model="password"
           label="Ваш пароль"
           type="password"
           name="userPassword"
           :min="PasswordLength"
-          v-model="password"
         />
         <div class="confirmation__window-forgot-password">
           <router-link
@@ -24,21 +26,21 @@
           </router-link>
         </div>
         <div class="confirmation__button">
-          <Button
-            @click="result(false)"
+          <cButton
             variant="outlined"
             class="confirmation__button--no"
+            @click="result(false)"
           >
             Отмена
-          </Button>
-          <Button
-            @click="result(true)"
+          </cButton>
+          <cButton
             type="submit"
             :disabled="btnConfirmDisable"
             class="confirmation__buttons--yes"
+            @click="result(true)"
           >
             Подтвердить
-          </Button>
+          </cButton>
         </div>
       </form>
     </div>
@@ -46,51 +48,53 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { EmailAuthCredential, EmailAuthProvider, User } from "firebase/auth";
-import { Length } from "@/types/enums";
-import { computed } from "@vue/reactivity";
-import { Confirmation } from "@/helpers/methods";
+import { defineComponent, ref } from 'vue'
+import type { EmailAuthCredential, User } from 'firebase/auth'
+import { EmailAuthProvider } from 'firebase/auth'
+import { computed } from '@vue/reactivity'
+import { Length } from '@/types/enums'
+import { Confirmation } from '@/helpers/methods'
 
-import firebaseAuth from "@/helpers/firebase/firebaseAuth";
-import useStores from "@/composables/useStores";
+import firebaseAuth from '@/helpers/firebase/firebaseAuth'
+import useStores from '@/composables/useStores'
 
 export default defineComponent({
   setup() {
-    const { commonStore, userStore } = useStores();
+    const { commonStore, userStore } = useStores()
 
-    const userInfo: User = userStore.currentUser as User;
+    const userInfo: User = userStore.currentUser as User
 
-    const userEmail = userInfo.email;
-    const password = ref("");
+    const userEmail = userInfo.email
+    const password = ref('')
 
     const btnConfirmDisable = computed(
-      (): boolean => password.value.length < Length.Password
-    );
+      (): boolean => password.value.length < Length.Password,
+    )
 
     const result = (value: boolean): void => {
       if (value && userEmail) {
         const credential: EmailAuthCredential = EmailAuthProvider.credential(
           userEmail,
-          password.value
-        );
+          password.value,
+        )
 
         firebaseAuth()
           .reauthorization(userInfo, credential)
           .then(() => {
-            Confirmation(false);
-          });
-      } else commonStore.setConfirmPopupVisibillity(false);
-    };
+            Confirmation(false)
+          })
+      }
+      else { commonStore.setConfirmPopupVisibillity(false) }
+    }
 
     return {
       password,
       PasswordLength: Length.Password,
       btnConfirmDisable,
       result,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

@@ -8,7 +8,7 @@
     <ConfirmationPopup v-if="showConfirmPopup" />
   </transition>
 
-  <Loader v-show="loadingStatus" />
+  <cLoader v-show="loadingStatus" />
   <router-view v-slot="{ Component }">
     <transition name="router-nav" mode="out-in">
       <component :is="Component" />
@@ -17,37 +17,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, defineAsyncComponent } from "vue";
-import { ObjectNotEmpty } from "./helpers/methods";
-import { ModalContentType } from "./types/types";
+import { computed, defineAsyncComponent, defineComponent } from 'vue'
+import { ObjectNotEmpty } from './helpers/methods'
+import type { ModalContentType } from './types/types'
 
-import useStores from "./composables/useStores";
+import useStores from './composables/useStores'
 
 export default defineComponent({
   components: {
-    Popup: defineAsyncComponent(() => import("@/components/UI/Popup.vue")),
+    Popup: defineAsyncComponent(() => import('@/components/UI/Popup.vue')),
     ConfirmationPopup: defineAsyncComponent(
-      () => import("@/components/UI/Confirmation.vue")
+      () => import('@/components/UI/Confirmation.vue'),
     ),
     LongContentModal: defineAsyncComponent(
-      () => import("@/components/UI/LongContentModal.vue")
+      () => import('@/components/UI/LongContentModal.vue'),
     ),
   },
   setup() {
-    const { commonStore } = useStores();
+    const { commonStore } = useStores()
 
     return {
       loadingStatus: computed((): boolean => commonStore.loadingStatus),
       showPopup: computed((): boolean =>
-        ObjectNotEmpty(commonStore.popupParams)
+        ObjectNotEmpty(commonStore.popupParams),
       ),
       showConfirmPopup: computed((): boolean => commonStore.openConfirmPopup),
       modalContentType: computed(
-        (): ModalContentType => commonStore.modalContentType
+        (): ModalContentType => commonStore.modalContentType,
       ),
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss">
@@ -63,7 +63,7 @@ body {
   height: 100%;
   overflow: hidden auto;
   background-color: $color-grey;
-  font-family: $PoppinsRG;
+  font-family: $RobotoRG;
   scroll-behavior: smooth;
 
   &::-webkit-scrollbar {
@@ -128,6 +128,7 @@ body {
 .vue-notification-wrapper {
   margin-top: 8px;
   .vue-notification-template {
+    cursor: pointer;
     border-radius: 4px;
   }
 }

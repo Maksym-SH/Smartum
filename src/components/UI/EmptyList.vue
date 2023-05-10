@@ -8,8 +8,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
-import { EmptyListType } from "@/types/types";
+import type { PropType } from 'vue'
+import { computed, defineComponent } from 'vue'
+import type { EmptyListType } from '@/types/types'
 
 export default defineComponent({
   props: {
@@ -20,20 +21,20 @@ export default defineComponent({
   },
   setup(props) {
     const descriptionContent = computed((): string => {
-      if (props.type === "dashboard") {
-        return "Список рабочих досок пуст.";
-      } else if (props.type === "notification") {
-        return "Список уведомлений пуст.";
-      }
+      if (props.type === 'dashboard')
+        return 'Список рабочих досок пуст.'
+      else if (props.type === 'notification')
+        return 'Список уведомлений пуст.'
+
       // ToDo: smt else
-      return "";
-    });
+      return ''
+    })
 
     return {
       descriptionContent,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
@@ -49,7 +50,8 @@ export default defineComponent({
     color: var(--color-text);
     margin-top: 10px;
     font-size: 22px;
-    font-weight: 500;
+    font-weight: 400;
+    font-family: $RobotoRG;
   }
   @include mobile(max) {
     &__icon {

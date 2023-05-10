@@ -1,20 +1,20 @@
-import { computed } from "vue";
-import { User } from "firebase/auth";
-import { IUserCreated } from "@/types/interfaces";
-import useStores from "./useStores";
+import { computed } from 'vue'
+import type { User } from 'firebase/auth'
+import useStores from './useStores'
+import type { IUserCreated } from '@/types/interfaces'
 
-const useUserUnicId = () => {
-  const { userStore } = useStores();
+function useUserUnicId() {
+  const { userStore } = useStores()
 
-  const unicID = computed((): string => (userStore.currentUser as User).uid);
-  const currentUser = computed((): User => userStore.currentUser as User);
-  const userInfo = computed((): IUserCreated => userStore.userInfo);
+  const unicID = computed((): string => (userStore.currentUser as User).uid)
+  const currentUser = computed((): User => userStore.currentUser as User)
+  const userInfo = computed((): IUserCreated => userStore.userInfo)
 
   return {
     unicID,
     userInfo,
     currentUser,
-  };
-};
+  }
+}
 
-export default useUserUnicId;
+export default useUserUnicId

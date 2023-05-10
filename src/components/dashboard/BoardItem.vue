@@ -26,11 +26,12 @@
 </template>
 
 <script lang="ts">
-import { IWorkingBoardItem } from "@/types/interfaces";
-import { defineComponent, PropType } from "vue";
+import type { PropType } from 'vue'
+import { defineComponent } from 'vue'
+import type { IWorkingBoardItem } from '@/types/interfaces'
 
-import BoardImageResult from "@/components/dashboard/BoardImageResult.vue";
-import useDateParseToString from "@/composables/useDateParse";
+import BoardImageResult from '@/components/dashboard/BoardImageResult.vue'
+import useDateParseToString from '@/composables/useDateParse'
 
 export default defineComponent({
   components: {
@@ -43,13 +44,13 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const dateOfCreate = useDateParseToString(props.element.dateOfCreation);
+    const dateOfCreate = useDateParseToString(props.element.dateOfCreation)
 
     return {
       dateOfCreate,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

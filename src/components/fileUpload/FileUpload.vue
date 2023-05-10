@@ -1,27 +1,26 @@
 <template>
   <div class="file-upload" @click="upload?.click()">
     <input
-      type="file"
       ref="upload"
+      type="file"
       class="file-upload--input"
       @change="fileUpload"
     />
-    <Button
+    <cButton
       v-if="showImageTemplate"
       class="file-upload--delete"
       :color="Colors.Danger"
       @click.stop="deleteImgPopup"
     >
       <span class="mdi mdi-delete-outline"></span>
-    </Button>
+    </cButton>
     <v-img
       v-if="showImageTemplate"
-      @load="imgLoad"
-      ref="image"
       class="file-upload--image"
       cover
       :src="currentImgPath"
-    ></v-img>
+      @load="imgLoad"
+    />
     <img
       class="file-upload--icon"
       src="/images/icons/upload.svg"
@@ -31,12 +30,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType, computed } from "vue";
-import { RefElement, FileType, ImageSource } from "@/types/types";
-import { OpenPopup } from "@/helpers/methods";
-import { Colors } from "@/types/enums";
+import type { PropType } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
+import type { FileType, ImageSource, RefElement } from '@/types/types'
+import { OpenPopup } from '@/helpers/methods'
+import { Colors } from '@/types/enums'
 
-import fileValidate from "@/helpers/file/validate";
+import fileValidate from '@/helpers/file/validate'
 
 export default defineComponent({
   props: {
@@ -46,70 +46,71 @@ export default defineComponent({
     },
     avatarParams: {
       type: String,
-      default: "",
+      default: '',
     },
   },
-  emits: ["loaded", "deleted"],
+  emits: ['loaded', 'deleted'],
   setup(props, { emit }) {
-    const upload = ref<RefElement>();
+    const upload = ref<RefElement>()
     // Image
-    const imgLoaded = ref(false);
+    const imgLoaded = ref(false)
 
-    const imgDeleted = ref(false);
+    const imgDeleted = ref(false)
+
+    const imageSource = ref<ImageSource>(props.avatarParams)
 
     const currentImgPath = computed((): string =>
-      String(imageSource.value || props.avatarParams)
-    );
+      String(imageSource.value || props.avatarParams),
+    )
     const showImageTemplate = computed(
       (): string | boolean =>
-        (imgLoaded.value || props.avatarParams) && !imgDeleted.value
-    );
+        (imgLoaded.value || props.avatarParams) && !imgDeleted.value,
+    )
 
-    const imgLoad = (): boolean => (imgLoaded.value = true);
-
-    const imageSource = ref<ImageSource>(props.avatarParams);
+    const imgLoad = (): boolean => (imgLoaded.value = true)
 
     // File load.
     const fileUpload = (): void => {
-      const reader = new FileReader();
-      const file = upload.value?.files?.[0];
+      const reader = new FileReader()
+      const file = upload.value?.files?.[0]
 
       if (file) {
-        if (props.fileType == "image") reader.readAsDataURL(file);
+        if (props.fileType === 'image')
+          reader.readAsDataURL(file)
 
         reader.onload = (): void => {
           if (fileValidate(file, props.fileType)) {
             // Validation was successful.
 
-            if (props.fileType == "image") {
-              imageSource.value = reader.result;
-              imgLoaded.value = true;
-              imgDeleted.value = false;
+            if (props.fileType === 'image') {
+              imageSource.value = reader.result
+              imgLoaded.value = true
+              imgDeleted.value = false
 
-              emit("loaded", file);
+              emit('loaded', file)
 
-              upload.value!.value = ""; // Clear input file after image load.
+              upload.value!.value = '' // Clear input file after image load.
             }
           }
-        };
+        }
       }
-    };
+    }
 
     const deleteImgPopup = (): void => {
       OpenPopup({
-        title: "Удалить фото?",
+        title: 'Удалить фото?',
         buttons: {
           yes: {
-            text: "Удалить",
+            text: 'Удалить',
             color: Colors.Danger,
           },
         },
         callback: (): void => {
-          emit("deleted");
-          imgDeleted.value = true;
+          emit('deleted')
+          imgDeleted.value = true
         },
-      });
-    };
+      })
+    }
 
     return {
       imgLoaded,
@@ -121,9 +122,9 @@ export default defineComponent({
       fileUpload,
       imgLoad,
       Colors,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

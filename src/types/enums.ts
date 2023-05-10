@@ -1,6 +1,6 @@
 export enum Language {
-  Russian = "ru",
-  English = "eng",
+  Russian = 'ru',
+  English = 'eng',
 }
 
 export enum Length {
@@ -12,23 +12,23 @@ export enum Length {
 }
 
 export enum LangFormat {
-  Ru = "ru-Ru",
-  Eng = "en-EN",
+  Ru = 'ru-Ru',
+  Eng = 'en-EN',
 }
 
 export enum FileFormat {
-  App_JS = "application/javascript",
-  App_XJS = "application/x-javascript",
-  App_ES = "application/ecmascript",
-  Text_JS = "text/javascript",
-  Text_ES = "text/ecmascript",
-  App_JSON = "application/json",
-  App_ZIP = "application/zip",
-  APP_GZIP = "application/gzip",
-  APP_XPHP = "application/x-php",
-  APP_XML = "application/xml",
-  Text_XML = "text/xml",
-  Text_XPython = "text/x-script.python",
+  App_JS = 'application/javascript',
+  App_XJS = 'application/x-javascript',
+  App_ES = 'application/ecmascript',
+  Text_JS = 'text/javascript',
+  Text_ES = 'text/ecmascript',
+  App_JSON = 'application/json',
+  App_ZIP = 'application/zip',
+  APP_GZIP = 'application/gzip',
+  APP_XPHP = 'application/x-php',
+  APP_XML = 'application/xml',
+  Text_XML = 'text/xml',
+  Text_XPython = 'text/x-script.python',
 }
 
 export enum Numbers {
@@ -37,9 +37,9 @@ export enum Numbers {
   MillisecondsInDay = 86400000,
   AppearElement = 400,
   EveningRU = 18,
-  EveningENG = "6 AM",
+  EveningENG = '6 AM',
   MorningRU = 6,
-  MorningENG = "6 PM",
+  MorningENG = '6 PM',
   JoinCodeSize = 16,
 }
 
@@ -52,15 +52,15 @@ export enum Layout {
 }
 
 export enum DataCollection {
-  Dashboard = "dashboard",
-  Profile = "profile",
-  Notifications = "notifications",
-  Configuration = "configuration",
+  Dashboard = 'dashboard',
+  Profile = 'profile',
+  Notifications = 'notifications',
+  Configuration = 'configuration',
 }
 
 export enum Links {
-  GitHubAccount = "https://github.com/Maksym-SH",
-  TelegramAccount = "https://t.me/yerspide",
+  GitHubAccount = 'https://github.com/Maksym-SH',
+  TelegramAccount = 'https://t.me/yerspide',
 }
 
 export enum NotificationActionType {
@@ -82,18 +82,18 @@ export enum NotificationType {
 }
 
 export enum Colors {
-  Default = "#1D242E",
-  Success = "#2ed47a",
-  Danger = "#f0483e",
-  Info = "#21A8F4",
-  Grey = "#283342",
-  Black = "#000000",
-  White = "#ffffff",
+  Default = '#1D242E',
+  Success = '#2ed47a',
+  Danger = '#f0483e',
+  Info = '#21A8F4',
+  Grey = '#283342',
+  Black = '#000000',
+  White = '#ffffff',
   // Gradients
-  GradientBlue = "#020024 linear-gradient(90deg, #020024 0%, #090979 25%, #00d4ff 100%)",
-  GradientBluePink = "#00edff linear-gradient(90deg, #00edff 29%, #d700f7 100%)",
-  GradientGreen = "#22c1c3 linear-gradient(0deg, #22c1c3 0%, #2aec96 29%, #2dfd84 100%)",
-  GradientLightBlue = "#eeaeca radial-gradient(circle, #eeaeca 0%, #94bbe9 100%)",
-  GradientGray = "#7a7d89 linear-gradient(90deg, #7a7d89 0%, #222e48 100%)",
-  GradientRedBlue = "#ff2a00 linear-gradient(90deg, #ff2a00 20%, #0057ff 100%)",
+  GradientBlue = '#020024 linear-gradient(90deg, #020024 0%, #090979 25%, #00d4ff 100%)',
+  GradientBluePink = '#00edff linear-gradient(90deg, #00edff 29%, #d700f7 100%)',
+  GradientGreen = '#22c1c3 linear-gradient(0deg, #22c1c3 0%, #2aec96 29%, #2dfd84 100%)',
+  GradientLightBlue = '#eeaeca radial-gradient(circle, #eeaeca 0%, #94bbe9 100%)',
+  GradientGray = '#7a7d89 linear-gradient(90deg, #7a7d89 0%, #222e48 100%)',
+  GradientRedBlue = '#ff2a00 linear-gradient(90deg, #ff2a00 20%, #0057ff 100%)',
 }

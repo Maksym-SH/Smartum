@@ -1,18 +1,18 @@
-import { Colors } from "@/types/enums";
-import { IBackgroundDashboard } from "@/types/interfaces";
+import { Colors } from '@/types/enums'
+import type { IBackgroundDashboard } from '@/types/interfaces'
 
-const useDashboardItemBackgroundTemplate = (): IBackgroundDashboard => {
+function useDashboardItemBackgroundTemplate(): IBackgroundDashboard {
   return {
     photos: {
       forest:
-        import.meta.env.BASE_URL + "images/dashboardTemplates/forest.jpeg",
-      lake: import.meta.env.BASE_URL + "images/dashboardTemplates/lake.jpeg",
+        `${import.meta.env.BASE_URL}images/dashboardTemplates/forest.jpeg`,
+      lake: `${import.meta.env.BASE_URL}images/dashboardTemplates/lake.jpeg`,
       lakeWithForest:
-        import.meta.env.BASE_URL +
-        "images/dashboardTemplates/lakeWithForest.jpeg",
+        `${import.meta.env.BASE_URL
+        }images/dashboardTemplates/lakeWithForest.jpeg`,
       mountains:
-        import.meta.env.BASE_URL + "images/dashboardTemplates/mountains.jpeg",
-      river: import.meta.env.BASE_URL + "images/dashboardTemplates/river.jpeg",
+        `${import.meta.env.BASE_URL}images/dashboardTemplates/mountains.jpeg`,
+      river: `${import.meta.env.BASE_URL}images/dashboardTemplates/river.jpeg`,
     },
     gradients: {
       backgroundBlue: Colors.GradientBlue,
@@ -22,7 +22,7 @@ const useDashboardItemBackgroundTemplate = (): IBackgroundDashboard => {
       backgrondGray: Colors.GradientGray,
       backgroundRedBlue: Colors.GradientRedBlue,
     },
-  };
-};
+  }
+}
 
-export default useDashboardItemBackgroundTemplate;
+export default useDashboardItemBackgroundTemplate

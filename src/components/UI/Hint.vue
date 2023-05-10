@@ -5,8 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { Variant } from "@/types/types";
+import type { PropType } from 'vue'
+import { defineComponent } from 'vue'
+import type { Variant } from '@/types/types'
 
 export default defineComponent({
   props: {
@@ -19,7 +20,7 @@ export default defineComponent({
       required: true,
     },
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

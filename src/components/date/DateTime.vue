@@ -1,6 +1,6 @@
 <template>
   <div class="date">
-    <div class="date__wrapper" v-if="showTemplate">
+    <div v-if="showTemplate" class="date__wrapper">
       <h3 class="date__title">
         <span class="date__icon">
           <img :src="`/images/icons/${imageType}.svg`" alt="" />
@@ -21,71 +21,70 @@
 
 <script lang="ts">
 import {
-  defineComponent,
-  ref,
   computed,
+  defineComponent,
   onMounted,
   onUnmounted,
+  ref,
   watch,
-} from "vue";
-import { WelcomeText, Icon } from "@/types/types";
-import { Numbers } from "@/types/enums";
+} from 'vue'
+import type { Icon, WelcomeText } from '@/types/types'
+import { Numbers } from '@/types/enums'
 
-import timestamp from "@/helpers/dateTime/stamp";
+import timestamp from '@/helpers/dateTime/stamp'
 
 export default defineComponent({
   setup() {
-    const welcomeText = ref<WelcomeText>("Добрый вечер");
+    const welcomeText = ref<WelcomeText>('Добрый вечер')
 
-    const updateTimeInterval = ref<ReturnType<typeof setInterval> | null>(null);
+    const updateTimeInterval = ref<ReturnType<typeof setInterval> | null>(null)
 
-    const time = ref("");
-    const date = ref("");
+    const time = ref('')
+    const date = ref('')
 
     const imageType = computed((): Icon => {
-      if (welcomeText.value !== "Добрый вечер") return "sun";
+      if (welcomeText.value !== 'Добрый вечер')
+        return 'sun'
 
-      return "moon";
-    });
+      return 'moon'
+    })
 
-    const showTemplate = computed(() => time.value && date.value);
+    const showTemplate = computed(() => time.value && date.value)
 
     // Changing text depending on the time of day.
     watch(
       (): string => time.value,
       (): void => {
         // Get current hour between 0 - 23.
-        const currentTime = time.value;
+        const currentTime = time.value
         const currentTimeHours = Number(
-          currentTime.split("").slice(0, 2).join("")
-        );
+          currentTime.split('').slice(0, 2).join(''),
+        )
 
         // If the time is later than 16:00 and later than 6:00.
         if (
-          currentTimeHours < Numbers.EveningRU &&
-          currentTimeHours > Numbers.MorningRU
-        ) {
-          welcomeText.value = "Добрый день";
-        } else {
-          welcomeText.value = "Добрый вечер";
-        }
-      }
-    );
+          currentTimeHours < Numbers.EveningRU
+          && currentTimeHours > Numbers.MorningRU
+        )
+          welcomeText.value = 'Добрый день'
+        else
+          welcomeText.value = 'Добрый вечер'
+      },
+    )
 
     onMounted((): void => {
       updateTimeInterval.value = setInterval((): void => {
-        const currentDate = new Date();
+        const currentDate = new Date()
 
-        time.value = timestamp(currentDate).time;
-        date.value = timestamp(currentDate).date;
-      }, Numbers.Second);
-    });
+        time.value = timestamp(currentDate).time
+        date.value = timestamp(currentDate).date
+      }, Numbers.Second)
+    })
 
     onUnmounted((): void => {
-      if (updateTimeInterval.value) {
-        clearInterval(updateTimeInterval.value);
-      }
-    });
+      if (updateTimeInterval.value)
+        clearInterval(updateTimeInterval.value)
+    })
 
     return {
       time,
@@ -93,9 +92,9 @@ export default defineComponent({
       welcomeText,
       imageType,
       showTemplate,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

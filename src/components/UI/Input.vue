@@ -2,6 +2,8 @@
   <div class="c-input">
     <div class="c-input--relative">
       <input
+        ref="inputRef"
+        v-model="model"
         class="c-input__field"
         :class="{
           'c-input__field--error': errorText,
@@ -11,18 +13,16 @@
           'c-input__field--password': type === 'password',
           'c-input__field--light-theme': lightTheme,
         }"
-        ref="inputRef"
         :name="name"
         :autocomplete="isAutoComplete"
         :placeholder="placeholder"
         :type="type"
         :disabled="disabled"
         :value="modelValue"
-        v-model="model"
         v-bind="$attrs"
-        @blur="validator()"
         :required="required"
         :min="min"
+        @blur="validator()"
       />
       <label
         v-if="label && !placeholder"
@@ -43,111 +43,110 @@
         }}</span>
       </Transition>
       <span
-        v-if="type == 'password'"
+        v-if="type === 'password'"
         class="c-input--toggle-password"
         @click="toggleInputType"
       >
         <transition mode="out-in" name="toggle-content">
           <span
             v-if="!showPassword"
-            class="mdi mdi-eye c-input--toggle-password__icon"
             key="open"
-          >
-          </span>
+            class="mdi mdi-eye c-input--toggle-password__icon"
+          ></span>
           <span
             v-else
-            class="mdi mdi-eye-off c-input--toggle-password__icon"
             key="close"
-          >
-          </span>
+            class="mdi mdi-eye-off c-input--toggle-password__icon"
+          ></span>
         </transition>
       </span>
-      <Button
+      <cButton
         v-if="type === 'search'"
         class="c-input--search-btn"
-        @click="$emit('click')"
         variant="text"
         rounded
+        @click="$emit('click')"
       >
         <span class="mdi mdi-magnify c-input--search-btn_icon"></span>
-      </Button>
+      </cButton>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, ref, computed } from "vue";
-import { useInputProps } from "./use/useProps";
-import { RefElement, ModelValue, AutoComplete } from "@/types/types";
+import { computed, defineComponent, ref, watch } from 'vue'
+import * as emailValidator from 'email-validator'
+import { useInputProps } from './use/useProps'
+import type { AutoComplete, ModelValue, RefElement } from '@/types/types'
 
-import * as emailValidator from "email-validator";
-import RegExp from "@/helpers/regExp";
+import RegExp from '@/helpers/regExp'
 
 export default defineComponent({
   inheritAttrs: false,
   props: useInputProps,
-  emits: ["invalid", "update:modelValue", "click"],
+  emits: ['invalid', 'update:modelValue', 'click'],
 
   setup(props, { emit }) {
-    const errorText = ref("");
+    const errorText = ref('')
 
     const model = computed({
       get: () => props.modelValue,
-      set: (newValue) => emit("update:modelValue", newValue),
-    });
+      set: newValue => emit('update:modelValue', newValue),
+    })
 
-    const inputRef = ref<RefElement>(null);
+    const inputRef = ref<RefElement>(null)
 
-    const showPassword = ref(false);
+    const showPassword = ref(false)
 
     const validator = (): void => {
-      if (props.isEmail && !emailValidator.validate(model.value as string)) {
-        errorText.value = "Введите корректный адрес.";
-      } else if (
-        props.isPhone &&
-        !String(model.value).match(RegExp.Phone) &&
-        model.value
-      ) {
-        errorText.value = "Введите корректный формат.";
-      } else if (props.min && String(model.value).length < props.min) {
-        errorText.value = `Введите не менее ${props.min} символов.`;
-      } else if (props.type === "password" && String(model.value).match(" ")) {
-        errorText.value = "Пробелы не допускаются.";
-      }
-    };
+      if (props.isEmail && !emailValidator.validate(model.value as string))
+        errorText.value = 'Введите корректный адрес.'
+      else if (
+        props.isPhone
+        && !String(model.value).match(RegExp.Phone)
+        && model.value
+      )
+        errorText.value = 'Введите корректный формат.'
+      else if (props.min && String(model.value).length < props.min)
+        errorText.value = `Введите не менее ${props.min} символов.`
+      else if (props.type === 'password' && String(model.value).match(' '))
+        errorText.value = 'Пробелы не допускаются.'
+    }
 
     const toggleInputType = (): void => {
-      if (inputRef.value?.type == "password") {
-        inputRef.value!.type = "text";
-        showPassword.value = true;
-      } else {
-        inputRef.value!.type = "password";
-        showPassword.value = false;
+      if (inputRef.value?.type === 'password') {
+        inputRef.value!.type = 'text'
+        showPassword.value = true
       }
-    };
+      else {
+        inputRef.value!.type = 'password'
+        showPassword.value = false
+      }
+    }
 
     watch(
       (): ModelValue => props.modelValue,
-      (): string => (errorText.value = "")
-    );
+      (): string => (errorText.value = ''),
+    )
 
     watch(
       (): string => errorText.value,
       (value): void => {
-        if (value) emit("invalid");
-      }
-    );
+        if (value)
+          emit('invalid')
+      },
+    )
 
     const isAutoComplete = computed((): AutoComplete => {
-      if (typeof props.autoComplete === "boolean") {
-        return props.autoComplete ? "on" : "off";
-      }
-      return "new-password";
-    });
+      if (typeof props.autoComplete === 'boolean')
+        return props.autoComplete ? 'on' : 'off'
+
+      return 'new-password'
+    })
 
     const labelAttachedToTop = computed(
-      () => props.modelValue || (errorText.value && !props.transparent)
-    );
+      () => props.modelValue || (errorText.value && !props.transparent),
+    )
 
     return {
       errorText,
@@ -158,9 +157,9 @@ export default defineComponent({
       labelAttachedToTop,
       validator,
       toggleInputType,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

@@ -4,8 +4,12 @@
       <div class="configuration-tab__content-navigation-filter">
         <Card table>
           <template #table-header>
-            <th class="card-info__title">Страницы</th>
-            <th class="card-info__title center">Действие</th>
+            <th class="card-info__title">
+              Страницы
+            </th>
+            <th class="card-info__title center">
+              Действие
+            </th>
           </template>
           <template #table-body>
             <tr
@@ -24,22 +28,22 @@
                 ></span>
               </td>
               <td class="card-content-info__item--actions">
-                <Checkbox
-                  switchBox
+                <cCheckbox
+                  v-model="navigate.showed"
+                  switch-box
                   :disabled="navigate.alwaysDisplay"
                   :name="navigate.title"
                   label="Показать"
-                  secondaryLabel="Скрыть"
-                  v-model="navigate.showed"
+                  secondary-label="Скрыть"
                 />
               </td>
             </tr>
           </template>
           <template #custom>
-            <Button
-              @click="saveNavigationList"
+            <cButton
               class="card-info--save-changes"
               title="Сохранить"
+              @click="saveNavigationList"
             />
           </template>
         </Card>
@@ -49,22 +53,24 @@
           <template #header>
             <h2 class="card-info__title--settings-avatar">
               Изменить цвет фона профиля
-              <Button
+              <cButton
                 size="small"
-                @click="saveBackgroundAvatar"
                 title="Сохранить"
+                @click="saveBackgroundAvatar"
               />
             </h2>
           </template>
           <template #content>
             <div class="card-info__change-background-avatar">
               <div class="card-info__change-background-avatar--result">
-                <h5 class="card-info__avatar-title">Результат:</h5>
+                <h5 class="card-info__avatar-title">
+                  Результат:
+                </h5>
                 <Avatar
                   :size="80"
                   :avatar="avatarParams"
-                  :firstName="userName.firstName"
-                  :lastName="userName.lastName"
+                  :first-name="userName.firstName"
+                  :last-name="userName.lastName"
                 />
               </div>
               <div class="card-info__change-background-avatar--params">
@@ -81,7 +87,9 @@
       <div class="configuration-tab__content-additional-settings">
         <Card>
           <template #header>
-            <h2 class="card-info__title">Дополнительные настройки</h2>
+            <h2 class="card-info__title">
+              Дополнительные настройки
+            </h2>
           </template>
           <template #content>
             <div class="card-info__additional-settings">
@@ -95,45 +103,45 @@
                 <h4 class="card-info__additional-settings-title">
                   Статус подтверждения адреса
                 </h4>
-                <Checkbox
-                  switchBox
+                <cCheckbox
+                  v-model="additionalParams.showEmailConfirm"
+                  switch-box
                   name="ToggleStatus"
                   label="Показать"
-                  secondaryLabel="Скрыть"
-                  v-model="additionalParams.showEmailConfirm"
+                  secondary-label="Скрыть"
                 />
               </div>
               <div class="card-info__additional-settings-item">
                 <h4 class="card-info__additional-settings-title">
                   Дата и время
                 </h4>
-                <Checkbox
-                  switchBox
+                <cCheckbox
+                  v-model="additionalParams.showCurrentDate"
+                  switch-box
                   name="ToggleTime"
                   label="Показать"
-                  secondaryLabel="Скрыть"
-                  v-model="additionalParams.showCurrentDate"
+                  secondary-label="Скрыть"
                 />
               </div>
               <div class="card-info__additional-settings-item">
                 <h4 class="card-info__additional-settings-title">
                   Кнопка "Удалить аккаунт"
                 </h4>
-                <Checkbox
-                  switchBox
+                <cCheckbox
+                  v-model="additionalParams.showDeleteAccountButton"
+                  switch-box
                   name="ToggleDeleteAccount"
                   label="Показать"
-                  secondaryLabel="Скрыть"
-                  v-model="additionalParams.showDeleteAccountButton"
+                  secondary-label="Скрыть"
                 />
               </div>
             </div>
           </template>
           <template #custom>
-            <Button
-              @click="saveAdditional"
+            <cButton
               class="card-info--save-changes"
               title="Сохранить"
+              @click="saveAdditional"
             />
           </template>
         </Card>
@@ -143,12 +151,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue'
 
-import Card from "@/container/Card.vue";
-import Avatar from "@/components/user/Avatar.vue";
-import ColorPicker from "@/components/dialogs/SelectColor.vue";
-import useConfiguration from "@/composables/useConfiguration";
+import Card from '@/container/Card.vue'
+import Avatar from '@/components/user/Avatar.vue'
+import ColorPicker from '@/components/dialogs/SelectColor.vue'
+import useConfiguration from '@/composables/useConfiguration'
 
 export default defineComponent({
   components: {
@@ -157,9 +165,9 @@ export default defineComponent({
     ColorPicker,
   },
   setup() {
-    return useConfiguration();
+    return useConfiguration()
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
@@ -174,6 +182,10 @@ export default defineComponent({
       grid-area: 1/1/3/1;
     }
 
+    .c-button {
+      text-transform: none;
+      color: $color-white1;
+    }
     .card {
       width: 100%;
       height: 100%;
@@ -193,8 +205,6 @@ export default defineComponent({
           margin: auto 10px 10px auto;
           display: block;
           min-width: 40%;
-          color: $color-white1;
-          text-transform: none;
         }
         &__change-background-avatar {
           display: flex;
@@ -252,6 +262,11 @@ export default defineComponent({
       grid-area: 2/2/3/3;
       .card {
         width: 100%;
+        &-info {
+          &__additional-settings-title {
+            font-weight: 500;
+          }
+        }
       }
     }
   }

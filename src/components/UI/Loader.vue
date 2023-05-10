@@ -18,7 +18,8 @@
 </template>
 
 <script lang="ts">
-import { CSSProperties, defineComponent, reactive } from "vue";
+import type { CSSProperties } from 'vue'
+import { defineComponent, reactive } from 'vue'
 
 export default defineComponent({
   props: {
@@ -35,13 +36,13 @@ export default defineComponent({
     const loaderSize: CSSProperties = reactive({
       width: `${props.size}px`,
       height: `${props.size}px`,
-    });
+    })
 
     return {
       loaderSize,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

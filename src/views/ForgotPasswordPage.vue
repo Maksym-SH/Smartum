@@ -2,27 +2,29 @@
   <div class="forgot-page">
     <div class="forgot-page__window">
       <div class="forgot-page__window-header">
-        <h2 class="forgot-page__window-header__title">Восстановление пароля</h2>
+        <h2 class="forgot-page__window-header__title">
+          Восстановление пароля
+        </h2>
         <p class="forgot-page__window-header__description">
           Введите электронный адрес, который вы использовали при регистрации а
           затем мы отправим вам письмо с инструкциями.
         </p>
       </div>
       <form class="forgot-page__window-content" @submit.prevent="submitForm">
-        <Input
+        <cInput
+          v-model="email"
           label="Введите адрес электронной почты"
           name="userEmail"
-          v-model="email"
-          isEmail
+          is-email
           required
           light-theme
           @invalid="errorEmail = true"
         />
-        <Button class="submit-form" title="Отправить" type="submit" />
+        <cButton class="submit-form" title="Отправить" type="submit" />
       </form>
       <div class="forgot-page__window-link">
         <a class="forgot-page__window-link--go-back" @click="goBack">
-          <v-icon icon="mdi mdi-arrow-left"></v-icon>
+          <v-icon icon="mdi mdi-arrow-left" />
           Вернуться назад
         </a>
       </div>
@@ -31,43 +33,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, ref, watch } from 'vue'
 
-import firebaseReset from "@/helpers/firebase/firebaseReset";
-import router from "@/router";
+import firebaseReset from '@/helpers/firebase/firebaseReset'
+import router from '@/router'
 
 export default defineComponent({
   setup() {
-    const errorEmail = ref(false);
+    const errorEmail = ref(false)
 
-    const email = ref("");
+    const email = ref('')
 
     const submitForm = (): void => {
-      if (errorEmail.value) return;
-      else firebaseReset(email.value);
-    };
+      if (!errorEmail.value)
+        firebaseReset(email.value)
+    }
 
     const goBack = () => {
-      if (window.history.length >= 2) {
-        router.go(-1); // Navigate to previous page.
-      } else {
-        router.push({ name: "Profile" });
-      }
-    };
+      if (window.history.length >= 2)
+        router.go(-1) // Navigate to previous page.
+      else
+        router.push({ name: 'Profile' })
+    }
 
     watch(
       (): string => email.value,
-      (): boolean => (errorEmail.value = false)
-    );
+      (): boolean => (errorEmail.value = false),
+    )
 
     return {
       email,
       errorEmail,
       submitForm,
       goBack,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
@@ -120,7 +121,7 @@ export default defineComponent({
       }
     }
   }
-  @include tablet(max) {
+  @include mobile(max) {
     height: 100%;
     min-height: 300px;
     &__window {
@@ -129,7 +130,7 @@ export default defineComponent({
       height: 100%;
       min-width: 100%;
       border-radius: 0;
-      padding: 15px;
+      padding: 15px 15px 80px 15px;
       margin: 0;
       min-height: 300px;
       &-header {
@@ -141,10 +142,10 @@ export default defineComponent({
           line-height: 15px;
         }
       }
-      &_link {
-        margin-top: 0;
+      &-link {
+        margin-top: auto;
         &--go-back {
-          font-size: 14px;
+          font-size: 16px;
         }
       }
       &-content {

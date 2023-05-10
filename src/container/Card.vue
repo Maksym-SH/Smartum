@@ -1,28 +1,28 @@
 <template>
   <div class="card">
     <template v-if="!table">
-      <header class="card__header" v-if="$slots.header">
-        <slot name="header" />
+      <header v-if="$slots.header" class="card__header">
+        <slot name="header"></slot>
       </header>
-      <div class="card__content" v-if="$slots.content">
-        <slot name="content" />
+      <div v-if="$slots.content" class="card__content">
+        <slot name="content"></slot>
       </div>
-      <footer class="card__footer" v-if="$slots.footer">
-        <slot name="footer" />
+      <footer v-if="$slots.footer" class="card__footer">
+        <slot name="footer"></slot>
       </footer>
     </template>
     <table v-else class="card__table">
       <thead class="card__table-header">
         <tr>
-          <slot name="table-header" />
+          <slot name="table-header"></slot>
         </tr>
       </thead>
 
-      <slot name="table-body" v-if="$slots['table-body']"></slot>
+      <slot v-if="$slots['table-body']" name="table-body"></slot>
 
       <tfoot
-        class="card__table-footer"
         v-if="$slots['table-body'] || $slots['table-footer']"
+        class="card__table-footer"
       >
         <slot name="table-footer-titles"></slot>
         <slot name="table-footer"></slot>
@@ -33,21 +33,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { Variant } from "@/types/types";
+import type { PropType } from 'vue'
+import { defineComponent } from 'vue'
+import type { Variant } from '@/types/types'
 
 export default defineComponent({
   props: {
     variant: {
       type: String as PropType<Variant>,
-      default: "info",
+      default: 'info',
     },
     table: {
       type: Boolean,
       default: false,
     },
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
@@ -78,6 +79,7 @@ export default defineComponent({
         color: var(--color-text);
         text-align: start;
         padding: 15px 30px;
+        font-family: $RobotoBD;
       }
     }
     &-footer {

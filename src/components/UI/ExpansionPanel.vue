@@ -2,7 +2,7 @@
   <v-expansion-panels :variant="variant">
     <v-expansion-panel>
       <v-expansion-panel-title>
-        <span v-if="icon" class="icon" :class="['mdi', `mdi-${icon}`]"></span>
+        <span v-if="icon" class="icon mdi" :class="[`mdi-${icon}`]"></span>
         <span class="text" :class="{ 'no-icon': !icon }">{{ name }}</span>
       </v-expansion-panel-title>
       <template v-if="showExpansionPanelContent">
@@ -21,21 +21,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useExpansionPanelProps } from "./use/useProps";
+import { computed, defineComponent } from 'vue'
+import { useExpansionPanelProps } from './use/useProps'
 
 export default defineComponent({
   props: useExpansionPanelProps,
   setup(props) {
     const showExpansionPanelContent = computed(
-      (): number => props.content.length
-    );
+      (): number => props.content.length,
+    )
 
     return {
       showExpansionPanelContent,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

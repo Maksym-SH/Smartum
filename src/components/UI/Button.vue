@@ -7,24 +7,24 @@
     :rounded="rounded"
     :size="size"
   >
-    <v-icon v-if="icon" :icon="icon"></v-icon>
+    <v-icon v-if="icon" :icon="icon" />
     <slot>{{ title }}</slot>
   </v-btn>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { useButtonProps } from "./use/useProps";
-import { Colors } from "@/types/enums";
+import { defineComponent } from 'vue'
+import { useButtonProps } from './use/useProps'
+import { Colors } from '@/types/enums'
 
 export default defineComponent({
   props: useButtonProps,
   setup() {
     return {
       Colors,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

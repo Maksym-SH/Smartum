@@ -1,130 +1,130 @@
-import { AsideNavigationItems, ModalContentType } from "@/types/types";
-import { IAsideNavigationItem } from "@/types/interfaces";
-import { Links } from "@/types/enums";
-import { notify } from "@kyvg/vue3-notification";
+import { notify } from '@kyvg/vue3-notification'
+import useStores from './useStores'
+import type { AsideNavigationItems, ModalContentType } from '@/types/types'
+import type { IAsideNavigationItem } from '@/types/interfaces'
+import { Links } from '@/types/enums'
 
-import router from "@/router";
-import useStores from "./useStores";
+import router from '@/router'
 
 export default function Navigation(): AsideNavigationItems {
-  const { commonStore } = useStores();
+  const { commonStore } = useStores()
 
   const DashboardTab: IAsideNavigationItem = {
     id: 0,
     showed: true,
     alwaysDisplay: true,
-    title: "Рабочие доски",
-    icon: "view-dashboard",
+    title: 'Рабочие доски',
+    icon: 'view-dashboard',
     callback() {
-      router.push({ name: "Dashboard" });
+      router.push({ name: 'Dashboard' })
     },
-  };
+  }
 
   const ConfigurationTab: IAsideNavigationItem = {
     id: 2,
     showed: true,
     alwaysDisplay: true,
-    title: "Конфигурация",
-    icon: "tune-vertical-variant",
+    title: 'Конфигурация',
+    icon: 'tune-vertical-variant',
     callback() {
-      router.push({ name: "Configuration" });
+      router.push({ name: 'Configuration' })
     },
-  };
+  }
 
   const NotificationTab: IAsideNavigationItem = {
     id: 1,
     showed: true,
-    title: "Уведомления",
-    icon: "bell",
+    title: 'Уведомления',
+    icon: 'bell',
     notify: true,
     callback() {
-      router.push({ name: "Notifications" });
+      router.push({ name: 'Notifications' })
     },
-  };
+  }
 
   const ReportsTab: IAsideNavigationItem = {
     id: 3,
     showed: true,
-    title: "Отчёты",
-    icon: "chart-timeline-variant",
+    title: 'Отчёты',
+    icon: 'chart-timeline-variant',
     panels: [
       {
-        title: "Отчёт об использовании",
+        title: 'Отчёт об использовании',
         callback() {
           notify({
-            title: "Страница в разработке!",
-            type: "success",
-          });
+            title: 'Страница в разработке!',
+            type: 'success',
+          })
         },
       },
       {
-        title: "Отчёт приложения",
+        title: 'Отчёт приложения',
         callback() {
           notify({
-            title: "Страница в разработке!",
-            type: "success",
-          });
+            title: 'Страница в разработке!',
+            type: 'success',
+          })
         },
       },
     ],
-  };
+  }
 
   const StatisticsTab: IAsideNavigationItem = {
     id: 4,
     showed: true,
-    title: "Статистика",
-    icon: "chart-bar",
+    title: 'Статистика',
+    icon: 'chart-bar',
     callback(): void {
       notify({
-        title: "Страница в разработке!",
-        type: "success",
-      });
+        title: 'Страница в разработке!',
+        type: 'success',
+      })
     },
-  };
+  }
 
   const AuthorTab: IAsideNavigationItem = {
     id: 5,
     showed: true,
-    title: "Связь с автором",
-    icon: "message-bulleted",
+    title: 'Связь с автором',
+    icon: 'message-bulleted',
     panels: [
       {
-        title: "GitHub",
+        title: 'GitHub',
         callback(): void {
-          window.open(Links.GitHubAccount, "_blank");
+          window.open(Links.GitHubAccount, '_blank')
         },
       },
       {
-        title: "Telegram",
+        title: 'Telegram',
         callback(): void {
-          window.open(Links.TelegramAccount, "_blank");
+          window.open(Links.TelegramAccount, '_blank')
         },
       },
     ],
-  };
+  }
 
   const ConditionUseTab: IAsideNavigationItem = {
     id: 6,
     showed: true,
-    title: "Об использовании",
-    icon: "shield-alert",
+    title: 'Об использовании',
+    icon: 'shield-alert',
     panels: [
       {
-        title: "Пользовательское соглашение",
+        title: 'Пользовательское соглашение',
         callback(): void {
-          const termsOfUse: ModalContentType = "termsOfUse";
-          commonStore.setModalContentType(termsOfUse);
+          const termsOfUse: ModalContentType = 'termsOfUse'
+          commonStore.setModalContentType(termsOfUse)
         },
       },
       {
-        title: "Конфидециальность",
+        title: 'Конфидециальность',
         callback(): void {
-          const confidentiality: ModalContentType = "confidentiality";
-          commonStore.setModalContentType(confidentiality);
+          const confidentiality: ModalContentType = 'confidentiality'
+          commonStore.setModalContentType(confidentiality)
         },
       },
     ],
-  };
+  }
 
   return [
     DashboardTab,
@@ -134,5 +134,5 @@ export default function Navigation(): AsideNavigationItems {
     ReportsTab,
     ConditionUseTab,
     AuthorTab,
-  ];
+  ]
 }

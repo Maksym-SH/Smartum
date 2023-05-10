@@ -1,12 +1,13 @@
-import { PropType } from "vue";
-import { IPictureParams } from "@/types/interfaces";
+import type { PropType } from 'vue'
+import type { IPictureParams } from '@/types/interfaces'
+
 // Avatar.vue
 export const useAvatarProps = {
   avatar: {
     type: Object as PropType<IPictureParams>,
     default: {
-      url: "",
-      bgAvatar: "",
+      url: '',
+      bgAvatar: '',
     },
   },
   online: {
@@ -27,13 +28,13 @@ export const useAvatarProps = {
   },
   firstName: {
     type: String,
-    default: "",
+    default: '',
   },
   lastName: {
     type: String,
-    default: "",
+    default: '',
   },
-};
+}
 
 // Container.vue
 export const useContainerProps = {
@@ -43,16 +44,16 @@ export const useContainerProps = {
   },
   lastName: {
     type: String,
-    default: "",
+    default: '',
   },
   avatar: {
     type: Object as PropType<IPictureParams>,
     default: {
-      url: "",
-      bgAvatar: "",
+      url: '',
+      bgAvatar: '',
     },
   },
-};
+}
 // Info.vue
 export const useInfoProps = {
   firstName: {
@@ -61,6 +62,6 @@ export const useInfoProps = {
   },
   lastName: {
     type: String,
-    default: "",
+    default: '',
   },
-};
+}

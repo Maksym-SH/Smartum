@@ -1,15 +1,15 @@
 <template>
   <div class="home-page">
-    <c-aside
+    <CAside
       v-model:minimizeAside="minimizeAside"
       :notification-count="notificationsSize"
     />
     <div
       class="home-page__wrapper"
-      @click.capture="toggleAsideVisible(false, true)"
       :class="{ 'minimize-info': minimizeAside }"
+      @click.capture="toggleAsideVisible(false, true)"
     >
-      <c-header class="home-page__header" />
+      <CHeader class="home-page__header" />
       <div class="home-page__tab-info">
         <h1 class="page-title">
           {{ tabName.ru }}
@@ -22,12 +22,12 @@
         <router-view v-slot="{ Component }">
           <transition name="router-nav" mode="out-in">
             <component
-              v-if="showTabContent"
               :is="Component"
+              v-if="showTabContent"
               :notification-list="notificationList"
-              @readNotification="notifyAction($event, 'readNotification')"
-              @deleteNotification="notifyAction($event, 'deleteNotification')"
-              @clearAllNotifications="clearAll"
+              @read-notification="notifyAction($event, 'readNotification')"
+              @delete-notification="notifyAction($event, 'deleteNotification')"
+              @clear-all-notifications="clearAll"
             />
           </transition>
         </router-view>
@@ -37,82 +37,82 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, reactive, ref, computed } from "vue";
-import { useRoute } from "vue-router";
-import { Layout } from "@/types/enums";
-import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
-import { ILanguage, IMetaName } from "@/types/interfaces";
-import { RouterMeta, DynamicDescription } from "@/types/types";
+import { computed, defineComponent, reactive, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { Layout } from '@/types/enums'
+import { ObjectHasValues, ObjectNotEmpty } from '@/helpers/methods'
+import type { ILanguage, IMetaName } from '@/types/interfaces'
+import type { DynamicDescription, RouterMeta } from '@/types/types'
 
-import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
-import useNotifications from "@/composables/useNotifications";
-import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
-import useStores from "@/composables/useStores";
-import cHeader from "@/container/Header.vue";
-import cAside from "@/container/Aside.vue";
+import * as DescriptionJSON from '@/helpers/content/TabsInfo.json'
+import useNotifications from '@/composables/useNotifications'
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
+import useStores from '@/composables/useStores'
+import cHeader from '@/container/Header.vue'
+import cAside from '@/container/Aside.vue'
 
 export default defineComponent({
   components: {
-    cHeader,
-    cAside,
+    CHeader: cHeader,
+    CAside: cAside,
   },
   setup() {
-    const { commonStore, userStore } = useStores();
+    const { commonStore, userStore } = useStores()
 
-    const router = useRoute();
+    const router = useRoute()
 
-    const { currentUser } = useCurrentUserInfo();
+    const { currentUser } = useCurrentUserInfo()
 
-    const { notificationsSize, notificationList, notifyAction, clearAll } =
-      useNotifications();
+    const { notificationsSize, notificationList, notifyAction, clearAll }
+      = useNotifications()
 
-    const tabName: ILanguage = reactive({ eng: "", ru: "" });
+    const tabName: ILanguage = reactive({ eng: '', ru: '' })
 
-    const Description: DynamicDescription = DescriptionJSON;
+    const Description: DynamicDescription = DescriptionJSON
 
-    const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
+    const tabDescription: ILanguage = reactive({ eng: '', ru: '' })
 
     const currentUserPresent = computed((): boolean =>
-      ObjectNotEmpty(currentUser)
-    );
+      ObjectNotEmpty(currentUser),
+    )
     const additionalUserInfoPresent = computed((): boolean =>
-      ObjectHasValues(userStore.userInfo)
-    );
+      ObjectHasValues(userStore.userInfo),
+    )
     const showTabContent = computed(
-      (): boolean => currentUserPresent.value && additionalUserInfoPresent.value
-    );
+      (): boolean => currentUserPresent.value && additionalUserInfoPresent.value,
+    )
 
     // Aside
-    const minimizeAside = ref(true);
+    const minimizeAside = ref(true)
     const toggleAsideVisible = (
       value: boolean,
-      capture: boolean = false
+      capture = false,
     ): void => {
-      if (!capture) {
-        minimizeAside.value = value;
-      } else if (window.innerWidth <= Layout.Laptop) {
-        minimizeAside.value = capture;
-      }
-    };
+      if (!capture)
+        minimizeAside.value = value
+      else if (window.innerWidth <= Layout.Laptop)
+        minimizeAside.value = capture
+    }
 
     watch(
       (): IMetaName | RouterMeta => router.meta,
       (meta): void => {
-        const metaName: ILanguage = meta.tabName as ILanguage;
+        const metaName: ILanguage = meta.tabName as ILanguage
 
         if (metaName) {
-          tabName.eng = metaName.eng;
-          tabName.ru = metaName.ru;
+          tabName.eng = metaName.eng
+          tabName.ru = metaName.ru
 
-          tabDescription.ru = Description[metaName.eng].ru;
-          tabDescription.eng = Description[metaName.eng].eng;
-        } else {
-          tabName.ru = tabName.eng = "";
-          tabDescription.eng = tabDescription.ru = "";
+          tabDescription.ru = Description[metaName.eng].ru
+          tabDescription.eng = Description[metaName.eng].eng
+        }
+        else {
+          tabName.ru = tabName.eng = ''
+          tabDescription.eng = tabDescription.ru = ''
         }
       },
-      { immediate: true }
-    );
+      { immediate: true },
+    )
 
     return {
       tabName,
@@ -125,9 +125,9 @@ export default defineComponent({
       clearAll,
       notifyAction,
       showLoading: computed(() => commonStore.loadingStatus),
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

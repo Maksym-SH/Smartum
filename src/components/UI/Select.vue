@@ -1,6 +1,6 @@
 <template>
   <div class="c-select" :class="{ active: selectActive }">
-    <Button
+    <cButton
       rounded
       variant="text"
       size="small"
@@ -14,12 +14,12 @@
           alt=""
         />
       </slot>
-    </Button>
+    </cButton>
     <transition name="toggle-selectActive" mode="in-out">
-      <div class="c-select__picker" v-if="selectActive">
+      <div v-if="selectActive" class="c-select__picker">
         <span class="c-select__picker--caret"></span>
         <template v-for="item in items" :key="item.title">
-          <Button
+          <cButton
             v-if="item.displaying"
             :class="{ 'no-icon': !item.icon }"
             :color="item.color"
@@ -36,9 +36,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
-import { SelectElements, Position } from "@/types/types";
-import { Colors } from "@/types/enums";
+import type { PropType } from 'vue'
+import { defineComponent, ref } from 'vue'
+import type { Position, SelectElements } from '@/types/types'
+import { Colors } from '@/types/enums'
 
 export default defineComponent({
   props: {
@@ -47,25 +48,26 @@ export default defineComponent({
       default: () => [],
     },
     location: {
-      //ToDo
+      // ToDo
       type: String as PropType<Position>,
-      default: "end",
+      default: 'end',
     },
   },
+  emits: ['selected'],
   setup() {
-    const selectActive = ref(false);
+    const selectActive = ref(false)
 
     const togglePicker = (): void => {
-      selectActive.value = !selectActive.value;
-    };
+      selectActive.value = !selectActive.value
+    }
 
     return {
       selectActive,
       togglePicker,
       Colors,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

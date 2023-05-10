@@ -1,9 +1,9 @@
 <template>
   <v-dialog
+    v-model="dialog"
     class="modal"
     persistent
     fullscreen
-    v-model="dialog"
     transition="dialog-bottom-transition"
   >
     <v-card>
@@ -11,18 +11,20 @@
         <v-btn icon dark @click="closeModal">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-toolbar-title class="modal__header-title">{{
-          modalContent.title
-        }}</v-toolbar-title>
+        <v-toolbar-title class="modal__header-title">
+          {{
+            modalContent.title
+          }}
+        </v-toolbar-title>
       </v-toolbar>
       <v-list>
         <v-list-subheader class="modal__header">
-          <Checkbox
-            switchBox
+          <cCheckbox
+            v-model="switchLanguage"
+            switch-box
             name="language"
             label="English"
-            secondaryLabel="Русский"
-            v-model="switchLanguage"
+            secondary-label="Русский"
           />
         </v-list-subheader>
         <div class="modal__content" v-html="modalContent.text"></div>
@@ -32,17 +34,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType, computed, watch } from "vue";
-import { IModalContent } from "@/types/interfaces";
-import {
-  ModalContentType,
+import type { PropType } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
+import type { IModalContent } from '@/types/interfaces'
+import type {
   ModalContentLanguage,
+  ModalContentType,
   ModalLanguageType,
-} from "@/types/types";
+} from '@/types/types'
 
-import TermsOfUse from "@/helpers/content/TermsOfUse.json";
-import Confidentially from "@/helpers/content/Сonfidentiality.json";
-import useStores from "@/composables/useStores";
+import TermsOfUse from '@/helpers/content/TermsOfUse.json'
+import Confidentially from '@/helpers/content/Сonfidentiality.json'
+import useStores from '@/composables/useStores'
 
 export default defineComponent({
   props: {
@@ -52,43 +55,44 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { commonStore } = useStores();
+    const { commonStore } = useStores()
 
-    const dialog = ref(true);
-    const switchLanguage = ref(false); // "Русский" by default.
+    const dialog = ref(true)
+    const switchLanguage = ref(false) // "Русский" by default.
 
     const currentContentType = computed((): IModalContent => {
-      if (props.contentType === "termsOfUse") {
-        return TermsOfUse;
-      }
-      return Confidentially;
-    });
+      if (props.contentType === 'termsOfUse')
+        return TermsOfUse
+
+      return Confidentially
+    })
 
     const closeModal = (): void => {
-      commonStore.setModalContentType("");
-    };
+      commonStore.setModalContentType('')
+    }
 
     watch(dialog, (value) => {
-      if (!value) commonStore.setModalContentType("");
-    });
+      if (!value)
+        commonStore.setModalContentType('')
+    })
 
     const currentLanguage = computed((): ModalLanguageType => {
-      return !switchLanguage.value ? "ru" : "eng"; // "Русский" / "English"
-    });
+      return !switchLanguage.value ? 'ru' : 'eng' // "Русский" / "English"
+    })
 
     const modalContent = computed(
       (): ModalContentLanguage =>
-        currentContentType.value[currentLanguage.value]
-    );
+        currentContentType.value[currentLanguage.value],
+    )
 
     return {
       dialog,
       modalContent,
       switchLanguage,
       closeModal,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

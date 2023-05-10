@@ -1,9 +1,9 @@
 <template>
   <div class="notifications-tab" :class="{ empty: !showList }">
     <div v-if="showList" class="notifications-tab__filters">
-      <Button :color="Colors.Info" variant="flat" @click="clearAll">
+      <cButton :color="Colors.Info" variant="flat" @click="clearAll">
         Очистить все
-      </Button>
+      </cButton>
     </div>
     <transition-group
       v-if="showList"
@@ -16,8 +16,8 @@
         v-for="notify in notificationList"
         :key="notify.id"
         :params="notify"
-        @readNotification="notifyAction($event, 'readNotification')"
-        @deleteNotification="notifyAction($event, 'deleteNotification')"
+        @read-notification="notifyAction($event, 'readNotification')"
+        @delete-notification="notifyAction($event, 'deleteNotification')"
       />
     </transition-group>
     <transition name="single-content">
@@ -31,17 +31,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from "vue";
-import { NotifyAction } from "@/types/types";
-import { IServerDate, INotification } from "@/types/interfaces";
-import { Colors } from "@/types/enums";
+import type { PropType } from 'vue'
+import { computed, defineComponent } from 'vue'
+import type { NotifyAction } from '@/types/types'
+import type { INotification, IServerDate } from '@/types/interfaces'
+import { Colors } from '@/types/enums'
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
 
-import useStores from "@/composables/useStores";
-import NotificationItem from "@/components/notification/NotificationItem.vue";
-import NotificationEmptyList from "@/components/UI/EmptyList.vue";
+import useStores from '@/composables/useStores'
+import NotificationItem from '@/components/notification/NotificationItem.vue'
+import NotificationEmptyList from '@/components/UI/EmptyList.vue'
+import { ObjectNotEmpty } from '@/helpers/methods'
 
 export default defineComponent({
-  emits: ["readNotification", "deleteNotification", "clearAllNotifications"],
   components: {
     Notification: NotificationItem,
     EmptyList: NotificationEmptyList,
@@ -52,24 +54,28 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['readNotification', 'deleteNotification', 'clearAllNotifications'],
   setup(props, { emit }) {
-    const { commonStore } = useStores();
+    const { commonStore } = useStores()
 
-    const showList = computed((): boolean => props.notificationList.length > 0);
-    const showLoading = computed((): boolean => commonStore.loadingStatus);
+    const { currentUser } = useCurrentUserInfo()
+
+    const showList = computed((): boolean => {
+      return props.notificationList.length > 0 && ObjectNotEmpty(currentUser.value)
+    })
+    const showLoading = computed((): boolean => commonStore.loadingStatus)
 
     const notifyAction = (id: number, action: NotifyAction): void => {
       const foundNotification = props.notificationList.find(
-        (notify) => notify.id === id
-      );
-      if (foundNotification) {
-        emit(action, id); // Delete or read notification by it`s id.
-      }
-    };
+        notify => notify.id === id,
+      )
+      if (foundNotification)
+        emit(action, id) // Delete or read notification by it`s id.
+    }
 
     const clearAll = (): void => {
-      emit("clearAllNotifications");
-    };
+      emit('clearAllNotifications')
+    }
 
     return {
       clearAll,
@@ -77,9 +83,9 @@ export default defineComponent({
       showList,
       showLoading,
       Colors,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

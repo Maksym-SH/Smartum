@@ -1,12 +1,12 @@
 <template>
   <v-dialog
+    v-model="showDialog"
     transition="dialog-bottom-transition"
     width="auto"
-    v-model="showDialog"
   >
-    <template v-slot:activator="{ props }">
+    <template #activator="{ props }">
       <div class="color-picker">
-        <Button
+        <cButton
           v-bind="props"
           size="small"
           :color="modelValue"
@@ -19,7 +19,7 @@
             alt=""
           />
           <small class="color-picker__button-title"> Выбрать цвет </small>
-        </Button>
+        </cButton>
         <span class="color-picker--generate" @click="generateColor">
           <span class="mdi mdi-refresh"></span>
           Сгенерировать ({{ colorPickParams.target }})
@@ -44,20 +44,20 @@
               :background="color"
               :width="80"
               :height="40"
-              @select="selectedColor = $event"
               :class="{ active: selectedColor === color }"
+              @select="selectedColor = $event"
             />
           </div>
         </v-card-text>
         <v-card-actions class="v-card__footer">
-          <Button
+          <cButton
             class="v-card__footer--cancel"
             variant="text"
             @click="closeDialog"
           >
             Отмена
-          </Button>
-          <Button
+          </cButton>
+          <cButton
             class="v-card__footer--select-color"
             variant="text"
             type="submit"
@@ -65,7 +65,7 @@
             @click="changeColor()"
           >
             Применить
-          </Button>
+          </cButton>
         </v-card-actions>
       </v-card>
     </template>
@@ -73,20 +73,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, computed } from "vue";
-import { Theme } from "@/types/types";
-import { LightColors, DarkColors } from "@/helpers/colors";
-import { Colors } from "@/types/enums";
-import { IColorPickerParams } from "@/types/interfaces";
-import { GenerateColorHexFormat } from "@/helpers/methods";
-
-import BackgroundItem from "../UI/BackgroundItem.vue";
+import type { PropType } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
+import BackgroundItem from '../UI/BackgroundItem.vue'
+import type { Theme } from '@/types/types'
+import { DarkColors, LightColors } from '@/helpers/colors'
+import { Colors } from '@/types/enums'
+import type { IColorPickerParams } from '@/types/interfaces'
+import { GenerateColorHexFormat } from '@/helpers/methods'
 
 export default defineComponent({
   components: {
     BackgroundItem,
   },
-  emits: ["selectColor", "update:modelValue"],
   props: {
     modelValue: {
       type: String,
@@ -97,45 +96,46 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['selectColor', 'update:modelValue'],
   setup(props, { emit }) {
-    const showDialog = ref(false);
+    const showDialog = ref(false)
 
     const colorPickParams = computed((): IColorPickerParams => {
-      if (props.theme === "dark") {
+      if (props.theme === 'dark') {
         return {
           textColor: Colors.White,
-          target: "Тёмный",
-        };
+          target: 'Тёмный',
+        }
       }
       // Light
       return {
         textColor: Colors.Black,
-        target: "Светлый",
-      };
-    });
+        target: 'Светлый',
+      }
+    })
 
-    const colorsCollection =
-      props.theme === "dark" ? DarkColors() : LightColors();
+    const colorsCollection
+      = props.theme === 'dark' ? DarkColors() : LightColors()
 
-    const selectedColor = ref<string>("");
-
-    const changeColor = (generatedColor?: string) => {
-      const colorToSave = generatedColor ? generatedColor : selectedColor.value;
-      emit("update:modelValue", colorToSave);
-
-      closeDialog();
-    };
+    const selectedColor = ref<string>('')
 
     const closeDialog = () => {
-      selectedColor.value = ""; // Clear selected color after close.
-      showDialog.value = false;
-    };
+      selectedColor.value = '' // Clear selected color after close.
+      showDialog.value = false
+    }
+
+    const changeColor = (generatedColor?: string) => {
+      const colorToSave = generatedColor || selectedColor.value
+      emit('update:modelValue', colorToSave)
+
+      closeDialog()
+    }
 
     const generateColor = () => {
-      const generatedColor = GenerateColorHexFormat(props.theme);
+      const generatedColor = GenerateColorHexFormat(props.theme)
 
-      changeColor(generatedColor);
-    };
+      changeColor(generatedColor)
+    }
 
     return {
       showDialog,
@@ -146,9 +146,9 @@ export default defineComponent({
       generateColor,
       changeColor,
       closeDialog,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

@@ -13,7 +13,9 @@
           alt="Tasks"
         />
 
-        <h3 class="sign-up__window--welcome-title">Добро пожаловать!</h3>
+        <h3 class="sign-up__window--welcome-title">
+          Добро пожаловать!
+        </h3>
         <div class="sign-up__window-content">
           <h4 class="sign-up__window--welcome-description">
             Заполните форму чтобы создать аккаунт.
@@ -28,36 +30,38 @@
         </div>
       </div>
       <div class="sign-up__window_content content">
-        <h2 class="sign-up__window_content-title">Создание аккаунта</h2>
-        <form @submit.prevent="submitForm" class="sign-up__window-form-inputs">
-          <Input
+        <h2 class="sign-up__window_content-title">
+          Создание аккаунта
+        </h2>
+        <form class="sign-up__window-form-inputs" @submit.prevent="submitForm">
+          <cInput
             v-model.trim="userData.firstName"
             required
             label="Имя"
             name="userFirstName"
-            :maxLength="Length.Maximum"
+            :max-length="Length.Maximum"
             :min="Length.Text"
             transparent
           />
-          <Input
+          <cInput
             v-model.trim="userData.lastName"
             :min="userData.lastName ? Length.Text : Length.None"
             name="userLastName"
-            :maxLength="Length.Maximum"
+            :max-length="Length.Maximum"
             label="Фамилия"
             transparent
           />
-          <Input
+          <cInput
             v-model.trim="userData.email"
             required
             type="email"
             name="userEmail"
-            isEmail
+            is-email
             transparent
             autocomplete
             label="Электронный адрес"
           />
-          <Input
+          <cInput
             v-model="userData.password"
             required
             type="password"
@@ -69,7 +73,7 @@
           />
 
           <div class="sign-up__window-form-inputs__send">
-            <Button title="Регистрация" type="submit" />
+            <cButton title="Регистрация" type="submit" />
           </div>
           <small class="sign-up__window-description">
             Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте
@@ -101,53 +105,53 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from "vue";
-import * as emailValidator from "email-validator";
-import { IUserReg } from "@/types/interfaces";
-import { ModalContentType } from "@/types/types";
-import { Length } from "@/types/enums";
+import { computed, defineComponent, reactive } from 'vue'
+import * as emailValidator from 'email-validator'
+import type { IUserReg } from '@/types/interfaces'
+import type { ModalContentType } from '@/types/types'
+import { Length } from '@/types/enums'
 
-import useStores from "@/composables/useStores";
-import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
+import useStores from '@/composables/useStores'
+import FirebaseAuth from '@/helpers/firebase/firebaseAuth'
 
 export default defineComponent({
   setup() {
-    const { commonStore } = useStores();
+    const { commonStore } = useStores()
 
     const userData: IUserReg = reactive({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-    });
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+    })
 
-    const LengthPassword = Length.Password;
-    const LengthText = Length.Text;
+    const LengthPassword = Length.Password
+    const LengthText = Length.Text
 
     const validPersonDate = computed((): boolean => {
       return (
-        userData.firstName.length >= LengthText &&
-        (!userData.lastName.length || userData.lastName.length >= LengthText) &&
-        userData.password.length >= LengthPassword
-      );
-    });
+        userData.firstName.length >= LengthText
+        && (!userData.lastName.length || userData.lastName.length >= LengthText)
+        && userData.password.length >= LengthPassword
+      )
+    })
 
-    const { signUp } = FirebaseAuth();
+    const { signUp } = FirebaseAuth()
 
     const valid = computed((): boolean => {
-      return emailValidator.validate(userData.email) && validPersonDate.value;
-    });
+      return emailValidator.validate(userData.email) && validPersonDate.value
+    })
 
-    const submitForm = (): void => signUp(userData, valid.value);
+    const submitForm = (): void => signUp(userData, valid.value)
 
     const showTermsOfUse = () => {
-      const type: ModalContentType = "termsOfUse";
-      commonStore.setModalContentType(type);
-    };
+      const type: ModalContentType = 'termsOfUse'
+      commonStore.setModalContentType(type)
+    }
     const showConfidentiality = () => {
-      const type: ModalContentType = "confidentiality";
-      commonStore.setModalContentType(type);
-    };
+      const type: ModalContentType = 'confidentiality'
+      commonStore.setModalContentType(type)
+    }
 
     return {
       userData,
@@ -155,9 +159,9 @@ export default defineComponent({
       submitForm,
       showTermsOfUse,
       showConfidentiality,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
@@ -171,8 +175,8 @@ export default defineComponent({
       position: relative;
       background-color: $color-dark-blue;
       overflow: hidden;
-      max-width: 385px;
-      padding: 60px 30px 20px 30px;
+      min-width: 360px;
+      padding: 65px 30px 20px 30px;
       color: $color-white3;
       &__grid-image {
         outline: none;
@@ -188,19 +192,21 @@ export default defineComponent({
         width: 85%;
         opacity: 0.15;
         position: absolute;
-        bottom: -88px;
+        bottom: -95px;
         right: -100px;
         user-select: none;
       }
       &-title {
         text-align: center;
         font-size: 25px;
+        font-family: $RobotoRG;
       }
       &-description {
         margin-top: 200px;
         font-weight: 500;
         font-size: 20px;
         text-align: center;
+        font-family: $RobotoRG;
       }
       &-logo {
         position: absolute;
@@ -269,7 +275,7 @@ export default defineComponent({
       }
     }
   }
-  @include tablet(max) {
+  @include mobile(max) {
     height: 100%;
     min-height: 660px;
     &__window {
