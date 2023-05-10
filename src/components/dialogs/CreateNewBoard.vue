@@ -107,7 +107,7 @@ export default defineComponent({
     })
 
     const createNewBoard = () => {
-      if (newBoard.title!.length <= Length.Text)
+      if (newBoard.title!.length < Length.Text)
         return
 
       // Set date of creation working board.

@@ -22,7 +22,7 @@
           class="dashboard-tab__content--single"
           :class="{ centering: centeringContent }"
         >
-          <LockAccess v-if="showLockAccess" />
+          <LockAccess v-if="showLockAccess && !showPreload" />
           <EmptyList v-else-if="emptyList" type="dashboard" />
         </div>
       </transition>
@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive } from 'vue'
+import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
 import { notify } from '@kyvg/vue3-notification'
 import type { User } from '@firebase/auth'
 import type { IWorkingBoardItem } from '@/types/interfaces'
@@ -65,7 +65,7 @@ export default defineComponent({
       (): boolean => !(currentUser.value as User).emailVerified,
     )
 
-    const emptyList = computed(() => allBoards.length === 0)
+    const emptyList = ref(false)
 
     const centeringContent = computed(
       () => (showLockAccess.value || emptyList.value) && !showPreload.value,
@@ -83,6 +83,7 @@ export default defineComponent({
             type: 'success',
           })
 
+          emptyList.value = false
           // Add new notification.
           const notification = newNotificationContent(
             NotificationType.DashboardCreate,
@@ -98,7 +99,10 @@ export default defineComponent({
       dashboardStore
         .getAllWorkingBoards(unicID.value)
         .then((boards: IWorkingBoardItem[]) => {
-          allBoards.push(...boards)
+          if (boards)
+            allBoards.push(...boards)
+          else // No boards.
+            emptyList.value = true
         })
     })
 

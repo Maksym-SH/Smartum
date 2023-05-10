@@ -73,10 +73,8 @@ const useDashboardStore = defineStore('dashboard', () => {
       getDoc(dashboardRef)
         .then((dashboards) => {
           const allDashboards = dashboards.data()?.collection
-          if (allDashboards) {
-            setAllDashboard(allDashboards)
-            resolve(allDashboards as IWorkingBoardItem[])
-          }
+          setAllDashboard(allDashboards || [])
+          resolve(allDashboards as IWorkingBoardItem[])
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error)
