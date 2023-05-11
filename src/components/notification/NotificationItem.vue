@@ -20,7 +20,7 @@
     </div>
     <span
       class="notification-item__close mdi mdi-close-circle"
-      @click.stop="deleteNotification(params.id)"
+      @click.stop="deleteNotification"
     ></span>
   </div>
 </template>
@@ -43,7 +43,7 @@ export default defineComponent({
   },
   props: {
     params: {
-      type: Object as PropType<INotification<IServerDate>>,
+      type: Object as PropType<INotification<IServerDate | Date>>,
       required: true,
     },
   },
@@ -54,8 +54,8 @@ export default defineComponent({
     })
     const { currentUser } = useCurrentUserInfo()
 
-    const deleteNotification = (id: number): void => {
-      emit('deleteNotification', id)
+    const deleteNotification = (): void => {
+      emit('deleteNotification', props.params.id)
     }
 
     const dateSent = useDateParseToString(props.params.date)

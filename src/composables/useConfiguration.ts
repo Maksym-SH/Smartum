@@ -109,28 +109,30 @@ function useConfiguration() {
 
   // Get info.
   watchEffect(() => {
-    configurationStore
-      .getUserConfiguration(unicID.value)
-      .then((configuration: Omit<IConfiguration, 'navigations'>) => {
-        const navigationList: IAsideNavigationItem[]
-          = configurationStore.asideNavigate
-        showedNavigations.forEach(
-          (item, index) => (item.showed = navigationList[index].showed),
-        )
+    if (unicID.value) {
+      configurationStore
+        .getUserConfiguration(unicID.value)
+        .then((configuration: Omit<IConfiguration, 'navigations'>) => {
+          const navigationList: IAsideNavigationItem[]
+            = configurationStore.asideNavigate
+          showedNavigations.forEach(
+            (item, index) => (item.showed = navigationList[index].showed),
+          )
 
-        // Set backgrond avatar.
-        const currentBackgrondAvatar = userStore.userInfo.avatarParams
-          .bgAvatar as Required<string>
-        avatarParams.bgAvatar = currentBackgrondAvatar
+          // Set backgrond avatar.
+          const currentBackgrondAvatar = userStore.userInfo.avatarParams
+            .bgAvatar as Required<string>
+          avatarParams.bgAvatar = currentBackgrondAvatar
 
-        // Set additional params.
-        asideBackgroundColor.value = configuration.asideBackgroundColor
+          // Set additional params.
+          asideBackgroundColor.value = configuration.asideBackgroundColor
 
-        additionalParams.showDeleteAccountButton
-          = configuration.showDeleteAccountButton
-        additionalParams.showCurrentDate = configuration.showCurrentDate
-        additionalParams.showEmailConfirm = configuration.showEmailConfirm
-      })
+          additionalParams.showDeleteAccountButton
+            = configuration.showDeleteAccountButton
+          additionalParams.showCurrentDate = configuration.showCurrentDate
+          additionalParams.showEmailConfirm = configuration.showEmailConfirm
+        })
+    }
   })
 
   return {

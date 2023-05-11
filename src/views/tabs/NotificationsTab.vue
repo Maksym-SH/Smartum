@@ -13,7 +13,7 @@
       mode="in-out"
     >
       <Notification
-        v-for="notify in notificationList"
+        v-for="notify in allNotifications"
         :key="notify.id"
         :params="notify"
         @read-notification="notifyAction($event, 'readNotification')"
@@ -31,10 +31,9 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
 import { computed, defineComponent } from 'vue'
+import { storeToRefs } from 'pinia'
 import type { NotifyAction } from '@/types/types'
-import type { INotification, IServerDate } from '@/types/interfaces'
 import { Colors } from '@/types/enums'
 import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
 
@@ -49,40 +48,36 @@ export default defineComponent({
     EmptyList: NotificationEmptyList,
   },
   props: {
-    notificationList: {
-      type: Array as PropType<INotification<IServerDate>[]>,
-      required: true,
-    },
   },
-  emits: ['readNotification', 'deleteNotification', 'clearAllNotifications'],
-  setup(props, { emit }) {
-    const { commonStore } = useStores()
+  setup() {
+    const { commonStore, notificationStore } = useStores()
 
-    const { currentUser } = useCurrentUserInfo()
+    const { allNotifications } = storeToRefs(notificationStore)
+
+    const { currentUser, unicID } = useCurrentUserInfo()
 
     const showList = computed((): boolean => {
-      return props.notificationList.length > 0 && ObjectNotEmpty(currentUser.value)
+      return allNotifications.value.length > 0 && ObjectNotEmpty(currentUser.value)
     })
+
     const showLoading = computed((): boolean => commonStore.loadingStatus)
 
     const notifyAction = (id: number, action: NotifyAction): void => {
-      const foundNotification = props.notificationList.find(
-        notify => notify.id === id,
-      )
-      if (foundNotification)
-        emit(action, id) // Delete or read notification by it`s id.
+      notificationStore.notificationAction(id, action) // Delete or read notification by it`s id.
     }
 
     const clearAll = (): void => {
-      emit('clearAllNotifications')
+      notificationStore.clearList()
+      notificationStore.updateNotificationList(unicID.value)
     }
 
     return {
-      clearAll,
-      notifyAction,
       showList,
       showLoading,
       Colors,
+      allNotifications,
+      clearAll,
+      notifyAction,
     }
   },
 })

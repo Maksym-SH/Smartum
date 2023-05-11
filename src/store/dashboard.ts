@@ -20,6 +20,9 @@ const useDashboardStore = defineStore('dashboard', () => {
   const addNewBoard = (item: IWorkingBoardItem): void => {
     allDashboards.value.push(item)
   }
+  const clearList = (): void => {
+    allDashboards.value = []
+  }
   const createNewWorkingBoard = (
     board: IWorkingBoardItem,
     unicID: string,
@@ -83,6 +86,7 @@ const useDashboardStore = defineStore('dashboard', () => {
 
   return {
     allDashboards,
+    clearList,
     setAllDashboard,
     addNewBoard,
     createNewWorkingBoard,

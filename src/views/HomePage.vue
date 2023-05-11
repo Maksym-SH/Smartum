@@ -24,10 +24,6 @@
             <component
               :is="Component"
               v-if="showTabContent"
-              :notification-list="notificationList"
-              @read-notification="notifyAction($event, 'readNotification')"
-              @delete-notification="notifyAction($event, 'deleteNotification')"
-              @clear-all-notifications="clearAll"
             />
           </transition>
         </router-view>
@@ -41,8 +37,8 @@ import { computed, defineComponent, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Layout } from '@/types/enums'
 import { ObjectHasValues, ObjectNotEmpty } from '@/helpers/methods'
-import type { ILanguage, IMetaName } from '@/types/interfaces'
-import type { DynamicDescription, RouterMeta } from '@/types/types'
+import type { DynamicDescription, ILanguage, IMetaName } from '@/types/interfaces'
+import type { RouterMeta } from '@/types/types'
 
 import * as DescriptionJSON from '@/helpers/content/TabsInfo.json'
 import useNotifications from '@/composables/useNotifications'
@@ -63,8 +59,7 @@ export default defineComponent({
 
     const { currentUser } = useCurrentUserInfo()
 
-    const { notificationsSize, notificationList, notifyAction, clearAll }
-      = useNotifications()
+    const { notificationsSize } = useNotifications()
 
     const tabName: ILanguage = reactive({ eng: '', ru: '' })
 
@@ -73,7 +68,7 @@ export default defineComponent({
     const tabDescription: ILanguage = reactive({ eng: '', ru: '' })
 
     const currentUserPresent = computed((): boolean =>
-      ObjectNotEmpty(currentUser),
+      ObjectNotEmpty(currentUser.value),
     )
     const additionalUserInfoPresent = computed((): boolean =>
       ObjectHasValues(userStore.userInfo),
@@ -118,12 +113,9 @@ export default defineComponent({
       tabName,
       tabDescription,
       minimizeAside,
-      notificationList,
       notificationsSize,
       showTabContent,
       toggleAsideVisible,
-      clearAll,
-      notifyAction,
       showLoading: computed(() => commonStore.loadingStatus),
     }
   },

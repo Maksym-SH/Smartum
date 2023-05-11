@@ -14,6 +14,7 @@ export interface IServerDate {
   seconds: number
   nanoseconds: number
 }
+export interface DynamicDescription { [key: string]: ILanguage }
 
 // Components
 export interface ISelectElem {

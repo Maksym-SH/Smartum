@@ -1,86 +1,32 @@
-import { computed, reactive, watch, watchEffect } from 'vue'
+import { computed, watch } from 'vue'
 import type { User } from 'firebase/auth'
+import { storeToRefs } from 'pinia'
 import useStores from './useStores'
-import type { INotification, IServerDate } from '@/types/interfaces'
-import { ObjectHasValues } from '@/helpers/methods'
-import type { NotifyAction } from '@/types/types'
-
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
+import type { INotificationList } from '@/types/types'
 
 function useNotifications() {
-  const { commonStore, notificationStore, userStore } = useStores()
+  const { notificationStore, userStore } = useStores()
 
-  const { unicID } = useCurrentUserInfo()
+  const { allNotifications } = storeToRefs(notificationStore)
 
-  const notificationList: INotification<IServerDate | Date>[] = reactive([])
-
-  const notificationsSize = computed(() => {
-    return notificationList.length
+  const notificationsSize = computed((): number => {
+    return allNotifications.value.length
   })
-
-  const clearAll = (): void => {
-    notificationList.splice(0) // Clear all.
-  }
-
-  const notifyAction = (id: number, action: NotifyAction): void => {
-    const foundNotification = notificationList.find(
-      notify => notify.id === id,
-    )
-    if (foundNotification) {
-      switch (action) {
-        case 'readNotification':
-          foundNotification.status = 'read'
-          break
-        case 'deleteNotification': {
-          const notificationIndex: number = notificationList.findIndex(
-            item => item === foundNotification,
-          )
-          notificationList.splice(notificationIndex, 1)
-          break
-        }
-        default:
-      }
-    }
-  }
 
   // Get all notifications.
-  watchEffect(() => {
-    const unicID = (userStore.currentUser as User).uid
-    if (unicID && !ObjectHasValues(notificationList)) {
+  watch(() => userStore.currentUser as User, ({ uid }): void => {
+    if (uid && allNotifications.value.length === 0) {
       // Get all if the list is initially empty.
-      commonStore.setLoadingStatus(true)
-
-      notificationStore
-        .getAllNotifications(unicID)
-        .then((notifications) => {
-          notificationList.push(...notifications)
+      notificationStore.getAllNotifications(uid)
+        .then((notifications: INotificationList) => {
+          notificationStore.setAllNotification(notifications)
         })
-        .finally(() => commonStore.setLoadingStatus(false))
     }
-  })
-  watch(
-    () => notificationStore.newNotification,
-    (newNotification): void => {
-      if (ObjectHasValues(newNotification)) {
-        notificationList.push(
-          newNotification as INotification<IServerDate | Date>,
-        )
-        notificationStore.clearNewNotification()
-      }
-    },
-  )
-
-  // Update database.
-  watch(notificationList, (newCollection) => {
-    if (newCollection)
-      notificationStore.updateNotifications(newCollection, unicID.value)
-  })
+  }, { immediate: true })
 
   return {
     notificationsSize,
-    notificationList,
-    notifyAction,
-    clearAll,
+    allNotifications,
   }
 }
 

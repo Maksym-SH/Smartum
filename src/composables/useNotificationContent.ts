@@ -28,7 +28,7 @@ function useNewNotificationContent(type: NotificationType,
       currentContent = {
         title: 'Изменения в навигации приложения!',
         description:
-          'Некоторые элементы с приложения стали недоступны, если вам нужен доступ к скрытым частям приложения, пожалуйста активируйте их в пункте \'Конфигурация\', вы можете перейти на страницу конфигурации, нажав на это уведомление.',
+          'Некоторые элементы приложения появились или стали недоступны, если вам нужен доступ к скрытым частям приложения, пожалуйста активируйте их в пункте \"Конфигурация\", вы можете перейти на страницу конфигурации, нажав на это уведомление.',
         image: `${import.meta.env.BASE_URL}images/notifyIcons/settings.svg`,
         type: NotificationActionType.Configuration,
       }
@@ -36,7 +36,7 @@ function useNewNotificationContent(type: NotificationType,
     case NotificationType.EmailConfirm:
       currentContent = {
         title: 'Подтверждение адреса электронной почты',
-        description: `Сообщение с инструкциями для подтверждения учётной записи было выслано вам на электронный адрес ${title}.`,
+        description: `Сообщение с инструкциями для подтверждения учётной записи было выслано вам на электронный адрес "${title}".`,
         status: 'not read',
         image: `${import.meta.env.BASE_URL}images/notifyIcons/mail.svg`,
         type: NotificationActionType.Default,

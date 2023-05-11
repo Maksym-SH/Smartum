@@ -66,10 +66,10 @@ function firebaseAuth(): IUserAuth {
               NotificationType.WelcomeText,
             )
 
-            notificationStore.createNotificationList(
-              notification,
-              currentUser.uid,
-            )
+            await notificationStore.createNotificationList(notification, currentUser.uid)
+              .then((notification) => {
+                notificationStore.setAllNotification([notification])
+              })
 
             // Create user configuration field in database.
             configurationStore.createUserConfiguration(currentUser.uid)

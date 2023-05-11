@@ -3,10 +3,11 @@ import type { NotificationActionType } from './enums'
 import type {
   IAsideNavigationItem,
   IError,
-  ILanguage,
   IModalContent,
+  INotification,
   IPopupParams,
   ISelectElem,
+  IServerDate,
   IUserCreated,
   IUserReg,
 } from './interfaces'
@@ -37,7 +38,7 @@ export type ModalLanguageType = keyof IModalContent
 
 export type ModalContentLanguage = IModalContent[ModalLanguageType]
 
-export interface DynamicDescription { [key: string]: ILanguage }
+export type INotificationList = INotification<IServerDate | Date>[]
 
 export type OmitUserInfo =
   | 'email'

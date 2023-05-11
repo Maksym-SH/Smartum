@@ -29,7 +29,7 @@ import ShowErrorMessage from '@/helpers/firebase/firebaseErrorMessage'
 import useStores from '@/composables/useStores'
 
 const useUserStore = defineStore('user', () => {
-  const { commonStore, notificationStore, configurationStore } = useStores()
+  const { commonStore, notificationStore, configurationStore, dashboardStore } = useStores()
 
   const storage = getStorage()
 
@@ -279,6 +279,9 @@ const useUserStore = defineStore('user', () => {
         // Set dark theme by default.
         SetTheme('dark')
         localStorage.removeItem('smartumTheme')
+
+        notificationStore.clearList() // Clear any notifications.
+        dashboardStore.clearList() // Clear any boards.
 
         if (!router.currentRoute.value.meta.notAuthorized) {
           router.push({ name: 'SignIn' })
