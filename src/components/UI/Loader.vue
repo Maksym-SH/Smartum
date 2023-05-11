@@ -1,19 +1,7 @@
 <template>
   <div class="c-loader" :class="{ 'inline-transparent': inline }">
-    <div class="c-loader__spinner">
-      <svg
-        class="c-loader__spinner--animation"
-        :style="loaderSize"
-        viewBox="-3 -4 39 39"
-      >
-        <polygon
-          class="c-loader__spinner-polygon"
-          fill="transparent"
-          strokeWidth="1"
-          points="16,0 32,32 0,32"
-        />
-      </svg>
-    </div>
+    <span :style="loaderSize" class="c-loader__spinner">
+    </span>
   </div>
 </template>
 
@@ -60,47 +48,49 @@ export default defineComponent({
     height: 100vh;
   }
   &__spinner {
-    &--animation {
-      display: inline-block;
-      transform-origin: 50% 65%;
-      .c-loader__spinner-polygon {
-        stroke: $color-blue;
-        stroke-dasharray: 17;
-        -webkit-animation: dash 2.5s cubic-bezier(0.35, 0.04, 0.63, 0.95)
-          infinite;
-        animation: dash 2.5s cubic-bezier(0.35, 0.04, 0.63, 0.95) infinite;
-      }
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 3px solid;
+    border-color: $color-blue $color-blue transparent transparent;
+    box-sizing: border-box;
+    animation: rotation 2s linear infinite;
+    &::after, &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      border: 3px solid;
+      border-color: transparent transparent $color-light-blue $color-light-blue;
+      width: calc(100% - 10px);
+      height: calc(100% - 10px);
+      border-radius: 50%;
+      animation: rotationBack 1s linear infinite;
     }
   }
   &.inline-transparent {
     position: static;
     background-color: transparent;
-    display: inline;
+    display: inline-flex;
   }
 }
 
-// Loader animation.
-@-webkit-keyframes dash {
-  to {
-    stroke-dashoffset: 136;
-  }
-}
-
-@keyframes dash {
-  to {
-    stroke-dashoffset: 136;
-  }
-}
-
-@-webkit-keyframes rotate {
-  100% {
+@keyframes rotation {
+  0% {
     transform: rotate(360deg);
   }
-}
-
-@keyframes rotate {
   100% {
-    transform: rotate(360deg);
+    transform: rotate(0deg);
+  }
+}
+@keyframes rotationBack {
+  0% {
+    transform: rotate(-360deg);
+  }
+  100% {
+    transform: rotate(0deg);
   }
 }
 </style>
