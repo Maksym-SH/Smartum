@@ -1,6 +1,6 @@
 <template>
   <div class="notifications-tab" :class="{ empty: !showList }">
-    <div v-if="showList" class="notifications-tab__filters">
+    <div v-if="showList" class="notifications-tab__filters full-width--tablet">
       <cButton :color="Colors.Info" variant="flat" @click="clearAll">
         Очистить все
       </cButton>
@@ -112,22 +112,6 @@ export default defineComponent({
     padding-bottom: 45px;
     &__container {
       padding-top: 0;
-    }
-    &__filters {
-      z-index: 2;
-      position: fixed;
-      bottom: 10px;
-      justify-content: center;
-      width: calc(100% - 45px);
-
-      .v-btn {
-        width: 100%;
-      }
-    }
-  }
-  @include mobile(max) {
-    &__filters {
-      width: calc(100% - 25px);
     }
   }
 }

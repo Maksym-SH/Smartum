@@ -10,12 +10,6 @@
   align-items: center;
 }
 
-@mixin flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 // Responsive
 @mixin mobile($direction) {
   @if($direction == min) {

@@ -44,7 +44,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const dateOfCreate = useDateParseToString(props.element.dateOfCreation)
+    const dateOfCreate: string = useDateParseToString(props.element.dateOfCreation)
 
     return {
       dateOfCreate,

@@ -1,5 +1,6 @@
 import type { User } from 'firebase/auth'
-import { updatePassword } from 'firebase/auth'
+
+import { updatePassword /* , updateEmail */ } from 'firebase/auth'
 import { notify } from '@kyvg/vue3-notification'
 
 import ShowErrorMessage from './firebaseErrorMessage'
@@ -25,19 +26,19 @@ export function PasswordUpdate(user: User, password: string): Promise<void> {
   })
 }
 
-/* export const EmailUpdate = (user: User, email: string): Promise<any> => {
-  store.commit("setLoadingStatus", true);
+/* export function EmailUpdate(user: User, email: string): Promise<void> {
+  const { commonStore } = useStores()
 
+  commonStore.setLoadingStatus(true)
   return new Promise((resolve, reject) => {
     updateEmail(user, email).then(() => {
       notify({
-        title: "Ваш электронный адрес был изменен!"
+        title: 'Ваш электронный адрес был изменен!',
       })
-      resolve("resolve");
+      resolve()
     }).catch((error) => {
-      ShowErrorMessage(error);
+      ShowErrorMessage(error)
       reject(error)
-    })
-    .finally(() => store.dispatch('setLoadingStatus', false))
+    }).finally(() => commonStore.setLoadingStatus(false))
   })
 } */

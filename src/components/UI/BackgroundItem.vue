@@ -42,7 +42,7 @@ export default defineComponent({
       }
     })
 
-    const selectExample = () => {
+    const selectExample = (): void => {
       const emitTarget = props.background ? props.background : props.image
       emit('select', emitTarget)
     }

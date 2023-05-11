@@ -205,8 +205,7 @@ export default defineComponent({
         return
 
       if (passwordChanged.value && showConfirmation.value) {
-        // Show confirmation.
-        Confirmation(true, updatePassword)
+        Confirmation(true, updatePassword) // Show confirmation.
       }
       else {
         profileUpdate().then(() => {

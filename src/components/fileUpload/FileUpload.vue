@@ -130,12 +130,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 .file-upload {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100px;
   height: 100px;
   border-radius: 8px;
   border: 3px dashed $color-blue;
   cursor: pointer;
-  @include flex-center;
 
   &--delete {
     position: absolute;

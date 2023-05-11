@@ -57,7 +57,7 @@ const useConfigurationStore = defineStore('configuration', () => {
         .finally(() => commonStore.setLoadingStatus(false))
     })
   }
-  const getUserConfiguration = (unicID: string): Promise<any> => {
+  const getUserConfiguration = (unicID: string): Promise<IConfigurationResponse> => {
     const configurationRef = doc(
       database,
       DataCollection.Configuration,

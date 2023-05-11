@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-tab">
     <div class="dashboard-tab__content">
-      <div v-if="!showLockAccess" class="dashboard-tab__content--create-new">
+      <div v-if="!showLockAccess" class="dashboard-tab__content--create-new full-width--tablet">
         <CreateNewBoard @create-new="createNewBoard" />
       </div>
       <transition-group
@@ -11,7 +11,7 @@
         name="toggle-content"
       >
         <BoardCard
-          v-for="board in allBoards"
+          v-for="board in dashboardStore.allDashboards"
           :key="board.joinCode"
           :element="board"
         />
@@ -23,7 +23,7 @@
           :class="{ centering: centeringContent }"
         >
           <LockAccess v-if="showLockAccess && !showPreload" />
-          <EmptyList v-else-if="emptyList" type="dashboard" />
+          <EmptyList v-else-if="showEmptyListTemplate" type="dashboard" />
         </div>
       </transition>
     </div>
@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import { notify } from '@kyvg/vue3-notification'
 import type { User } from '@firebase/auth'
 import type { IWorkingBoardItem } from '@/types/interfaces'
@@ -59,31 +59,30 @@ export default defineComponent({
 
     const showPreload = computed(() => commonStore.loadingStatus)
 
-    const allBoards = reactive<IWorkingBoardItem[]>([])
-
     const showLockAccess = computed(
       (): boolean => !(currentUser.value as User).emailVerified,
     )
 
-    const emptyList = ref(false)
+    const showEmptyListTemplate = ref(false)
+
+    const listEmpty = computed((): boolean => dashboardStore.allDashboards.length === 0)
 
     const centeringContent = computed(
-      () => (showLockAccess.value || emptyList.value) && !showPreload.value,
+      () => (showLockAccess.value || showEmptyListTemplate.value) && !showPreload.value,
     )
 
     const createNewBoard = (board: IWorkingBoardItem): void => {
       dashboardStore
         .createNewWorkingBoard(board, unicID.value)
         .then((newBoard: IWorkingBoardItem): void => {
-          allBoards.push(newBoard)
-
           notify({
             title: 'Успешно!',
             text: `Рабочая доска ${newBoard.title} была успешно создана!`,
             type: 'success',
           })
 
-          emptyList.value = false
+          showEmptyListTemplate.value = false
+
           // Add new notification.
           const notification = newNotificationContent(
             NotificationType.DashboardCreate,
@@ -96,22 +95,22 @@ export default defineComponent({
 
     // Get all boards.
     onMounted((): void => {
-      dashboardStore
-        .getAllWorkingBoards(unicID.value)
-        .then((boards: IWorkingBoardItem[]) => {
-          if (boards)
-            allBoards.push(...boards)
-          else // No boards.
-            emptyList.value = true
-        })
+      if (listEmpty.value) {
+        dashboardStore
+          .getAllWorkingBoards(unicID.value)
+          .then(() => {
+            if (listEmpty.value) // No boards.
+              showEmptyListTemplate.value = true
+          })
+      }
     })
 
     return {
       centeringContent,
       showPreload,
       showLockAccess,
-      emptyList,
-      allBoards,
+      showEmptyListTemplate,
+      dashboardStore,
       createNewBoard,
     }
   },
@@ -176,21 +175,10 @@ export default defineComponent({
     &__container {
       padding-top: 0;
     }
-    &__content--create-new {
-      z-index: 3;
-      position: fixed;
-      bottom: 10px;
-      justify-content: center;
-      width: calc(100% - 45px);
-
-      :deep(.v-btn) {
-        width: 100% !important;
-      }
-    }
   }
   @include mobile(max) {
     &__content--create-new {
-      width: calc(100% - 20px);
+      width: calc(100% - 25px);
     }
   }
 }

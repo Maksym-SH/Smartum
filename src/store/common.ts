@@ -17,7 +17,7 @@ const useCommonStore = defineStore('common', () => {
     popupParams.value = params
   }
 
-  const setConfirmPopupVisibillity = (toggle: boolean) => {
+  const setConfirmPopupVisibillity = (toggle: boolean): void => {
     openConfirmPopup.value = toggle
   }
 

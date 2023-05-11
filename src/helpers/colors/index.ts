@@ -1,4 +1,6 @@
-export function LightColors() {
+import type { IDarkColors, ILightColors } from '@/types/interfaces'
+
+export function LightColors(): ILightColors {
   return {
     pastelPink: '#FFD1DC',
     pastelYellow: '#EFA94A',
@@ -23,7 +25,7 @@ export function LightColors() {
   }
 }
 
-export function DarkColors() {
+export function DarkColors(): IDarkColors {
   return {
     moray: '#1C6B72',
     pearlOpal: '#134044',

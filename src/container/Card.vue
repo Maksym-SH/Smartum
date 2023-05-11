@@ -84,7 +84,7 @@ export default defineComponent({
     }
     &-footer {
       border-top: 1px solid var(--color-border-card);
-      ::deep(td) {
+      :deep(td) {
         color: var(--color-text);
         text-align: start;
         padding: 15px 30px;

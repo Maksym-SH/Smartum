@@ -49,7 +49,7 @@ export default defineComponent({
       return 'moon'
     })
 
-    const showTemplate = computed(() => time.value && date.value)
+    const showTemplate = computed((): boolean => Boolean(time.value && date.value))
 
     // Changing text depending on the time of day.
     watch(

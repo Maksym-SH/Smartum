@@ -101,7 +101,7 @@ export default defineComponent({
 
     const newBoard = reactive<Partial<IWorkingBoardItem>>({
       title: '',
-      background: Colors.GradientBluePink as string,
+      background: Colors.GradientBluePink,
       tasks: [],
       members: 1,
     })
@@ -117,8 +117,11 @@ export default defineComponent({
       newBoard.joinCode = GenerateRandomString(Numbers.JoinCodeSize) // Set join code for working board.
 
       emit('createNew', Object.assign({}, newBoard))
-
       showDialog.value = false
+
+      // Set default value
+      newBoard.title = ''
+      newBoard.background = Colors.GradientBluePink
     }
 
     return {

@@ -5,7 +5,6 @@ import type { IWorkingBoardItem } from '@/types/interfaces'
 import type { ErrorCode } from '@/types/types'
 import { database } from '@/helpers/firebase/firebaseInitialize'
 import { DataCollection } from '@/types/enums'
-import { NewObjectLink } from '@/helpers/methods'
 
 import ShowErrorMessage from '@/helpers/firebase/firebaseErrorMessage'
 import useStores from '@/composables/useStores'
@@ -26,18 +25,16 @@ const useDashboardStore = defineStore('dashboard', () => {
     unicID: string,
   ): Promise<IWorkingBoardItem> => {
     const dashboardRef = doc(database, DataCollection.Dashboard, unicID)
-
     commonStore.setLoadingStatus(true)
 
     return new Promise((resolve, reject) => {
       getDoc(dashboardRef).then((docSnap) => {
         if (docSnap.exists()) {
-          const currentCollectionDasboard = NewObjectLink(allDashboards.value)
+          const currentCollectionDasboard = allDashboards.value
           currentCollectionDasboard.push(board)
 
           updateDoc(dashboardRef, 'collection', currentCollectionDasboard)
             .then(() => {
-              addNewBoard(board)
               resolve(board)
             })
             .catch((error: ErrorCode) => {

@@ -57,8 +57,8 @@ export default defineComponent({
     })
 
     const hasTwoLabel = computed(
-      (): string | false =>
-        props.switchBox && props.label && props.secondaryLabel,
+      (): boolean =>
+        Boolean(props.switchBox && props.label && props.secondaryLabel),
     )
 
     const checkboxToggle = (value: boolean): void => {
@@ -71,7 +71,7 @@ export default defineComponent({
       }
     }
 
-    watch(checked, () => emit('update:modelValue', checked.value))
+    watch(checked, (): void => emit('update:modelValue', checked.value))
 
     return {
       checked,
