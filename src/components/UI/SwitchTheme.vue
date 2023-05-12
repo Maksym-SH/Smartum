@@ -1,7 +1,9 @@
 <template>
   <div class="toggle-theme-switch" :class="{ small }">
-    <label class="toggle-theme-switch__label">
+    <label class="toggle-theme-switch__label" :for="name">
       <input
+        :id="name"
+        :name="name"
         v-model="switchModel"
         class="toggle-theme-switch__input"
         type="checkbox"
@@ -21,6 +23,10 @@ export default defineComponent({
     small: {
       type: Boolean,
       default: false,
+    },
+    name: {
+      type: String,
+      required: true,
     },
   },
   setup() {

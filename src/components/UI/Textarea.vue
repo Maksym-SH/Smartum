@@ -2,6 +2,7 @@
   <div class="c-textarea">
     <div class="c-textarea--relative">
       <textarea
+        :id="name"
         ref="textareaRef"
         v-model="model"
         class="c-textarea__field"

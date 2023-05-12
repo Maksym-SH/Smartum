@@ -2,6 +2,7 @@
   <div class="c-input">
     <div class="c-input--relative">
       <input
+        :id="name"
         ref="inputRef"
         v-model="model"
         class="c-input__field"

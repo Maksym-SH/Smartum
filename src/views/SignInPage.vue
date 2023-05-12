@@ -15,7 +15,6 @@
               name="userEmail"
               label="Электронный адрес"
               transparent
-              autocomplete
             />
             <cInput
               v-model="userData.password"
@@ -25,7 +24,6 @@
               label="Пароль"
               transparent
               :min="Length.Password"
-              autocomplete
             />
             <div class="auth__window-form__forgot">
               Забыли пароль?

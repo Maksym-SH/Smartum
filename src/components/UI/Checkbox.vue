@@ -10,6 +10,7 @@
     <!-- Text -->
     <label
       v-if="secondaryLabel && switchBox"
+      :for="name"
       class="label secondary-label"
       :class="{
         'not-selected': checked,
@@ -30,6 +31,7 @@
     <!-- Text -->
     <label
       v-if="label"
+      :for="name"
       class="label main-label"
       :class="{
         'not-selected': !checked,

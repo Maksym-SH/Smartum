@@ -5,14 +5,14 @@
         <cInput
           v-model="searchInput"
           type="search"
-          name="searchContent"
+          name="searchContentDesktop"
           placeholder="Поиск"
         />
       </div>
       <transition name="toggle-content">
         <Date v-show="showDateTemplate" />
       </transition>
-      <SwitchTheme class="not-mobile" />
+      <SwitchTheme class="not-mobile" name="toggleThemeDesktop" />
     </div>
   </header>
 </template>

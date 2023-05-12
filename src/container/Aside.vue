@@ -11,12 +11,12 @@
       <cLoader v-if="!showContent" :size="defaultLoaderSize" inline />
       <template v-else>
         <div class="aside__mobile-content mobile-only">
-          <SwitchTheme class="aside__theme-switch" small />
+          <SwitchTheme class="aside__theme-switch" small name="switchThemeMobile" />
           <cInput
             v-model="searchInput"
             type="search"
             light-theme
-            name="searchContent"
+            name="searchContentMobile"
             label="Поиск"
           />
         </div>
