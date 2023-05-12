@@ -113,7 +113,7 @@ const routes: Routes = [
   },
   {
     name: 'NotFound',
-    path: '/:pathMath(.*)*',
+    path: '/:pathMath(.*)',
     redirect: '/dashboard',
   },
 ]
