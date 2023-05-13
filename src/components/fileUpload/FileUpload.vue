@@ -175,9 +175,11 @@ export default defineComponent({
   &--icon {
     outline: none;
     animation: upload 0.5s infinite alternate-reverse;
-    font-size: 1rem;
+    width: 32px;
+    height: 32px;
     @include mobile(max) {
-      font-size: 2.1rem;
+      width: 50px;
+      height: 50px;
     }
   }
 }

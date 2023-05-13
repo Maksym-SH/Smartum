@@ -112,6 +112,14 @@ const routes: Routes = [
     ],
   },
   {
+    name: 'Board',
+    path: '/dashboards/board/:code',
+    meta: {
+      protected: true,
+    },
+    component: () => import('@/views/BoardPage.vue'),
+  },
+  {
     name: 'NotFound',
     path: '/:pathMath(.*)',
     redirect: '/dashboard',

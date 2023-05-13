@@ -2,7 +2,7 @@ import { getAuth } from '@firebase/auth'
 import { notify } from '@kyvg/vue3-notification'
 import type { IPopupParams } from '@/types/interfaces'
 import type { Theme } from '@/types/types'
-import { Colors } from '@/types/enums'
+import { Colors, Numbers } from '@/types/enums'
 
 import useStores from '@/composables/useStores'
 
@@ -57,16 +57,10 @@ export function GenerateColorHexFormat(Theme: Theme): string {
   }
 }
 
-export function GenerateRandomString(length: number) {
-  let result = ''
-  const characters
-    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  const charactersLength = characters.length
+export function GetAndParseJoinCode(unicID: string, boardName?: string) {
+  const joinCode = unicID.split('').reverse().join('').substring(1, Numbers.JoinCodeSize)
 
-  for (let i = 0; i < length; i++)
-    result += characters.charAt(Math.floor(Math.random() * charactersLength))
-
-  return result
+  return `${boardName}-${joinCode}`
 }
 
 let ConfirmCallback: Function

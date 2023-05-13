@@ -1,4 +1,4 @@
-import { computed, reactive, ref, watchEffect } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { notify } from '@kyvg/vue3-notification'
 import useNewNotificationContent from './useNotificationContent'
 import useStores from './useStores'
@@ -108,31 +108,28 @@ function useConfiguration() {
   }
 
   // Get info.
-  watchEffect(() => {
-    if (unicID.value) {
-      configurationStore
-        .getUserConfiguration(unicID.value)
-        .then((configuration: Omit<IConfiguration, 'navigations'>) => {
-          const navigationList: IAsideNavigationItem[]
-            = configurationStore.asideNavigate
-          showedNavigations.forEach(
-            (item, index) => (item.showed = navigationList[index].showed),
-          )
+  onMounted(() => {
+    configurationStore.getUserConfiguration(unicID.value)
+      .then((configuration: Omit<IConfiguration, 'navigations'>) => {
+        const navigationList: IAsideNavigationItem[]
+          = configurationStore.asideNavigate
+        showedNavigations.forEach(
+          (item, index) => (item.showed = navigationList[index].showed),
+        )
 
-          // Set backgrond avatar.
-          const currentBackgrondAvatar = userStore.userInfo.avatarParams
-            .bgAvatar as Required<string>
-          avatarParams.bgAvatar = currentBackgrondAvatar
+        // Set backgrond avatar.
+        const currentBackgrondAvatar = userStore.userInfo.avatarParams
+          .bgAvatar as Required<string>
+        avatarParams.bgAvatar = currentBackgrondAvatar
 
-          // Set additional params.
-          asideBackgroundColor.value = configuration.asideBackgroundColor
+        // Set additional params.
+        asideBackgroundColor.value = configuration.asideBackgroundColor
 
-          additionalParams.showDeleteAccountButton
-            = configuration.showDeleteAccountButton
-          additionalParams.showCurrentDate = configuration.showCurrentDate
-          additionalParams.showEmailConfirm = configuration.showEmailConfirm
-        })
-    }
+        additionalParams.showDeleteAccountButton
+          = configuration.showDeleteAccountButton
+        additionalParams.showCurrentDate = configuration.showCurrentDate
+        additionalParams.showEmailConfirm = configuration.showEmailConfirm
+      })
   })
 
   return {

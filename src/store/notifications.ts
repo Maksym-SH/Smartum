@@ -59,6 +59,7 @@ const useNotificationStore = defineStore('notification', () => {
   const updateNotificationList = (unicID: string, notifications?: INotification<IServerDate | Date>[]): Promise<INotification<IServerDate>[]> => {
     const notificationRef = doc(database, DataCollection.Notifications, unicID)
 
+    commonStore.setLoadingStatus(true)
     return new Promise((resolve, reject) => {
       updateDoc(notificationRef, {
         collection: notifications || allNotifications.value,
@@ -71,6 +72,7 @@ const useNotificationStore = defineStore('notification', () => {
             ShowErrorMessage(error)
             reject(error)
           })
+          .finally(() => commonStore.setLoadingStatus(false))
       })
     })
   }

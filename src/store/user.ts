@@ -16,6 +16,7 @@ import type {
   ICreateUser,
   IPictureParams,
   IUserCreated,
+  IUserForList,
   IUserInfo,
 } from '@/types/interfaces'
 
@@ -151,6 +152,60 @@ const useUserStore = defineStore('user', () => {
         .finally(() => commonStore.setLoadingStatus(false))
     })
   }
+
+  // Other users
+  const getUsersList = (): Promise<IUserForList[]> => {
+    const userListRef = doc(database, DataCollection.Users, import.meta.env.VITE_APP_ALL_USER_COLLECTION)
+
+    commonStore.setLoadingStatus(true)
+
+    return new Promise((resolve, reject) => {
+      getDoc(userListRef)
+        .then((response) => {
+          const usersList = response.data()
+
+          resolve(usersList?.collection as IUserForList[])
+        })
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error)
+          reject(error)
+        })
+        .finally(() => commonStore.setLoadingStatus(false))
+    })
+  }
+
+  const updateUsersList = (newUserInfo: Partial<IUserForList> | null, deleteUser?: Boolean): Promise<IUserForList[]> => {
+    const usersListRef = doc(database, DataCollection.Users, import.meta.env.VITE_APP_ALL_USER_COLLECTION)
+
+    commonStore.setLoadingStatus(true)
+    return new Promise((resolve, reject) => {
+      getUsersList().then((usersList) => {
+        if (usersList) {
+          const foundUserIndex = usersList.findIndex(user => user.uid === (newUserInfo as IUserForList).uid)
+
+          if (foundUserIndex !== -1) { // User was found.
+            if (deleteUser)
+              usersList.splice(foundUserIndex, 1)
+            else
+              usersList[foundUserIndex] = newUserInfo as IUserForList
+          }
+          else if ((currentUser.value as User).emailVerified) {
+            usersList.push(newUserInfo as IUserForList)
+          }
+
+          updateDoc(usersListRef, {
+            collection: usersList,
+          }).then(() => resolve(usersList))
+            .catch((error: ErrorCode) => {
+              ShowErrorMessage(error)
+              reject(error)
+            })
+            .finally(() => commonStore.setLoadingStatus(false))
+        }
+      })
+    })
+  }
+
   const updateUserInfo = async (data: IUserInfo): Promise<void> => {
     const unicID = data.uid as string // Unic id for database field access.
     const profileRef = doc(database, DataCollection.Profile, unicID)
@@ -192,18 +247,16 @@ const useUserStore = defineStore('user', () => {
           fieldsToUpdate.avatarParams.url = ''
       })
     }
-
     return new Promise((resolve, reject) => {
       updateDoc(profileRef, fieldsToUpdate)
         .then(() => {
+          updateUsersList({ ...fieldsToUpdate as IUserInfo, uid: unicID })
           getUserProfile(unicID).then(() => resolve())
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error)
-          commonStore.setLoadingStatus(false)
           reject(error)
         })
-        .finally(() => commonStore.setLoadingStatus(false))
     })
   }
   const deleteUserProfile = (unicID: string): Promise<void> => {
@@ -305,6 +358,7 @@ const useUserStore = defineStore('user', () => {
     setBackgroundAvatar,
     createUserProfile,
     updateUserInfo,
+    updateUsersList,
     deleteUserProfile,
     getUserProfile,
     updateUserAvatar,

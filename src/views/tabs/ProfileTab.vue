@@ -350,9 +350,14 @@ export default defineComponent({
         }
       }
     }
-    @include mobile(max) {
+  }
+  @include mobile(max) {
+    height: 100%;
+    padding-bottom: 20px;
+    &__form {
       padding: 0;
       display: flex;
+      height: 100%;
       flex-direction: column;
       align-items: center;
       &--upload {
@@ -391,6 +396,8 @@ export default defineComponent({
         width: 100%;
         max-width: 440px;
         justify-content: space-between;
+        margin-top: auto;
+        padding-top: 30px;
         .btn-save,
         .btn-delete {
           font-size: 13px;

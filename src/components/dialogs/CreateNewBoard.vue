@@ -81,9 +81,10 @@ import { defineComponent, reactive, ref } from 'vue'
 import BoardImageResult from '../dashboard/BoardImageResult.vue'
 import ImageBackgroundExample from '../UI/BackgroundItem.vue'
 import type { IBackgroundDashboard, IWorkingBoardItem } from '@/types/interfaces'
-import { Colors, Length, Numbers } from '@/types/enums'
-import { GenerateRandomString } from '@/helpers/methods'
+import { Colors, Length } from '@/types/enums'
+import { GetAndParseJoinCode } from '@/helpers/methods'
 
+import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
 import useDashboardItemBackgroundTemplate from '@/composables/useDashboardItemBackground'
 
 export default defineComponent({
@@ -96,6 +97,8 @@ export default defineComponent({
   setup(_, { emit }) {
     const backgrounds: IBackgroundDashboard
       = useDashboardItemBackgroundTemplate()
+
+    const { unicID } = useCurrentUserInfo()
 
     const showDialog = ref(false)
 
@@ -114,7 +117,7 @@ export default defineComponent({
       const dateOfCreation: Date = new Date()
       newBoard.dateOfCreation = dateOfCreation
 
-      newBoard.joinCode = GenerateRandomString(Numbers.JoinCodeSize) // Set join code for working board.
+      newBoard.joinCode = GetAndParseJoinCode(unicID.value, newBoard.title) // Set unic id for dashboard.
 
       emit('createNew', Object.assign({}, newBoard))
       showDialog.value = false

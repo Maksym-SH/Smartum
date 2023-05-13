@@ -40,7 +40,7 @@ export enum Numbers {
   EveningENG = '6 AM',
   MorningRU = 6,
   MorningENG = '6 PM',
-  JoinCodeSize = 16,
+  JoinCodeSize = 10,
 }
 
 export enum Layout {
@@ -56,6 +56,7 @@ export enum DataCollection {
   Profile = 'profile',
   Notifications = 'notifications',
   Configuration = 'configuration',
+  Users = 'users',
 }
 
 export enum Links {

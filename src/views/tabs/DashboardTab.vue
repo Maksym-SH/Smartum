@@ -23,7 +23,7 @@
           :class="{ centering: centeringContent }"
         >
           <LockAccess v-if="showLockAccess && !showPreload" />
-          <EmptyList v-else-if="showEmptyListTemplate" type="dashboard" />
+          <EmptyList v-else-if="listEmpty" type="dashboard" />
         </div>
       </transition>
     </div>
@@ -31,7 +31,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onBeforeMount, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { notify } from '@kyvg/vue3-notification'
 import type { User } from '@firebase/auth'
 import type { IWorkingBoardItem } from '@/types/interfaces'
@@ -53,6 +54,8 @@ export default defineComponent({
     BoardCard,
   },
   setup() {
+    const router = useRouter()
+
     const { notificationStore, dashboardStore, commonStore } = useStores()
 
     const { unicID, currentUser } = useCurrentUserInfo()
@@ -63,12 +66,10 @@ export default defineComponent({
       (): boolean => !(currentUser.value as User).emailVerified,
     )
 
-    const showEmptyListTemplate = ref(false)
-
-    const listEmpty = computed((): boolean => dashboardStore.allDashboards.length === 0)
+    const listEmpty = ref(false)
 
     const centeringContent = computed(
-      () => (showLockAccess.value || showEmptyListTemplate.value) && !showPreload.value,
+      () => (showLockAccess.value || listEmpty.value) && !showPreload.value,
     )
 
     const createNewBoard = (board: IWorkingBoardItem): void => {
@@ -81,7 +82,7 @@ export default defineComponent({
             type: 'success',
           })
 
-          showEmptyListTemplate.value = false
+          listEmpty.value = false
 
           // Add new notification.
           const notification = newNotificationContent(
@@ -93,14 +94,22 @@ export default defineComponent({
         })
     }
 
+    const openBoard = (joinCode: string) => {
+      router.push({
+        name: 'Board',
+        params: {
+          code: joinCode,
+        },
+      })
+    }
+
     // Get all boards.
-    onMounted((): void => {
-      if (listEmpty.value) {
-        dashboardStore
-          .getAllWorkingBoards(unicID.value)
+    onBeforeMount((): void => {
+      if (!dashboardStore.allDashboards.length) {
+        dashboardStore.getAllWorkingBoards(unicID.value)
           .then(() => {
-            if (listEmpty.value) // No boards.
-              showEmptyListTemplate.value = true
+            if (!dashboardStore.allDashboards.length) // Still no boards.
+              listEmpty.value = true
           })
       }
     })
@@ -109,8 +118,9 @@ export default defineComponent({
       centeringContent,
       showPreload,
       showLockAccess,
-      showEmptyListTemplate,
+      listEmpty,
       dashboardStore,
+      openBoard,
       createNewBoard,
     }
   },
@@ -174,11 +184,6 @@ export default defineComponent({
     padding-bottom: 45px;
     &__container {
       padding-top: 0;
-    }
-  }
-  @include mobile(max) {
-    &__content--create-new {
-      width: calc(100% - 25px);
     }
   }
 }

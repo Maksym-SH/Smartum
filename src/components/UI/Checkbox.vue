@@ -8,7 +8,7 @@
       :disabled="disabled"
     />
     <!-- Text -->
-    <label
+    <span
       v-if="secondaryLabel && switchBox"
       :for="name"
       class="label secondary-label"
@@ -19,7 +19,7 @@
       @click="checkboxToggle(false)"
     >
       {{ secondaryLabel }}
-    </label>
+    </span>
 
     <!-- Switch -->
     <label
@@ -29,9 +29,8 @@
     ></label>
 
     <!-- Text -->
-    <label
+    <span
       v-if="label"
-      :for="name"
       class="label main-label"
       :class="{
         'not-selected': !checked,
@@ -40,7 +39,7 @@
       @click="checkboxToggle(true)"
     >
       {{ label }}
-    </label>
+    </span>
   </span>
 </template>
 

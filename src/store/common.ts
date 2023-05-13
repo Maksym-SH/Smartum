@@ -4,6 +4,7 @@ import type { IPopupParams } from '@/types/interfaces'
 import type { ModalContentType } from '@/types/types'
 
 const useCommonStore = defineStore('common', () => {
+  const showTemplateApplication = ref(false)
   const loadingStatus = ref(false)
   const popupParams = ref<IPopupParams | {}>({})
   const openConfirmPopup = ref(false)
@@ -30,6 +31,7 @@ const useCommonStore = defineStore('common', () => {
     popupParams,
     openConfirmPopup,
     modalContentType,
+    showTemplateApplication,
     setLoadingStatus,
     setPopupParams,
     setConfirmPopupVisibillity,

@@ -3,23 +3,22 @@
   <transition name="toggle-popup" mode="out-in">
     <Popup v-if="showPopup" />
   </transition>
-  <LongContentModal v-if="modalContentType" :content-type="modalContentType" />
+  <LongContentModal v-if="commonStore.modalContentType" :content-type="commonStore.modalContentType" />
   <transition name="toggle-popup" mode="out-in">
-    <ConfirmationPopup v-if="showConfirmPopup" />
+    <ConfirmationPopup v-if="commonStore.openConfirmPopup" />
   </transition>
 
-  <cLoader v-show="loadingStatus" />
+  <cLoader v-show="commonStore.loadingStatus" />
   <router-view v-slot="{ Component }">
     <transition name="router-nav" mode="out-in">
-      <component :is="Component" />
+      <component :is="Component" v-if="commonStore.showTemplateApplication" />
     </transition>
   </router-view>
 </template>
 
 <script lang="ts">
-import { computed, defineAsyncComponent, defineComponent } from 'vue'
+import { computed, defineAsyncComponent, defineComponent, onBeforeUnmount } from 'vue'
 import { ObjectNotEmpty } from './helpers/methods'
-import type { ModalContentType } from './types/types'
 
 import useStores from './composables/useStores'
 
@@ -34,16 +33,16 @@ export default defineComponent({
     ),
   },
   setup() {
-    const { commonStore } = useStores()
+    const { commonStore, userStore } = useStores()
+
+    onBeforeUnmount(() => {
+      userStore.updateUsersList({ ...userStore.userInfo })
+    })
 
     return {
-      loadingStatus: computed((): boolean => commonStore.loadingStatus),
+      commonStore,
       showPopup: computed((): boolean =>
         ObjectNotEmpty(commonStore.popupParams),
-      ),
-      showConfirmPopup: computed((): boolean => commonStore.openConfirmPopup),
-      modalContentType: computed(
-        (): ModalContentType => commonStore.modalContentType,
       ),
     }
   },

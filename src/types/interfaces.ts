@@ -143,6 +143,9 @@ export interface IUserInfo extends Omit<IUserReg, 'password'> {
   newPassword: string
   uid?: string
 }
+export interface IUserForList extends Omit<IUserInfo, 'photoFile' | 'emailVerified' | 'newPassword'> {
+  uid: string
+}
 export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
   uid: string
 }

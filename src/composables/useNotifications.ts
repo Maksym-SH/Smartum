@@ -1,11 +1,13 @@
-import { computed, watch } from 'vue'
-import type { User } from 'firebase/auth'
+import { computed, onBeforeMount } from 'vue'
 import { storeToRefs } from 'pinia'
 import useStores from './useStores'
+import useCurrentUserInfo from './useCurrentUserInfo'
 import type { INotificationList } from '@/types/types'
 
 function useNotifications() {
-  const { notificationStore, userStore } = useStores()
+  const { notificationStore, commonStore } = useStores()
+
+  const { unicID } = useCurrentUserInfo()
 
   const { allNotifications } = storeToRefs(notificationStore)
 
@@ -14,15 +16,17 @@ function useNotifications() {
   })
 
   // Get all notifications.
-  watch(() => userStore.currentUser as User, ({ uid }): void => {
-    if (uid && allNotifications.value.length === 0) {
+  onBeforeMount(() => {
+    if (allNotifications.value.length === 0) {
       // Get all if the list is initially empty.
-      notificationStore.getAllNotifications(uid)
+      commonStore.setLoadingStatus(true)
+      notificationStore.getAllNotifications(unicID.value)
         .then((notifications: INotificationList) => {
           notificationStore.setAllNotification(notifications)
         })
+        .finally(() => commonStore.setLoadingStatus(false))
     }
-  }, { immediate: true })
+  })
 
   return {
     notificationsSize,

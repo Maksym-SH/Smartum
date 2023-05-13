@@ -3,8 +3,8 @@
     <label class="toggle-theme-switch__label" :for="name">
       <input
         :id="name"
-        :name="name"
         v-model="switchModel"
+        :name="name"
         class="toggle-theme-switch__input"
         type="checkbox"
       />

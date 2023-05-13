@@ -13,17 +13,19 @@ export default async function refreshUserInfo(): Promise<void> {
     if (user) {
       getAuth()
         .currentUser?.getIdToken(true)
-        .then(() => {
+        .then(async () => {
           userStore.setCurrentUser(user)
 
-          userStore.getUserProfile(user.uid).then(() => {
+          await userStore.getUserProfile(user.uid).then(() => {
             configurationStore.getUserConfiguration(user.uid)
           })
         })
         .catch((error: ErrorCode): void => ShowErrorMessage(error))
+        .finally(() => commonStore.showTemplateApplication = true)
     }
     else {
       userStore.userLogout()
+      commonStore.showTemplateApplication = true
     }
   })
 }

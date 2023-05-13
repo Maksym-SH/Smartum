@@ -68,7 +68,6 @@ const useDashboardStore = defineStore('dashboard', () => {
   ): Promise<IWorkingBoardItem[]> => {
     const dashboardRef = doc(database, DataCollection.Dashboard, unicID)
 
-    commonStore.setLoadingStatus(true)
     return new Promise((resolve, reject) => {
       getDoc(dashboardRef)
         .then((dashboards) => {
@@ -80,7 +79,6 @@ const useDashboardStore = defineStore('dashboard', () => {
           ShowErrorMessage(error)
           reject(error)
         })
-        .finally(() => commonStore.setLoadingStatus(false))
     })
   }
 
