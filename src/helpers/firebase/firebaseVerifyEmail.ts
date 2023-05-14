@@ -10,6 +10,7 @@ import useStores from '@/composables/useStores'
 
 function VerifyEmail(userInfo: User): void {
   const { notificationStore, userStore } = useStores()
+
   if (!(userStore.currentUser as User).emailVerified) { // Email not verified.
     sendEmailVerification(userInfo).then(() => {
       notify({
@@ -39,6 +40,9 @@ function VerifyEmail(userInfo: User): void {
                   ...getAuth().currentUser,
                   emailVerified,
                 })
+                // Add to search users list new user after verify email.
+                const userInfo = { ...userStore.userInfo, uid: getAuth().currentUser?.uid }
+                userStore.updateUsersList(userInfo)
 
                 clearInterval(checkForVerifiedInterval)
               }

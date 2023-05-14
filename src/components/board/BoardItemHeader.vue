@@ -4,16 +4,52 @@
       <router-link :to="{ name: 'Home' }" class="board-header__logo">
         <img src="/images/icons/logo.svg" alt="" />
       </router-link>
+      <div class="board-header__actions">
+        <InviteusersBtn />
+        <cSelect
+          :items="actions"
+          :size="42"
+          rounded
+          @selected="selected"
+        >
+          <Avatar
+            circle
+            :first-name="userInfo.firstName"
+            :last-name="userInfo.lastName"
+            :avatar="userInfo.avatarParams"
+          />
+        </cSelect>
+      </div>
     </div>
   </header>
 </template>
 
 <script lang="ts">
+import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
+import Avatar from '../user/Avatar.vue'
+import InviteusersBtn from '../user/InviteUsers.vue'
+import useSelectActions from '@/composables/useSelectActions'
+import type { IUserCreated } from '@/types/interfaces'
 
 export default defineComponent({
   components: {
+    Avatar,
+    InviteusersBtn,
+  },
+  props: {
+    userInfo: {
+      type: Object as PropType<IUserCreated>,
+      required: true,
+    },
+  },
+  setup() {
+    const { selected, actions } = useSelectActions()
 
+    return {
+      actions,
+      selected,
+    }
   },
 })
 </script>
@@ -31,6 +67,11 @@ export default defineComponent({
   }
   &__logo {
     width: 150px;
+  }
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
 }
 </style>

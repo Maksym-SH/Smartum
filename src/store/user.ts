@@ -10,6 +10,7 @@ import {
   deleteObject,
   getDownloadURL,
   getStorage,
+  listAll,
   uploadBytes,
 } from 'firebase/storage'
 import type {
@@ -50,9 +51,27 @@ const useUserStore = defineStore('user', () => {
   const setBackgroundAvatar = (background: string): void => {
     userInfo.value.avatarParams.bgAvatar = background
   }
+
+  const getAllUserAvatars = (): Promise<string[]> => {
+    const storage = getStorage()
+    const listAvatarsRef = Refference(storage, import.meta.env.VITE_APP_ALL_AVATAR_PATH)
+
+    return new Promise((resolve, reject) => {
+      listAll(listAvatarsRef).then((response) => {
+        const promises = response.items.map(item => getDownloadURL(item))
+
+        Promise.all(promises).then((photos: string[]) => resolve(photos))
+      }).catch((error: ErrorCode) => {
+        ShowErrorMessage(error)
+        reject(error)
+      })
+    })
+  }
+
   const getUserAvatar = (unicID: string): Promise<string> => {
     const storage = getStorage()
     const avatarRef = Refference(storage, unicID)
+
     return new Promise((resolve) => {
       getDownloadURL(avatarRef).then((avatarParams) => {
         resolve(avatarParams)
@@ -154,23 +173,34 @@ const useUserStore = defineStore('user', () => {
   }
 
   // Other users
-  const getUsersList = (): Promise<IUserForList[]> => {
+  const getUsersList = (loadPhotos?: boolean, showLoading = true, myID?: string): Promise<IUserForList[]> => {
     const userListRef = doc(database, DataCollection.Users, import.meta.env.VITE_APP_ALL_USER_COLLECTION)
 
-    commonStore.setLoadingStatus(true)
+    commonStore.setLoadingStatus(showLoading)
 
     return new Promise((resolve, reject) => {
       getDoc(userListRef)
         .then((response) => {
-          const usersList = response.data()
+          const usersList = response.data()?.collection as IUserInfo[]
 
-          resolve(usersList?.collection as IUserForList[])
+          if (loadPhotos) {
+            getAllUserAvatars().then((list) => {
+              usersList.map((user) => {
+                return user.avatarParams.url = list.find(item => item.includes(user.uid as string)) as string
+              })
+            })
+          }
+
+          if (myID) { // Put myself first in the users list. // ToDo
+          }
+
+          resolve(usersList as IUserForList[])
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error)
           reject(error)
         })
-        .finally(() => commonStore.setLoadingStatus(false))
+        .finally(() => commonStore.setLoadingStatus(showLoading))
     })
   }
 
@@ -353,6 +383,7 @@ const useUserStore = defineStore('user', () => {
   return {
     currentUser,
     userInfo,
+    getUsersList,
     setCurrentUser,
     setUserInfo,
     setBackgroundAvatar,

@@ -19,6 +19,9 @@ export default async function refreshUserInfo(): Promise<void> {
           await userStore.getUserProfile(user.uid).then(() => {
             configurationStore.getUserConfiguration(user.uid)
           })
+
+          const userInfo = { ...userStore.userInfo, uid: getAuth().currentUser?.uid }
+          userStore.updateUsersList(userInfo)
         })
         .catch((error: ErrorCode): void => ShowErrorMessage(error))
         .finally(() => commonStore.showTemplateApplication = true)

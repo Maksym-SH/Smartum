@@ -1,9 +1,10 @@
 <template>
   <div class="c-select" :class="{ active: selectActive }">
     <cButton
-      rounded
+      :style="selectSize"
       variant="text"
       size="small"
+      v-bind="$attrs"
       @click="togglePicker"
       @blur="selectActive = false"
     >
@@ -36,12 +37,14 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
-import { defineComponent, ref } from 'vue'
+import type { CSSProperties, PropType } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
+
 import type { Position, SelectElements } from '@/types/types'
 import { Colors } from '@/types/enums'
 
 export default defineComponent({
+  inheritAttrs: false,
   props: {
     items: {
       type: Array as PropType<SelectElements>,
@@ -52,10 +55,21 @@ export default defineComponent({
       type: String as PropType<Position>,
       default: 'end',
     },
+    size: {
+      type: Number,
+      default: 30,
+    },
   },
   emits: ['selected'],
-  setup() {
+  setup(props) {
     const selectActive = ref(false)
+
+    const selectSize = computed((): CSSProperties => {
+      return {
+        width: `${props.size}px`,
+        height: `${props.size}px`,
+      }
+    })
 
     const togglePicker = (): void => {
       selectActive.value = !selectActive.value
@@ -65,6 +79,7 @@ export default defineComponent({
       selectActive,
       togglePicker,
       Colors,
+      selectSize,
     }
   },
 })
@@ -78,18 +93,14 @@ export default defineComponent({
       background-color: $color-black !important;
     }
   }
-  > .c-button {
-    width: 30px;
-    height: 30px;
-  }
   &__icon {
     width: 25px;
     height: 25px;
   }
   &__picker {
     position: absolute;
-    right: 0;
-    top: 50px;
+    right: calc(50% - 15px);
+    top: calc(100% + 15px);
     z-index: 3;
     background-color: $color-white2;
     border-radius: 4px;

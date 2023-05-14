@@ -14,6 +14,7 @@
           v-for="board in dashboardStore.allDashboards"
           :key="board.joinCode"
           :element="board"
+          @click="openBoard(board.joinCode)"
         />
       </transition-group>
       <transition name="single-content">

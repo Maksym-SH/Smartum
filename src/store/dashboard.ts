@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
+import { notify } from '@kyvg/vue3-notification'
 import type { IWorkingBoardItem } from '@/types/interfaces'
 import type { ErrorCode } from '@/types/types'
 import { database } from '@/helpers/firebase/firebaseInitialize'
@@ -82,6 +83,29 @@ const useDashboardStore = defineStore('dashboard', () => {
     })
   }
 
+  const getWorkingBoardItem = (unicID: string, joinCode: string): Promise<IWorkingBoardItem | string> => {
+    commonStore.setLoadingStatus(true)
+    return new Promise((resolve, reject) => {
+      getAllWorkingBoards(unicID).then((boards) => {
+        const currentBoard = boards.find(item => item.joinCode === joinCode)
+        if (currentBoard) {
+          resolve(currentBoard)
+        }
+        else {
+          reject(new Error('Not found'))
+
+          notify({
+            title: 'Рабочая доска недоступна!',
+            text: 'Текущая доска не существует, либо код приглашение неверный.',
+            type: 'error',
+          })
+        }
+
+        commonStore.setLoadingStatus(false)
+      })
+    })
+  }
+
   return {
     allDashboards,
     clearList,
@@ -89,6 +113,7 @@ const useDashboardStore = defineStore('dashboard', () => {
     addNewBoard,
     createNewWorkingBoard,
     getAllWorkingBoards,
+    getWorkingBoardItem,
   }
 })
 
