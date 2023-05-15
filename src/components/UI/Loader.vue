@@ -1,13 +1,12 @@
 <template>
   <div class="c-loader" :class="{ 'inline-transparent': inline }">
-    <span :style="loaderSize" class="c-loader__spinner">
-    </span>
+    <span :style="loaderSize" class="c-loader__spinner"> </span>
   </div>
 </template>
 
 <script lang="ts">
-import type { CSSProperties } from 'vue'
-import { defineComponent, reactive } from 'vue'
+import type { CSSProperties } from "vue";
+import { defineComponent, reactive } from "vue";
 
 export default defineComponent({
   props: {
@@ -24,13 +23,13 @@ export default defineComponent({
     const loaderSize: CSSProperties = reactive({
       width: `${props.size}px`,
       height: `${props.size}px`,
-    })
+    });
 
     return {
       loaderSize,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>
@@ -57,8 +56,9 @@ export default defineComponent({
     border-color: $color-blue $color-blue transparent transparent;
     box-sizing: border-box;
     animation: rotation 2s linear infinite;
-    &::after, &::before {
-      content: '';
+    &::after,
+    &::before {
+      content: "";
       position: absolute;
       inset: 0;
       margin: auto;

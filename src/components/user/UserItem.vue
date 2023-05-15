@@ -18,25 +18,21 @@
       </h3>
     </div>
     <div class="user-item__action">
-      <span
-        class="user-item__action--invite"
-        @click="$emit('invite')"
-      >
+      <span class="user-item__action--invite" @click="$emit('invite')">
         <span class="mdi mdi-account-plus"></span>
         Пригласить
       </span>
-      <span class="user-item__action--show-info">
-        Информация
-      </span>
+      <span class="user-item__action--show-info"> Информация </span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import type { PropType } from 'vue'
-import Avatar from './Avatar.vue'
-import type { IUserForList } from '@/types/interfaces'
+import { defineComponent } from "vue";
+import type { PropType } from "vue";
+import type { IUserForList } from "@/types/interfaces";
+
+import Avatar from "./Avatar.vue";
 
 export default defineComponent({
   components: {
@@ -48,10 +44,9 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['invite'],
-  setup() {
-  },
-})
+  emits: ["invite"],
+  setup() {},
+});
 </script>
 
 <style lang="scss" scoped>
@@ -67,7 +62,8 @@ export default defineComponent({
     color: var(--color-text);
     width: 200px;
     overflow-x: hidden;
-    &-first-name, &-last-name {
+    &-first-name,
+    &-last-name {
       font-size: 16px;
     }
   }
@@ -81,7 +77,7 @@ export default defineComponent({
       cursor: pointer;
       user-select: none;
       &:hover {
-        color: $color-blue-hover
+        color: $color-blue-hover;
       }
     }
     &--show-info {

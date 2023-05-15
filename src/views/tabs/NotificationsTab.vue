@@ -31,45 +31,46 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { storeToRefs } from 'pinia'
-import type { NotifyAction } from '@/types/types'
-import { Colors } from '@/types/enums'
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
+import { computed, defineComponent } from "vue";
+import { storeToRefs } from "pinia";
+import type { NotifyAction } from "@/types/types";
+import { Colors } from "@/types/enums";
+import { ObjectNotEmpty } from "@/helpers/methods";
 
-import useStores from '@/composables/useStores'
-import NotificationItem from '@/components/notification/NotificationItem.vue'
-import NotificationEmptyList from '@/components/UI/EmptyList.vue'
-import { ObjectNotEmpty } from '@/helpers/methods'
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
+import useStores from "@/composables/useStores";
+import NotificationItem from "@/components/notification/NotificationItem.vue";
+import NotificationEmptyList from "@/components/UI/EmptyList.vue";
 
 export default defineComponent({
   components: {
     Notification: NotificationItem,
     EmptyList: NotificationEmptyList,
   },
-  props: {
-  },
+  props: {},
   setup() {
-    const { commonStore, notificationStore } = useStores()
+    const { commonStore, notificationStore } = useStores();
 
-    const { allNotifications } = storeToRefs(notificationStore)
+    const { allNotifications } = storeToRefs(notificationStore);
 
-    const { currentUser, unicID } = useCurrentUserInfo()
+    const { currentUser, unicID } = useCurrentUserInfo();
 
     const showList = computed((): boolean => {
-      return allNotifications.value.length > 0 && ObjectNotEmpty(currentUser.value)
-    })
+      return (
+        allNotifications.value.length > 0 && ObjectNotEmpty(currentUser.value)
+      );
+    });
 
-    const showLoading = computed((): boolean => commonStore.loadingStatus)
+    const showLoading = computed((): boolean => commonStore.loadingStatus);
 
     const notifyAction = (id: number, action: NotifyAction): void => {
-      notificationStore.notificationAction(id, action) // Delete or read notification by it`s id.
-    }
+      notificationStore.notificationAction(id, action); // Delete or read notification by it`s id.
+    };
 
     const clearAll = (): void => {
-      notificationStore.clearList()
-      notificationStore.updateNotificationList(unicID.value)
-    }
+      notificationStore.clearList();
+      notificationStore.updateNotificationList(unicID.value);
+    };
 
     return {
       showList,
@@ -78,9 +79,9 @@ export default defineComponent({
       allNotifications,
       clearAll,
       notifyAction,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

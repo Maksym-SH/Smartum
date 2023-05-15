@@ -4,12 +4,8 @@
       <div class="configuration-tab__content-navigation-filter">
         <Card table>
           <template #table-header>
-            <th class="card-info__title">
-              Страницы
-            </th>
-            <th class="card-info__title center">
-              Действие
-            </th>
+            <th class="card-info__title">Страницы</th>
+            <th class="card-info__title center">Действие</th>
           </template>
           <template #table-body>
             <tr
@@ -63,9 +59,7 @@
           <template #content>
             <div class="card-info__change-background-avatar">
               <div class="card-info__change-background-avatar--result">
-                <h5 class="card-info__avatar-title">
-                  Результат:
-                </h5>
+                <h5 class="card-info__avatar-title">Результат:</h5>
                 <Avatar
                   :size="80"
                   :avatar="avatarParams"
@@ -87,9 +81,7 @@
       <div class="configuration-tab__content-additional-settings">
         <Card>
           <template #header>
-            <h2 class="card-info__title">
-              Дополнительные настройки
-            </h2>
+            <h2 class="card-info__title">Дополнительные настройки</h2>
           </template>
           <template #content>
             <div class="card-info__additional-settings">
@@ -151,12 +143,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
-import Card from '@/container/Card.vue'
-import Avatar from '@/components/user/Avatar.vue'
-import ColorPicker from '@/components/dialogs/SelectColor.vue'
-import useConfiguration from '@/composables/useConfiguration'
+import Card from "@/container/Card.vue";
+import Avatar from "@/components/user/Avatar.vue";
+import ColorPicker from "@/components/dialogs/SelectColor.vue";
+import useConfiguration from "@/composables/useConfiguration";
 
 export default defineComponent({
   components: {
@@ -165,9 +157,9 @@ export default defineComponent({
     ColorPicker,
   },
   setup() {
-    return useConfiguration()
+    return useConfiguration();
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

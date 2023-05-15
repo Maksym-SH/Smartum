@@ -1,7 +1,10 @@
 <template>
   <div class="dashboard-tab">
     <div class="dashboard-tab__content">
-      <div v-if="!showLockAccess" class="dashboard-tab__content--create-new full-width--tablet">
+      <div
+        v-if="!showLockAccess"
+        class="dashboard-tab__content--create-new full-width--tablet"
+      >
         <CreateNewBoard @create-new="createNewBoard" />
       </div>
       <transition-group
@@ -32,20 +35,20 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { notify } from '@kyvg/vue3-notification'
-import type { User } from '@firebase/auth'
-import type { IWorkingBoardItem } from '@/types/interfaces'
-import { NotificationType } from '@/types/enums'
+import { computed, defineComponent, onBeforeMount, ref } from "vue";
+import { useRouter } from "vue-router";
+import { notify } from "@kyvg/vue3-notification";
+import type { User } from "@firebase/auth";
+import type { IWorkingBoardItem } from "@/types/interfaces";
+import { NotificationType } from "@/types/enums";
 
-import LockAccess from '@/components/dashboard/NeedEmailConfirmation.vue'
-import EmptyList from '@/components/UI/EmptyList.vue'
-import CreateNewBoard from '@/components/dialogs/CreateNewBoard.vue'
-import BoardCard from '@/components/dashboard/BoardItem.vue'
-import newNotificationContent from '@/composables/useNotificationContent'
-import useStores from '@/composables/useStores'
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
+import LockAccess from "@/components/dashboard/NeedEmailConfirmation.vue";
+import EmptyList from "@/components/UI/EmptyList.vue";
+import CreateNewBoard from "@/components/dialogs/CreateNewBoard.vue";
+import BoardCard from "@/components/dashboard/BoardItem.vue";
+import newNotificationContent from "@/composables/useNotificationContent";
+import useStores from "@/composables/useStores";
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 
 export default defineComponent({
   components: {
@@ -55,65 +58,65 @@ export default defineComponent({
     BoardCard,
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
 
-    const { notificationStore, dashboardStore, commonStore } = useStores()
+    const { notificationStore, dashboardStore, commonStore } = useStores();
 
-    const { unicID, currentUser } = useCurrentUserInfo()
+    const { unicID, currentUser } = useCurrentUserInfo();
 
-    const showPreload = computed(() => commonStore.loadingStatus)
+    const showPreload = computed(() => commonStore.loadingStatus);
 
     const showLockAccess = computed(
-      (): boolean => !(currentUser.value as User).emailVerified,
-    )
+      (): boolean => !(currentUser.value as User).emailVerified
+    );
 
-    const listEmpty = ref(false)
+    const listEmpty = ref(false);
 
     const centeringContent = computed(
-      () => (showLockAccess.value || listEmpty.value) && !showPreload.value,
-    )
+      () => (showLockAccess.value || listEmpty.value) && !showPreload.value
+    );
 
     const createNewBoard = (board: IWorkingBoardItem): void => {
       dashboardStore
         .createNewWorkingBoard(board, unicID.value)
         .then((newBoard: IWorkingBoardItem): void => {
           notify({
-            title: 'Успешно!',
+            title: "Успешно!",
             text: `Рабочая доска ${newBoard.title} была успешно создана!`,
-            type: 'success',
-          })
+            type: "success",
+          });
 
-          listEmpty.value = false
+          listEmpty.value = false;
 
           // Add new notification.
           const notification = newNotificationContent(
             NotificationType.DashboardCreate,
-            newBoard.title,
-          )
+            newBoard.title
+          );
 
-          notificationStore.setNewNotification(notification)
-        })
-    }
+          notificationStore.setNewNotification(notification);
+        });
+    };
 
     const openBoard = (joinCode: string) => {
       router.push({
-        name: 'Board',
+        name: "Board",
         params: {
           code: joinCode,
         },
-      })
-    }
+      });
+    };
 
     // Get all boards.
     onBeforeMount((): void => {
       if (!dashboardStore.allDashboards.length) {
-        dashboardStore.getAllWorkingBoards(unicID.value)
-          .then(() => {
-            if (!dashboardStore.allDashboards.length) // Still no boards.
-              listEmpty.value = true
-          })
+        dashboardStore.getAllWorkingBoards(unicID.value).then(() => {
+          if (!dashboardStore.allDashboards.length)
+            // Still no boards.
+            listEmpty.value = true;
+        });
       }
-    })
+    });
 
     return {
       centeringContent,
@@ -123,9 +126,9 @@ export default defineComponent({
       dashboardStore,
       openBoard,
       createNewBoard,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

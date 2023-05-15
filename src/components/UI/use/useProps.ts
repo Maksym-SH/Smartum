@@ -1,21 +1,21 @@
-import type { PropType } from 'vue'
+import type { PropType } from "vue";
 import type {
   AsideExpPanelNavigation,
   ButtonSize,
   ButtonVariant,
   ExpansionPanelVariant,
-} from '@/types/types'
-import { Colors, Length } from '@/types/enums'
+} from "@/types/types";
+import { Colors, Length } from "@/types/enums";
 
 // Input.vue
 export const useInputProps = {
   modelValue: {
     type: [String, Number],
-    default: '',
+    default: "",
   },
   type: {
     type: String,
-    default: 'text',
+    default: "text",
   },
   transparent: {
     type: Boolean,
@@ -23,7 +23,7 @@ export const useInputProps = {
   },
   placeholder: {
     type: String,
-    default: '',
+    default: "",
   },
   name: {
     type: String,
@@ -55,13 +55,13 @@ export const useInputProps = {
   },
   label: {
     type: String,
-    default: '',
+    default: "",
   },
   autoComplete: {
     type: [Boolean, String],
     default: true,
   },
-}
+};
 
 // Textarea.vue
 export const useTextareaProps = {
@@ -71,7 +71,7 @@ export const useTextareaProps = {
   },
   placeholder: {
     type: String,
-    default: '',
+    default: "",
   },
   required: {
     type: Boolean,
@@ -91,7 +91,7 @@ export const useTextareaProps = {
   },
   label: {
     type: String,
-    default: '',
+    default: "",
   },
   min: {
     type: Number,
@@ -101,21 +101,21 @@ export const useTextareaProps = {
     type: Boolean,
     default: false,
   },
-}
+};
 
 // Button.vue
 export const useButtonProps = {
   title: {
     type: String,
-    default: '',
+    default: "",
   },
   icon: {
     type: String,
-    default: '',
+    default: "",
   },
   variant: {
     type: String as PropType<ButtonVariant>,
-    default: 'elevated',
+    default: "elevated",
   },
   color: {
     type: String as PropType<Colors>,
@@ -135,9 +135,9 @@ export const useButtonProps = {
   },
   size: {
     type: String as PropType<ButtonSize>,
-    default: 'default',
+    default: "default",
   },
-}
+};
 
 // Checkbox.vue
 export const useCheckboxProps = {
@@ -151,7 +151,7 @@ export const useCheckboxProps = {
   },
   label: {
     type: String,
-    default: '',
+    default: "",
   },
   switchBox: {
     type: Boolean,
@@ -159,19 +159,19 @@ export const useCheckboxProps = {
   },
   secondaryLabel: {
     type: String,
-    default: '',
+    default: "",
   },
   disabled: {
     type: Boolean,
     default: false,
   },
-}
+};
 
 // ExpansionPanel.vue
 export const useExpansionPanelProps = {
   variant: {
     type: String as PropType<ExpansionPanelVariant>,
-    default: 'default',
+    default: "default",
   },
   name: {
     type: String,
@@ -179,7 +179,7 @@ export const useExpansionPanelProps = {
   },
   icon: {
     type: String,
-    default: '',
+    default: "",
   },
   avatar: {
     type: String,
@@ -189,4 +189,4 @@ export const useExpansionPanelProps = {
     type: Array as PropType<AsideExpPanelNavigation[]>,
     default: () => [],
   },
-}
+};

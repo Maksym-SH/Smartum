@@ -14,7 +14,7 @@
       class="label secondary-label"
       :class="{
         'not-selected': checked,
-        'disabled': disabled,
+        disabled: disabled,
       }"
       @click="checkboxToggle(false)"
     >
@@ -22,11 +22,7 @@
     </span>
 
     <!-- Switch -->
-    <label
-      class="checkbox-label"
-      :for="name"
-      :class="{ disabled }"
-    ></label>
+    <label class="checkbox-label" :for="name" :class="{ disabled }"></label>
 
     <!-- Text -->
     <span
@@ -34,7 +30,7 @@
       class="label main-label"
       :class="{
         'not-selected': !checked,
-        'disabled': disabled,
+        disabled: disabled,
       }"
       @click="checkboxToggle(true)"
     >
@@ -44,42 +40,40 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watch } from 'vue'
-import { useCheckboxProps } from './use/useProps'
+import { computed, defineComponent, watch } from "vue";
+import { useCheckboxProps } from "./use/useProps";
 
 export default defineComponent({
   props: useCheckboxProps,
-  emits: ['update:modelValue'],
+  emits: ["update:modelValue"],
 
   setup(props, { emit }) {
     const checked = computed({
       get: () => props.modelValue,
-      set: newValue => emit('update:modelValue', newValue),
-    })
+      set: (newValue) => emit("update:modelValue", newValue),
+    });
 
-    const hasTwoLabel = computed(
-      (): boolean =>
-        Boolean(props.switchBox && props.label && props.secondaryLabel),
-    )
+    const hasTwoLabel = computed((): boolean =>
+      Boolean(props.switchBox && props.label && props.secondaryLabel)
+    );
 
     const checkboxToggle = (value: boolean): void => {
       if (hasTwoLabel.value) {
         // Label [checkbox] Label
-        checked.value = value
+        checked.value = value;
+      } else {
+        checked.value = !checked.value;
       }
-      else {
-        checked.value = !checked.value
-      }
-    }
+    };
 
-    watch(checked, (): void => emit('update:modelValue', checked.value))
+    watch(checked, (): void => emit("update:modelValue", checked.value));
 
     return {
       checked,
       checkboxToggle,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

@@ -3,7 +3,10 @@
   <transition name="toggle-popup" mode="out-in">
     <Popup v-if="showPopup" />
   </transition>
-  <LongContentModal v-if="commonStore.modalContentType" :content-type="commonStore.modalContentType" />
+  <LongContentModal
+    v-if="commonStore.modalContentType"
+    :content-type="commonStore.modalContentType"
+  />
   <transition name="toggle-popup" mode="out-in">
     <ConfirmationPopup v-if="commonStore.openConfirmPopup" />
   </transition>
@@ -17,36 +20,41 @@
 </template>
 
 <script lang="ts">
-import { computed, defineAsyncComponent, defineComponent, onBeforeUnmount } from 'vue'
-import { ObjectNotEmpty } from './helpers/methods'
+import {
+  computed,
+  defineAsyncComponent,
+  defineComponent,
+  onBeforeUnmount,
+} from "vue";
+import { ObjectNotEmpty } from "./helpers/methods";
 
-import useStores from './composables/useStores'
+import useStores from "./composables/useStores";
 
 export default defineComponent({
   components: {
-    Popup: defineAsyncComponent(() => import('@/components/UI/Popup.vue')),
+    Popup: defineAsyncComponent(() => import("@/components/UI/Popup.vue")),
     ConfirmationPopup: defineAsyncComponent(
-      () => import('@/components/UI/Confirmation.vue'),
+      () => import("@/components/UI/Confirmation.vue")
     ),
     LongContentModal: defineAsyncComponent(
-      () => import('@/components/UI/LongContentModal.vue'),
+      () => import("@/components/UI/LongContentModal.vue")
     ),
   },
   setup() {
-    const { commonStore, userStore } = useStores()
+    const { commonStore, userStore } = useStores();
 
     onBeforeUnmount(() => {
-      userStore.updateUsersList({ ...userStore.userInfo })
-    })
+      userStore.updateUsersList({ ...userStore.userInfo });
+    });
 
     return {
       commonStore,
       showPopup: computed((): boolean =>
-        ObjectNotEmpty(commonStore.popupParams),
+        ObjectNotEmpty(commonStore.popupParams)
       ),
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss">

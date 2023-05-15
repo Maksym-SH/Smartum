@@ -23,9 +23,9 @@
 </template>
 
 <script lang="ts">
-import type { CSSProperties } from 'vue'
-import { computed, defineComponent, ref } from 'vue'
-import { useAvatarProps } from './use/useProps'
+import type { CSSProperties } from "vue";
+import { computed, defineComponent, ref } from "vue";
+import { useAvatarProps } from "./use/useProps";
 
 export default defineComponent({
   props: useAvatarProps,
@@ -33,20 +33,20 @@ export default defineComponent({
   setup(props) {
     const initials = computed((): string | null => {
       if (props.firstName) {
-        const firstNameInitial = props.firstName[0].toUpperCase()
-        const lastNameInitial = props.lastName[0]?.toUpperCase() ?? ''
+        const firstNameInitial = props.firstName[0].toUpperCase();
+        const lastNameInitial = props.lastName[0]?.toUpperCase() ?? "";
 
-        return firstNameInitial + lastNameInitial
+        return firstNameInitial + lastNameInitial;
       }
 
-      return null
-    })
+      return null;
+    });
 
     const showPreload = computed(
       () =>
-        (!initials.value && !props.avatar.url)
-        || (!props.avatar.bgAvatar && !props.noBackground),
-    )
+        (!initials.value && !props.avatar.url) ||
+        (!props.avatar.bgAvatar && !props.noBackground)
+    );
 
     const avatarStyles = computed((): CSSProperties => {
       return {
@@ -54,15 +54,15 @@ export default defineComponent({
         minWidth: `${props.size}px`,
         height: `${props.size}px`,
         backgroundColor: props.avatar.bgAvatar,
-      }
-    })
+      };
+    });
 
-    const imgLoaded = ref(false)
-    const imgLoad = (): boolean => (imgLoaded.value = true)
+    const imgLoaded = ref(false);
+    const imgLoad = (): boolean => (imgLoaded.value = true);
 
     const sizeInitials = computed(
-      (): string => `font-size: ${props.size / 2.2}px;`,
-    )
+      (): string => `font-size: ${props.size / 2.2}px;`
+    );
 
     return {
       avatarStyles,
@@ -71,9 +71,9 @@ export default defineComponent({
       sizeInitials,
       showPreload,
       imgLoad,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

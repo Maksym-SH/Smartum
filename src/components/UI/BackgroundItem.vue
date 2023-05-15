@@ -9,16 +9,16 @@
 </template>
 
 <script lang="ts">
-import { computed } from '@vue/reactivity'
-import type { CSSProperties, PropType } from 'vue'
-import { defineComponent } from 'vue'
-import type { Colors } from '@/types/enums'
+import { computed } from "@vue/reactivity";
+import type { CSSProperties, PropType } from "vue";
+import { defineComponent } from "vue";
+import type { Colors } from "@/types/enums";
 
 export default defineComponent({
   props: {
     image: {
       type: String,
-      default: '',
+      default: "",
     },
     width: {
       type: Number,
@@ -30,29 +30,29 @@ export default defineComponent({
     },
     background: {
       type: String as PropType<Colors | string>,
-      default: '',
+      default: "",
     },
   },
-  emits: ['select'],
+  emits: ["select"],
   setup(props, { emit }) {
     const size = computed((): CSSProperties => {
       return {
         width: `${props.width}px`,
         height: `${props.height}px`,
-      }
-    })
+      };
+    });
 
     const selectExample = (): void => {
-      const emitTarget = props.background ? props.background : props.image
-      emit('select', emitTarget)
-    }
+      const emitTarget = props.background ? props.background : props.image;
+      emit("select", emitTarget);
+    };
 
     return {
       size,
       selectExample,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

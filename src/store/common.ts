@@ -1,30 +1,34 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-import type { IPopupParams } from '@/types/interfaces'
-import type { ModalContentType } from '@/types/types'
+import { ref } from "vue";
+import { defineStore } from "pinia";
+import type { IPopupParams } from "@/types/interfaces";
+import type { ModalContentType } from "@/types/types";
 
-const useCommonStore = defineStore('common', () => {
-  const showTemplateApplication = ref(false)
-  const loadingStatus = ref(false)
-  const popupParams = ref<IPopupParams | {}>({})
-  const openConfirmPopup = ref(false)
-  const modalContentType = ref<ModalContentType>('')
+const useCommonStore = defineStore("common", () => {
+  const showTemplateApplication = ref(false);
+
+  const loadingStatus = ref(false);
+
+  const popupParams = ref<IPopupParams | {}>({});
+
+  const openConfirmPopup = ref(false);
+
+  const modalContentType = ref<ModalContentType>("");
 
   const setLoadingStatus = (status: boolean): void => {
-    loadingStatus.value = status
-  }
+    loadingStatus.value = status;
+  };
 
   const setPopupParams = (params: IPopupParams | {}): void => {
-    popupParams.value = params
-  }
+    popupParams.value = params;
+  };
 
   const setConfirmPopupVisibillity = (toggle: boolean): void => {
-    openConfirmPopup.value = toggle
-  }
+    openConfirmPopup.value = toggle;
+  };
 
   const setModalContentType = (type: ModalContentType): void => {
-    modalContentType.value = type
-  }
+    modalContentType.value = type;
+  };
 
   return {
     loadingStatus,
@@ -36,7 +40,7 @@ const useCommonStore = defineStore('common', () => {
     setPopupParams,
     setConfirmPopupVisibillity,
     setModalContentType,
-  }
-})
+  };
+});
 
-export default useCommonStore
+export default useCommonStore;

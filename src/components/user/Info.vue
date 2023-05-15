@@ -18,43 +18,42 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import type { User } from '@firebase/auth'
-import { useInfoProps } from './use/useProps'
-import type { EmailVerify, StatusVueIcon } from '@/types/types'
+import { computed, defineComponent } from "vue";
+import type { User } from "@firebase/auth";
+import { useInfoProps } from "./use/useProps";
+import type { EmailVerify, StatusVueIcon } from "@/types/types";
 
-import useStores from '@/composables/useStores'
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   props: useInfoProps,
   setup() {
-    const { userStore, configurationStore } = useStores()
+    const { userStore, configurationStore } = useStores();
 
     const emailVerified = computed(
-      (): boolean => (userStore.currentUser as User).emailVerified,
-    )
+      (): boolean => (userStore.currentUser as User).emailVerified
+    );
     const showVerifiedTemplate = computed(
-      (): boolean => configurationStore.additionalParams.showEmailConfirm,
-    )
+      (): boolean => configurationStore.additionalParams.showEmailConfirm
+    );
 
     const userStatusText = computed((): EmailVerify => {
-      if (emailVerified.value)
-        return 'Адрес подтверждён'
-      return 'Адрес не подтверждён'
-    })
+      if (emailVerified.value) return "Адрес подтверждён";
+      return "Адрес не подтверждён";
+    });
 
     const statusIcon: StatusVueIcon = emailVerified.value
-      ? 'mdi-email-check'
-      : 'mdi-email-alert'
+      ? "mdi-email-check"
+      : "mdi-email-alert";
 
     return {
       statusIcon,
       showVerifiedTemplate,
       emailVerified,
       userStatusText,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

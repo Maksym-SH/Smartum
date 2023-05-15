@@ -6,12 +6,7 @@
       </router-link>
       <div class="board-header__actions">
         <InviteusersBtn />
-        <cSelect
-          :items="actions"
-          :size="42"
-          rounded
-          @selected="selected"
-        >
+        <cSelect :items="actions" :size="42" rounded @selected="selected">
           <Avatar
             circle
             :first-name="userInfo.firstName"
@@ -25,12 +20,13 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
-import { defineComponent } from 'vue'
-import Avatar from '../user/Avatar.vue'
-import InviteusersBtn from '../user/InviteUsers.vue'
-import useSelectActions from '@/composables/useSelectActions'
-import type { IUserCreated } from '@/types/interfaces'
+import type { PropType } from "vue";
+import { defineComponent } from "vue";
+import type { IUserCreated } from "@/types/interfaces";
+
+import Avatar from "../user/Avatar.vue";
+import InviteusersBtn from "../user/InviteUsers.vue";
+import useSelectActions from "@/composables/useSelectActions";
 
 export default defineComponent({
   components: {
@@ -44,14 +40,14 @@ export default defineComponent({
     },
   },
   setup() {
-    const { selected, actions } = useSelectActions()
+    const { selected, actions } = useSelectActions();
 
     return {
       actions,
       selected,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

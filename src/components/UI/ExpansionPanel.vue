@@ -21,21 +21,21 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useExpansionPanelProps } from './use/useProps'
+import { computed, defineComponent } from "vue";
+import { useExpansionPanelProps } from "./use/useProps";
 
 export default defineComponent({
   props: useExpansionPanelProps,
   setup(props) {
     const showExpansionPanelContent = computed(
-      (): number => props.content.length,
-    )
+      (): number => props.content.length
+    );
 
     return {
       showExpansionPanelContent,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

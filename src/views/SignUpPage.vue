@@ -13,9 +13,7 @@
           alt="Tasks"
         />
 
-        <h3 class="sign-up__window--welcome-title">
-          Добро пожаловать!
-        </h3>
+        <h3 class="sign-up__window--welcome-title">Добро пожаловать!</h3>
         <div class="sign-up__window-content">
           <h4 class="sign-up__window--welcome-description">
             Заполните форму чтобы создать аккаунт.
@@ -30,9 +28,7 @@
         </div>
       </div>
       <div class="sign-up__window_content content">
-        <h2 class="sign-up__window_content-title">
-          Создание аккаунта
-        </h2>
+        <h2 class="sign-up__window_content-title">Создание аккаунта</h2>
         <form class="sign-up__window-form-inputs" @submit.prevent="submitForm">
           <cInput
             v-model.trim="userData.firstName"
@@ -104,53 +100,53 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive } from 'vue'
-import * as emailValidator from 'email-validator'
-import type { IUserReg } from '@/types/interfaces'
-import type { ModalContentType } from '@/types/types'
-import { Length } from '@/types/enums'
+import { computed, defineComponent, reactive } from "vue";
+import type { IUserReg } from "@/types/interfaces";
+import type { ModalContentType } from "@/types/types";
+import { Length } from "@/types/enums";
 
-import useStores from '@/composables/useStores'
-import FirebaseAuth from '@/helpers/firebase/firebaseAuth'
+import * as emailValidator from "email-validator";
+import useStores from "@/composables/useStores";
+import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 export default defineComponent({
   setup() {
-    const { commonStore } = useStores()
+    const { commonStore } = useStores();
 
     const userData: IUserReg = reactive({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-    })
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    });
 
-    const LengthPassword = Length.Password
-    const LengthText = Length.Text
+    const LengthPassword = Length.Password;
+    const LengthText = Length.Text;
 
     const validPersonDate = computed((): boolean => {
       return (
-        userData.firstName.length >= LengthText
-        && (!userData.lastName.length || userData.lastName.length >= LengthText)
-        && userData.password.length >= LengthPassword
-      )
-    })
+        userData.firstName.length >= LengthText &&
+        (!userData.lastName.length || userData.lastName.length >= LengthText) &&
+        userData.password.length >= LengthPassword
+      );
+    });
 
-    const { signUp } = FirebaseAuth()
+    const { signUp } = FirebaseAuth();
 
     const valid = computed((): boolean => {
-      return emailValidator.validate(userData.email) && validPersonDate.value
-    })
+      return emailValidator.validate(userData.email) && validPersonDate.value;
+    });
 
-    const submitForm = (): void => signUp(userData, valid.value)
+    const submitForm = (): void => signUp(userData, valid.value);
 
     const showTermsOfUse = () => {
-      const type: ModalContentType = 'termsOfUse'
-      commonStore.setModalContentType(type)
-    }
+      const type: ModalContentType = "termsOfUse";
+      commonStore.setModalContentType(type);
+    };
     const showConfidentiality = () => {
-      const type: ModalContentType = 'confidentiality'
-      commonStore.setModalContentType(type)
-    }
+      const type: ModalContentType = "confidentiality";
+      commonStore.setModalContentType(type);
+    };
 
     return {
       userData,
@@ -158,9 +154,9 @@ export default defineComponent({
       submitForm,
       showTermsOfUse,
       showConfidentiality,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

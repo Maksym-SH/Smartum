@@ -53,42 +53,42 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue'
-import * as emailValidator from 'email-validator'
-import type { IUserLogin } from '@/types/interfaces'
-import { Length } from '@/types/enums'
+import { computed, defineComponent, reactive, ref } from "vue";
+import type { IUserLogin } from "@/types/interfaces";
+import { Length } from "@/types/enums";
 
-import FirebaseAuth from '@/helpers/firebase/firebaseAuth'
+import * as emailValidator from "email-validator";
+import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 export default defineComponent({
   setup() {
     const userData: IUserLogin = reactive({
-      email: '',
-      password: '',
-    })
+      email: "",
+      password: "",
+    });
 
-    const authType = ref('signIn')
-    const minLength = Length.Password
+    const authType = ref("signIn");
+    const minLength = Length.Password;
 
-    const { signIn } = FirebaseAuth()
+    const { signIn } = FirebaseAuth();
 
     const valid = computed((): boolean => {
       return (
-        emailValidator.validate(userData.email)
-        && userData.password.length >= minLength
-      )
-    })
+        emailValidator.validate(userData.email) &&
+        userData.password.length >= minLength
+      );
+    });
 
-    const submitForm = (): void => signIn(userData, valid.value)
+    const submitForm = (): void => signIn(userData, valid.value);
 
     return {
       userData,
       authType,
       Length,
       submitForm,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

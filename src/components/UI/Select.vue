@@ -37,11 +37,11 @@
 </template>
 
 <script lang="ts">
-import type { CSSProperties, PropType } from 'vue'
-import { computed, defineComponent, ref } from 'vue'
+import type { CSSProperties, PropType } from "vue";
+import { computed, defineComponent, ref } from "vue";
 
-import type { Position, SelectElements } from '@/types/types'
-import { Colors } from '@/types/enums'
+import type { Position, SelectElements } from "@/types/types";
+import { Colors } from "@/types/enums";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -53,36 +53,36 @@ export default defineComponent({
     location: {
       // ToDo
       type: String as PropType<Position>,
-      default: 'end',
+      default: "end",
     },
     size: {
       type: Number,
       default: 30,
     },
   },
-  emits: ['selected'],
+  emits: ["selected"],
   setup(props) {
-    const selectActive = ref(false)
+    const selectActive = ref(false);
 
     const selectSize = computed((): CSSProperties => {
       return {
         width: `${props.size}px`,
         height: `${props.size}px`,
-      }
-    })
+      };
+    });
 
     const togglePicker = (): void => {
-      selectActive.value = !selectActive.value
-    }
+      selectActive.value = !selectActive.value;
+    };
 
     return {
       selectActive,
       togglePicker,
       Colors,
       selectSize,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

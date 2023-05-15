@@ -18,11 +18,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from "vue";
 
-import Date from '@/components/date/DateTime.vue'
-import SwitchTheme from '@/components/UI/SwitchTheme.vue'
-import useStores from '@/composables/useStores'
+import Date from "@/components/date/DateTime.vue";
+import SwitchTheme from "@/components/UI/SwitchTheme.vue";
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   components: {
@@ -30,20 +30,20 @@ export default defineComponent({
     SwitchTheme,
   },
   setup() {
-    const { configurationStore } = useStores()
+    const { configurationStore } = useStores();
 
-    const searchInput = ref('')
+    const searchInput = ref("");
 
     const showDateTemplate = computed((): boolean => {
-      return configurationStore.additionalParams.showCurrentDate
-    })
+      return configurationStore.additionalParams.showCurrentDate;
+    });
 
     return {
       searchInput,
       showDateTemplate,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

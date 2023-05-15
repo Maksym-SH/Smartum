@@ -41,47 +41,46 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
-import { useTextareaProps } from './use/useProps'
-import type { ModelValue, RefElement } from '@/types/types'
+import { computed, defineComponent, ref, watch } from "vue";
+import { useTextareaProps } from "./use/useProps";
+import type { ModelValue, RefElement } from "@/types/types";
 
 export default defineComponent({
   inheritAttrs: false,
 
   props: useTextareaProps,
-  emits: ['invalid', 'update:modelValue', 'click'],
+  emits: ["invalid", "update:modelValue", "click"],
 
   setup(props, { emit }) {
-    const errorText = ref('')
+    const errorText = ref("");
 
-    const isRequired = ref(false)
+    const isRequired = ref(false);
 
-    const textareaRef = ref<RefElement>(null)
+    const textareaRef = ref<RefElement>(null);
 
     const model = computed({
       get: () => props.modelValue,
-      set: newValue => emit('update:modelValue', newValue),
-    })
+      set: (newValue) => emit("update:modelValue", newValue),
+    });
 
     const validator = (): void => {
       if (props.min && String(model.value).length < props.min)
-        errorText.value = `Введите не менее ${props.min} символов.`
-      else if (String(model.value).startsWith(' '))
-        errorText.value = 'Начальное пустое значение недопустимо.'
-    }
+        errorText.value = `Введите не менее ${props.min} символов.`;
+      else if (String(model.value).startsWith(" "))
+        errorText.value = "Начальное пустое значение недопустимо.";
+    };
 
     watch(
       (): ModelValue => props.modelValue,
-      (): string => (errorText.value = ''),
-    )
+      (): string => (errorText.value = "")
+    );
 
     watch(
       (): string => errorText.value,
       (message): void => {
-        if (message)
-          emit('invalid')
-      },
-    )
+        if (message) emit("invalid");
+      }
+    );
 
     return {
       errorText,
@@ -89,9 +88,9 @@ export default defineComponent({
       textareaRef,
       model,
       validator,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

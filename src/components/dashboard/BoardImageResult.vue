@@ -18,17 +18,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent } from "vue";
 
 export default defineComponent({
   props: {
     imageDecor: {
       type: String,
-      default: '',
+      default: "",
     },
     image: {
       type: String,
-      default: '',
+      default: "",
     },
     background: {
       type: String,
@@ -38,15 +38,15 @@ export default defineComponent({
   setup(props) {
     const showSelectedImage = computed((): boolean => {
       return (
-        Boolean(props.image) && props.background.includes('dashboardTemplates')
-      )
-    })
+        Boolean(props.image) && props.background.includes("dashboardTemplates")
+      );
+    });
 
     return {
       showSelectedImage,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

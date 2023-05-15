@@ -26,16 +26,20 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
-import { defineComponent, reactive } from 'vue'
-import Avatar from '../user/Avatar.vue'
-import type { INotification, IPictureParams, IServerDate } from '@/types/interfaces'
-import { NotificationActionType } from '@/types/enums'
+import type { PropType } from "vue";
+import { defineComponent, reactive } from "vue";
+import type {
+  INotification,
+  IPictureParams,
+  IServerDate,
+} from "@/types/interfaces";
+import { NotificationActionType } from "@/types/enums";
 
-import VerifyEmail from '@/helpers/firebase/firebaseVerifyEmail'
-import router from '@/router'
-import useDateParseToString from '@/composables/useDateParse'
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
+import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
+import router from "@/router";
+import useDateParseToString from "@/composables/useDateParse";
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
+import Avatar from "../user/Avatar.vue";
 
 export default defineComponent({
   components: {
@@ -47,21 +51,21 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['deleteNotification', 'readNotification'],
+  emits: ["deleteNotification", "readNotification"],
   setup(props, { emit }) {
     const image = reactive<IPictureParams>({
-      url: props.params.image || '',
-    })
-    const { currentUser } = useCurrentUserInfo()
+      url: props.params.image || "",
+    });
+    const { currentUser } = useCurrentUserInfo();
 
     const deleteNotification = (): void => {
-      emit('deleteNotification', props.params.id)
-    }
+      emit("deleteNotification", props.params.id);
+    };
 
-    const dateSent = useDateParseToString(props.params.date)
+    const dateSent = useDateParseToString(props.params.date);
 
     const readNotification = (): void => {
-      emit('readNotification', props.params.id)
+      emit("readNotification", props.params.id);
 
       // Action by notification type.
       switch (props.params.type) {
@@ -70,17 +74,17 @@ export default defineComponent({
         //  router.push({ name: "Dashboard" });
         //  break;
         case NotificationActionType.Verify:
-          VerifyEmail(currentUser.value)
-          break
+          VerifyEmail(currentUser.value);
+          break;
         case NotificationActionType.Profile:
-          router.push({ name: 'Profile' })
-          break
+          router.push({ name: "Profile" });
+          break;
         case NotificationActionType.Reset:
-          router.push({ name: 'Forgot' })
-          break
+          router.push({ name: "Forgot" });
+          break;
         case NotificationActionType.Configuration:
-          router.push({ name: 'Configuration' })
-          break
+          router.push({ name: "Configuration" });
+          break;
         case NotificationActionType.Default:
         case NotificationActionType.Dashboard: // ToDo.
 
@@ -89,16 +93,16 @@ export default defineComponent({
         //  router.push({ name: "Dashboard/User" })
         //  break;
       }
-    }
+    };
 
     return {
       deleteNotification,
       readNotification,
       image,
       dateSent,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

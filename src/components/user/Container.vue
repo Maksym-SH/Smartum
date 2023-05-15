@@ -14,11 +14,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { useContainerProps } from './use/useProps'
-import Avatar from './Avatar.vue'
-import Info from './Info.vue'
-import useSelectActions from '@/composables/useSelectActions'
+import { defineComponent } from "vue";
+import { useContainerProps } from "./use/useProps";
+
+import useSelectActions from "@/composables/useSelectActions";
+import Avatar from "./Avatar.vue";
+import Info from "./Info.vue";
 
 export default defineComponent({
   components: {
@@ -26,16 +27,16 @@ export default defineComponent({
     Info,
   },
   props: useContainerProps,
-  emits: ['userMenuPicked'],
+  emits: ["userMenuPicked"],
   setup(_) {
-    const { actions, selected } = useSelectActions()
+    const { actions, selected } = useSelectActions();
 
     return {
       actions,
       selected,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

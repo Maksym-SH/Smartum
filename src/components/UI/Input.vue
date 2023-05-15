@@ -75,79 +75,77 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
-import * as emailValidator from 'email-validator'
-import { useInputProps } from './use/useProps'
-import type { AutoComplete, ModelValue, RefElement } from '@/types/types'
+import { computed, defineComponent, ref, watch } from "vue";
+import * as emailValidator from "email-validator";
+import { useInputProps } from "./use/useProps";
+import type { AutoComplete, ModelValue, RefElement } from "@/types/types";
 
-import RegExp from '@/helpers/regExp'
+import RegExp from "@/helpers/regExp";
 
 export default defineComponent({
   inheritAttrs: false,
   props: useInputProps,
-  emits: ['invalid', 'update:modelValue', 'click'],
+  emits: ["invalid", "update:modelValue", "click"],
 
   setup(props, { emit }) {
-    const errorText = ref('')
+    const errorText = ref("");
 
     const model = computed({
       get: () => props.modelValue,
-      set: newValue => emit('update:modelValue', newValue),
-    })
+      set: (newValue) => emit("update:modelValue", newValue),
+    });
 
-    const inputRef = ref<RefElement>(null)
+    const inputRef = ref<RefElement>(null);
 
-    const showPassword = ref(false)
+    const showPassword = ref(false);
 
     const validator = (): void => {
       if (props.isEmail && !emailValidator.validate(model.value as string))
-        errorText.value = 'Введите корректный адрес.'
+        errorText.value = "Введите корректный адрес.";
       else if (
-        props.isPhone
-        && !String(model.value).match(RegExp.Phone)
-        && model.value
+        props.isPhone &&
+        !String(model.value).match(RegExp.Phone) &&
+        model.value
       )
-        errorText.value = 'Введите корректный формат.'
+        errorText.value = "Введите корректный формат.";
       else if (props.min && String(model.value).length < props.min)
-        errorText.value = `Введите не менее ${props.min} символов.`
-      else if (props.type === 'password' && String(model.value).match(' '))
-        errorText.value = 'Пробелы не допускаются.'
-    }
+        errorText.value = `Введите не менее ${props.min} символов.`;
+      else if (props.type === "password" && String(model.value).match(" "))
+        errorText.value = "Пробелы не допускаются.";
+    };
 
     const toggleInputType = (): void => {
-      if (inputRef.value?.type === 'password') {
-        inputRef.value!.type = 'text'
-        showPassword.value = true
+      if (inputRef.value?.type === "password") {
+        inputRef.value!.type = "text";
+        showPassword.value = true;
+      } else {
+        inputRef.value!.type = "password";
+        showPassword.value = false;
       }
-      else {
-        inputRef.value!.type = 'password'
-        showPassword.value = false
-      }
-    }
+    };
 
     watch(
       (): ModelValue => props.modelValue,
-      (): string => (errorText.value = ''),
-    )
+      (): string => (errorText.value = "")
+    );
 
     watch(
       (): string => errorText.value,
       (value): void => {
-        if (value)
-          emit('invalid')
-      },
-    )
+        if (value) emit("invalid");
+      }
+    );
 
     const isAutoComplete = computed((): AutoComplete => {
-      if (typeof props.autoComplete === 'boolean')
-        return props.autoComplete ? 'on' : 'off'
+      if (typeof props.autoComplete === "boolean")
+        return props.autoComplete ? "on" : "off";
 
-      return 'new-password'
-    })
+      return "new-password";
+    });
 
     const labelAttachedToTop = computed(
-      () => props.modelValue || (errorText.value && !props.transparent),
-    )
+      () => props.modelValue || (errorText.value && !props.transparent)
+    );
 
     return {
       errorText,
@@ -158,9 +156,9 @@ export default defineComponent({
       labelAttachedToTop,
       validator,
       toggleInputType,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

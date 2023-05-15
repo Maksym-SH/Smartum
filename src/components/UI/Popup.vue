@@ -32,58 +32,58 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { Colors } from '@/types/enums'
-import { ObjectFull } from '@/helpers/methods'
-import type { IPopupParams } from '@/types/interfaces'
-import type { PopupButtons } from '@/types/types'
-import useStores from '@/composables/useStores'
+import { computed, defineComponent } from "vue";
+import { Colors } from "@/types/enums";
+import { ObjectFull } from "@/helpers/methods";
+import type { IPopupParams } from "@/types/interfaces";
+import type { PopupButtons } from "@/types/types";
+
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   setup() {
-    const { commonStore } = useStores()
+    const { commonStore } = useStores();
 
-    const params: IPopupParams = commonStore.popupParams as IPopupParams
+    const params: IPopupParams = commonStore.popupParams as IPopupParams;
 
-    const showTemplate: boolean = ObjectFull(params)
+    const showTemplate: boolean = ObjectFull(params);
 
     const btnParam = computed((): PopupButtons => {
       return {
         yes: {
-          text: params.buttons.yes?.text || 'Подтвердить',
-          variant: params.buttons.yes?.variant || 'elevated',
+          text: params.buttons.yes?.text || "Подтвердить",
+          variant: params.buttons.yes?.variant || "elevated",
           color: params.buttons.yes?.color || Colors.Info,
         },
         no: {
-          text: params.buttons.no?.text || 'Отмена',
-          variant: params.buttons.no?.variant || 'outlined',
+          text: params.buttons.no?.text || "Отмена",
+          variant: params.buttons.no?.variant || "outlined",
           color: params.buttons.no?.color || Colors.Info,
         },
-      }
-    })
+      };
+    });
 
     const ClosePopup = (): void => {
-      commonStore.setPopupParams({})
-    }
+      commonStore.setPopupParams({});
+    };
 
     const result = (result: boolean): void => {
       if (!result) {
-        ClosePopup() // Clear data and close popup.
+        ClosePopup(); // Clear data and close popup.
+      } else {
+        params.callback();
+        ClosePopup();
       }
-      else {
-        params.callback()
-        ClosePopup()
-      }
-    }
+    };
 
     return {
       params,
       btnParam,
       showTemplate,
       result,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

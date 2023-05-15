@@ -7,4 +7,4 @@ export const firebaseConfig = {
   appId: import.meta.env.VITE_APP_ID,
   measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
   databaseURL: import.meta.env.VITE_APP_DATABASE_URL,
-} as const
+} as const;

@@ -13,18 +13,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { useButtonProps } from './use/useProps'
-import { Colors } from '@/types/enums'
+import { defineComponent } from "vue";
+import { useButtonProps } from "./use/useProps";
+import { Colors } from "@/types/enums";
 
 export default defineComponent({
   props: useButtonProps,
   setup() {
     return {
       Colors,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

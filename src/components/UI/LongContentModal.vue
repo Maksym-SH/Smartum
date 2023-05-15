@@ -12,9 +12,7 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-toolbar-title class="modal__header-title">
-          {{
-            modalContent.title
-          }}
+          {{ modalContent.title }}
         </v-toolbar-title>
       </v-toolbar>
       <v-list>
@@ -34,18 +32,18 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
-import { computed, defineComponent, ref, watch } from 'vue'
-import type { IModalContent } from '@/types/interfaces'
+import type { PropType } from "vue";
+import { computed, defineComponent, ref, watch } from "vue";
+import type { IModalContent } from "@/types/interfaces";
 import type {
   ModalContentLanguage,
   ModalContentType,
   ModalLanguageType,
-} from '@/types/types'
+} from "@/types/types";
 
-import TermsOfUse from '@/helpers/content/TermsOfUse.json'
-import Confidentially from '@/helpers/content/Сonfidentiality.json'
-import useStores from '@/composables/useStores'
+import TermsOfUse from "@/helpers/content/TermsOfUse.json";
+import Confidentially from "@/helpers/content/Сonfidentiality.json";
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   props: {
@@ -55,44 +53,42 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { commonStore } = useStores()
+    const { commonStore } = useStores();
 
-    const dialog = ref(true)
-    const switchLanguage = ref(false) // "Русский" by default.
+    const dialog = ref(true);
+    const switchLanguage = ref(false); // "Русский" by default.
 
     const currentContentType = computed((): IModalContent => {
-      if (props.contentType === 'termsOfUse')
-        return TermsOfUse
+      if (props.contentType === "termsOfUse") return TermsOfUse;
 
-      return Confidentially
-    })
+      return Confidentially;
+    });
 
     const closeModal = (): void => {
-      commonStore.setModalContentType('')
-    }
+      commonStore.setModalContentType("");
+    };
 
     watch(dialog, (value) => {
-      if (!value)
-        commonStore.setModalContentType('')
-    })
+      if (!value) commonStore.setModalContentType("");
+    });
 
     const currentLanguage = computed((): ModalLanguageType => {
-      return !switchLanguage.value ? 'ru' : 'eng' // "Русский" / "English"
-    })
+      return !switchLanguage.value ? "ru" : "eng"; // "Русский" / "English"
+    });
 
     const modalContent = computed(
       (): ModalContentLanguage =>
-        currentContentType.value[currentLanguage.value],
-    )
+        currentContentType.value[currentLanguage.value]
+    );
 
     return {
       dialog,
       modalContent,
       switchLanguage,
       closeModal,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

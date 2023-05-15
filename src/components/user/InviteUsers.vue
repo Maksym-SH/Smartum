@@ -19,7 +19,10 @@
             <span class="mdi mdi-close"></span>
           </cButton>
         </header>
-        <div class="invite-users__window-content" :class="{ 'is-refresh': showLoader }">
+        <div
+          class="invite-users__window-content"
+          :class="{ 'is-refresh': showLoader }"
+        >
           <cLoader v-show="showLoader" class="invite-load" inline />
           <div class="invite-users__user-list">
             <UserListItem
@@ -35,41 +38,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import UserListItem from './UserItem.vue'
-import useStore from '@/composables/useStores'
-import type { IUserForList } from '@/types/interfaces'
+import { defineComponent, ref } from "vue";
+import type { IUserForList } from "@/types/interfaces";
+
+import UserListItem from "./UserItem.vue";
+import useStore from "@/composables/useStores";
 
 export default defineComponent({
   components: {
     UserListItem,
   },
   setup() {
-    const { userStore } = useStore()
+    const { userStore } = useStore();
 
-    const showInviteWindow = ref(false)
+    const showInviteWindow = ref(false);
 
-    const usersList = ref<IUserForList[]>([])
+    const usersList = ref<IUserForList[]>([]);
 
-    const showLoader = ref(true)
+    const showLoader = ref(true);
 
     const refreshUsers = () => {
-      showLoader.value = true
-      usersList.value = []
+      showLoader.value = true;
+      usersList.value = [];
 
-      userStore.getUsersList(true, false)
-        .then((list) => {
-          usersList.value = list
-          showLoader.value = false
-        })
-    }
+      userStore.getUsersList(true, false).then((list) => {
+        usersList.value = list;
+        showLoader.value = false;
+      });
+    };
 
     const toggleInviteWindow = () => {
-      showInviteWindow.value = !showInviteWindow.value
+      showInviteWindow.value = !showInviteWindow.value;
 
-      if (!usersList.value.length)
-        refreshUsers()
-    }
+      if (!usersList.value.length) refreshUsers();
+    };
 
     return {
       usersList,
@@ -77,9 +79,9 @@ export default defineComponent({
       showInviteWindow,
       refreshUsers,
       toggleInviteWindow,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

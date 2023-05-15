@@ -2,9 +2,7 @@
   <div class="forgot-page">
     <div class="forgot-page__window">
       <div class="forgot-page__window-header">
-        <h2 class="forgot-page__window-header__title">
-          Восстановление пароля
-        </h2>
+        <h2 class="forgot-page__window-header__title">Восстановление пароля</h2>
         <p class="forgot-page__window-header__description">
           Введите электронный адрес, который вы использовали при регистрации а
           затем мы отправим вам письмо с инструкциями.
@@ -33,42 +31,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch } from "vue";
 
-import firebaseReset from '@/helpers/firebase/firebaseReset'
-import router from '@/router'
+import firebaseReset from "@/helpers/firebase/firebaseReset";
+import router from "@/router";
 
 export default defineComponent({
   setup() {
-    const errorEmail = ref(false)
+    const errorEmail = ref(false);
 
-    const email = ref('')
+    const email = ref("");
 
     const submitForm = (): void => {
-      if (!errorEmail.value)
-        firebaseReset(email.value)
-    }
+      if (!errorEmail.value) firebaseReset(email.value);
+    };
 
     const goBack = () => {
       if (window.history.length >= 2)
-        router.go(-1) // Navigate to previous page.
-      else
-        router.push({ name: 'Profile' })
-    }
+        router.go(-1); // Navigate to previous page.
+      else router.push({ name: "Profile" });
+    };
 
     watch(
       (): string => email.value,
-      (): boolean => (errorEmail.value = false),
-    )
+      (): boolean => (errorEmail.value = false)
+    );
 
     return {
       email,
       errorEmail,
       submitForm,
       goBack,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

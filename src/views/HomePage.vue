@@ -21,10 +21,7 @@
       <div class="home-page__content">
         <router-view v-slot="{ Component }">
           <transition name="router-nav" mode="out-in">
-            <component
-              :is="Component"
-              v-if="showTabContent"
-            />
+            <component :is="Component" v-if="showTabContent" />
           </transition>
         </router-view>
       </div>
@@ -33,19 +30,23 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { Layout } from '@/types/enums'
-import { ObjectHasValues, ObjectNotEmpty } from '@/helpers/methods'
-import type { DynamicDescription, ILanguage, IMetaName } from '@/types/interfaces'
-import type { RouterMeta } from '@/types/types'
+import { computed, defineComponent, reactive, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import { Layout } from "@/types/enums";
+import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
+import type {
+  DynamicDescription,
+  ILanguage,
+  IMetaName,
+} from "@/types/interfaces";
+import type { RouterMeta } from "@/types/types";
 
-import * as DescriptionJSON from '@/helpers/content/TabsInfo.json'
-import useNotifications from '@/composables/useNotifications'
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
-import useStores from '@/composables/useStores'
-import cHeader from '@/container/Header.vue'
-import cAside from '@/container/Aside.vue'
+import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
+import useNotifications from "@/composables/useNotifications";
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
+import useStores from "@/composables/useStores";
+import cHeader from "@/container/Header.vue";
+import cAside from "@/container/Aside.vue";
 
 export default defineComponent({
   components: {
@@ -53,61 +54,56 @@ export default defineComponent({
     CAside: cAside,
   },
   setup() {
-    const { commonStore, userStore } = useStores()
+    const { commonStore, userStore } = useStores();
 
-    const router = useRoute()
+    const router = useRoute();
 
-    const { currentUser } = useCurrentUserInfo()
+    const { currentUser } = useCurrentUserInfo();
 
-    const { notificationsSize } = useNotifications()
+    const { notificationsSize } = useNotifications();
 
-    const tabName: ILanguage = reactive({ eng: '', ru: '' })
+    const tabName: ILanguage = reactive({ eng: "", ru: "" });
 
-    const Description: DynamicDescription = DescriptionJSON
+    const Description: DynamicDescription = DescriptionJSON;
 
-    const tabDescription: ILanguage = reactive({ eng: '', ru: '' })
+    const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
 
     const currentUserPresent = computed((): boolean =>
-      ObjectNotEmpty(currentUser.value),
-    )
+      ObjectNotEmpty(currentUser.value)
+    );
     const additionalUserInfoPresent = computed((): boolean =>
-      ObjectHasValues(userStore.userInfo),
-    )
+      ObjectHasValues(userStore.userInfo)
+    );
     const showTabContent = computed(
-      (): boolean => currentUserPresent.value && additionalUserInfoPresent.value,
-    )
+      (): boolean => currentUserPresent.value && additionalUserInfoPresent.value
+    );
 
     // Aside
-    const minimizeAside = ref(true)
-    const toggleAsideVisible = (
-      value: boolean,
-      capture = false,
-    ): void => {
-      if (!capture)
-        minimizeAside.value = value
+    const minimizeAside = ref(true);
+    const toggleAsideVisible = (value: boolean, capture = false): void => {
+      if (!capture) minimizeAside.value = value;
       else if (window.innerWidth <= Layout.Laptop)
-        minimizeAside.value = capture
-    }
+        minimizeAside.value = capture;
+    };
 
     watch(
       (): IMetaName | RouterMeta => router.meta,
       (meta): void => {
-        const metaName: ILanguage = meta.tabName as ILanguage
+        const metaName: ILanguage = meta.tabName as ILanguage;
 
         if (metaName) {
-          tabName.eng = metaName.eng
-          tabName.ru = metaName.ru
+          tabName.eng = metaName.eng;
+          tabName.ru = metaName.ru;
 
-          tabDescription.ru = Description[metaName.eng].ru
-          tabDescription.eng = Description[metaName.eng].eng
-        }
-        else {
-          tabName.ru = tabName.eng = ''
-          tabDescription.eng = tabDescription.ru = ''
+          tabDescription.ru = Description[metaName.eng].ru;
+          tabDescription.eng = Description[metaName.eng].eng;
+        } else {
+          tabName.ru = tabName.eng = "";
+          tabDescription.eng = tabDescription.ru = "";
         }
       },
-      { immediate: true },
-    )
+      { immediate: true }
+    );
 
     return {
       tabName,
@@ -117,9 +113,9 @@ export default defineComponent({
       showTabContent,
       toggleAsideVisible,
       showLoading: computed(() => commonStore.loadingStatus),
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

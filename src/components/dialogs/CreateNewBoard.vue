@@ -12,9 +12,7 @@
     <template #default>
       <v-card>
         <v-toolbar color="primary">
-          <h4 class="v-card-header__title">
-            Создание новой доски
-          </h4>
+          <h4 class="v-card-header__title">Создание новой доски</h4>
         </v-toolbar>
         <form class="v-card__form" @submit.prevent="createNewBoard">
           <v-card-text>
@@ -33,9 +31,7 @@
               />
             </div>
             <div class="v-card__wrapper-background-select">
-              <h5 class="v-card__title">
-                Фон
-              </h5>
+              <h5 class="v-card__title">Фон</h5>
               <div class="v-card__backgrounds">
                 <ImageBackgroundExample
                   v-for="photo in backgrounds.photos"
@@ -77,55 +73,57 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
-import BoardImageResult from '../dashboard/BoardImageResult.vue'
-import ImageBackgroundExample from '../UI/BackgroundItem.vue'
-import type { IBackgroundDashboard, IWorkingBoardItem } from '@/types/interfaces'
-import { Colors, Length } from '@/types/enums'
-import { GetAndParseJoinCode } from '@/helpers/methods'
+import { defineComponent, reactive, ref } from "vue";
+import BoardImageResult from "../dashboard/BoardImageResult.vue";
+import ImageBackgroundExample from "../UI/BackgroundItem.vue";
+import type {
+  IBackgroundDashboard,
+  IWorkingBoardItem,
+} from "@/types/interfaces";
+import { Colors, Length } from "@/types/enums";
+import { GetAndParseJoinCode } from "@/helpers/methods";
 
-import useCurrentUserInfo from '@/composables/useCurrentUserInfo'
-import useDashboardItemBackgroundTemplate from '@/composables/useDashboardItemBackground'
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
+import useDashboardItemBackgroundTemplate from "@/composables/useDashboardItemBackground";
 
 export default defineComponent({
   components: {
     BoardImageResult,
     ImageBackgroundExample,
   },
-  emits: ['createNew'],
+  emits: ["createNew"],
 
   setup(_, { emit }) {
-    const backgrounds: IBackgroundDashboard
-      = useDashboardItemBackgroundTemplate()
+    const backgrounds: IBackgroundDashboard =
+      useDashboardItemBackgroundTemplate();
 
-    const { unicID } = useCurrentUserInfo()
+    const { unicID } = useCurrentUserInfo();
 
-    const showDialog = ref(false)
+    const showDialog = ref(false);
 
     const newBoard = reactive<Partial<IWorkingBoardItem>>({
-      title: '',
+      title: "",
       background: Colors.GradientBluePink,
       tasks: [],
       members: 1,
-    })
+    });
 
     const createNewBoard = () => {
-      if (newBoard.title!.length < Length.Text)
-        return
+      if (newBoard.title!.length < Length.Text) return;
 
       // Set date of creation working board.
-      const dateOfCreation: Date = new Date()
-      newBoard.dateOfCreation = dateOfCreation
+      const dateOfCreation: Date = new Date();
+      newBoard.dateOfCreation = dateOfCreation;
 
-      newBoard.joinCode = GetAndParseJoinCode(unicID.value, newBoard.title) // Set unic id for dashboard.
+      newBoard.joinCode = GetAndParseJoinCode(unicID.value, newBoard.title); // Set unic id for dashboard.
 
-      emit('createNew', Object.assign({}, newBoard))
-      showDialog.value = false
+      emit("createNew", Object.assign({}, newBoard));
+      showDialog.value = false;
 
       // Set default value
-      newBoard.title = ''
-      newBoard.background = Colors.GradientBluePink
-    }
+      newBoard.title = "";
+      newBoard.background = Colors.GradientBluePink;
+    };
 
     return {
       showDialog,
@@ -133,9 +131,9 @@ export default defineComponent({
       backgrounds,
       Length,
       createNewBoard,
-    }
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

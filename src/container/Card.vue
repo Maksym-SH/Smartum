@@ -33,22 +33,22 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
-import { defineComponent } from 'vue'
-import type { Variant } from '@/types/types'
+import type { PropType } from "vue";
+import { defineComponent } from "vue";
+import type { Variant } from "@/types/types";
 
 export default defineComponent({
   props: {
     variant: {
       type: String as PropType<Variant>,
-      default: 'info',
+      default: "info",
     },
     table: {
       type: Boolean,
       default: false,
     },
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>
