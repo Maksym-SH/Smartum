@@ -4,7 +4,19 @@
     :class="{ 'not-read': params.status === 'not read' }"
     @click="readNotification"
   >
-    <Avatar v-if="image" :avatar="image" :size="45" circle no-background />
+    <Avatar
+      v-if="image && !failedImageLoad"
+      @failed-load="failedImageLoad = true"
+      :avatar="image"
+      :size="45"
+      circle
+      no-background
+    />
+    <div
+      v-else
+      :style="{ background: image.url }"
+      class="notification-item__background-avatar"
+    ></div>
     <div class="notification-item__content">
       <div class="notification-item__content-info">
         <h3 class="notification-item__title">
@@ -27,19 +39,22 @@
 
 <script lang="ts">
 import type { PropType } from "vue";
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import type {
   INotification,
   IPictureParams,
   IServerDate,
+  IUserForList,
 } from "@/types/interfaces";
 import { NotificationActionType } from "@/types/enums";
 
 import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
+import useStore from "@/composables/useStores";
 import useDateParseToString from "@/composables/useDateParse";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import Avatar from "../user/Avatar.vue";
+import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
   components: {
@@ -53,20 +68,24 @@ export default defineComponent({
   },
   emits: ["deleteNotification", "readNotification"],
   setup(props, { emit }) {
+    const { currentUser, userInfo } = useCurrentUserInfo();
+
+    const { dashboardStore } = useStore();
+
     const image = reactive<IPictureParams>({
       url: props.params.image || "",
     });
-    const { currentUser } = useCurrentUserInfo();
 
     const deleteNotification = (): void => {
       emit("deleteNotification", props.params.id);
     };
 
+    const failedImageLoad = ref(false);
+
     const dateSent = useDateParseToString(props.params.date);
 
     const readNotification = (): void => {
       emit("readNotification", props.params.id);
-
       // Action by notification type.
       switch (props.params.type) {
         // ToDo: Dashboard page.
@@ -85,6 +104,45 @@ export default defineComponent({
         case NotificationActionType.Configuration:
           router.push({ name: "Configuration" });
           break;
+        case NotificationActionType.InviteToBoard: {
+          const boardInfo = props.params as Required<
+            INotification<IServerDate>
+          >;
+
+          dashboardStore
+            .getWorkingBoardItem(boardInfo.uid, boardInfo.joinCode)
+            .then((board) => {
+              const newMember: Partial<IUserForList> = {
+                ...userInfo.value,
+                role: "Участник",
+                uid: currentUser.value.uid,
+              };
+              // Update data for other users.
+              dashboardStore.getAllWorkingBoards(board.uid).then((list) => {
+                const boardToUpdate = list.find(
+                  (board) => board.uid === props.params.uid
+                );
+
+                boardToUpdate?.members.push(newMember);
+
+                dashboardStore.updateAllWorkingBoards(board.uid, list);
+              });
+
+              // Add a new invite board
+              board.members.push(newMember);
+              dashboardStore
+                .createNewWorkingBoard(board, currentUser.value.uid)
+                .then(() => {
+                  notify({
+                    title: "Успешно!",
+                    text: "Вы успешно присоединились к рабочему пространству!",
+                  });
+                });
+            });
+
+          deleteNotification();
+          break;
+        }
         case NotificationActionType.Default:
         case NotificationActionType.Dashboard: // ToDo.
 
@@ -99,6 +157,7 @@ export default defineComponent({
       deleteNotification,
       readNotification,
       image,
+      failedImageLoad,
       dateSent,
     };
   },
@@ -121,6 +180,11 @@ export default defineComponent({
   color: var(--color-text);
   &.not-read {
     background-color: var(--color-background-notification-new);
+  }
+  &__background-avatar {
+    min-width: 45px;
+    height: 45px;
+    border-radius: 50%;
   }
   &__content {
     width: 100%;

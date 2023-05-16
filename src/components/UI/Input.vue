@@ -24,6 +24,7 @@
         :required="required"
         :min="min"
         @blur="validator()"
+        @keyup.enter="pressEnter"
       />
       <label
         v-if="label && !placeholder"
@@ -66,7 +67,7 @@
         class="c-input--search-btn"
         variant="text"
         rounded
-        @click="$emit('click')"
+        @click="$emit('search')"
       >
         <span class="mdi mdi-magnify c-input--search-btn_icon"></span>
       </cButton>
@@ -85,7 +86,7 @@ import RegExp from "@/helpers/regExp";
 export default defineComponent({
   inheritAttrs: false,
   props: useInputProps,
-  emits: ["invalid", "update:modelValue", "click"],
+  emits: ["invalid", "update:modelValue", "search"],
 
   setup(props, { emit }) {
     const errorText = ref("");
@@ -98,6 +99,13 @@ export default defineComponent({
     const inputRef = ref<RefElement>(null);
 
     const showPassword = ref(false);
+
+    const pressEnter = () => {
+      if (props.type === "search") emit("search");
+      else {
+        return;
+      }
+    };
 
     const validator = (): void => {
       if (props.isEmail && !emailValidator.validate(model.value as string))
@@ -154,6 +162,7 @@ export default defineComponent({
       model,
       showPassword,
       labelAttachedToTop,
+      pressEnter,
       validator,
       toggleInputType,
     };

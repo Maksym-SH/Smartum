@@ -110,10 +110,10 @@ export default defineComponent({
     // Get all boards.
     onBeforeMount((): void => {
       if (!dashboardStore.allDashboards.length) {
-        dashboardStore.getAllWorkingBoards(unicID.value).then(() => {
-          if (!dashboardStore.allDashboards.length)
-            // Still no boards.
-            listEmpty.value = true;
+        dashboardStore.getAllWorkingBoards(unicID.value).then((boards) => {
+          if (boards) {
+            dashboardStore.setAllDashboard(boards);
+          } else listEmpty.value = true;
         });
       }
     });
@@ -155,25 +155,25 @@ export default defineComponent({
     width: 100%;
     padding: 20px 0;
     display: grid;
-    grid-template-columns: repeat(5, minmax(240px, 300px));
-    gap: 15px;
+    grid-template-columns: repeat(5, minmax(280px, 300px));
+    gap: 10px;
   }
   @include responsive($custom-large, min) {
     &__cards {
-      grid-template-columns: repeat(5, minmax(auto, 20%));
+      grid-template-columns: repeat(4, minmax(auto, 25%));
     }
   }
   @include responsive($custom-large, max) {
     &__cards {
-      grid-template-columns: repeat(4, minmax(240px, 25%));
+      grid-template-columns: repeat(3, minmax(240px, 32.2%));
     }
   }
-  @include responsive($xxl, max) {
+  /* @include responsive(, max) {
     &__cards {
-      grid-template-columns: repeat(3, 32.2%);
+      grid-template-columns: repeat(3, minmax(240px, 32.2%));
     }
-  }
-  @include responsive(1100px, max) {
+  } */
+  @include responsive($xxl, max) {
     &__cards {
       grid-template-columns: repeat(2, 49%);
     }

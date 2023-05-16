@@ -14,7 +14,7 @@
       <div class="card-element-item__description">
         <p v-if="element.members" class="members-count">
           <span class="mdi mdi-account-multiple icon"></span>
-          Участников: {{ element.members }}
+          Участников: {{ element.members.length }}
         </p>
         <time v-if="element.dateOfCreation" class="date-of-create">
           <span class="mdi mdi-clock-edit icon"></span>

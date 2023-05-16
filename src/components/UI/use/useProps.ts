@@ -190,3 +190,27 @@ export const useExpansionPanelProps = {
     default: () => [],
   },
 };
+
+// BackgroundItem.vue
+export const useBackgroundItemProps = {
+  image: {
+    type: String,
+    default: "",
+  },
+  width: {
+    type: Number,
+    default: 64,
+  },
+  height: {
+    type: Number,
+    default: 32,
+  },
+  background: {
+    type: String as PropType<Colors | string>,
+    default: "",
+  },
+  circle: {
+    type: Boolean,
+    default: false,
+  },
+}

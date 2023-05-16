@@ -72,10 +72,30 @@ const useDashboardStore = defineStore("dashboard", () => {
       getDoc(dashboardRef)
         .then((dashboards) => {
           const allDashboards = dashboards.data()?.collection;
-          setAllDashboard(allDashboards || []);
           resolve(allDashboards as IWorkingBoardItem[]);
         })
         .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          reject(error);
+        });
+    });
+  };
+  const updateAllWorkingBoards = (
+    unicID: string,
+    board: IWorkingBoardItem[]
+  ): Promise<void> => {
+    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+
+    commonStore.setLoadingStatus(true);
+
+    return new Promise((resolve, reject) => {
+      updateDoc(dashboardRef, {
+        collection: board,
+      })
+        .then(() => {
+          resolve();
+        })
+        .catch((error) => {
           ShowErrorMessage(error);
           reject(error);
         });
@@ -85,11 +105,11 @@ const useDashboardStore = defineStore("dashboard", () => {
   const getWorkingBoardItem = (
     unicID: string,
     joinCode: string
-  ): Promise<IWorkingBoardItem | string> => {
+  ): Promise<IWorkingBoardItem> => {
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
       getAllWorkingBoards(unicID).then((boards) => {
-        const currentBoard = boards.find((item) => item.joinCode === joinCode);
+        const currentBoard = boards?.find((item) => item.joinCode === joinCode);
         if (currentBoard) {
           resolve(currentBoard);
         } else {
@@ -97,7 +117,7 @@ const useDashboardStore = defineStore("dashboard", () => {
 
           notify({
             title: "Рабочая доска недоступна!",
-            text: "Текущая доска не существует, либо код приглашение неверный.",
+            text: "Текущая доска не существует или код приглашения неверный.",
             type: "error",
           });
         }
@@ -114,6 +134,7 @@ const useDashboardStore = defineStore("dashboard", () => {
     addNewBoard,
     createNewWorkingBoard,
     getAllWorkingBoards,
+    updateAllWorkingBoards,
     getWorkingBoardItem,
   };
 });

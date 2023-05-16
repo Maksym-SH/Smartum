@@ -72,6 +72,7 @@ export enum NotificationActionType {
   Reset,
   Configuration,
   Default,
+  InviteToBoard,
 }
 
 export enum NotificationType {
@@ -80,6 +81,7 @@ export enum NotificationType {
   ConfigurationChange,
   EmailConfirm,
   DashboardCreate,
+  InviteToBoard,
 }
 
 export enum Colors {

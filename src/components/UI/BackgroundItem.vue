@@ -1,5 +1,6 @@
 <template>
   <div
+    :class="{ circle }"
     class="image-example"
     :style="[size, { background }]"
     @click="selectExample"
@@ -10,29 +11,12 @@
 
 <script lang="ts">
 import { computed } from "@vue/reactivity";
-import type { CSSProperties, PropType } from "vue";
+import type { CSSProperties } from "vue";
 import { defineComponent } from "vue";
-import type { Colors } from "@/types/enums";
+import { useBackgroundItemProps } from "./use/useProps";
 
 export default defineComponent({
-  props: {
-    image: {
-      type: String,
-      default: "",
-    },
-    width: {
-      type: Number,
-      default: 64,
-    },
-    height: {
-      type: Number,
-      default: 32,
-    },
-    background: {
-      type: String as PropType<Colors | string>,
-      default: "",
-    },
-  },
+  props: useBackgroundItemProps,
   emits: ["select"],
   setup(props, { emit }) {
     const size = computed((): CSSProperties => {
@@ -62,6 +46,11 @@ export default defineComponent({
   cursor: pointer;
   outline: 3px solid transparent;
   transform: all 0.5s;
+
+  &.circle {
+    border-radius: 50%;
+  }
+
   &.active {
     outline-color: $color-cyan;
     border-radius: 0px;

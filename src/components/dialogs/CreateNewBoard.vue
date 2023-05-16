@@ -80,8 +80,8 @@ import type {
   IBackgroundDashboard,
   IWorkingBoardItem,
 } from "@/types/interfaces";
-import { Colors, Length } from "@/types/enums";
-import { GetAndParseJoinCode } from "@/helpers/methods";
+import { Colors, Length, Numbers } from "@/types/enums";
+import { GenerateJoinCode } from "@/helpers/methods";
 
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDashboardItemBackgroundTemplate from "@/composables/useDashboardItemBackground";
@@ -97,15 +97,18 @@ export default defineComponent({
     const backgrounds: IBackgroundDashboard =
       useDashboardItemBackgroundTemplate();
 
-    const { unicID } = useCurrentUserInfo();
+    const { unicID, userInfo } = useCurrentUserInfo();
 
     const showDialog = ref(false);
+
+    const { ...newMember } = userInfo.value;
 
     const newBoard = reactive<Partial<IWorkingBoardItem>>({
       title: "",
       background: Colors.GradientBluePink,
       tasks: [],
-      members: 1,
+      members: [{ ...newMember, role: "Администратор", uid: unicID.value }],
+      uid: unicID.value,
     });
 
     const createNewBoard = () => {
@@ -115,9 +118,13 @@ export default defineComponent({
       const dateOfCreation: Date = new Date();
       newBoard.dateOfCreation = dateOfCreation;
 
-      newBoard.joinCode = GetAndParseJoinCode(unicID.value, newBoard.title); // Set unic id for dashboard.
+      newBoard.joinCode = GenerateJoinCode(
+        newBoard as Required<IWorkingBoardItem>,
+        Numbers.JoinCodeSize
+      ); // Set unic id for dashboard.
 
       emit("createNew", Object.assign({}, newBoard));
+
       showDialog.value = false;
 
       // Set default value

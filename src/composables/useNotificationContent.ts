@@ -1,9 +1,10 @@
-import type { INotification } from "@/types/interfaces";
+import type { INotification, IWorkingBoardItem } from "@/types/interfaces";
 import { NotificationActionType, NotificationType } from "@/types/enums";
 
 function useNewNotificationContent(
   type: NotificationType,
-  title?: string
+  title?: string,
+  info?: IWorkingBoardItem // | any smt else. ToDo.
 ): INotification<Date> | never {
   let currentContent: Partial<INotification<Date>>;
 
@@ -51,6 +52,17 @@ function useNewNotificationContent(
         status: "not read",
         image: `${import.meta.env.BASE_URL}images/notifyIcons/dashboard.jpg`,
         type: NotificationActionType.Dashboard,
+      };
+      break;
+    case NotificationType.InviteToBoard:
+      currentContent = {
+        title: "Новое приглашение в рабочее пространство",
+        description: `Вы были приглашены в рабочее пространство ${title}, вы можете присоединиться к доске нажав на это уведомление. Чтобы отказаться от приглашения игнорируйте это уведомление.`,
+        status: "not read",
+        image: info?.background,
+        type: NotificationActionType.InviteToBoard,
+        uid: info?.uid,
+        joinCode: info?.joinCode
       };
       break;
     default:

@@ -8,6 +8,7 @@ import type {
   NotificationCategory,
   NotificationStatus,
   OmitUserInfo,
+  BoardRole,
 } from "./types";
 
 export interface IServerDate {
@@ -103,7 +104,9 @@ export interface IWorkingBoardItem {
   tasks: any[];
   dateOfCreation: IServerDate | Date;
   joinCode: string;
-  members: number;
+  members: Partial<IUserForList>[];
+  uid: string;
+  securityCode: string;
 }
 export interface ICreateBoardParams {
   board: IWorkingBoardItem;
@@ -146,12 +149,18 @@ export interface IUserInfo extends Omit<IUserReg, "password"> {
   uid?: string;
 }
 export interface IUserForList
-  extends Omit<IUserInfo, "photoFile" | "emailVerified" | "newPassword"> {
+  extends Omit<
+    IUserInfo,
+    "photoFile" | "emailVerified" | "newPassword" | "email"
+  > {
   uid: string;
+  role?: BoardRole;
 }
 export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
   uid: string;
 }
+
+// Notification
 export interface INotification<T> {
   id: number;
   title: string;
@@ -160,7 +169,11 @@ export interface INotification<T> {
   image?: string;
   description: string;
   type: NotificationCategory;
+  uid?: string;
+  joinCode?: string;
 }
+
+// Configuration
 export interface IConfiguration {
   navigations: string[];
   showEmailConfirm: boolean;

@@ -39,14 +39,17 @@ const useNotificationStore = defineStore("notification", () => {
     });
   };
 
-  const getAllNotifications = (unicID: string): Promise<any> => {
+  const getAllNotifications = (
+    unicID: string
+  ): Promise<INotification<IServerDate>[]> => {
     const profileRef = doc(database, DataCollection.Notifications, unicID);
 
     return new Promise((resolve, reject) => {
       getDoc(profileRef)
         .then((response) => {
           const notifications = response.data();
-          if (notifications) resolve(notifications.collection);
+          if (notifications)
+            resolve(notifications.collection as INotification<IServerDate>[]);
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
@@ -98,7 +101,7 @@ const useNotificationStore = defineStore("notification", () => {
       else listTarget[foundNotificationIndex].status = "read";
     }
 
-    const docID = unicID || (userStore.currentUser as User).uid;
+    const docID: string = unicID || (userStore.currentUser as User).uid;
 
     updateNotificationList(docID, notifications || allNotifications.value); // After local changes update database.
   };

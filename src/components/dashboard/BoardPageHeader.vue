@@ -5,7 +5,7 @@
         <img src="/images/icons/logo.svg" alt="" />
       </router-link>
       <div class="board-header__actions">
-        <InviteusersBtn />
+        <InviteusersBtn :board="board" />
         <cSelect :items="actions" :size="42" rounded @selected="selected">
           <Avatar
             circle
@@ -22,10 +22,10 @@
 <script lang="ts">
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
-import type { IUserCreated } from "@/types/interfaces";
+import type { IUserCreated, IWorkingBoardItem } from "@/types/interfaces";
 
 import Avatar from "../user/Avatar.vue";
-import InviteusersBtn from "../user/InviteUsers.vue";
+import InviteusersBtn from "../user/Invite.vue";
 import useSelectActions from "@/composables/useSelectActions";
 
 export default defineComponent({
@@ -36,6 +36,10 @@ export default defineComponent({
   props: {
     userInfo: {
       type: Object as PropType<IUserCreated>,
+      required: true,
+    },
+    board: {
+      type: Object as PropType<IWorkingBoardItem | {}>,
       required: true,
     },
   },

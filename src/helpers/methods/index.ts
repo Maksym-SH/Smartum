@@ -1,8 +1,8 @@
 import { getAuth } from "@firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import type { IPopupParams } from "@/types/interfaces";
+import type { IPopupParams, IWorkingBoardItem } from "@/types/interfaces";
 import type { Theme } from "@/types/types";
-import { Colors, Numbers } from "@/types/enums";
+import { Colors } from "@/types/enums";
 
 import useStores from "@/composables/useStores";
 
@@ -58,14 +58,22 @@ export function GenerateColorHexFormat(Theme: Theme): string {
   }
 }
 
-export function GetAndParseJoinCode(unicID: string, boardName?: string) {
-  const joinCode = unicID
-    .split("")
-    .reverse()
-    .join("")
-    .substring(1, Numbers.JoinCodeSize);
+export function GenerateJoinCode(board: IWorkingBoardItem, length: number) {
+  const joinCode = GenerateRandomString(length);
 
-  return `${boardName}-${joinCode}`;
+  return `${board.title}-${joinCode}`;
+}
+
+export function GenerateRandomString(length: number) {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return result;
 }
 
 let ConfirmCallback: Function;

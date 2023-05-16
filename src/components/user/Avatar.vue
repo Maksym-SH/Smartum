@@ -9,6 +9,7 @@
       v-if="!showPreload && avatar.url"
       class="user-avatar__picture"
       :src="avatar.url"
+      @error="$emit('failedLoad')"
       alt=""
     />
     <span
@@ -29,7 +30,7 @@ import { useAvatarProps } from "./use/useProps";
 
 export default defineComponent({
   props: useAvatarProps,
-
+  emits: ["failedLoad"],
   setup(props) {
     const initials = computed((): string | null => {
       if (props.firstName) {
@@ -95,8 +96,8 @@ export default defineComponent({
     }
   }
   &__picture {
-    width: 100%;
-    height: 100%;
+    width: 103%;
+    height: 103%;
     object-fit: cover;
     border-radius: 4px;
     user-select: none;

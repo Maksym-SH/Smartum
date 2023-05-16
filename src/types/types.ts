@@ -99,6 +99,8 @@ export type UserName = Pick<IUserReg, "firstName" | "lastName">;
 
 export type EmptyListType = "notification" | "dashboard";
 
+export type BoardRole = "Администратор" | "Участник";
+
 // Router
 
 export type Routes = Readonly<RouteRecordRaw[]>;
