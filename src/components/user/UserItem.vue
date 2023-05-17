@@ -55,7 +55,7 @@
             class="info-item__description"
             >{{ userInfo.phone }}
           </a>
-          <span v-else class="info-item__description"> Не указан </span>
+          <span v-else class="info-item__description"> Нет данных </span>
         </div>
         <div class="info-item">
           <h5 class="info-item__name">
@@ -65,7 +65,7 @@
           <span v-if="userInfo.about" class="info-item__description about">
             {{ userInfo.about }}
           </span>
-          <span v-else class="info-item__description"> Не указано </span>
+          <span v-else class="info-item__description"> Нет данных </span>
         </div>
       </div>
     </transition>
@@ -114,8 +114,8 @@ export default defineComponent({
   transition: min-height 0.3s ease;
   background: linear-gradient(
     90deg,
-    rgba($color-black, 0.7) 0%,
-    rgba($color-dark-blue, 0.4) 100%
+    rgba($color-black, 0) 0%,
+    rgba($color-dark-blue, 0.2) 100%
   );
   &.showed-more {
     min-height: 170px;
@@ -129,8 +129,8 @@ export default defineComponent({
     gap: 10px;
   }
   &__info {
-    color: $color-white1;
-    width: 160px;
+    color: var(--color-text);
+    width: 137px;
     overflow-x: hidden;
     &-first-name,
     &-last-name {
@@ -142,23 +142,21 @@ export default defineComponent({
     align-items: center;
     justify-content: flex-end;
     gap: 15px;
+    color: var(--color-text);
     &-role {
-      color: rgba($color-blue, 0.5);
       font-size: 13px;
     }
     &--add {
-      color: $color-white1 !important;
       padding: 6px;
       font-size: 20px;
     }
     .show-more {
       font-size: 25px;
       cursor: pointer;
-      color: $color-white1;
+      color: var(--color-text);
       transition: all 0.2s;
 
       &.open {
-        color: $color-dark-blue;
         transform: rotate(180deg);
       }
     }
@@ -177,7 +175,7 @@ export default defineComponent({
         font-weight: 500;
         user-select: none;
         font-size: 14px;
-        color: $color-white1;
+        color: var(--color-text);
         white-space: nowrap;
       }
       &__description {
@@ -195,8 +193,22 @@ export default defineComponent({
     }
   }
   @include mobile(max) {
+    margin: 5px 0;
+    &__jeneral-info {
+      gap: 8px;
+    }
     &__info {
-      width: 137px;
+      width: 110px;
+      &-first-name,
+      &-last-name {
+        font-size: 13px;
+      }
+    }
+    &__additional {
+      gap: 5px;
+      &-role {
+        font-size: 12px;
+      }
     }
   }
 }

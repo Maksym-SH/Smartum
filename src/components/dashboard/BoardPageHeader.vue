@@ -5,7 +5,9 @@
         <img src="/images/icons/logo.svg" alt="" />
       </router-link>
       <div class="board-header__actions">
-        <InviteusersBtn :board="board" />
+        <BtnInviteUsers :board="board" />
+        <BtnNotify />
+        <SwitchTheme name="switchThemeBoard" />
         <cSelect :items="actions" :size="42" rounded @selected="selected">
           <Avatar
             circle
@@ -25,13 +27,17 @@ import { defineComponent } from "vue";
 import type { IUserCreated, IWorkingBoardItem } from "@/types/interfaces";
 
 import Avatar from "../user/Avatar.vue";
-import InviteusersBtn from "../user/Invite.vue";
+import BtnInviteUsers from "../user/Invite.vue";
 import useSelectActions from "@/composables/useSelectActions";
+import BtnNotify from "@/components/notification/NotficaitonBtn.vue";
+import SwitchTheme from "../UI/SwitchTheme.vue";
 
 export default defineComponent({
   components: {
     Avatar,
-    InviteusersBtn,
+    BtnNotify,
+    SwitchTheme,
+    BtnInviteUsers,
   },
   props: {
     userInfo: {

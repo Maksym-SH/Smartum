@@ -320,7 +320,7 @@ export default defineComponent({
   &__mobile-content {
     padding: 10px 24px;
     .c-input {
-      margin-top: 35px;
+      margin-top: 15px;
       padding: 0;
       :deep(.c-input__field--search) {
         display: none;

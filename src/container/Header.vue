@@ -60,9 +60,6 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .toggle-theme-switch {
-      margin-top: -25px;
-    }
   }
 
   &__search-content {

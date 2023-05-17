@@ -37,6 +37,7 @@
 body[data-theme='dark'] {
   --color-background-secondary: var(--color-dark-secondary);
   --color-background: var(--color-dark);
+  --color-scroll-track-invert: var(--color-dark);
   --color-text: var(--color-light);
   --color-scroll-track: var(--color-light-secondary);
   --color-input: var(--color-light-input);
@@ -55,6 +56,7 @@ body[data-theme='light'] {
   --color-background-secondary: var(--color-light-secondary);
   --color-background: var(--color-light);
   --color-scroll-track: var(--color-dark-secondary);
+  --color-scroll-track-invert: var(--color-light);
   --color-text: var(--color-dark);
   --color-input: var(--color-dark-input);
   --color-border-card: var(--color-light-border-card);

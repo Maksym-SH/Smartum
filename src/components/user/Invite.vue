@@ -4,19 +4,26 @@
       <span class="icon mdi mdi-account-multiple"></span>
       Пригласить
     </cButton>
-    <transition name="toggle-content">
-      <div v-if="showInviteWindow" class="invite-users__window">
-        <header class="invite-users__window-header">
+    <DropDownWindow
+      :visible="showInviteWindow"
+      class="invite-users__window"
+      :width="375"
+      :height="375"
+      :centering="showLoader || emptyList"
+      @hide-dropdown="showInviteWindow = false"
+    >
+      <template #header>
+        <div class="invite-users__window-header">
           <div class="invite-users__window-header--search">
             <cInput
               v-model="searchText"
-              label="Поиск"
+              placeholder="Поиск"
               type="search"
               name="searchUsers"
               @search="searchUser"
             />
           </div>
-          <div class="invite-users__window-header--actions">
+          <nav class="invite-users__window-header--actions">
             <cButton
               variant="text"
               class="invite-users__window--refresh"
@@ -31,33 +38,32 @@
             >
               <span class="mdi mdi-close"></span>
             </cButton>
-          </div>
-        </header>
-        <div
-          class="invite-users__window-content"
-          :class="{ 'is-refresh': showLoader }"
-        >
-          <cLoader v-show="showLoader" class="invite-load" inline />
-          <div class="invite-users__user-list">
-            <UserListItem
-              v-if="filteredList.length"
-              v-for="user in filteredList"
-              :key="user.uid"
-              :user-info="user"
-              @invite="invite(user)"
-            />
-            <transition name="toggle-content">
+          </nav>
+        </div>
+      </template>
+      <template #content>
+        <div v-if="showInviteWindow" class="invite-users__window">
+          <div class="invite-users__window-content">
+            <cLoader v-show="showLoader" class="invite-load" inline />
+            <div class="invite-users__user-list">
+              <UserListItem
+                v-if="filteredList.length"
+                v-for="user in filteredList"
+                :key="user.uid"
+                :user-info="user"
+                @invite="invite(user)"
+              />
               <div
-                v-if="!filteredList.length && !showLoader"
+                v-show="!filteredList.length && !showLoader"
                 class="invite-users__window-content--empty"
               >
                 Ничего не найдено
               </div>
-            </transition>
+            </div>
           </div>
         </div>
-      </div>
-    </transition>
+      </template>
+    </DropDownWindow>
   </div>
 </template>
 
@@ -72,6 +78,7 @@ import type {
 } from "@/types/interfaces";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import UserListItem from "./UserItem.vue";
+import DropDownWindow from "@/container/DropdownWindow.vue";
 import { OpenPopup } from "@/helpers/methods";
 import { Colors, NotificationType } from "@/types/enums";
 import useNewNotificationContent from "@/composables/useNotificationContent";
@@ -81,6 +88,7 @@ import { computed } from "@vue/reactivity";
 export default defineComponent({
   components: {
     UserListItem,
+    DropDownWindow,
   },
   props: {
     board: {
@@ -104,13 +112,13 @@ export default defineComponent({
     const searchText = ref("");
     const isSearching = ref(false);
 
+    const emptyList = computed(() => !filteredList.value.length && !showLoader.value);
+
     const searchUser = () => {
       isSearching.value = true;
       if (searchText.value) {
         usersListFiltered.value = usersList.value.filter((item) =>
-          getFullName(item)
-            .toLowerCase()
-            .includes(searchText.value.toLowerCase())
+          getFullName(item).toLowerCase().includes(searchText.value.toLowerCase())
         );
       } else {
         isSearching.value = false;
@@ -184,30 +192,27 @@ export default defineComponent({
           },
         },
         callback: (): void => {
-          notificationStore
-            .getAllNotifications(invitedUser.uid)
-            .then((list) => {
-              const notificationList: INotification<IServerDate | Date>[] =
-                list;
+          notificationStore.getAllNotifications(invitedUser.uid).then((list) => {
+            const notificationList: INotification<IServerDate | Date>[] = list;
 
-              const board = props.board as IWorkingBoardItem;
+            const board = props.board as IWorkingBoardItem;
 
-              const notificationToSend = useNewNotificationContent(
-                NotificationType.InviteToBoard,
-                board.title,
-                board
+            const notificationToSend = useNewNotificationContent(
+              NotificationType.InviteToBoard,
+              board.title,
+              board
+            );
+            notificationList.push(notificationToSend);
+            notificationStore
+              .updateNotificationList(invitedUser.uid, notificationList)
+              .then(() =>
+                notify({
+                  title: "Успешно!",
+                  text: "Приглашение в рабочее пространство было отправлено!",
+                  type: "success",
+                })
               );
-              notificationList.push(notificationToSend);
-              notificationStore
-                .updateNotificationList(invitedUser.uid, notificationList)
-                .then(() =>
-                  notify({
-                    title: "Успешно!",
-                    text: "Приглашение в рабочее пространство было отправлено!",
-                    type: "success",
-                  })
-                );
-            });
+          });
         },
       });
     };
@@ -218,6 +223,7 @@ export default defineComponent({
       showLoader,
       showInviteWindow,
       filteredList,
+      emptyList,
       searchUser,
       invite,
       refreshUsers,
@@ -240,21 +246,13 @@ export default defineComponent({
     }
   }
   &__window {
-    position: absolute;
-    top: calc(100% + 15px);
-    right: 0;
-    width: 400px;
-    border-radius: 4px 4px 0 0;
-    box-shadow: 0 20px 40px rgba($color-black, 0.4);
-    background-color: $color-black;
     &-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 20px 10px 10px;
+      padding: 10px 5px;
       text-align: end;
-      border-bottom: 1px solid $color-white1;
       &--actions {
         display: flex;
       }
@@ -265,7 +263,7 @@ export default defineComponent({
       }
     }
     &--close {
-      color: $color-white1 !important;
+      color: var(--color-text) !important;
       font-size: 25px;
       padding: 0;
     }
@@ -276,49 +274,6 @@ export default defineComponent({
       color: $color-blue;
       &:hover {
         color: $color-blue-hover;
-      }
-    }
-    &-content {
-      position: relative;
-      height: 355px;
-      overflow: hidden scroll;
-      &.is-refresh {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      &--empty {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: $color-white1;
-      }
-
-      &::-webkit-scrollbar {
-        width: 5px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: $color-black;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: $color-light-grey;
-      }
-    }
-  }
-  @include mobile(max) {
-    &__window {
-      width: 100%;
-      height: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 3;
-      border-radius: 0;
-      &-content {
-        height: 100%;
       }
     }
   }

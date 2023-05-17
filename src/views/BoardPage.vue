@@ -1,10 +1,7 @@
 <template>
   <div class="board-item-page">
     <BoardHeader :board="boardItem" :user-info="userInfo" />
-    <div
-      class="board-item-page__content"
-      :style="{ background: boardBackground }"
-    ></div>
+    <div class="board-item-page__content" :style="{ background: boardBackground }"></div>
   </div>
 </template>
 
