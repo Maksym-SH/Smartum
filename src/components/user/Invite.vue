@@ -107,12 +107,10 @@ export default defineComponent({
     const searchUser = () => {
       isSearching.value = true;
       if (searchText.value) {
-        usersListFiltered.value = usersList.value.filter(
-          (item) =>
-            item.firstName
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase()) ||
-            item.lastName.toLowerCase().includes(searchText.value.toLowerCase())
+        usersListFiltered.value = usersList.value.filter((item) =>
+          getFullName(item)
+            .toLowerCase()
+            .includes(searchText.value.toLowerCase())
         );
       } else {
         isSearching.value = false;
