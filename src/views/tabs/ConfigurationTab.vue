@@ -49,11 +49,7 @@
           <template #header>
             <h2 class="card-info__title--settings-avatar">
               Изменить цвет фона профиля
-              <cButton
-                size="small"
-                title="Сохранить"
-                @click="saveBackgroundAvatar"
-              />
+              <cButton size="small" title="Сохранить" @click="saveBackgroundAvatar" />
             </h2>
           </template>
           <template #content>
@@ -104,9 +100,7 @@
                 />
               </div>
               <div class="card-info__additional-settings-item">
-                <h4 class="card-info__additional-settings-title">
-                  Дата и время
-                </h4>
+                <h4 class="card-info__additional-settings-title">Дата и время</h4>
                 <cCheckbox
                   v-model="additionalParams.showCurrentDate"
                   switch-box
@@ -145,10 +139,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import useConfiguration from "@/composables/useConfiguration";
 import Card from "@/container/Card.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import ColorPicker from "@/components/dialogs/SelectColor.vue";
-import useConfiguration from "@/composables/useConfiguration";
 
 export default defineComponent({
   components: {

@@ -1,18 +1,22 @@
 <template>
   <div class="notifications">
-    <cButton @click="toggleNotificationsWindow" class="notifications-btn" variant="text">
+    <cButton
+      @click="toggleNotificationsWindow"
+      icon="mdi-bell-outline"
+      class="notifications__btn"
+      variant="text"
+    >
       <v-badge
-        v-if="notificationsSize"
-        class="notifications-badge"
+        v-show="notificationsSize"
+        class="notifications__badge"
         :content="notificationsSize"
       />
-      <span class="mdi mdi-bell-outline"></span>
     </cButton>
     <DropdownWindow
       :visible="showNotificationsWindow"
       class="notifications__window"
       :width="440"
-      :height="330"
+      :height="355"
       :centering="!filteredList.length"
       @hideDropdown="showNotificationsWindow = false"
     >
@@ -31,25 +35,21 @@
               @click="showNotificationsWindow = false"
               variant="text"
               class="notifications__window--close"
-            >
-              <span class="mdi mdi-close"></span>
-            </cButton>
+              icon="mdi-close"
+            />
           </nav>
         </div>
       </template>
       <template #content>
-        <div class="notifications__window-content">
-          <transition-group name="toggle-content">
-            <NotificationItem
-              v-if="filteredList.length"
-              v-for="notification in filteredList"
-              :key="notification.id"
-              :params="notification"
-              @read-notification="notifyAction($event, 'readNotification')"
-              @delete-notification="notifyAction($event, 'deleteNotification')"
-            />
-            <EmptyList v-else type="notification" />
-          </transition-group>
+        <div class="notifications__window-items">
+          <NotificationItem
+            v-for="notification in filteredList"
+            :key="notification.id"
+            :params="notification"
+            @read-notification="notifyAction($event, 'readNotification')"
+            @delete-notification="notifyAction($event, 'deleteNotification')"
+          />
+          <EmptyList v-show="!filteredList.length" type="notification" />
         </div>
       </template>
     </DropdownWindow>
@@ -123,11 +123,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 .notifications {
   position: relative;
-  &-btn {
-    font-size: 25px;
+  &__btn {
+    font-size: 20px;
     padding: 0 5px;
   }
-  &-badge {
+  &__badge {
     position: absolute;
     right: 7px;
     z-index: 2;
@@ -161,6 +161,19 @@ export default defineComponent({
       color: var(--color-text) !important;
       font-size: 25px;
       padding: 0 5px;
+    }
+    &-items {
+      .notification-item {
+        padding-bottom: 25px;
+        :deep(.notification-item__content) {
+          .notification-item__date {
+            font-size: 12px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+          }
+        }
+      }
     }
   }
   @include mobile(max) {

@@ -11,11 +11,7 @@
       <cLoader v-if="!showContent" :size="defaultLoaderSize" inline />
       <template v-else>
         <div class="aside__mobile-content mobile-only">
-          <SwitchTheme
-            class="aside__theme-switch"
-            small
-            name="switchThemeMobile"
-          />
+          <SwitchTheme class="aside__theme-switch" small name="switchThemeMobile" />
           <cInput
             v-model="searchInput"
             type="search"
@@ -51,16 +47,13 @@
                 class="aside__navigation-list-item"
                 @click="navigationCallbackHandler(item?.callback?.())"
               >
-                <div>
+                <div class="navigation-list">
                   <span
                     v-if="item.icon"
                     class="icon mdi"
                     :class="[`mdi-${item.icon}`]"
                   ></span>
-                  <span
-                    class="navigation-title"
-                    :class="{ 'no-icon': !item.icon }"
-                  >
+                  <span class="navigation-title" :class="{ 'no-icon': !item.icon }">
                     {{ item.title }}
                   </span>
                 </div>
@@ -166,9 +159,7 @@ export default defineComponent({
 
     const showNotificationBadge = computed(
       () =>
-        props.notificationCount > 0 &&
-        props.minimizeAside &&
-        notificationNavShowed.value
+        props.notificationCount > 0 && props.minimizeAside && notificationNavShowed.value
     );
 
     const userInfo = computed((): IUserCreated => userStore.userInfo);

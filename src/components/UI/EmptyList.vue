@@ -8,17 +8,11 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { computed, defineComponent } from "vue";
-import type { EmptyListType } from "@/types/types";
+import { useEmptyListProps } from "./use/useProps";
 
 export default defineComponent({
-  props: {
-    type: {
-      type: String as PropType<EmptyListType>,
-      required: true,
-    },
-  },
+  props: useEmptyListProps,
   setup(props) {
     const descriptionContent = computed((): string => {
       if (props.type === "dashboard") return "Список рабочих досок пуст.";

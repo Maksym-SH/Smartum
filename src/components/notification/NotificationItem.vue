@@ -30,10 +30,12 @@
         {{ params.description }}
       </p>
     </div>
-    <span
-      class="notification-item__close mdi mdi-close-circle"
+    <cButton
+      class="notification-item__close"
+      variant="text"
+      icon="mdi-close-circle"
       @click.stop="deleteNotification"
-    ></span>
+    />
   </div>
 </template>
 
@@ -47,6 +49,7 @@ import type {
   IUserForList,
 } from "@/types/interfaces";
 import { NotificationActionType } from "@/types/enums";
+import { notify } from "@kyvg/vue3-notification";
 
 import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
@@ -54,7 +57,6 @@ import useStore from "@/composables/useStores";
 import useDateParseToString from "@/composables/useDateParse";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import Avatar from "../user/Avatar.vue";
-import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
   components: {
@@ -105,9 +107,7 @@ export default defineComponent({
           router.push({ name: "Configuration" });
           break;
         case NotificationActionType.InviteToBoard: {
-          const boardInfo = props.params as Required<
-            INotification<IServerDate>
-          >;
+          const boardInfo = props.params as Required<INotification<IServerDate>>;
 
           dashboardStore
             .getWorkingBoardItem(boardInfo.uid, boardInfo.joinCode)
@@ -173,7 +173,7 @@ export default defineComponent({
   border: 1px solid var(--color-border-notification);
   border-radius: 4px;
   padding: 10px;
-  padding-right: 27px;
+  padding-right: 30px;
   margin-bottom: 10px;
   transition: all 0.2s;
   cursor: pointer;
@@ -205,7 +205,7 @@ export default defineComponent({
     font-size: 14px;
     white-space: nowrap;
     margin-left: 10px;
-    line-height: 25px;
+    line-height: 22px;
     color: $color-dark-grey4;
   }
   &__description {
@@ -217,14 +217,16 @@ export default defineComponent({
   }
   &__close {
     position: absolute;
-    top: -2px;
-    right: 2px;
+    top: 1px;
+    right: 1px;
     color: var(--color-text);
-    font-size: 24px;
+    padding: 0;
+    height: fit-content;
+    font-size: 17px;
     cursor: pointer;
     transition: all 0.1s;
     &:hover {
-      color: $color-red-hover;
+      color: $color-red-hover !important;
     }
   }
   @include mobile(max) {
@@ -237,9 +239,6 @@ export default defineComponent({
       bottom: 5px;
       left: 0;
       font-size: 10px;
-    }
-    &__close {
-      font-size: 20px;
     }
   }
 }

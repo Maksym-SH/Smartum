@@ -61,9 +61,7 @@ export default defineComponent({
     const imgLoaded = ref(false);
     const imgLoad = (): boolean => (imgLoaded.value = true);
 
-    const sizeInitials = computed(
-      (): string => `font-size: ${props.size / 2.2}px;`
-    );
+    const sizeInitials = computed((): string => `font-size: ${props.size / 2.2}px;`);
 
     return {
       avatarStyles,
@@ -104,6 +102,7 @@ export default defineComponent({
   }
   &--initials {
     letter-spacing: 0.1px;
+    cursor: default;
   }
   &--online {
     position: absolute;

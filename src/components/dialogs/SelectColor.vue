@@ -1,9 +1,5 @@
 <template>
-  <v-dialog
-    v-model="showDialog"
-    transition="dialog-bottom-transition"
-    width="auto"
-  >
+  <v-dialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
     <template #activator="{ props }">
       <div class="color-picker">
         <cButton
@@ -50,11 +46,7 @@
           </div>
         </v-card-text>
         <v-card-actions class="v-card__footer">
-          <cButton
-            class="v-card__footer--cancel"
-            variant="text"
-            @click="closeDialog"
-          >
+          <cButton class="v-card__footer--cancel" variant="text" @click="closeDialog">
             Отмена
           </cButton>
           <cButton
@@ -115,8 +107,7 @@ export default defineComponent({
       };
     });
 
-    const colorsCollection =
-      props.theme === "dark" ? DarkColors() : LightColors();
+    const colorsCollection = props.theme === "dark" ? DarkColors() : LightColors();
 
     const selectedColor = ref<string>("");
 
@@ -180,6 +171,7 @@ export default defineComponent({
   .v-card {
     &__header {
       background-color: var(--color-background-secondary);
+      border-bottom: 1px solid var(--color-border-card);
       &-title {
         display: inline-flex;
         align-items: center;
@@ -189,7 +181,6 @@ export default defineComponent({
           margin-left: 10px;
         }
       }
-      border-bottom: 1px solid var(--color-border-card);
     }
     &-colors__content {
       background-color: var(--color-background);

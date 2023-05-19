@@ -3,7 +3,12 @@ import type {
   AsideExpPanelNavigation,
   ButtonSize,
   ButtonVariant,
+  EmptyListType,
   ExpansionPanelVariant,
+  ModalContentType,
+  Position,
+  SelectElements,
+  Variant,
 } from "@/types/types";
 import { Colors, Length } from "@/types/enums";
 
@@ -213,4 +218,73 @@ export const useBackgroundItemProps = {
     type: Boolean,
     default: false,
   },
-}
+};
+
+// EmptyList.vue
+export const useEmptyListProps = {
+  type: {
+    type: String as PropType<EmptyListType>,
+    required: true,
+  },
+};
+
+// Hint.vue
+export const useHintProps = {
+  content: {
+    type: String,
+    required: true,
+  },
+  variant: {
+    type: String as PropType<Variant>,
+    required: true,
+  },
+};
+
+// Loader.vue
+export const useLoaderProps = {
+  inline: {
+    type: Boolean,
+    default: false,
+  },
+  size: {
+    type: Number,
+    default: 60,
+  },
+};
+
+// LongContentModal.vue
+export const useLongContentModalProps = {
+  contentType: {
+    type: String as PropType<ModalContentType>,
+    required: true,
+  },
+};
+
+// Select.vue
+export const useSelectProps = {
+  items: {
+    type: Array as PropType<SelectElements>,
+    default: () => [],
+  },
+  location: {
+    // ToDo
+    type: String as PropType<Position>,
+    default: "end",
+  },
+  size: {
+    type: Number,
+    default: 30,
+  },
+};
+
+// SwitchTheme.vue
+export const useSwitchThemeProps = {
+  small: {
+    type: Boolean,
+    default: false,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+};

@@ -12,7 +12,6 @@
           src="/images/icons/list-task.svg"
           alt="Tasks"
         />
-
         <h3 class="sign-up__window--welcome-title">Добро пожаловать!</h3>
         <div class="sign-up__window-content">
           <h4 class="sign-up__window--welcome-description">
@@ -71,12 +70,8 @@
             <cButton title="Регистрация" type="submit" />
           </div>
           <small class="sign-up__window-description">
-            Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте
-            согласие на
-            <span
-              class="sign-up__window-description--open-modal"
-              @click="showTermsOfUse"
-            >
+            Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте согласие на
+            <span class="sign-up__window-description--open-modal" @click="showTermsOfUse">
               Правила использования
             </span>
             и

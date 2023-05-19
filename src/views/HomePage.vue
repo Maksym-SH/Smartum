@@ -11,10 +11,10 @@
     >
       <CHeader class="home-page__header" />
       <div class="home-page__tab-info">
-        <h1 class="page-title">
+        <h1 class="home-page__tab-info-title">
           {{ tabName.ru }}
         </h1>
-        <p class="page-description">
+        <p class="home-page__tab-info-description">
           {{ tabDescription.ru }}
         </p>
       </div>
@@ -34,11 +34,7 @@ import { computed, defineComponent, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { Layout } from "@/types/enums";
 import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
-import type {
-  DynamicDescription,
-  ILanguage,
-  IMetaName,
-} from "@/types/interfaces";
+import type { DynamicDescription, ILanguage, IMetaName } from "@/types/interfaces";
 import type { RouterMeta } from "@/types/types";
 
 import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
@@ -68,9 +64,7 @@ export default defineComponent({
 
     const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
 
-    const currentUserPresent = computed((): boolean =>
-      ObjectNotEmpty(currentUser.value)
-    );
+    const currentUserPresent = computed((): boolean => ObjectNotEmpty(currentUser.value));
     const additionalUserInfoPresent = computed((): boolean =>
       ObjectHasValues(userStore.userInfo)
     );
@@ -82,8 +76,7 @@ export default defineComponent({
     const minimizeAside = ref(true);
     const toggleAsideVisible = (value: boolean, capture = false): void => {
       if (!capture) minimizeAside.value = value;
-      else if (window.innerWidth <= Layout.Laptop)
-        minimizeAside.value = capture;
+      else if (window.innerWidth <= Layout.Laptop) minimizeAside.value = capture;
     };
 
     watch(
@@ -143,17 +136,15 @@ export default defineComponent({
     font-size: 24px;
     padding-left: 40px;
     color: var(--color-text);
-    .page {
-      &-title {
-        font-size: 24px;
-        line-height: 24px;
-      }
-      &-description {
-        font-size: 14px;
-        margin-top: 11px;
-        padding-right: 10px;
-        line-height: 17px;
-      }
+    &-title {
+      font-size: 24px;
+      line-height: 24px;
+    }
+    &-description {
+      font-size: 14px;
+      margin-top: 11px;
+      padding-right: 10px;
+      line-height: 17px;
     }
   }
   &__content {

@@ -1,7 +1,7 @@
 import { notify } from "@kyvg/vue3-notification";
 import type { ErrorCode } from "@/types/types";
 
-function ShowErrorMessage(errorCode: ErrorCode): void {
+export default function ShowErrorMessage(errorCode: ErrorCode): void {
   let errorText = "";
   if (typeof errorCode === "object") {
     switch (errorCode.code) {
@@ -37,5 +37,3 @@ function ShowErrorMessage(errorCode: ErrorCode): void {
     type: "error",
   });
 }
-
-export default ShowErrorMessage;

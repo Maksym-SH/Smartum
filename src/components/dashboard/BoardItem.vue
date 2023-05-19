@@ -3,8 +3,8 @@
     <div class="card-element-item__background">
       <BoardImageResult
         :background="element.background"
-        image-decor="/images/icons/dashboard-template.webp"
         :image="element.background"
+        image-decor="/images/icons/dashboard-template.webp"
       />
     </div>
     <div class="card-element-item__content">
@@ -30,8 +30,8 @@ import type { PropType } from "vue";
 import { defineComponent } from "vue";
 import type { IWorkingBoardItem } from "@/types/interfaces";
 
-import BoardImageResult from "@/components/dashboard/BoardImageResult.vue";
 import useDateParseToString from "@/composables/useDateParse";
+import BoardImageResult from "@/components/dashboard/BoardImageResult.vue";
 
 export default defineComponent({
   components: {
@@ -44,9 +44,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const dateOfCreate: string = useDateParseToString(
-      props.element.dateOfCreation
-    );
+    const dateOfCreate: string = useDateParseToString(props.element.dateOfCreation);
 
     return {
       dateOfCreate,

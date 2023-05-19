@@ -1,8 +1,8 @@
 import { getAuth } from "@firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
+import { Colors } from "@/types/enums";
 import type { IPopupParams, IWorkingBoardItem } from "@/types/interfaces";
 import type { Theme } from "@/types/types";
-import { Colors } from "@/types/enums";
 
 import useStores from "@/composables/useStores";
 
@@ -21,6 +21,10 @@ export function ObjectHasValues(object: Object): boolean {
 
 export function ObjectNotEmpty(object: object): boolean {
   return Object.keys(object).length > 0;
+}
+
+export function ArrayHasValues(array: any[]): boolean {
+  return array.length > 0;
 }
 
 export function NewObjectLink<Type>(object: Type): Type {
@@ -45,9 +49,7 @@ export function GenerateColorHexFormat(Theme: Theme): string {
   const g = Math.floor(Math.random() * 128) + rangeColor;
   const b = Math.floor(Math.random() * 128) + rangeColor;
 
-  const colorHex = `#${componentToHex(r)}${componentToHex(g)}${componentToHex(
-    b
-  )}`;
+  const colorHex = `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}`;
 
   return colorHex;
 
@@ -66,8 +68,7 @@ export function GenerateJoinCode(board: IWorkingBoardItem, length: number) {
 
 export function GenerateRandomString(length: number) {
   let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));

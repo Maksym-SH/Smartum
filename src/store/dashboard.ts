@@ -2,16 +2,16 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { notify } from "@kyvg/vue3-notification";
-import type { IWorkingBoardItem } from "@/types/interfaces";
-import type { ErrorCode } from "@/types/types";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 import { DataCollection } from "@/types/enums";
+import type { IWorkingBoardItem } from "@/types/interfaces";
+import type { ErrorCode } from "@/types/types";
 
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 
 const useDashboardStore = defineStore("dashboard", () => {
-  const { commonStore } = useStores();
+  const { commonStore, userStore } = useStores();
 
   const allDashboards = ref<IWorkingBoardItem[]>([]);
 
@@ -63,9 +63,7 @@ const useDashboardStore = defineStore("dashboard", () => {
       });
     });
   };
-  const getAllWorkingBoards = (
-    unicID: string
-  ): Promise<IWorkingBoardItem[]> => {
+  const getAllWorkingBoards = (unicID: string): Promise<IWorkingBoardItem[]> => {
     const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
 
     return new Promise((resolve, reject) => {
@@ -108,8 +106,20 @@ const useDashboardStore = defineStore("dashboard", () => {
   ): Promise<IWorkingBoardItem> => {
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
-      getAllWorkingBoards(unicID).then((boards) => {
+      getAllWorkingBoards(unicID).then(async (boards) => {
         const currentBoard = boards?.find((item) => item.joinCode === joinCode);
+
+        // Load avatars.
+        await userStore.getAllUserAvatars().then((list) => {
+          if (currentBoard?.members) {
+            currentBoard.members.map((user) => {
+              return (user.avatarParams!.url = list.find((item) =>
+                item.includes(user.uid as string)
+              ) as string);
+            });
+          }
+        });
+
         if (currentBoard) {
           resolve(currentBoard);
         } else {

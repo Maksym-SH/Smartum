@@ -7,7 +7,7 @@
     :rounded="rounded"
     :size="size"
   >
-    <v-icon v-if="icon" :icon="icon" />
+    <v-icon v-if="icon" :icon="icon" class="c-button__icon" />
     <slot>{{ title }}</slot>
   </v-btn>
 </template>

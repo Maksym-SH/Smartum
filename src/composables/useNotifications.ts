@@ -4,6 +4,7 @@ import type { INotificationList } from "@/types/types";
 
 import useStores from "./useStores";
 import useCurrentUserInfo from "./useCurrentUserInfo";
+import { ArrayHasValues } from "@/helpers/methods";
 
 function useNotifications() {
   const { notificationStore, commonStore } = useStores();
@@ -18,7 +19,7 @@ function useNotifications() {
 
   // Get all notifications.
   onBeforeMount(() => {
-    if (allNotifications.value.length === 0) {
+    if (!ArrayHasValues(allNotifications.value)) {
       // Get all if the list is initially empty.
       commonStore.setLoadingStatus(true);
       notificationStore

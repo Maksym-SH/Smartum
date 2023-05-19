@@ -1,104 +1,87 @@
 <template>
-  <div class="user-item" :class="{ 'showed-more': showedAdditionalInfo }">
-    <div class="user-item__common">
-      <div class="user-item__jeneral-info">
+  <details class="user-item">
+    <summary class="user-item__summary">
+      <div class="user-item__main-info">
         <div class="user-item__avatar">
           <Avatar
             circle
             :size="40"
-            :first-name="userInfo.firstName"
-            :last-name="userInfo.lastName"
-            :avatar="userInfo.avatarParams"
+            :first-name="user.firstName"
+            :last-name="user.lastName"
+            :avatar="user.avatarParams"
           />
         </div>
         <div class="user-item__info">
           <h3 class="user-item__info-first-name text-ellipsis">
-            {{ userInfo.firstName }}
+            {{ user.firstName }}
           </h3>
           <h3 class="user-item__info-last-name text-ellipsis">
-            {{ userInfo.lastName }}
+            {{ user.lastName }}
           </h3>
         </div>
       </div>
-      <div class="user-item__additional">
-        <span v-if="userInfo.role" class="user-item__additional-role">
-          {{ userInfo.role }}
+      <div class="user-item__actions">
+        <span v-if="user.role" class="user-item__actions-role">
+          {{ user.role }}
         </span>
         <cButton
-          v-if="!userInfo.role"
+          v-if="!user.role"
           @click="$emit('invite')"
           variant="text"
-          class="user-item__additional--add"
-        >
-          <span class="mdi mdi-account-plus"></span>
-        </cButton>
-        <span
-          @click="toggleDisplayAdditionalInfo"
-          class="show-more"
-          :class="{ open: showedAdditionalInfo }"
-        >
+          class="user-item__actions--add"
+          icon="mdi-account-plus"
+        />
+        <span class="user-item__actions-caret">
           <span class="mdi mdi-chevron-down"></span>
         </span>
       </div>
-    </div>
-
-    <transition name="toggle-user-info">
-      <div v-show="showedAdditionalInfo" class="user-item__more-info">
-        <div class="info-item">
-          <h5 class="info-item__name">
-            <span class="mdi mdi-phone-outline"></span>
-            Телефон
-          </h5>
-          <a
-            v-if="userInfo.phone"
-            :href="`tel:${userInfo.phone}`"
-            class="info-item__description"
-            >{{ userInfo.phone }}
-          </a>
-          <span v-else class="info-item__description"> Нет данных </span>
-        </div>
-        <div class="info-item">
-          <h5 class="info-item__name">
-            <span class="mdi mdi-information-outline"></span>
-            О себе
-          </h5>
-          <span v-if="userInfo.about" class="info-item__description about">
-            {{ userInfo.about }}
-          </span>
-          <span v-else class="info-item__description"> Нет данных </span>
-        </div>
+    </summary>
+    <div class="user-item__details">
+      <div class="info-item">
+        <h5 class="info-item__name">
+          <span class="mdi mdi-phone-outline"></span>
+          Телефон
+        </h5>
+        <a
+          v-if="user.phone"
+          :href="`tel:${user.phone}`"
+          class="info-item__description phone"
+          >{{ user.phone }}
+        </a>
+        <span v-else class="info-item__description"> Нет данных </span>
       </div>
-    </transition>
-  </div>
+      <div class="info-item">
+        <h5 class="info-item__name">
+          <span class="mdi mdi-information-outline"></span>
+          О себе
+        </h5>
+        <span v-if="user.about" class="info-item__description about">
+          {{ user.about }}
+        </span>
+        <span v-else class="info-item__description"> Нет данных </span>
+      </div>
+    </div>
+  </details>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import type { PropType } from "vue";
-import type { IUserForList } from "@/types/interfaces";
+import { IUserForList } from "@/types/interfaces";
+import { defineComponent, computed } from "vue";
 
 import Avatar from "./Avatar.vue";
+import { useUserItemProps } from "./use/useProps";
 
 export default defineComponent({
   components: {
     Avatar,
   },
-  props: {
-    userInfo: {
-      type: Object as PropType<IUserForList>,
-      required: true,
-    },
-  },
+  props: useUserItemProps,
   emits: ["invite"],
-  setup() {
-    const showedAdditionalInfo = ref(false);
+  setup(props) {
+    const user = computed(() => props.userInfo as IUserForList);
 
-    const toggleDisplayAdditionalInfo = () => {
-      showedAdditionalInfo.value = !showedAdditionalInfo.value;
-    };
     return {
-      showedAdditionalInfo,
-      toggleDisplayAdditionalInfo,
+      user,
     };
   },
 });
@@ -107,24 +90,30 @@ export default defineComponent({
 <style lang="scss" scoped>
 .user-item {
   position: relative;
-  padding: 5px;
   margin: 5px;
   border-radius: 10px;
-  min-height: 52px;
-  transition: min-height 0.3s ease;
+  height: 57px;
+  overflow: hidden;
+  transition: height 0.3s ease;
   background: linear-gradient(
     90deg,
     rgba($color-black, 0) 0%,
     rgba($color-dark-blue, 0.2) 100%
   );
-  &.showed-more {
-    min-height: 170px;
+  &[open] {
+    height: 175px;
+    .user-item__actions-caret {
+      transform: rotate(180deg);
+      color: $color-blue;
+    }
   }
-  &__common {
+  &__summary {
     display: flex;
     justify-content: space-between;
+    padding: 5px;
+    cursor: pointer;
   }
-  &__jeneral-info {
+  &__main-info {
     display: flex;
     gap: 10px;
   }
@@ -137,37 +126,30 @@ export default defineComponent({
       font-size: 14px;
     }
   }
-  &__additional {
+  &__actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 15px;
     color: var(--color-text);
+    min-height: 47px;
     &-role {
       font-size: 13px;
     }
     &--add {
-      padding: 6px;
+      padding: 0 7px;
       font-size: 20px;
     }
-    .show-more {
+    &-caret {
       font-size: 25px;
-      cursor: pointer;
       color: var(--color-text);
       transition: all 0.2s;
-
-      &.open {
-        transform: rotate(180deg);
-      }
     }
   }
-  &__more-info {
-    position: absolute;
-    top: 50px;
-    padding: 5px 18px 7px 18px;
+  &__details {
+    padding: 0 5px;
     .info-item {
       margin-top: 5px;
-      display: inline;
       width: 100%;
       line-height: 15px;
       &__name {
@@ -179,22 +161,29 @@ export default defineComponent({
         white-space: nowrap;
       }
       &__description {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        overflow: hidden;
-        margin-top: 3px;
+        margin-top: 5px;
         font-size: 12px;
-        color: $color-blue;
-        word-break: break-all;
         user-select: none;
-        max-height: 70px;
+        &:not(.phone) {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+          overflow: hidden;
+          margin-top: 3px;
+          color: $color-blue;
+          word-break: break-all;
+          max-height: 70px;
+        }
+        &.phone {
+          display: block;
+          width: fit-content;
+        }
       }
     }
   }
   @include mobile(max) {
     margin: 5px 0;
-    &__jeneral-info {
+    &__info {
       gap: 8px;
     }
     &__info {
@@ -204,7 +193,7 @@ export default defineComponent({
         font-size: 13px;
       }
     }
-    &__additional {
+    &__actions {
       gap: 5px;
       &-role {
         font-size: 12px;
@@ -221,6 +210,6 @@ export default defineComponent({
 .toggle-user-info-leave-to {
   opacity: 0;
   z-index: -1;
-  transform: translateY(-100%);
+  transform: translateX(-100%);
 }
 </style>

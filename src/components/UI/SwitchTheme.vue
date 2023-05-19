@@ -17,18 +17,10 @@
 import { defineComponent, onMounted, ref, watch } from "vue";
 import { SetTheme } from "@/helpers/methods";
 import type { Theme } from "@/types/types";
+import { useSwitchThemeProps } from "./use/useProps";
 
 export default defineComponent({
-  props: {
-    small: {
-      type: Boolean,
-      default: false,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-  },
+  props: useSwitchThemeProps,
   setup() {
     const switchModel = ref<boolean>(true);
 
@@ -39,8 +31,7 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      const savedTheme =
-        (localStorage.getItem("smartumTheme") as Theme) ?? "dark";
+      const savedTheme = (localStorage.getItem("smartumTheme") as Theme) ?? "dark";
       switchModel.value = savedTheme !== "dark";
 
       SetTheme(savedTheme);

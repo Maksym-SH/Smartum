@@ -10,7 +10,6 @@
   <transition name="toggle-popup" mode="out-in">
     <ConfirmationPopup v-if="commonStore.openConfirmPopup" />
   </transition>
-
   <cLoader v-show="commonStore.loadingStatus" />
   <router-view v-slot="{ Component }">
     <transition name="router-nav" mode="out-in">
@@ -20,12 +19,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineAsyncComponent,
-  defineComponent,
-  onBeforeUnmount,
-} from "vue";
+import { computed, defineAsyncComponent, defineComponent, onBeforeUnmount } from "vue";
 import { ObjectNotEmpty } from "./helpers/methods";
 
 import useStores from "./composables/useStores";
@@ -49,9 +43,7 @@ export default defineComponent({
 
     return {
       commonStore,
-      showPopup: computed((): boolean =>
-        ObjectNotEmpty(commonStore.popupParams)
-      ),
+      showPopup: computed((): boolean => ObjectNotEmpty(commonStore.popupParams)),
     };
   },
 });
@@ -87,48 +79,6 @@ body {
 }
 #app {
   height: 100%;
-}
-
-.router-nav-enter-active,
-.router-nav-leave-active {
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.router-nav-enter-from,
-.router-nav-leave-to {
-  opacity: 0;
-}
-
-.toggle-popup-enter-active,
-.toggle-popup-leave-active {
-  overflow: hidden;
-  transition: all 0.2s ease;
-}
-
-.toggle-popup-enter-from,
-.toggle-popup-leave-to {
-  @include mobile(min) {
-    transform: scale(1.1);
-  }
-
-  @include mobile(max) {
-    opacity: 0;
-  }
-}
-.toggle-popup-leave-to {
-  opacity: 0;
-}
-
-.single-content-enter-active,
-.single-content-leave-active {
-  overflow: hidden;
-  transition: all 0.2s ease;
-}
-
-.single-content-enter-from,
-.single-content-leave-to {
-  opacity: 0;
 }
 
 // Notifications design.

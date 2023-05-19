@@ -1,7 +1,12 @@
 <template>
   <div class="notifications-tab" :class="{ empty: !showList }">
     <div v-if="showList" class="notifications-tab__filters full-width--tablet">
-      <cButton :color="Colors.Info" variant="flat" @click="clearAll">
+      <cButton
+        class="notifications-tab__filters--clear"
+        :color="Colors.Info"
+        variant="flat"
+        @click="clearAll"
+      >
         Очистить все
       </cButton>
     </div>
@@ -20,7 +25,7 @@
         @delete-notification="notifyAction($event, 'deleteNotification')"
       />
     </transition-group>
-    <transition name="single-content">
+    <transition name="fade">
       <EmptyList
         v-show="!showList && !showLoading"
         type="notification"
@@ -35,7 +40,7 @@ import { computed, defineComponent } from "vue";
 import { storeToRefs } from "pinia";
 import type { NotifyAction } from "@/types/types";
 import { Colors } from "@/types/enums";
-import { ObjectNotEmpty } from "@/helpers/methods";
+import { ArrayHasValues, ObjectNotEmpty } from "@/helpers/methods";
 
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
@@ -56,9 +61,7 @@ export default defineComponent({
     const { currentUser, unicID } = useCurrentUserInfo();
 
     const showList = computed((): boolean => {
-      return (
-        allNotifications.value.length > 0 && ObjectNotEmpty(currentUser.value)
-      );
+      return ArrayHasValues(allNotifications.value) && ObjectNotEmpty(currentUser.value);
     });
 
     const showLoading = computed((): boolean => commonStore.loadingStatus);

@@ -1,5 +1,5 @@
 <template>
-  <transition name="toggle-content">
+  <transition name="fade">
     <div v-if="visible" v-bind="$attrs" class="dropdown-window">
       <header v-if="$slots.header" class="dropdown-window__header">
         <slot name="header" />
@@ -73,9 +73,8 @@ export default defineComponent({
 }
 .dropdown-window {
   position: absolute;
-  top: calc(100% + 15px) !important;
   z-index: 3;
-  top: 0;
+  top: calc(100% + 15px);
   right: 0;
   background-color: var(--color-background);
   &__header {

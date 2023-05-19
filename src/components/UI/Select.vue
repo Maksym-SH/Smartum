@@ -9,11 +9,7 @@
       @blur="selectActive = false"
     >
       <slot>
-        <img
-          class="c-select__icon"
-          src="/images/icons/dots-vertical.svg"
-          alt=""
-        />
+        <img class="c-select__icon" src="/images/icons/dots-vertical.svg" alt="" />
       </slot>
     </cButton>
     <transition name="toggle-selectActive" mode="in-out">
@@ -37,29 +33,14 @@
 </template>
 
 <script lang="ts">
-import type { CSSProperties, PropType } from "vue";
+import type { CSSProperties } from "vue";
 import { computed, defineComponent, ref } from "vue";
-
-import type { Position, SelectElements } from "@/types/types";
 import { Colors } from "@/types/enums";
+import { useSelectProps } from "./use/useProps";
 
 export default defineComponent({
   inheritAttrs: false,
-  props: {
-    items: {
-      type: Array as PropType<SelectElements>,
-      default: () => [],
-    },
-    location: {
-      // ToDo
-      type: String as PropType<Position>,
-      default: "end",
-    },
-    size: {
-      type: Number,
-      default: 30,
-    },
-  },
+  props: useSelectProps,
   emits: ["selected"],
   setup(props) {
     const selectActive = ref(false);

@@ -7,18 +7,10 @@
 <script lang="ts">
 import type { CSSProperties } from "vue";
 import { defineComponent, reactive } from "vue";
+import { useLoaderProps } from "./use/useProps";
 
 export default defineComponent({
-  props: {
-    inline: {
-      type: Boolean,
-      default: false,
-    },
-    size: {
-      type: Number,
-      default: 60,
-    },
-  },
+  props: useLoaderProps,
   setup(props) {
     const loaderSize: CSSProperties = reactive({
       width: `${props.size}px`,

@@ -1,6 +1,5 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import type { ErrorCode } from "@/types/types";
 import { database } from "@/helpers/firebase/firebaseInitialize";
@@ -28,9 +27,7 @@ const useConfigurationStore = defineStore("configuration", () => {
     showDeleteAccountButton: false,
   });
 
-  const setAdditionalParams = (
-    params: Omit<IConfiguration, "navigations">
-  ): void => {
+  const setAdditionalParams = (params: Omit<IConfiguration, "navigations">): void => {
     additionalParams.value = params;
   };
   const setNavigateList = (navigationList: IAsideNavigationItem[]): void => {
@@ -58,14 +55,8 @@ const useConfigurationStore = defineStore("configuration", () => {
         .finally(() => commonStore.setLoadingStatus(false));
     });
   };
-  const getUserConfiguration = (
-    unicID: string
-  ): Promise<IConfigurationResponse> => {
-    const configurationRef = doc(
-      database,
-      DataCollection.Configuration,
-      unicID
-    );
+  const getUserConfiguration = (unicID: string): Promise<IConfigurationResponse> => {
+    const configurationRef = doc(database, DataCollection.Configuration, unicID);
 
     return new Promise((resolve, reject) => {
       getDoc(configurationRef)
@@ -96,11 +87,7 @@ const useConfigurationStore = defineStore("configuration", () => {
     });
   };
   const deleteUserConfiguration = (unicID: string): Promise<void> => {
-    const configurationRef = doc(
-      database,
-      DataCollection.Configuration,
-      unicID
-    );
+    const configurationRef = doc(database, DataCollection.Configuration, unicID);
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
@@ -117,11 +104,7 @@ const useConfigurationStore = defineStore("configuration", () => {
     additional: IConfigurationAdditional,
     unicID: string
   ): Promise<void> => {
-    const configurationRef = doc(
-      database,
-      DataCollection.Configuration,
-      unicID
-    );
+    const configurationRef = doc(database, DataCollection.Configuration, unicID);
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
@@ -139,15 +122,8 @@ const useConfigurationStore = defineStore("configuration", () => {
         .finally(() => commonStore.setLoadingStatus(false));
     });
   };
-  const updateNavigateItem = (
-    navigations: boolean[],
-    unicID: string
-  ): Promise<void> => {
-    const configurationRef = doc(
-      database,
-      DataCollection.Configuration,
-      unicID
-    );
+  const updateNavigateItem = (navigations: boolean[], unicID: string): Promise<void> => {
+    const configurationRef = doc(database, DataCollection.Configuration, unicID);
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {

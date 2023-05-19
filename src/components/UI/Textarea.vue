@@ -32,9 +32,7 @@
       </label>
       <span v-if="required" class="c-textarea--required"></span>
       <Transition name="error-message">
-        <span v-if="errorText" class="c-textarea--error-text">{{
-          errorText
-        }}</span>
+        <span v-if="errorText" class="c-textarea--error-text">{{ errorText }}</span>
       </Transition>
     </div>
   </div>
@@ -47,7 +45,6 @@ import type { ModelValue, RefElement } from "@/types/types";
 
 export default defineComponent({
   inheritAttrs: false,
-
   props: useTextareaProps,
   emits: ["invalid", "update:modelValue", "click"],
 

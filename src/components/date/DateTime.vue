@@ -3,7 +3,11 @@
     <div v-if="showTemplate" class="date__wrapper">
       <h3 class="date__title">
         <span class="date__icon">
-          <img :src="`/images/icons/${imageType}.svg`" alt="" />
+          <img
+            class="date__icon-picture"
+            :src="`/images/icons/${imageType}.svg`"
+            alt=""
+          />
         </span>
         {{ welcomeText }}
       </h3>
@@ -20,14 +24,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-} from "vue";
+import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from "vue";
 import type { Icon, WelcomeText } from "@/types/types";
 import { Numbers } from "@/types/enums";
 
@@ -48,9 +45,7 @@ export default defineComponent({
       return "moon";
     });
 
-    const showTemplate = computed((): boolean =>
-      Boolean(time.value && date.value)
-    );
+    const showTemplate = computed((): boolean => Boolean(time.value && date.value));
 
     // Changing text depending on the time of day.
     watch(
@@ -58,15 +53,10 @@ export default defineComponent({
       (): void => {
         // Get current hour between 0 - 23.
         const currentTime = time.value;
-        const currentTimeHours = Number(
-          currentTime.split("").slice(0, 2).join("")
-        );
+        const currentTimeHours = Number(currentTime.split("").slice(0, 2).join(""));
 
         // If the time is later than 16:00 and later than 6:00.
-        if (
-          currentTimeHours < Numbers.EveningRU &&
-          currentTimeHours > Numbers.MorningRU
-        )
+        if (currentTimeHours < Numbers.EveningRU && currentTimeHours > Numbers.MorningRU)
           welcomeText.value = "Добрый день";
         else welcomeText.value = "Добрый вечер";
       }

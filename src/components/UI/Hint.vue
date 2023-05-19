@@ -5,21 +5,11 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { defineComponent } from "vue";
-import type { Variant } from "@/types/types";
+import { useHintProps } from "./use/useProps";
 
 export default defineComponent({
-  props: {
-    content: {
-      type: String,
-      required: true,
-    },
-    variant: {
-      type: String as PropType<Variant>,
-      required: true,
-    },
-  },
+  props: useHintProps,
 });
 </script>
 

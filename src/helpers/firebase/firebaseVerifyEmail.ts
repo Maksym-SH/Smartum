@@ -8,7 +8,7 @@ import useNewNotificationContent from "@/composables/useNotificationContent";
 import ShowErrorMessage from "./firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 
-function VerifyEmail(userInfo: User): void {
+export default function VerifyEmail(userInfo: User): void {
   const { notificationStore, userStore } = useStores();
 
   if (!(userStore.currentUser as User).emailVerified) {
@@ -27,15 +27,12 @@ function VerifyEmail(userInfo: User): void {
         notificationStore.setNewNotification(notification);
 
         // Check email verify real time.
-        const checkForVerifiedInterval: ReturnType<typeof setInterval> =
-          setInterval(() => {
+        const checkForVerifiedInterval: ReturnType<typeof setInterval> = setInterval(
+          () => {
             getAuth()
               .currentUser?.reload()
               .then(() => {
-                if (
-                  getAuth().currentUser &&
-                  getAuth().currentUser?.emailVerified
-                ) {
+                if (getAuth().currentUser && getAuth().currentUser?.emailVerified) {
                   const emailVerified = getAuth().currentUser?.emailVerified;
 
                   userStore.setCurrentUser({
@@ -52,7 +49,9 @@ function VerifyEmail(userInfo: User): void {
                   clearInterval(checkForVerifiedInterval);
                 }
               });
-          }, Numbers.Second);
+          },
+          Numbers.Second
+        );
       })
       .catch((error: ErrorCode) => ShowErrorMessage(error));
   } else {
@@ -62,5 +61,3 @@ function VerifyEmail(userInfo: User): void {
     });
   }
 }
-
-export default VerifyEmail;

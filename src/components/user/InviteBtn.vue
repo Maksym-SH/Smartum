@@ -1,14 +1,17 @@
 <template>
   <div class="invite-users">
-    <cButton @click="toggleInviteWindow">
-      <span class="icon mdi mdi-account-multiple"></span>
+    <cButton
+      @click="toggleInviteWindow"
+      icon="mdi-account-multiple"
+      class="invite-users__btn"
+    >
       Пригласить
     </cButton>
     <DropDownWindow
       :visible="showInviteWindow"
       class="invite-users__window"
       :width="375"
-      :height="375"
+      :height="385"
       :centering="showLoader || emptyList"
       @hide-dropdown="showInviteWindow = false"
     >
@@ -27,17 +30,15 @@
             <cButton
               variant="text"
               class="invite-users__window--refresh"
+              icon="mdi-refresh"
               @click="refreshUsers"
-            >
-              <span class="icon mdi mdi-refresh"></span>
-            </cButton>
+            />
             <cButton
               class="invite-users__window--close"
               variant="text"
+              icon="mdi-close"
               @click="showInviteWindow = false"
-            >
-              <span class="mdi mdi-close"></span>
-            </cButton>
+            />
           </nav>
         </div>
       </template>
@@ -68,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ref, computed } from "vue";
 import useStore from "@/composables/useStores";
 import type {
   INotification,
@@ -76,14 +77,14 @@ import type {
   IUserForList,
   IWorkingBoardItem,
 } from "@/types/interfaces";
+import { notify } from "@kyvg/vue3-notification";
+import { OpenPopup } from "@/helpers/methods";
+import { Colors, NotificationType } from "@/types/enums";
+
+import useNewNotificationContent from "@/composables/useNotificationContent";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import UserListItem from "./UserItem.vue";
 import DropDownWindow from "@/container/DropdownWindow.vue";
-import { OpenPopup } from "@/helpers/methods";
-import { Colors, NotificationType } from "@/types/enums";
-import useNewNotificationContent from "@/composables/useNotificationContent";
-import { notify } from "@kyvg/vue3-notification";
-import { computed } from "@vue/reactivity";
 
 export default defineComponent({
   components: {
@@ -236,7 +237,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .invite-users {
   position: relative;
-  .c-button {
+  &__btn {
     text-transform: none;
     color: $color-white1;
     display: flex;
@@ -255,11 +256,20 @@ export default defineComponent({
       text-align: end;
       &--actions {
         display: flex;
+        gap: 5px;
+        .c-button {
+          padding: 0 5px;
+        }
       }
       &--search {
         .c-input {
           padding: 0;
         }
+      }
+    }
+    &-content {
+      &--empty {
+        color: var(--color-text);
       }
     }
     &--close {

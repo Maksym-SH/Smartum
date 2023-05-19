@@ -1,13 +1,7 @@
 <template>
-  <v-dialog
-    v-model="showDialog"
-    transition="dialog-bottom-transition"
-    width="auto"
-  >
+  <v-dialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
     <template #activator="{ props }">
-      <cButton class="create-dashboard-btn" v-bind="props">
-        Создать новую доску
-      </cButton>
+      <cButton class="create-dashboard-btn" v-bind="props"> Создать новую доску </cButton>
     </template>
     <template #default>
       <v-card>
@@ -74,17 +68,14 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
-import BoardImageResult from "../dashboard/BoardImageResult.vue";
-import ImageBackgroundExample from "../UI/BackgroundItem.vue";
-import type {
-  IBackgroundDashboard,
-  IWorkingBoardItem,
-} from "@/types/interfaces";
+import type { IBackgroundDashboard, IWorkingBoardItem } from "@/types/interfaces";
 import { Colors, Length, Numbers } from "@/types/enums";
 import { GenerateJoinCode } from "@/helpers/methods";
 
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDashboardItemBackgroundTemplate from "@/composables/useDashboardItemBackground";
+import BoardImageResult from "../dashboard/BoardImageResult.vue";
+import ImageBackgroundExample from "../UI/BackgroundItem.vue";
 
 export default defineComponent({
   components: {
@@ -94,8 +85,7 @@ export default defineComponent({
   emits: ["createNew"],
 
   setup(_, { emit }) {
-    const backgrounds: IBackgroundDashboard =
-      useDashboardItemBackgroundTemplate();
+    const backgrounds: IBackgroundDashboard = useDashboardItemBackgroundTemplate();
 
     const { unicID, userInfo } = useCurrentUserInfo();
 
@@ -127,7 +117,7 @@ export default defineComponent({
 
       showDialog.value = false;
 
-      // Set default value
+      // Set default value.
       newBoard.title = "";
       newBoard.background = Colors.GradientBluePink;
     };

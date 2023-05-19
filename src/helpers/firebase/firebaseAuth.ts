@@ -5,8 +5,6 @@ import {
   reauthenticateWithCredential,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-
-import { notify } from "@kyvg/vue3-notification";
 import type {
   INotification,
   IUserAuth,
@@ -14,7 +12,7 @@ import type {
   IUserReg,
   IUserResponse,
 } from "@/types/interfaces";
-
+import { notify } from "@kyvg/vue3-notification";
 import type { ErrorCode } from "@/types/types";
 import { GenerateColorHexFormat } from "@/helpers/methods";
 import { NotificationType } from "@/types/enums";
@@ -24,9 +22,8 @@ import router from "@/router";
 import notificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
 
-function firebaseAuth(): IUserAuth {
-  const { commonStore, userStore, notificationStore, configurationStore } =
-    useStores();
+export default function firebaseAuth(): IUserAuth {
+  const { commonStore, userStore, notificationStore, configurationStore } = useStores();
 
   const useAuth = {
     signUp: (userData: IUserReg, validate: boolean): void => {
@@ -34,11 +31,7 @@ function firebaseAuth(): IUserAuth {
 
       commonStore.setLoadingStatus(true);
 
-      createUserWithEmailAndPassword(
-        getAuth(),
-        userData.email,
-        userData.password
-      )
+      createUserWithEmailAndPassword(getAuth(), userData.email, userData.password)
         .then(async (response) => {
           const responseUser: IUserResponse = response.user;
           const currentUser = getAuth().currentUser;
@@ -91,8 +84,7 @@ function firebaseAuth(): IUserAuth {
         .then((response) => {
           const user: IUserResponse = response.user;
 
-          if (user.accessToken)
-            localStorage.setItem("smartumToken", user.accessToken);
+          if (user.accessToken) localStorage.setItem("smartumToken", user.accessToken);
 
           userStore.setCurrentUser(getAuth().currentUser as User);
           notify({
@@ -124,5 +116,3 @@ function firebaseAuth(): IUserAuth {
 
   return useAuth;
 }
-
-export default firebaseAuth;

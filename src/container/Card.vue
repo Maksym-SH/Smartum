@@ -17,9 +17,7 @@
           <slot name="table-header"></slot>
         </tr>
       </thead>
-
       <slot v-if="$slots['table-body']" name="table-body"></slot>
-
       <tfoot
         v-if="$slots['table-body'] || $slots['table-footer']"
         class="card__table-footer"

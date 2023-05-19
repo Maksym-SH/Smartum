@@ -20,7 +20,7 @@
           @click="openBoard(board.joinCode)"
         />
       </transition-group>
-      <transition name="single-content">
+      <transition name="fade">
         <div
           v-show="centeringContent"
           class="dashboard-tab__content--single"
@@ -42,13 +42,13 @@ import type { User } from "@firebase/auth";
 import type { IWorkingBoardItem } from "@/types/interfaces";
 import { NotificationType } from "@/types/enums";
 
+import newNotificationContent from "@/composables/useNotificationContent";
+import useStores from "@/composables/useStores";
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import LockAccess from "@/components/dashboard/NeedEmailConfirmation.vue";
 import EmptyList from "@/components/UI/EmptyList.vue";
 import CreateNewBoard from "@/components/dialogs/CreateNewBoard.vue";
 import BoardCard from "@/components/dashboard/BoardItem.vue";
-import newNotificationContent from "@/composables/useNotificationContent";
-import useStores from "@/composables/useStores";
-import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 
 export default defineComponent({
   components: {
@@ -168,14 +168,9 @@ export default defineComponent({
       grid-template-columns: repeat(3, minmax(240px, 32.2%));
     }
   }
-  /* @include responsive(, max) {
-    &__cards {
-      grid-template-columns: repeat(3, minmax(240px, 32.2%));
-    }
-  } */
   @include responsive($xxl, max) {
     &__cards {
-      grid-template-columns: repeat(2, 49%);
+      grid-template-columns: repeat(2, 49.4%);
     }
   }
   @include tablet(max) {

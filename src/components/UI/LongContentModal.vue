@@ -16,7 +16,7 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-list>
-        <v-list-subheader class="modal__header">
+        <v-list-subheader class="modal__subheader">
           <cCheckbox
             v-model="switchLanguage"
             switch-box
@@ -32,26 +32,17 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { computed, defineComponent, ref, watch } from "vue";
 import type { IModalContent } from "@/types/interfaces";
-import type {
-  ModalContentLanguage,
-  ModalContentType,
-  ModalLanguageType,
-} from "@/types/types";
+import type { ModalContentLanguage, ModalLanguageType } from "@/types/types";
+import { useLongContentModalProps } from "./use/useProps";
 
 import TermsOfUse from "@/helpers/content/TermsOfUse.json";
 import Confidentially from "@/helpers/content/Сonfidentiality.json";
 import useStores from "@/composables/useStores";
 
 export default defineComponent({
-  props: {
-    contentType: {
-      type: String as PropType<ModalContentType>,
-      required: true,
-    },
-  },
+  props: useLongContentModalProps,
   setup(props) {
     const { commonStore } = useStores();
 
@@ -77,8 +68,7 @@ export default defineComponent({
     });
 
     const modalContent = computed(
-      (): ModalContentLanguage =>
-        currentContentType.value[currentLanguage.value]
+      (): ModalContentLanguage => currentContentType.value[currentLanguage.value]
     );
 
     return {
@@ -94,7 +84,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .modal {
   z-index: 90 !important;
-  &__header {
+  &__subheader {
     display: flex;
     justify-content: flex-end;
   }

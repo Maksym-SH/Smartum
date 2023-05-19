@@ -1,32 +1,61 @@
 <template>
   <div class="board-item-page">
-    <BoardHeader :board="boardItem" :user-info="userInfo" />
-    <div class="board-item-page__content" :style="{ background: boardBackground }"></div>
+    <BoardHeader :user-info="userInfo" />
+    <div class="board-item-page__content" :style="{ background: boardBackground }">
+      <cLoader v-if="!showedCommonLoader && !boardNotEmpty" />
+      <transition name="toggle-content">
+        <div v-if="boardNotEmpty" class="board-item-page__board-additional">
+          <div class="avatars-wrapper">
+            <Avatar
+              v-for="item in (boardItem as IWorkingBoardItem).members"
+              :key="item.uid"
+              :avatar="item.avatarParams"
+              :first-name="item.firstName"
+              :last-name="item.lastName"
+              circle
+            />
+          </div>
+          <BtnInviteUsers :board="boardItem" />
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import type { IWorkingBoardItem } from "@/types/interfaces";
+import { ObjectNotEmpty } from "@/helpers/methods";
 
-import BoardHeader from "@/components/dashboard/BoardPageHeader.vue";
 import useStore from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
-import { computed } from "@vue/reactivity";
+import BoardHeader from "@/components/dashboard/BoardPageHeader.vue";
+import BtnInviteUsers from "@/components/user/InviteBtn.vue";
+import Avatar from "@/components/user/Avatar.vue";
 
 export default defineComponent({
   components: {
     BoardHeader,
+    Avatar,
+    BtnInviteUsers,
   },
   setup() {
     const router = useRouter();
 
-    const { dashboardStore } = useStore();
+    const { commonStore, dashboardStore } = useStore();
+
+    const showedCommonLoader = computed((): boolean => {
+      return commonStore.loadingStatus;
+    });
 
     const { unicID, userInfo } = useCurrentUserInfo();
 
     const boardItem = ref<IWorkingBoardItem | {}>({});
+
+    const boardNotEmpty = computed((): boolean => {
+      return ObjectNotEmpty(boardItem.value);
+    });
 
     const boardBackground = computed(() => {
       const board = boardItem.value as IWorkingBoardItem;
@@ -52,9 +81,11 @@ export default defineComponent({
     });
 
     return {
+      boardNotEmpty,
       boardBackground,
       boardItem,
       userInfo,
+      showedCommonLoader,
     };
   },
 });
@@ -63,12 +94,33 @@ export default defineComponent({
 <style lang="scss" scoped>
 .board-item-page {
   height: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto 1fr;
   &__content {
     width: 100%;
-    height: calc(100% - 66.4px);
     background-repeat: no-repeat !important;
     background-size: cover !important;
     background-position: center center !important;
+  }
+  &__board-additional {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba($color-black, 0.2);
+    box-shadow: 0 10px 10px rgba($color-black, 0.2);
+    justify-content: flex-end;
+    .avatars-wrapper {
+      display: flex;
+      align-items: center;
+      .user-avatar {
+        margin-right: -10px;
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
   }
 }
 </style>

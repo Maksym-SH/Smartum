@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-
 import type { User } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
@@ -20,7 +19,6 @@ import type {
   IUserForList,
   IUserInfo,
 } from "@/types/interfaces";
-
 import type { ErrorCode, IUserFieldsUpdate } from "@/types/types";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 import { DataCollection } from "@/types/enums";
@@ -55,10 +53,7 @@ const useUserStore = defineStore("user", () => {
 
   const getAllUserAvatars = (): Promise<string[]> => {
     const storage = getStorage();
-    const listAvatarsRef = Refference(
-      storage,
-      import.meta.env.VITE_APP_ALL_AVATAR_PATH
-    );
+    const listAvatarsRef = Refference(storage, import.meta.env.VITE_APP_ALL_AVATAR_PATH);
 
     return new Promise((resolve, reject) => {
       listAll(listAvatarsRef)
@@ -264,14 +259,8 @@ const useUserStore = defineStore("user", () => {
     const unicID = data.uid as string; // Unic id for database field access.
     const profileRef = doc(database, DataCollection.Profile, unicID);
 
-    const {
-      firstName,
-      lastName,
-      avatarParams,
-      photoFile,
-      about,
-      phone,
-    }: IUserInfo = data;
+    const { firstName, lastName, avatarParams, photoFile, about, phone }: IUserInfo =
+      data;
 
     const fieldsToUpdate: IUserFieldsUpdate = {
       firstName,
@@ -289,8 +278,7 @@ const useUserStore = defineStore("user", () => {
     if (photoFile !== null) {
       await (updateUserAvatar(photoFile, unicID) as Promise<string>).then(
         (photo: string) => {
-          if (fieldsToUpdate.avatarParams)
-            fieldsToUpdate.avatarParams.url = photo;
+          if (fieldsToUpdate.avatarParams) fieldsToUpdate.avatarParams.url = photo;
         }
       );
     }
@@ -411,6 +399,7 @@ const useUserStore = defineStore("user", () => {
     setBackgroundAvatar,
     createUserProfile,
     updateUserInfo,
+    getAllUserAvatars,
     updateUsersList,
     deleteUserProfile,
     getUserProfile,

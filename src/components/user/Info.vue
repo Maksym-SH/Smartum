@@ -11,7 +11,7 @@
       class="user-info__name--status"
       :class="{ verified: emailVerified }"
     >
-      <span class="mdi" :class="[statusIcon]"></span>
+      <span class="user-info__name--status-icon mdi" :class="[statusIcon]"></span>
       {{ userStatusText }}
     </small>
   </div>

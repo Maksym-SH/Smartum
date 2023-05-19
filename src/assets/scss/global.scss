@@ -52,7 +52,12 @@ a {
     text-decoration: underline;
   }
 }
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: $RobotoBD;
 }
 
@@ -99,4 +104,42 @@ h1,h2,h3,h4,h5,h6 {
   transform: scale(1.1);
 }
 
+.router-nav-enter-active,
+.router-nav-leave-active {
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.router-nav-enter-from,
+.router-nav-leave-to {
+  opacity: 0;
+}
 
+.toggle-popup-enter-active,
+.toggle-popup-leave-active {
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.toggle-popup-enter-from,
+.toggle-popup-leave-to {
+  @include mobile(min) {
+    transform: scale(1.1);
+  }
+
+  @include mobile(max) {
+    opacity: 0;
+  }
+}
+.toggle-popup-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

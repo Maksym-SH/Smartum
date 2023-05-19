@@ -11,9 +11,7 @@
           :key="index"
           @click="item.callback()"
         >
-          <span>
-            {{ item.title }}
-          </span>
+          {{ item.title }}
         </v-expansion-panel-text>
       </template>
     </v-expansion-panel>
@@ -27,9 +25,7 @@ import { useExpansionPanelProps } from "./use/useProps";
 export default defineComponent({
   props: useExpansionPanelProps,
   setup(props) {
-    const showExpansionPanelContent = computed(
-      (): number => props.content.length
-    );
+    const showExpansionPanelContent = computed((): number => props.content.length);
 
     return {
       showExpansionPanelContent,

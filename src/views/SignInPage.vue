@@ -1,8 +1,8 @@
 <template>
   <div class="auth">
     <div class="auth__window">
-      <div class="auth__window--logo">
-        <img src="/images/icons/logo.svg" alt="Logo" />
+      <div class="auth__window-logo">
+        <img class="auth__window-logo-picture" src="/images/icons/logo.svg" alt="Logo" />
       </div>
       <div class="auth__window-form">
         <form class="auth__window-form_wrapper" @submit.prevent="submitForm">
@@ -74,8 +74,7 @@ export default defineComponent({
 
     const valid = computed((): boolean => {
       return (
-        emailValidator.validate(userData.email) &&
-        userData.password.length >= minLength
+        emailValidator.validate(userData.email) && userData.password.length >= minLength
       );
     });
 
@@ -121,7 +120,7 @@ export default defineComponent({
     margin: 30px;
     background-color: rgba($color-grey, 0.8);
     box-shadow: 0 30px 10px rgba($color-grey, 0.3);
-    &--logo {
+    &-logo {
       display: flex;
       justify-content: center;
       margin-bottom: 50px;

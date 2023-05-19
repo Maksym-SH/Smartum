@@ -1,19 +1,13 @@
 <template>
   <div class="file-upload" @click="upload?.click()">
-    <input
-      ref="upload"
-      type="file"
-      class="file-upload--input"
-      @change="fileUpload"
-    />
+    <input ref="upload" type="file" class="file-upload--input" @change="fileUpload" />
     <cButton
       v-if="showImageTemplate"
       class="file-upload--delete"
       :color="Colors.Danger"
       @click.stop="deleteImgPopup"
-    >
-      <span class="mdi mdi-delete-outline"></span>
-    </cButton>
+      icon="mdi-delete-outline"
+    />
     <v-img
       v-if="showImageTemplate"
       class="file-upload--image"
@@ -21,11 +15,7 @@
       :src="currentImgPath"
       @load="imgLoad"
     />
-    <img
-      class="file-upload--icon"
-      src="/images/icons/upload.svg"
-      alt="Upload"
-    />
+    <img class="file-upload--icon" src="/images/icons/upload.svg" alt="Upload" />
   </div>
 </template>
 
@@ -63,8 +53,7 @@ export default defineComponent({
       String(imageSource.value || props.avatarParams)
     );
     const showImageTemplate = computed(
-      (): string | boolean =>
-        (imgLoaded.value || props.avatarParams) && !imgDeleted.value
+      (): string | boolean => (imgLoaded.value || props.avatarParams) && !imgDeleted.value
     );
 
     const imgLoad = (): boolean => (imgLoaded.value = true);

@@ -6,7 +6,7 @@ import ShowErrorMessage from "./firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 import router from "@/router";
 
-function firebaseReset(email: string): void {
+export default function firebaseReset(email: string): void {
   const { commonStore } = useStores();
 
   if (!email) return;
@@ -31,5 +31,3 @@ function firebaseReset(email: string): void {
     .catch((error: ErrorCode) => ShowErrorMessage(error))
     .finally(() => commonStore.setLoadingStatus(false));
 }
-
-export default firebaseReset;
