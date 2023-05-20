@@ -122,6 +122,7 @@ export default defineComponent({
     &__content {
       width: 100% !important;
       height: calc(100% - 76px) !important;
+      padding: 7px 2px 7px 7px;
       &.no-header {
         height: 100% !important;
       }

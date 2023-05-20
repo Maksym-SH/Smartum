@@ -6,16 +6,17 @@
       <transition name="toggle-content">
         <div v-if="boardNotEmpty" class="board-item-page__board-additional">
           <div class="avatars-wrapper">
-            <Avatar
-              v-for="item in (boardItem as IWorkingBoardItem).members"
-              :key="item.uid"
-              :avatar="item.avatarParams"
-              :first-name="item.firstName"
-              :last-name="item.lastName"
-              circle
-            />
+            <template v-for="item in boardMembers" :key="item.uid">
+              <Avatar
+                v-if="!item.invited"
+                :avatar="item.avatarParams"
+                :first-name="item.firstName"
+                :last-name="item.lastName"
+                circle
+              />
+            </template>
           </div>
-          <BtnInviteUsers :board="boardItem" />
+          <BtnInviteUsers :board="boardItem" @invited="setInviteUserToBoard" />
         </div>
       </transition>
     </div>
@@ -25,7 +26,11 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import type { IWorkingBoardItem } from "@/types/interfaces";
+import type {
+  IUserForList,
+  IWorkingBoardItem,
+  IWorkingBoardMembers,
+} from "@/types/interfaces";
 import { ObjectNotEmpty } from "@/helpers/methods";
 
 import useStore from "@/composables/useStores";
@@ -51,29 +56,39 @@ export default defineComponent({
 
     const { unicID, userInfo } = useCurrentUserInfo();
 
-    const boardItem = ref<IWorkingBoardItem | {}>({});
+    const boardItem = ref<IWorkingBoardItem>({} as IWorkingBoardItem);
+
+    const boardMembers = ref<IUserForList[]>([]);
 
     const boardNotEmpty = computed((): boolean => {
       return ObjectNotEmpty(boardItem.value);
     });
 
-    const boardBackground = computed(() => {
-      const board = boardItem.value as IWorkingBoardItem;
-
-      if (board.background && board.background.match("dashboardTemplates")) {
-        return `url(${board.background})`;
+    const boardBackground = computed((): string => {
+      if (
+        boardItem.value.background &&
+        boardItem.value.background.match("dashboardTemplates")
+      ) {
+        return `url(${boardItem.value.background})`;
       }
 
-      return board.background;
+      return boardItem.value.background;
     });
 
-    onMounted(() => {
+    const setInviteUserToBoard = (user: IWorkingBoardMembers): void => {
+      boardItem.value.members.push(user);
+      dashboardStore.updateWorkingBoard(boardItem.value, false);
+    };
+
+    onMounted((): void => {
       const joinCode = router.currentRoute.value.params.code as string;
 
       dashboardStore
         .getWorkingBoardItem(unicID.value, joinCode)
-        .then((board) => {
-          boardItem.value = board;
+        .then((info) => {
+          boardItem.value = info.value;
+          boardMembers.value = info.members;
+          console.log(boardItem.value);
         })
         .catch(() => {
           router.push({ name: "Dashboard" });
@@ -84,8 +99,10 @@ export default defineComponent({
       boardNotEmpty,
       boardBackground,
       boardItem,
+      boardMembers,
       userInfo,
       showedCommonLoader,
+      setInviteUserToBoard,
     };
   },
 });
@@ -113,11 +130,23 @@ export default defineComponent({
     justify-content: flex-end;
     .avatars-wrapper {
       display: flex;
+      flex-direction: row-reverse;
       align-items: center;
       .user-avatar {
         margin-right: -10px;
-        &:last-child {
+        &:first-child {
+          position: relative;
           margin-right: 0;
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background-image: url(images/icons/crown.svg);
+          }
         }
       }
     }

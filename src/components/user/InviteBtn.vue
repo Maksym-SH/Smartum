@@ -82,7 +82,6 @@ import { OpenPopup } from "@/helpers/methods";
 import { Colors, NotificationType } from "@/types/enums";
 
 import useNewNotificationContent from "@/composables/useNotificationContent";
-import useUserInfo from "@/composables/useCurrentUserInfo";
 import UserListItem from "./UserItem.vue";
 import DropDownWindow from "@/container/DropdownWindow.vue";
 
@@ -91,31 +90,34 @@ export default defineComponent({
     UserListItem,
     DropDownWindow,
   },
+  emits: ["invited"],
   props: {
     board: {
       type: Object as PropType<IWorkingBoardItem | {}>,
       required: true,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const { userStore, notificationStore } = useStore();
 
-    const { unicID } = useUserInfo();
-
     const showInviteWindow = ref(false);
+
+    const showLoader = ref(true);
 
     const usersList = ref<IUserForList[]>([]);
     const usersListFiltered = ref<IUserForList[]>([]);
 
-    const showLoader = ref(true);
+    const board = props.board as IWorkingBoardItem;
 
     // Search
     const searchText = ref("");
     const isSearching = ref(false);
 
-    const emptyList = computed(() => !filteredList.value.length && !showLoader.value);
+    const emptyList = computed(
+      (): boolean => !filteredList.value.length && !showLoader.value
+    );
 
-    const searchUser = () => {
+    const searchUser = (): void => {
       isSearching.value = true;
       if (searchText.value) {
         usersListFiltered.value = usersList.value.filter((item) =>
@@ -134,35 +136,20 @@ export default defineComponent({
     });
 
     // Window actions.
-    const refreshUsers = () => {
+    const refreshUsers = (): void => {
       showLoader.value = true;
       usersList.value = [];
 
       userStore.getUsersList(true, false).then((list) => {
-        const board = props.board as IWorkingBoardItem;
-
         usersList.value = list;
 
-        // Set admin role
-        const adminRole = usersList.value.find(
-          (item) => item.uid === board.members[0].uid // 0 - board creator index.
-        );
-        if (adminRole) {
-          adminRole.role = "Администратор";
-        }
+        setAdminRole(list);
 
-        // Set member role.
-        const memberRole = usersList.value.find((item) => {
-          const my = board.members.findIndex((user) => user.uid === item.uid);
-          return my === -1 ? false : my;
-        });
-        if (memberRole) {
-          memberRole.role = "Участник";
-        }
+        setUserRoles(list);
 
-        // Show me in the first place.
-        usersList.value.sort((a) => {
-          if (a.uid === unicID.value) return -1;
+        // Show all members first.
+        usersList.value.sort((user) => {
+          if (user.role) return -1;
           return 0;
         });
 
@@ -170,17 +157,17 @@ export default defineComponent({
       });
     };
 
-    const toggleInviteWindow = () => {
+    const toggleInviteWindow = (): void => {
       showInviteWindow.value = !showInviteWindow.value;
 
       if (!usersList.value.length) refreshUsers();
     };
 
-    const getFullName = (user: IUserForList) => {
+    const getFullName = (user: IUserForList): string => {
       return `${user.firstName} ${user.lastName ? user.lastName : ""}`;
     };
 
-    const invite = (invitedUser: IUserForList) => {
+    const invite = (invitedUser: IUserForList): void => {
       OpenPopup({
         title: "Приглашение в рабочее пространство",
         text: `Вы уверены, что хотите пригласить пользователя "${getFullName(
@@ -206,16 +193,61 @@ export default defineComponent({
             notificationList.push(notificationToSend);
             notificationStore
               .updateNotificationList(invitedUser.uid, notificationList)
-              .then(() =>
+              .then(() => {
                 notify({
                   title: "Успешно!",
                   text: "Приглашение в рабочее пространство было отправлено!",
                   type: "success",
-                })
-              );
+                });
+
+                // Update status for invited user.
+                invitedUser.invited = true;
+
+                emit("invited", {
+                  uid: invitedUser.uid,
+                  invited: true,
+                });
+              });
           });
         },
       });
+    };
+
+    // Set roles.
+    const setAdminRole = (list: IUserForList[]): void => {
+      const adminRole = list.find(
+        (item) => item.uid === board.members[0].uid // 0 - board creator index.
+      );
+      if (adminRole) {
+        adminRole.role = "Администратор";
+      }
+    };
+
+    const setUserRoles = (list: IUserForList[]): void => {
+      const boardMembers = list.filter((item) => {
+        const member = board.members.find((user) => user.uid === item.uid);
+
+        return member ?? false;
+      });
+
+      if (boardMembers.length) {
+        list.forEach((user) => {
+          if (boardMembers.includes(user)) {
+            const invitedUsers = board.members.filter((item) => item.invited);
+
+            const currentUserInvited = invitedUsers.find(
+              (invited) => invited.uid === user.uid
+            );
+
+            if (currentUserInvited) {
+              user.invited = true;
+              // Not admin.
+            } else if (user.uid !== board.members[0].uid) {
+              user.role = "Участник";
+            }
+          }
+        });
+      }
     };
 
     return {

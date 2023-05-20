@@ -176,7 +176,6 @@ const useUserStore = defineStore("user", () => {
   const getUsersList = (
     loadPhotos?: boolean,
     showLoading = true,
-    myID?: string
   ): Promise<IUserForList[]> => {
     const userListRef = doc(
       database,
@@ -194,15 +193,10 @@ const useUserStore = defineStore("user", () => {
           if (loadPhotos) {
             getAllUserAvatars().then((list) => {
               usersList.map((user) => {
-                return (user.avatarParams.url = list.find((item) =>
-                  item.includes(user.uid as string)
-                ) as string);
+                return (user.avatarParams!.url =
+                  list.find((item) => item.includes(user.uid as string)) || "");
               });
             });
-          }
-
-          if (myID) {
-            // Put myself first in the users list. // ToDo
           }
 
           resolve(usersList as IUserForList[]);

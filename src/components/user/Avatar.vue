@@ -102,7 +102,7 @@ export default defineComponent({
   }
   &--initials {
     letter-spacing: 0.1px;
-    cursor: default;
+    user-select: none;
   }
   &--online {
     position: absolute;

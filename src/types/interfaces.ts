@@ -104,9 +104,19 @@ export interface IWorkingBoardItem {
   tasks: any[];
   dateOfCreation: IServerDate | Date;
   joinCode: string;
-  members: Partial<IUserForList>[];
+  members: IWorkingBoardMembers[];
   uid: string;
   securityCode: string;
+}
+export interface IWorkingBoardMembers {
+  uid: string;
+  role?: BoardRole;
+  invited?: boolean;
+}
+
+export interface IWorkingBoardResolve {
+  value: IWorkingBoardItem;
+  members: IUserForList[];
 }
 export interface ICreateBoardParams {
   board: IWorkingBoardItem;
@@ -149,12 +159,10 @@ export interface IUserInfo extends Omit<IUserReg, "password"> {
   uid?: string;
 }
 export interface IUserForList
-  extends Omit<
-    IUserInfo,
-    "photoFile" | "emailVerified" | "newPassword" | "email"
-  > {
+  extends Omit<IUserInfo, "photoFile" | "emailVerified" | "newPassword" | "email"> {
   uid: string;
-  role?: BoardRole;
+  role?: string;
+  invited?: boolean;
 }
 export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
   uid: string;
@@ -181,8 +189,7 @@ export interface IConfiguration {
   showCurrentDate: boolean;
   showDeleteAccountButton: boolean;
 }
-export interface IConfigurationResponse
-  extends Omit<IConfiguration, "navigations"> {
+export interface IConfigurationResponse extends Omit<IConfiguration, "navigations"> {
   navigationsShowValues: boolean[];
 }
 export interface IConfigurationAdditional {

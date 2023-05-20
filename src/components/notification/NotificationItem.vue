@@ -42,14 +42,8 @@
 <script lang="ts">
 import type { PropType } from "vue";
 import { defineComponent, reactive, ref } from "vue";
-import type {
-  INotification,
-  IPictureParams,
-  IServerDate,
-  IUserForList,
-} from "@/types/interfaces";
+import type { INotification, IPictureParams, IServerDate } from "@/types/interfaces";
 import { NotificationActionType } from "@/types/enums";
-import { notify } from "@kyvg/vue3-notification";
 
 import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
@@ -70,7 +64,7 @@ export default defineComponent({
   },
   emits: ["deleteNotification", "readNotification"],
   setup(props, { emit }) {
-    const { currentUser, userInfo } = useCurrentUserInfo();
+    const { currentUser, unicID } = useCurrentUserInfo();
 
     const { dashboardStore } = useStore();
 
@@ -106,43 +100,9 @@ export default defineComponent({
         case NotificationActionType.Configuration:
           router.push({ name: "Configuration" });
           break;
-        case NotificationActionType.InviteToBoard: {
-          const boardInfo = props.params as Required<INotification<IServerDate>>;
-
-          dashboardStore
-            .getWorkingBoardItem(boardInfo.uid, boardInfo.joinCode)
-            .then((board) => {
-              const newMember: Partial<IUserForList> = {
-                ...userInfo.value,
-                role: "Участник",
-                uid: currentUser.value.uid,
-              };
-              // Update data for other users.
-              dashboardStore.getAllWorkingBoards(board.uid).then((list) => {
-                const boardToUpdate = list.find(
-                  (board) => board.uid === props.params.uid
-                );
-
-                boardToUpdate?.members.push(newMember);
-
-                dashboardStore.updateAllWorkingBoards(board.uid, list);
-              });
-
-              // Add a new invite board
-              board.members.push(newMember);
-              dashboardStore
-                .createNewWorkingBoard(board, currentUser.value.uid)
-                .then(() => {
-                  notify({
-                    title: "Успешно!",
-                    text: "Вы успешно присоединились к рабочему пространству!",
-                  });
-                });
-            });
-
-          deleteNotification();
+        case NotificationActionType.InviteToBoard:
+          joinBoard();
           break;
-        }
         case NotificationActionType.Default:
         case NotificationActionType.Dashboard: // ToDo.
 
@@ -151,6 +111,16 @@ export default defineComponent({
         //  router.push({ name: "Dashboard/User" })
         //  break;
       }
+    };
+
+    const joinBoard = () => {
+      if (props.params.joinCode && props.params.uid) {
+        const { joinCode, uid } = props.params;
+
+        dashboardStore.joinWorkingBoard({ joinCode, uid }, unicID.value);
+      }
+
+      deleteNotification();
     };
 
     return {

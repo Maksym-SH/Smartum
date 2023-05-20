@@ -14,7 +14,7 @@
       <div class="card-element-item__description">
         <p v-if="element.members" class="members-count">
           <span class="mdi mdi-account-multiple icon"></span>
-          Участников: {{ element.members.length }}
+          Участников: {{ membersCount }}
         </p>
         <time v-if="element.dateOfCreation" class="date-of-create">
           <span class="mdi mdi-clock-edit icon"></span>
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
+import { computed, PropType } from "vue";
 import { defineComponent } from "vue";
 import type { IWorkingBoardItem } from "@/types/interfaces";
 
@@ -46,8 +46,14 @@ export default defineComponent({
   setup(props) {
     const dateOfCreate: string = useDateParseToString(props.element.dateOfCreation);
 
+    const membersCount = computed((): number => {
+      // Filter by only members.
+      return props.element.members.filter((item) => !item.invited).length;
+    });
+
     return {
       dateOfCreate,
+      membersCount,
     };
   },
 });

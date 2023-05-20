@@ -24,8 +24,12 @@
         <span v-if="user.role" class="user-item__actions-role">
           {{ user.role }}
         </span>
+        <span v-if="user.invited" class="user-item__actions--invited">
+          <span class="mdi mdi-email-fast-outline"></span>
+          Приглашён
+        </span>
         <cButton
-          v-if="!user.role"
+          v-else-if="!user.role"
           @click="$emit('invite')"
           variant="text"
           class="user-item__actions--add"
@@ -135,6 +139,12 @@ export default defineComponent({
     min-height: 47px;
     &-role {
       font-size: 13px;
+    }
+    &--invited {
+      display: inline-flex;
+      color: $color-dark-green;
+      gap: 5px;
+      font-size: 12px;
     }
     &--add {
       padding: 0 7px;

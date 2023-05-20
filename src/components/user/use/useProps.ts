@@ -80,4 +80,8 @@ export const useUserItemProps = {
     type: Object as PropType<IUserForList>,
     required: true,
   },
+  userInvited: {
+    type: Boolean,
+    default: false,
+  }
 };

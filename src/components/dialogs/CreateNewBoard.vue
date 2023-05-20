@@ -87,17 +87,15 @@ export default defineComponent({
   setup(_, { emit }) {
     const backgrounds: IBackgroundDashboard = useDashboardItemBackgroundTemplate();
 
-    const { unicID, userInfo } = useCurrentUserInfo();
+    const { unicID } = useCurrentUserInfo();
 
     const showDialog = ref(false);
-
-    const { ...newMember } = userInfo.value;
 
     const newBoard = reactive<Partial<IWorkingBoardItem>>({
       title: "",
       background: Colors.GradientBluePink,
       tasks: [],
-      members: [{ ...newMember, role: "Администратор", uid: unicID.value }],
+      members: [{ role: "Администратор", uid: unicID.value }],
       uid: unicID.value,
     });
 
