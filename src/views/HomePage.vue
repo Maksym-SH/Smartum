@@ -133,7 +133,6 @@ export default defineComponent({
   &__tab-info {
     position: absolute;
     top: 100px;
-    font-size: 24px;
     padding-left: 40px;
     color: var(--color-text);
     &-title {

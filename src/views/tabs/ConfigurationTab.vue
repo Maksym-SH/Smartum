@@ -179,6 +179,7 @@ export default defineComponent({
       flex-direction: column;
       &-info {
         &__title {
+          font-weight: 500;
           &.center {
             text-align: center;
           }

@@ -1,5 +1,10 @@
 @import "./mixins.scss";
 
+*::selection {
+  background-color: $color-white1;
+  color: $color-blue;
+}
+
 .text-ellipsis {
   width: 100%;
   display: block;
@@ -59,6 +64,7 @@ h4,
 h5,
 h6 {
   font-family: $RobotoBD;
+  font-weight: 500;
 }
 
 .full-width--tablet {

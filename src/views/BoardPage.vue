@@ -187,7 +187,7 @@ export default defineComponent({
             display: inline-block;
             width: 12px;
             height: 12px;
-            background-image: url(images/icons/crown.svg);
+            background-image: url(/images/icons/crown.svg);
           }
         }
       }

@@ -40,9 +40,7 @@
       <span v-if="required" class="c-input--required"></span>
       <span v-if="isPhone" class="phone mdi mdi-phone"></span>
       <Transition name="error-message">
-        <span v-show="errorText" class="c-input--error-text">{{
-          errorText
-        }}</span>
+        <span v-show="errorText" class="c-input--error-text">{{ errorText }}</span>
       </Transition>
       <span
         v-if="type === 'password'"
@@ -110,11 +108,7 @@ export default defineComponent({
     const validator = (): void => {
       if (props.isEmail && !emailValidator.validate(model.value as string))
         errorText.value = "Введите корректный адрес.";
-      else if (
-        props.isPhone &&
-        !String(model.value).match(RegExp.Phone) &&
-        model.value
-      )
+      else if (props.isPhone && !String(model.value).match(RegExp.Phone) && model.value)
         errorText.value = "Введите корректный формат.";
       else if (props.min && String(model.value).length < props.min)
         errorText.value = `Введите не менее ${props.min} символов.`;
@@ -196,7 +190,7 @@ export default defineComponent({
       }
     }
     &:focus {
-      & + label {
+      & + .label {
         top: -8px;
         left: 0 !important;
       }
@@ -210,7 +204,9 @@ export default defineComponent({
       -webkit-text-fill-color: var(--color-text);
       -webkit-box-shadow: 0 0 0 1000px var(--color-background) inset;
       & + .label {
-        color: $color-blue !important;
+        color: $color-blue;
+        top: -8px;
+        left: 0;
       }
     }
 

@@ -139,10 +139,6 @@ const useDashboardStore = defineStore("dashboard", () => {
               members: sortedUsersAsMembers,
             });
 
-            console.log({
-              value: currentBoard,
-              members: sortedUsersAsMembers,
-            });
             resolve(dashboardInfo);
           });
         } else {

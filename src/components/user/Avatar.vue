@@ -54,7 +54,7 @@ export default defineComponent({
         width: `${props.size}px`,
         minWidth: `${props.size}px`,
         height: `${props.size}px`,
-        backgroundColor: props.avatar.bgAvatar,
+        backgroundColor: props.avatar.url ? "transparent" : props.avatar.bgAvatar,
       };
     });
 
