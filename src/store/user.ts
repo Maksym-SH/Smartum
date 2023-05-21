@@ -175,7 +175,7 @@ const useUserStore = defineStore("user", () => {
   // Other users
   const getUsersList = (
     loadPhotos?: boolean,
-    showLoading = true,
+    showLoading = true
   ): Promise<IUserForList[]> => {
     const userListRef = doc(
       database,
@@ -210,7 +210,7 @@ const useUserStore = defineStore("user", () => {
   };
 
   const updateUsersList = (
-    newUserInfo: Partial<IUserForList> | null,
+    newUserInfo: Partial<IUserForList> | string,
     deleteUser?: Boolean
   ): Promise<IUserForList[]> => {
     const usersListRef = doc(
@@ -223,15 +223,22 @@ const useUserStore = defineStore("user", () => {
     return new Promise((resolve, reject) => {
       getUsersList().then((usersList) => {
         if (usersList) {
-          const foundUserIndex = usersList.findIndex(
-            (user) => user.uid === (newUserInfo as IUserForList).uid
-          );
+          const userID = (newUserInfo as Partial<IUserForList>).uid || newUserInfo;
 
+          const foundUserIndex = usersList.findIndex((user) => user.uid === userID);
+
+          // User was found.
           if (foundUserIndex !== -1) {
-            // User was found.
-            if (deleteUser) usersList.splice(foundUserIndex, 1);
-            else usersList[foundUserIndex] = newUserInfo as IUserForList;
-          } else if ((currentUser.value as User).emailVerified) {
+            // Delete user.
+            if (typeof newUserInfo === "string" && deleteUser) {
+              usersList.splice(foundUserIndex, 1);
+            } else {
+              // Update user info.
+              usersList[foundUserIndex] = newUserInfo as IUserForList;
+            }
+          }
+          // Add new user.
+          else if ((currentUser.value as User).emailVerified) {
             usersList.push(newUserInfo as IUserForList);
           }
 
@@ -245,6 +252,8 @@ const useUserStore = defineStore("user", () => {
             })
             .finally(() => commonStore.setLoadingStatus(false));
         }
+
+        commonStore.setLoadingStatus(false);
       });
     });
   };
@@ -307,6 +316,9 @@ const useUserStore = defineStore("user", () => {
 
           notificationStore.deleteNotificationList(unicID);
           configurationStore.deleteUserConfiguration(unicID);
+
+          updateUsersList(unicID, true); // Delete user from list.
+
           resolve();
         })
         .catch((error: ErrorCode) => {

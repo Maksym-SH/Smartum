@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineAsyncComponent, defineComponent, onBeforeUnmount } from "vue";
+import { computed, defineAsyncComponent, defineComponent } from "vue";
 import { ObjectNotEmpty } from "./helpers/methods";
 
 import useStores from "./composables/useStores";
@@ -35,11 +35,7 @@ export default defineComponent({
     ),
   },
   setup() {
-    const { commonStore, userStore } = useStores();
-
-    onBeforeUnmount(() => {
-      userStore.updateUsersList({ ...userStore.userInfo });
-    });
+    const { commonStore } = useStores();
 
     return {
       commonStore,

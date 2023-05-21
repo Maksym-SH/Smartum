@@ -283,7 +283,7 @@ export default defineComponent({
           margin-top: 0;
           margin-bottom: 15px;
           max-width: 80%;
-          min-width: 300px;
+          min-width: 280px;
           font-size: 12px;
           line-height: 17px;
         }

@@ -13,20 +13,22 @@
       </slot>
     </cButton>
     <transition name="toggle-selectActive" mode="in-out">
-      <div v-if="selectActive" class="c-select__picker">
+      <div v-show="selectActive" class="c-select__picker">
         <span class="c-select__picker--caret"></span>
-        <template v-for="item in items" :key="item.title">
-          <cButton
-            v-if="item.displaying"
-            :class="{ 'no-icon': !item.icon }"
-            :color="item.color"
-            :icon="item.icon"
-            variant="text"
-            :title="item.title"
-            :rounded="4"
-            @click="$emit('selected', item.callback)"
-          />
-        </template>
+        <div class="c-select__picker-actions-wrapper">
+          <template v-for="item in items" :key="item.title">
+            <cButton
+              v-if="item.displaying"
+              :class="{ 'no-icon': !item.icon }"
+              :color="item.color"
+              :icon="item.icon"
+              variant="text"
+              :title="item.title"
+              :rounded="false"
+              @click="$emit('selected', item.callback)"
+            />
+          </template>
+        </div>
       </div>
     </transition>
   </div>
@@ -83,9 +85,13 @@ export default defineComponent({
     right: calc(50% - 15px);
     top: calc(100% + 15px);
     z-index: 3;
-    background-color: $color-white2;
-    border-radius: 4px;
     border: 1px solid $color-black;
+    border-radius: 4px;
+    &-actions-wrapper {
+      background-color: $color-white2;
+      overflow: hidden;
+      border-radius: 4px;
+    }
     .c-button {
       display: flex;
       justify-content: flex-start;
@@ -96,6 +102,7 @@ export default defineComponent({
       padding: 15px 16px !important;
       height: auto !important;
       text-transform: none;
+      border-radius: 0 !important;
       border-bottom: 1px solid $color-black;
       &.no-icon {
         padding-left: 44px !important;
@@ -105,7 +112,7 @@ export default defineComponent({
       }
       &:hover {
         background-color: $color-white3;
-        border-radius: 4px;
+        border-radius: 3px 3px 0 0 !important;
       }
       :deep() {
         .v-icon {

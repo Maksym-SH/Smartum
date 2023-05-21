@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, ref } from "vue";
+import { computed, defineComponent, onBeforeMount, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { notify } from "@kyvg/vue3-notification";
 import type { User } from "@firebase/auth";
@@ -107,13 +107,21 @@ export default defineComponent({
       });
     };
 
+    watch(
+      () => dashboardStore.allDashboards,
+      (value) => {
+        if (!value.length) listEmpty.value = true;
+        else listEmpty.value = false;
+      }
+    );
+
     // Get all boards.
     onBeforeMount((): void => {
       if (!dashboardStore.allDashboards.length) {
         dashboardStore.getAllWorkingBoards(unicID.value).then((boards) => {
           if (boards) {
             dashboardStore.setAllDashboard(boards);
-          } else listEmpty.value = true;
+          }
         });
       }
     });

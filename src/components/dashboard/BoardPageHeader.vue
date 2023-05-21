@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import type { PropType } from "vue";
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import type { IUserCreated } from "@/types/interfaces";
 
 import useSelectActions from "@/composables/useSelectActions";
@@ -31,6 +31,7 @@ import Avatar from "../user/Avatar.vue";
 import BtnNotify from "@/components/notification/NotficaitonBtn.vue";
 import SwitchTheme from "../UI/SwitchTheme.vue";
 import AcquaintanceBtn from "./AcquaintanceBtn.vue";
+import { Colors } from "@/types/enums";
 
 export default defineComponent({
   components: {
@@ -39,14 +40,25 @@ export default defineComponent({
     AcquaintanceBtn,
     SwitchTheme,
   },
+  emits: ["boardLeave", "userMenuPicked"],
   props: {
     userInfo: {
       type: Object as PropType<IUserCreated>,
       required: true,
     },
   },
-  setup() {
-    const { selected, actions } = useSelectActions();
+  setup(_, { emit }) {
+    const { selected, actions, addNewAction } = useSelectActions();
+
+    onMounted(() => {
+      addNewAction({
+        title: "Покинуть доску",
+        callback: () => emit("boardLeave"),
+        icon: "mdi-clipboard-arrow-left-outline",
+        color: Colors.Danger,
+        displaying: true,
+      });
+    });
 
     return {
       actions,

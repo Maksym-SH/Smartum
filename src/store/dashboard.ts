@@ -3,15 +3,21 @@ import { ref } from "vue";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { notify } from "@kyvg/vue3-notification";
 import { database } from "@/helpers/firebase/firebaseInitialize";
-import { DataCollection } from "@/types/enums";
-import type { IWorkingBoardItem, IWorkingBoardResolve } from "@/types/interfaces";
+import { DataCollection, NotificationType } from "@/types/enums";
+import type {
+  IWorkingBoardItem,
+  IWorkingBoardMember,
+  IWorkingBoardResolve,
+} from "@/types/interfaces";
 import type { ErrorCode } from "@/types/types";
 
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
+import router from "@/router";
+import useNewNotificationContent from "@/composables/useNotificationContent";
 
 const useDashboardStore = defineStore("dashboard", () => {
-  const { commonStore, userStore } = useStores();
+  const { commonStore, userStore, notificationStore } = useStores();
 
   const allDashboards = ref<IWorkingBoardItem[]>([]);
 
@@ -98,7 +104,7 @@ const useDashboardStore = defineStore("dashboard", () => {
           ShowErrorMessage(error);
           reject(error);
         })
-        .finally(() => commonStore.setLoadingStatus(showLoading));
+        .finally(() => commonStore.setLoadingStatus(false));
     });
   };
 
@@ -151,7 +157,7 @@ const useDashboardStore = defineStore("dashboard", () => {
   const updateWorkingBoard = (
     updatedBoard: IWorkingBoardItem,
     showLoading = true
-  ): Promise<any> => {
+  ): Promise<IWorkingBoardItem> => {
     const responseForAllMembers = updatedBoard.members.map((user) => {
       if (!user.invited) {
         const userID = user.uid as string;
@@ -191,8 +197,8 @@ const useDashboardStore = defineStore("dashboard", () => {
     getWorkingBoardItem(uid, joinCode).then((board) => {
       if (board) {
         // Update data for other users.
-        getAllWorkingBoards(board.value.uid).then((list) => {
-          const boardToUpdate = list.find((board) => board.uid === uid);
+        getAllWorkingBoards(uid).then((list) => {
+          const boardToUpdate = list.find((board) => board.joinCode === joinCode);
 
           if (boardToUpdate) {
             const invitedMember = boardToUpdate.members.find(
@@ -218,6 +224,64 @@ const useDashboardStore = defineStore("dashboard", () => {
     });
   };
 
+  const leaveWorkingBoard = (
+    member: IWorkingBoardMember,
+    fromBoard: IWorkingBoardItem
+  ): Promise<void> => {
+    const memberID = member.uid;
+
+    const leavedMemberIndex = fromBoard.members.findIndex(
+      (user) => user.uid === memberID
+    );
+
+    if (leavedMemberIndex !== -1) {
+      fromBoard.members.splice(leavedMemberIndex, 1); // Remove user.
+
+      const firstInvitedUser = fromBoard.members[0];
+
+      if (fromBoard.uid === member.uid && firstInvitedUser) {
+        fromBoard.uid = firstInvitedUser.uid; // Set as admin the first invited user.
+        firstInvitedUser.role = "Администратор";
+
+        const notification = useNewNotificationContent(
+          NotificationType.SetAdmin,
+          fromBoard.title,
+          fromBoard
+        );
+        notificationStore.sendNotificationToUser(firstInvitedUser, notification);
+      }
+    }
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        await updateWorkingBoard(fromBoard);
+
+        const myBoards = await getAllWorkingBoards(memberID);
+
+        const myBoardIndex = myBoards.findIndex(
+          (board) => board.joinCode === fromBoard.joinCode
+        );
+
+        myBoards.splice(myBoardIndex, 1);
+
+        await updateAllWorkingBoards(memberID, myBoards);
+        router.push({ name: "Dashboard" });
+
+        // Delete local board.
+        if (allDashboards.value.length) {
+          allDashboards.value.splice(myBoardIndex, 1);
+        }
+
+        resolve();
+      } catch (error: unknown) {
+        ShowErrorMessage(error as ErrorCode);
+        reject(error);
+      } finally {
+        commonStore.setLoadingStatus(false);
+      }
+    });
+  };
+
   return {
     allDashboards,
     clearList,
@@ -229,6 +293,7 @@ const useDashboardStore = defineStore("dashboard", () => {
     updateAllWorkingBoards,
     getWorkingBoardItem,
     joinWorkingBoard,
+    leaveWorkingBoard,
   };
 });
 

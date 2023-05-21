@@ -82,6 +82,7 @@ export enum NotificationType {
   EmailConfirm,
   DashboardCreate,
   InviteToBoard,
+  SetAdmin,
 }
 
 export enum Colors {

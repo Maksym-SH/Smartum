@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import type { User } from "firebase/auth";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { DataCollection } from "@/types/enums";
-import type { INotification, IServerDate } from "@/types/interfaces";
+import type { INotification, IServerDate, IWorkingBoardMember } from "@/types/interfaces";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 import type { ErrorCode, INotificationList, NotifyAction } from "@/types/types";
 
@@ -39,9 +39,7 @@ const useNotificationStore = defineStore("notification", () => {
     });
   };
 
-  const getAllNotifications = (
-    unicID: string
-  ): Promise<INotification<IServerDate>[]> => {
+  const getAllNotifications = (unicID: string): Promise<INotification<IServerDate>[]> => {
     const profileRef = doc(database, DataCollection.Notifications, unicID);
 
     return new Promise((resolve, reject) => {
@@ -82,6 +80,27 @@ const useNotificationStore = defineStore("notification", () => {
     });
   };
 
+  const sendNotificationToUser = (
+    userTarget: IWorkingBoardMember,
+    notification: INotification<Date | IServerDate>,
+    showLoading = true
+  ): Promise<void> => {
+    commonStore.setLoadingStatus(showLoading);
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        const userNotificationList = await getAllNotifications(userTarget.uid);
+        await setNewNotification(notification, userNotificationList, userTarget.uid);
+        resolve()
+      } catch (error: any) {
+        ShowErrorMessage(error as ErrorCode);
+        reject(error);
+      } finally {
+        commonStore.setLoadingStatus(false);
+      }
+    });
+  };
+
   const notificationAction = (
     id: number,
     action: NotifyAction,
@@ -90,14 +109,11 @@ const useNotificationStore = defineStore("notification", () => {
   ): void => {
     const listTarget = notifications || allNotifications.value;
 
-    const foundNotificationIndex = listTarget.findIndex(
-      (notify) => notify.id === id
-    );
+    const foundNotificationIndex = listTarget.findIndex((notify) => notify.id === id);
 
     if (foundNotificationIndex !== -1) {
       // Delete notification.
-      if (action === "deleteNotification")
-        listTarget.splice(foundNotificationIndex, 1);
+      if (action === "deleteNotification") listTarget.splice(foundNotificationIndex, 1);
       else listTarget[foundNotificationIndex].status = "read";
     }
 
@@ -106,26 +122,22 @@ const useNotificationStore = defineStore("notification", () => {
     updateNotificationList(docID, notifications || allNotifications.value); // After local changes update database.
   };
 
-  const setNewNotification = (
+  const setNewNotification = async (
     newNotification: INotification<IServerDate | Date>,
     notifications?: INotificationList,
     unicID?: string
-  ): void => {
+  ): Promise<INotification<IServerDate>[]> => {
     const listTarget = notifications || allNotifications.value;
 
     listTarget.push(newNotification);
 
     const docID = unicID || (userStore.currentUser as User).uid;
 
-    updateNotificationList(docID, listTarget); // After local changes update database.
+    return await updateNotificationList(docID, listTarget); // After local changes update database.
   };
 
   const deleteNotificationList = (unicID: string): Promise<void> => {
-    const deleteNotificationList = doc(
-      database,
-      DataCollection.Notifications,
-      unicID
-    );
+    const deleteNotificationList = doc(database, DataCollection.Notifications, unicID);
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
@@ -153,6 +165,7 @@ const useNotificationStore = defineStore("notification", () => {
     deleteNotificationList,
     createNotificationList,
     getAllNotifications,
+    sendNotificationToUser,
   };
 });
 

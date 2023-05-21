@@ -106,6 +106,8 @@ export default defineComponent({
     &-content {
       display: flex;
       flex-direction: column;
+      justify-content: flex-end;
+      height: 100%;
       &-picture {
         width: 100%;
         height: auto;
@@ -117,7 +119,8 @@ export default defineComponent({
         font-size: 20px;
       }
       &-description {
-        margin-top: 10px;
+        margin-top: auto;
+        padding: 10px 0;
         font-size: 14px;
         line-height: 18px;
       }
@@ -131,10 +134,19 @@ export default defineComponent({
         }
       }
       &-content {
-        height: 100%;
         display: flex;
         flex-direction: column;
+        &-description {
+        margin-top: 0;
       }
+      }
+      &-content-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+      }
+      
       &-footer {
         margin-top: auto;
         padding: 15px 0;

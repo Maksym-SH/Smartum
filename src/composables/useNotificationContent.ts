@@ -62,7 +62,16 @@ function useNewNotificationContent(
         image: info?.background,
         type: NotificationActionType.InviteToBoard,
         uid: info?.uid,
-        joinCode: info?.joinCode
+        joinCode: info?.joinCode,
+      };
+      break;
+    case NotificationType.SetAdmin:
+      currentContent = {
+        title: "Изменения в составе участников доски рабочего пространства",
+        description: `Администратор рабочего пространства "${info?.title}" покинул доску. Теперь вы являтесь новым администратором доски "${info?.title}".`,
+        status: "not read",
+        image: info?.background,
+        type: NotificationActionType.Default,
       };
       break;
     default:

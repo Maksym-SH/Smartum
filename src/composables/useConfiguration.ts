@@ -20,9 +20,7 @@ function useConfiguration() {
 
   const { unicID } = useCurrentUserInfo();
 
-  const showedNavigations = reactive<IAsideNavigationItem[]>([
-    ...useAsideNavigation(),
-  ]);
+  const showedNavigations = reactive<IAsideNavigationItem[]>([...useAsideNavigation()]);
 
   const notificationAdded = ref(false);
 
@@ -50,13 +48,12 @@ function useConfiguration() {
 
   // Save card methods.
   const saveBackgroundAvatar = () => {
-    userStore
-      .updateUserBackgroundAvatar(avatarParams.bgAvatar, unicID.value)
-      .then(() => {
-        notify({
-          title: "Фон вашего фото профиля был успешно обнолен!",
-        });
+    userStore.updateUserBackgroundAvatar(avatarParams.bgAvatar, unicID.value).then(() => {
+      userStore.updateUsersList({ ...userStore.userInfo, uid: unicID.value });
+      notify({
+        title: "Фон вашего фото профиля был успешно обнолен!",
       });
+    });
   };
 
   const saveAdditional = () => {
@@ -87,23 +84,21 @@ function useConfiguration() {
   const saveNavigationList = () => {
     const navigations = showedNavigations.map((item) => item.showed);
 
-    configurationStore
-      .updateNavigateItem(navigations, unicID.value)
-      .then(() => {
-        notify({
-          title: "Список отображаемых страниц был успешно сохранен!",
-        });
-
-        if (!notificationAdded.value) {
-          const notification = useNewNotificationContent(
-            NotificationType.ConfigurationChange
-          );
-
-          notificationStore.setNewNotification(notification);
-        }
-
-        notificationAdded.value = true;
+    configurationStore.updateNavigateItem(navigations, unicID.value).then(() => {
+      notify({
+        title: "Список отображаемых страниц был успешно сохранен!",
       });
+
+      if (!notificationAdded.value) {
+        const notification = useNewNotificationContent(
+          NotificationType.ConfigurationChange
+        );
+
+        notificationStore.setNewNotification(notification);
+      }
+
+      notificationAdded.value = true;
+    });
   };
 
   // Get info.
@@ -111,8 +106,7 @@ function useConfiguration() {
     configurationStore
       .getUserConfiguration(unicID.value)
       .then((configuration: Omit<IConfiguration, "navigations">) => {
-        const navigationList: IAsideNavigationItem[] =
-          configurationStore.asideNavigate;
+        const navigationList: IAsideNavigationItem[] = configurationStore.asideNavigate;
         showedNavigations.forEach(
           (item, index) => (item.showed = navigationList[index].showed)
         );
@@ -125,8 +119,7 @@ function useConfiguration() {
         // Set additional params.
         asideBackgroundColor.value = configuration.asideBackgroundColor;
 
-        additionalParams.showDeleteAccountButton =
-          configuration.showDeleteAccountButton;
+        additionalParams.showDeleteAccountButton = configuration.showDeleteAccountButton;
         additionalParams.showCurrentDate = configuration.showCurrentDate;
         additionalParams.showEmailConfirm = configuration.showEmailConfirm;
       });

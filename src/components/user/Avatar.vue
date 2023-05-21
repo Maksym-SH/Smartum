@@ -94,8 +94,11 @@ export default defineComponent({
     }
   }
   &__picture {
-    width: 103%;
-    height: 103%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 4px;
     user-select: none;

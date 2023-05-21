@@ -1,6 +1,6 @@
 <template>
   <div class="board-item-page">
-    <BoardHeader :user-info="userInfo" />
+    <BoardHeader :user-info="userInfo" @board-leave="boardLeave" />
     <div class="board-item-page__content" :style="{ background: boardBackground }">
       <cLoader v-if="!showedCommonLoader && !boardNotEmpty" />
       <transition name="toggle-content">
@@ -12,6 +12,7 @@
                 :avatar="item.avatarParams"
                 :first-name="item.firstName"
                 :last-name="item.lastName"
+                :class="{ admin: item.role === 'Администратор' }"
                 circle
               />
             </template>
@@ -29,15 +30,17 @@ import { useRouter } from "vue-router";
 import type {
   IUserForList,
   IWorkingBoardItem,
-  IWorkingBoardMembers,
+  IWorkingBoardMember,
 } from "@/types/interfaces";
-import { ObjectNotEmpty } from "@/helpers/methods";
+import { ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
+import { Colors } from "@/types/enums";
 
 import useStore from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import BoardHeader from "@/components/dashboard/BoardPageHeader.vue";
 import BtnInviteUsers from "@/components/user/InviteBtn.vue";
 import Avatar from "@/components/user/Avatar.vue";
+import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
   components: {
@@ -75,9 +78,49 @@ export default defineComponent({
       return boardItem.value.background;
     });
 
-    const setInviteUserToBoard = (user: IWorkingBoardMembers): void => {
+    const setInviteUserToBoard = (user: IWorkingBoardMember): void => {
       boardItem.value.members.push(user);
       dashboardStore.updateWorkingBoard(boardItem.value, false);
+    };
+
+    const boardLeave = () => {
+      const currentMember = boardItem.value.members.find(
+        (member) => member.uid === unicID.value
+      );
+      if (currentMember) {
+        OpenPopup({
+          title: "Выйти из рабочего пространства?",
+          text: leaveMessage(currentMember),
+          buttons: {
+            yes: {
+              text: "Покинуть",
+              color: Colors.Danger,
+            },
+          },
+          callback: (): void => {
+            dashboardStore.leaveWorkingBoard(currentMember, boardItem.value).then(() =>
+              notify({
+                title: "Вы успешно покинули рабочее пространство!",
+                text: "Пространство было удалено из вашего списка рабочих досок.",
+                type: "success",
+              })
+            );
+          },
+        });
+      }
+    };
+
+    const leaveMessage = (currentMember: IWorkingBoardMember): string => {
+      if (
+        // Is Admin and members more than 1.
+        currentMember.uid === boardItem.value.uid &&
+        boardItem.value.members.length > 1
+      ) {
+        return "Вы являетесь администратором доски, если вы покинете рабочую доску, администратором станет первый приглашенный вами пользователь. Продолжить?";
+      } else {
+        // Is member.
+        return "Вы можете снова присоединиться к доске если вам отправит приглашение один её участников.";
+      }
     };
 
     onMounted((): void => {
@@ -88,7 +131,6 @@ export default defineComponent({
         .then((info) => {
           boardItem.value = info.value;
           boardMembers.value = info.members;
-          console.log(boardItem.value);
         })
         .catch(() => {
           router.push({ name: "Dashboard" });
@@ -102,6 +144,7 @@ export default defineComponent({
       boardMembers,
       userInfo,
       showedCommonLoader,
+      boardLeave,
       setInviteUserToBoard,
     };
   },
@@ -130,18 +173,17 @@ export default defineComponent({
     justify-content: flex-end;
     .avatars-wrapper {
       display: flex;
-      flex-direction: row-reverse;
       align-items: center;
       .user-avatar {
-        margin-right: -10px;
-        &:first-child {
+        margin-left: -10px;
+        &.admin {
           position: relative;
-          margin-right: 0;
           &::after {
             content: "";
             position: absolute;
-            bottom: 0;
-            right: 0;
+            top: -9px;
+            left: 50%;
+            transform: translateX(-50%);
             display: inline-block;
             width: 12px;
             height: 12px;

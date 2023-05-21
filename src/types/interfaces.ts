@@ -104,11 +104,11 @@ export interface IWorkingBoardItem {
   tasks: any[];
   dateOfCreation: IServerDate | Date;
   joinCode: string;
-  members: IWorkingBoardMembers[];
+  members: IWorkingBoardMember[];
   uid: string;
   securityCode: string;
 }
-export interface IWorkingBoardMembers {
+export interface IWorkingBoardMember {
   uid: string;
   role?: BoardRole;
   invited?: boolean;

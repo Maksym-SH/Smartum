@@ -8,6 +8,7 @@ import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
 import useStores from "./useStores";
+import { ISelectElem } from "@/types/interfaces";
 
 export default function useSelectActions() {
   const { userStore } = useStores();
@@ -16,9 +17,7 @@ export default function useSelectActions() {
 
   const { emit } = getCurrentInstance() as ComponentInternalInstance;
 
-  const emailVerified = computed(
-    (): boolean => currentUser.value.emailVerified
-  );
+  const emailVerified = computed((): boolean => currentUser.value.emailVerified);
 
   const selected = (callback: Function): void => {
     emit("userMenuPicked");
@@ -55,8 +54,15 @@ export default function useSelectActions() {
     },
   ]);
 
+  const addNewAction = (action: Required<ISelectElem>) => {
+    const displaying = action.displaying as boolean;
+
+    actions.push({ ...action, displaying });
+  };
+
   return {
     actions,
+    addNewAction,
     selected,
   };
 }

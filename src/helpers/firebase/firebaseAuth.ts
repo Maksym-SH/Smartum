@@ -53,7 +53,6 @@ export default function firebaseAuth(): IUserAuth {
             const notification: INotification<Date> = notificationContent(
               NotificationType.WelcomeText
             );
-
             await notificationStore
               .createNotificationList(notification, currentUser.uid)
               .then((notification) => {
