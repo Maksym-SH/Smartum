@@ -107,11 +107,15 @@ export default defineComponent({
       });
     };
 
+    // Handler for emptyList boards after confirm email and empty boards.
     watch(
-      () => dashboardStore.allDashboards,
-      (value) => {
-        if (!value.length) listEmpty.value = true;
-        else listEmpty.value = false;
+      [() => dashboardStore.allDashboards, () => showLockAccess.value],
+      ([boards], [_, oldEmailConfirmValue]) => {
+        if (!boards.length || typeof oldEmailConfirmValue !== "boolean") {
+          listEmpty.value = true;
+        } else {
+          listEmpty.value = false;
+        }
       }
     );
 
@@ -121,6 +125,8 @@ export default defineComponent({
         dashboardStore.getAllWorkingBoards(unicID.value).then((boards) => {
           if (boards) {
             dashboardStore.setAllDashboard(boards);
+          } else {
+            listEmpty.value = true;
           }
         });
       }

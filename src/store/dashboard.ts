@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { notify } from "@kyvg/vue3-notification";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 import { DataCollection, NotificationType } from "@/types/enums";
@@ -9,7 +9,7 @@ import type {
   IWorkingBoardMember,
   IWorkingBoardResolve,
 } from "@/types/interfaces";
-import type { ErrorCode } from "@/types/types";
+import type { BoardRole, ErrorCode } from "@/types/types";
 
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
@@ -119,7 +119,7 @@ const useDashboardStore = defineStore("dashboard", () => {
 
         if (currentBoard) {
           // Load users.
-          await userStore.getUsersList(true, false).then((users) => {
+          await userStore.getUsersList(true, false).then(async (users) => {
             const membersID = currentBoard.members.map((item) => item.uid);
 
             const sortedUsersAsMembers = users.filter((user) =>
@@ -134,10 +134,16 @@ const useDashboardStore = defineStore("dashboard", () => {
               }
             });
 
-            resolve({
+            const dashboardInfo = await membersExist({
               value: currentBoard,
               members: sortedUsersAsMembers,
             });
+
+            console.log({
+              value: currentBoard,
+              members: sortedUsersAsMembers,
+            });
+            resolve(dashboardInfo);
           });
         } else {
           reject(new Error("Not found"));
@@ -282,6 +288,68 @@ const useDashboardStore = defineStore("dashboard", () => {
     });
   };
 
+  const membersExist = async (
+    boardInfo: IWorkingBoardResolve
+  ): Promise<IWorkingBoardResolve> => {
+    const loadedMembers = boardInfo.members;
+
+    const savedMembers = boardInfo.value.members;
+
+    if (loadedMembers.length !== savedMembers.length) {
+      const exist: IWorkingBoardMember[] = loadedMembers.map((item) => {
+        return {
+          role: item.role as BoardRole,
+          uid: item.uid,
+          invited: item?.invited,
+        };
+      });
+
+      const adminExist = exist.some((member) => member.role === "Администратор");
+
+      // Set new admin board for first invited user.
+      if (!adminExist) {
+        const newAdmin = exist[0];
+        newAdmin.role = "Администратор";
+
+        // Set for saved members.
+        boardInfo.members[0].role = "Администратор";
+
+        const newAdminNotification = useNewNotificationContent(
+          NotificationType.SetAdmin,
+          boardInfo.value.title,
+          boardInfo.value
+        );
+        notificationStore.sendNotificationToUser(newAdmin, newAdminNotification);
+      }
+
+      boardInfo.value.members = exist;
+
+      await updateWorkingBoard(boardInfo.value);
+
+      return boardInfo;
+    } else {
+      return boardInfo;
+    }
+  };
+
+  const deleteAllBoards = (unicID: string): Promise<void> => {
+    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+
+    commonStore.setLoadingStatus(true);
+    return new Promise((resolve, reject) => {
+      deleteDoc(dashboardRef)
+        .then(() => {
+          allDashboards.value = [];
+          resolve();
+        })
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          reject(error);
+        })
+        .finally(() => commonStore.setLoadingStatus(false));
+    });
+  };
+
   return {
     allDashboards,
     clearList,
@@ -294,6 +362,7 @@ const useDashboardStore = defineStore("dashboard", () => {
     getWorkingBoardItem,
     joinWorkingBoard,
     leaveWorkingBoard,
+    deleteAllBoards,
   };
 });
 
