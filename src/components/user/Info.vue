@@ -38,8 +38,11 @@ export default defineComponent({
     );
 
     const userStatusText = computed((): EmailVerify => {
-      if (emailVerified.value) return "Адрес подтверждён";
-      return "Адрес не подтверждён";
+      if (emailVerified.value) {
+        return "Адрес подтверждён";
+      } else {
+        return "Адрес не подтверждён";
+      }
     });
 
     const statusIcon: StatusVueIcon = emailVerified.value

@@ -14,7 +14,9 @@ function useNotifications() {
   const { allNotifications } = storeToRefs(notificationStore);
 
   const notificationsSize = computed((): number => {
-    return allNotifications.value.length;
+    return allNotifications.value.filter(
+      (notification) => notification.status === "not read"
+    ).length;
   });
 
   // Get all notifications.

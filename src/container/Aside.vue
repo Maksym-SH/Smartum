@@ -152,10 +152,12 @@ export default defineComponent({
         ObjectNotEmpty(navigationList.value)
       );
     });
-    // AsideNavigate[2] - 2 on the list is notification navigation.
-    const notificationNavShowed = computed(
-      () => configurationStore.asideNavigate[2]?.showed
-    );
+
+    const notificationNavShowed = computed(() => {
+      const notificationNavIndex = 2;
+
+      configurationStore.asideNavigate[notificationNavIndex]?.showed;
+    });
 
     const showNotificationBadge = computed(
       () =>

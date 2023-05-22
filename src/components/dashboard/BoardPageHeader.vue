@@ -25,13 +25,13 @@
 import type { PropType } from "vue";
 import { defineComponent, onMounted } from "vue";
 import type { IUserCreated } from "@/types/interfaces";
+import { Colors } from "@/types/enums";
 
 import useSelectActions from "@/composables/useSelectActions";
 import Avatar from "../user/Avatar.vue";
 import BtnNotify from "@/components/notification/NotficaitonBtn.vue";
 import SwitchTheme from "../UI/SwitchTheme.vue";
 import AcquaintanceBtn from "./AcquaintanceBtn.vue";
-import { Colors } from "@/types/enums";
 
 export default defineComponent({
   components: {

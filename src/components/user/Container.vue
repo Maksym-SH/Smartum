@@ -1,11 +1,6 @@
 <template>
   <div class="user-info">
-    <Avatar
-      online
-      :first-name="firstName"
-      :last-name="lastName"
-      :avatar="avatar"
-    />
+    <Avatar online :first-name="firstName" :last-name="lastName" :avatar="avatar" />
     <div class="user-info__content">
       <Info :first-name="firstName" :last-name="lastName" />
       <cSelect :items="actions" rounded @selected="selected" />
@@ -28,7 +23,7 @@ export default defineComponent({
   },
   props: useContainerProps,
   emits: ["userMenuPicked"],
-  setup(_) {
+  setup() {
     const { actions, selected } = useSelectActions();
 
     return {

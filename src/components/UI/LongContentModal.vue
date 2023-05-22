@@ -8,9 +8,7 @@
   >
     <v-card>
       <v-toolbar color="indigo" class="modal__actions">
-        <v-btn icon dark @click="closeModal">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
+        <v-btn icon="mdi-close" dark @click="closeModal"> </v-btn>
         <v-toolbar-title class="modal__header-title">
           {{ modalContent.title }}
         </v-toolbar-title>

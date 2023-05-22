@@ -3,8 +3,8 @@
     <div class="confirmation__window">
       <h2 class="confirmation__window-title">Подтверждение действия</h2>
       <p class="confirmation__window-description">
-        Нам нужно убедиться что это действительно вы, введите пароль указанный
-        вами при регистрации в поле ниже.
+        Нам нужно убедиться что это действительно вы, введите пароль указанный вами при
+        регистрации в поле ниже.
       </p>
       <form class="confirmation__window-input-field" @submit.prevent>
         <cInput
@@ -12,7 +12,7 @@
           label="Ваш пароль"
           type="password"
           name="userPassword"
-          :min="PasswordLength"
+          :min="Length.Password"
         />
         <div class="confirmation__window-forgot-password">
           <router-link
@@ -88,7 +88,7 @@ export default defineComponent({
 
     return {
       password,
-      PasswordLength: Length.Password,
+      Length,
       btnConfirmDisable,
       result,
     };

@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import type { CSSProperties } from "vue";
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent } from "vue";
 import { useAvatarProps } from "./use/useProps";
 
 export default defineComponent({
@@ -58,18 +58,13 @@ export default defineComponent({
       };
     });
 
-    const imgLoaded = ref(false);
-    const imgLoad = (): boolean => (imgLoaded.value = true);
-
     const sizeInitials = computed((): string => `font-size: ${props.size / 2.2}px;`);
 
     return {
       avatarStyles,
-      imgLoaded,
       initials,
       sizeInitials,
       showPreload,
-      imgLoad,
     };
   },
 });

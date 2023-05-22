@@ -149,8 +149,7 @@ export default defineComponent({
 
         // Show all members first.
         usersList.value.sort((user) => {
-          if (user.role) return -1;
-          return 0;
+          return user.role ? -1 : 0;
         });
 
         showLoader.value = false;

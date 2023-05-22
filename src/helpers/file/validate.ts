@@ -15,20 +15,16 @@ import type { FileType } from "@/types/types";
   FileFormat.Text_XPython
 ]; */
 
-function fileValidate(file: File, needType: FileType): boolean {
+export default function fileValidate(file: File, needType: FileType): boolean {
   const currentType: string = file.type.toLowerCase();
 
   if (needType === "image") {
-    if (file.size < Numbers.ImageSize && currentType.startsWith("image"))
-      return true;
+    if (file.size < Numbers.ImageSize && currentType.startsWith("image")) return true;
   }
 
   notify({
-    title:
-      "Выбранный файл не поддерживается либо имеет слишком большой размер.",
+    title: "Выбранный файл не поддерживается либо имеет слишком большой размер.",
     type: "error",
   });
   return false;
 }
-
-export default fileValidate;

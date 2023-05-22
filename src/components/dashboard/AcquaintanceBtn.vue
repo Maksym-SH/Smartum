@@ -46,7 +46,11 @@
             </div>
           </div>
           <footer class="acquaintance__window-footer mobile-only">
-            <cButton class="acquaintance__window--confirm" size="large">
+            <cButton
+              class="acquaintance__window--confirm"
+              size="large"
+              @click="showAcquaintanceWindow = false"
+            >
               Ознакомлен
             </cButton>
           </footer>
@@ -137,8 +141,8 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         &-description {
-        margin-top: 0;
-      }
+          margin-top: 0;
+        }
       }
       &-content-info {
         display: flex;
@@ -146,7 +150,7 @@ export default defineComponent({
         justify-content: flex-end;
         height: 100%;
       }
-      
+
       &-footer {
         margin-top: auto;
         padding: 15px 0;
