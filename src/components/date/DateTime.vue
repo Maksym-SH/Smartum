@@ -48,24 +48,18 @@ export default defineComponent({
     const showTemplate = computed((): boolean => Boolean(time.value && date.value));
 
     // Changing text depending on the time of day.
-    watch(
-      (): string => time.value,
-      (): void => {
-        // Get current hour between 0 - 23.
-        const currentTime = time.value;
-        const currentTimeHours = Number(currentTime.split("").slice(0, 2).join(""));
+    watch(time, (): void => {
+      // Get current hour between 0 - 23.
+      const currentTime = time.value;
+      const currentTimeHours = Number(currentTime.split("").slice(0, 2).join(""));
 
-        // If the time is later than 16:00 and later than 6:00.
-        if (
-          currentTimeHours < Numbers.EveningRU &&
-          currentTimeHours > Numbers.MorningRU
-        ) {
-          welcomeText.value = "Добрый день";
-        } else {
-          welcomeText.value = "Добрый вечер";
-        }
+      // If the time is later than 16:00 and later than 6:00.
+      if (currentTimeHours < Numbers.EveningRU && currentTimeHours > Numbers.MorningRU) {
+        welcomeText.value = "Добрый день";
+      } else {
+        welcomeText.value = "Добрый вечер";
       }
-    );
+    });
 
     onMounted((): void => {
       updateTimeInterval.value = setInterval((): void => {

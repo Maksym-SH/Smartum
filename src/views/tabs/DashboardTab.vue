@@ -109,7 +109,7 @@ export default defineComponent({
 
     // Handler for emptyList boards after confirm email and empty boards.
     watch(
-      [() => dashboardStore.allDashboards, () => showLockAccess.value],
+      [dashboardStore.allDashboards, () => showLockAccess.value],
       ([boards], [_, oldEmailConfirmValue]) => {
         if (!boards.length || typeof oldEmailConfirmValue !== "boolean") {
           listEmpty.value = true;

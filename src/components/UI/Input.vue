@@ -131,12 +131,9 @@ export default defineComponent({
       (): string => (errorText.value = "")
     );
 
-    watch(
-      (): string => errorText.value,
-      (value): void => {
-        if (value) emit("invalid");
-      }
-    );
+    watch(errorText, (value): void => {
+      if (value) emit("invalid");
+    });
 
     const isAutoComplete = computed((): AutoComplete => {
       if (typeof props.autoComplete === "boolean")
