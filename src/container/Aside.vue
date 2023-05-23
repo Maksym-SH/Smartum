@@ -156,7 +156,7 @@ export default defineComponent({
     const notificationNavShowed = computed(() => {
       const notificationNavIndex = 2;
 
-      configurationStore.asideNavigate[notificationNavIndex]?.showed;
+      return configurationStore.asideNavigate[notificationNavIndex].showed;
     });
 
     const showNotificationBadge = computed(
