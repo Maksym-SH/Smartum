@@ -2,7 +2,6 @@ import type { RouteRecordRaw } from "vue-router";
 import type { NotificationActionType } from "./enums";
 import type {
   IAsideNavigationItem,
-  IError,
   IModalContent,
   INotification,
   IPopupParams,
@@ -108,7 +107,4 @@ export type Routes = Readonly<RouteRecordRaw[]>;
 export type RouterMeta = Record<string | number | symbol, unknown>;
 
 // Promise
-
-export type Error = Awaited<Promise<IError>>;
-
 export type ErrorCode = { code: string } | string;

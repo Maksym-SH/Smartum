@@ -41,7 +41,7 @@
         </form>
         <div class="auth__window-form--actions">
           <div class="auth__swap-entry-type">
-            <span :key="authType" class="auth__description">
+            <span class="auth__description">
               Нет аккаунта?
               <router-link :to="{ name: 'SignUp' }"> Регистрация </router-link>
             </span>
@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from "vue";
+import { computed, defineComponent, reactive } from "vue";
 import type { IUserLogin } from "@/types/interfaces";
 import { Length } from "@/types/enums";
 
@@ -67,14 +67,12 @@ export default defineComponent({
       password: "",
     });
 
-    const authType = ref("signIn");
-    const minLength = Length.Password;
-
     const { signIn } = FirebaseAuth();
 
     const valid = computed((): boolean => {
       return (
-        emailValidator.validate(userData.email) && userData.password.length >= minLength
+        emailValidator.validate(userData.email) &&
+        userData.password.length >= Length.Password
       );
     });
 
@@ -82,7 +80,6 @@ export default defineComponent({
 
     return {
       userData,
-      authType,
       Length,
       submitForm,
     };

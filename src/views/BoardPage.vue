@@ -34,13 +34,13 @@ import type {
 } from "@/types/interfaces";
 import { ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
 import { Colors } from "@/types/enums";
+import { notify } from "@kyvg/vue3-notification";
 
 import useStore from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import BoardHeader from "@/components/dashboard/BoardPageHeader.vue";
 import BtnInviteUsers from "@/components/user/InviteBtn.vue";
 import Avatar from "@/components/user/Avatar.vue";
-import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
   components: {

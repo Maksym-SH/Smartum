@@ -106,7 +106,6 @@ export interface IWorkingBoardItem {
   joinCode: string;
   members: IWorkingBoardMember[];
   uid: string;
-  securityCode: string;
 }
 export interface IWorkingBoardMember {
   uid: string;
