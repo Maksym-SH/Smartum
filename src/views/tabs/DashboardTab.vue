@@ -123,7 +123,7 @@ export default defineComponent({
     onBeforeMount((): void => {
       if (!dashboardStore.allDashboards.length) {
         dashboardStore.getAllWorkingBoards(unicID.value).then((boards) => {
-          if (boards) {
+          if (boards && boards.length) {
             dashboardStore.setAllDashboard(boards);
           } else {
             listEmpty.value = true;

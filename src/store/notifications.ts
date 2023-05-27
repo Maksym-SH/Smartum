@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import type { User } from "firebase/auth";
-import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { DataCollection } from "@/types/enums";
 import type { INotification, IServerDate, IWorkingBoardMember } from "@/types/interfaces";
 import { database } from "@/helpers/firebase/firebaseInitialize";
@@ -39,20 +39,20 @@ const useNotificationStore = defineStore("notification", () => {
     });
   };
 
-  const getAllNotifications = (unicID: string): Promise<INotification<IServerDate>[]> => {
-    const profileRef = doc(database, DataCollection.Notifications, unicID);
-
-    return new Promise((resolve, reject) => {
-      getDoc(profileRef)
-        .then((response) => {
-          const notifications = response.data();
-          if (notifications)
-            resolve(notifications.collection as INotification<IServerDate>[]);
-        })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error);
-        });
+  const getAllNotifications = (
+    unicID: string,
+    write = false
+  ): Promise<INotification<IServerDate>[]> => {
+    return new Promise((resolve) => {
+      onSnapshot(doc(database, DataCollection.Notifications, unicID), (doc) => {
+        const notifications = doc.data()?.collection as INotification<IServerDate>[];
+        if (doc.data()) {
+          resolve(notifications);
+          if (write) {
+            setAllNotification(notifications);
+          }
+        }
+      });
     });
   };
 
@@ -91,7 +91,7 @@ const useNotificationStore = defineStore("notification", () => {
       try {
         const userNotificationList = await getAllNotifications(userTarget.uid);
         await setNewNotification(notification, userNotificationList, userTarget.uid);
-        resolve()
+        resolve();
       } catch (error: any) {
         ShowErrorMessage(error as ErrorCode);
         reject(error);

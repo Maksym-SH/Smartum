@@ -175,7 +175,6 @@ export default defineComponent({
       dashboardStore
         .getWorkingBoardItem(unicID.value, joinCode)
         .then((info) => {
-          console.log(info.value);
           boardItem.value = info.value;
           boardMembers.value = info.members;
         })

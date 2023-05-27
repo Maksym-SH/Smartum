@@ -1,6 +1,5 @@
 import { computed, onBeforeMount } from "vue";
 import { storeToRefs } from "pinia";
-import type { INotificationList } from "@/types/types";
 
 import useStores from "./useStores";
 import useCurrentUserInfo from "./useCurrentUserInfo";
@@ -25,10 +24,7 @@ function useNotifications() {
       // Get all if the list is initially empty.
       commonStore.setLoadingStatus(true);
       notificationStore
-        .getAllNotifications(unicID.value)
-        .then((notifications: INotificationList) => {
-          notificationStore.setAllNotification(notifications);
-        })
+        .getAllNotifications(unicID.value, true)
         .finally(() => commonStore.setLoadingStatus(false));
     }
   });
