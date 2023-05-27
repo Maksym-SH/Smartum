@@ -4,6 +4,7 @@
       @click="toggleInviteWindow"
       icon="mdi-account-multiple"
       class="invite-users__btn"
+      size="small"
     >
       Пригласить
     </cButton>
@@ -81,6 +82,7 @@ import { notify } from "@kyvg/vue3-notification";
 import { OpenPopup } from "@/helpers/methods";
 import { Colors, NotificationType } from "@/types/enums";
 
+import useUserInfo from "@/composables/useCurrentUserInfo";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 import UserListItem from "./UserItem.vue";
 import DropDownWindow from "@/container/DropdownWindow.vue";
@@ -104,6 +106,7 @@ export default defineComponent({
 
     const showLoader = ref(true);
 
+    const { getFullName } = useUserInfo();
     const usersList = ref<IUserForList[]>([]);
     const usersListFiltered = ref<IUserForList[]>([]);
 
@@ -160,10 +163,6 @@ export default defineComponent({
       showInviteWindow.value = !showInviteWindow.value;
 
       if (!usersList.value.length) refreshUsers();
-    };
-
-    const getFullName = (user: IUserForList): string => {
-      return `${user.firstName} ${user.lastName ? user.lastName : ""}`;
     };
 
     const invite = (invitedUser: IUserForList): void => {

@@ -30,9 +30,17 @@ export const useInputProps = {
     type: String,
     default: "",
   },
+  label: {
+    type: String,
+    default: "",
+  },
   name: {
     type: String,
-    required: true,
+    default: (props: any) => {
+      if (props.label) {
+        throw new Error("Props label not found.");
+      }
+    },
   },
   disabled: {
     type: Boolean,
@@ -58,10 +66,7 @@ export const useInputProps = {
     type: Number,
     default: Length.None,
   },
-  label: {
-    type: String,
-    default: "",
-  },
+
   autoComplete: {
     type: [Boolean, String],
     default: true,

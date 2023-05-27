@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import type { User } from "firebase/auth";
-import type { IUserCreated } from "@/types/interfaces";
+import type { IUserCreated, IUserForList, IUserInfo } from "@/types/interfaces";
 
 import useStores from "./useStores";
 
@@ -11,10 +11,15 @@ function useUserUnicId() {
   const currentUser = computed((): User => userStore.currentUser as User);
   const userInfo = computed((): IUserCreated => userStore.userInfo);
 
+  const getFullName = (user: IUserForList | IUserInfo): string => {
+    return `${user.firstName} ${user.lastName ? user.lastName : ""}`;
+  };
+
   return {
     unicID,
     userInfo,
     currentUser,
+    getFullName,
   };
 }
 

@@ -7,34 +7,37 @@
 
   --color-light-border-card: #c0c2c4;
   --color-dark-border-card: #edf1f5;
-  
+
   --color-light-background-card: #ffffff;
   --color-dark-background-card: #2b2e33;
 
   --color-light-modal-background: #edf1f5;
   --color-dark-modal-background: #010101;
-  
+
   --color-light-input: #ffffff;
   --color-dark-input: #010409;
-  
+
   --color-light-notification-read: #e7e7e7;
   --color-dark-notification-read: transparent;
-  
+
   --color-light-notification-border: transparent;
   --color-dark-notification-border: #30363d;
-  
+
   --color-dark-notification-background-new: #062b4e;
   --color-light-notification-background-new: #bdd6ee;
 
   --color-disable-light: #bdc4d5;
-  --color-disable-dark: #69727e; 
+  --color-disable-dark: #69727e;
 
   --color-dasboard-card-light: #c5f7ff;
   --color-dasboard-card-dark: #303256;
+
+  --color-background-task-light: #ffffff;
+  --color-background-task-dark: #22272b;
 }
 
 // Dark theme.
-body[data-theme='dark'] {
+body[data-theme="dark"] {
   --color-background-secondary: var(--color-dark-secondary);
   --color-background: var(--color-dark);
   --color-scroll-track-invert: var(--color-dark);
@@ -49,10 +52,11 @@ body[data-theme='dark'] {
   --color-background-modal: var(--color-dark-modal-background);
   --color-disable: var(--color-disable-dark);
   --color-dasboard-card: var(--color-dasboard-card-dark);
+  --color-background-task: var(--color-background-task-dark);
 }
 
 // Light theme.
-body[data-theme='light'] {
+body[data-theme="light"] {
   --color-background-secondary: var(--color-light-secondary);
   --color-background: var(--color-light);
   --color-scroll-track: var(--color-dark-secondary);
@@ -67,4 +71,5 @@ body[data-theme='light'] {
   --color-background-modal: var(--color-light-modal-background);
   --color-disable: var(--color-disable-light);
   --color-dasboard-card: var(--color-dasboard-card-light);
+  --color-background-task: var(--color-background-task-light);
 }

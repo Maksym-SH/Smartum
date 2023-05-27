@@ -22,6 +22,7 @@
                 required
                 name="DashboardHeader"
                 :min="Length.Text"
+                :maxLength="Length.Maximum"
               />
             </div>
             <div class="v-card__wrapper-background-select">
@@ -94,7 +95,23 @@ export default defineComponent({
     const newBoard = reactive<Partial<IWorkingBoardItem>>({
       title: "",
       background: Colors.GradientBluePink,
-      tasks: [],
+      tasks: [
+        {
+          id: 1,
+          title: "Нужно сделать",
+          tasks: [],
+        },
+        {
+          id: 2,
+          title: "В процессе",
+          tasks: [],
+        },
+        {
+          id: 3,
+          title: "Окончено",
+          tasks: [],
+        },
+      ],
       members: [{ role: "Администратор", uid: unicID.value }],
       uid: unicID.value,
     });

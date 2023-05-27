@@ -98,10 +98,31 @@ export interface IBackgroundDashboard {
   photos: IBackgroundPhotos;
   gradients: IBackgroundGradient;
 }
+
+export interface ITaskComment {
+  id: number;
+  member: IUserForList;
+  message: string;
+  dateOfCreate: Date | IServerDate;
+}
+
+export interface IWorkingBoardTask {
+  id: number;
+  title: string;
+  assignedMembers: IUserForList[];
+  comments?: ITaskComment[];
+  dateOfCreate: Date | IServerDate;
+}
+
+export interface IWorkingBoardTaskColumn {
+  id: number;
+  title: string;
+  tasks: IWorkingBoardTask[];
+}
 export interface IWorkingBoardItem {
   title: string;
   background: string;
-  tasks: any[];
+  tasks: IWorkingBoardTaskColumn[];
   dateOfCreation: IServerDate | Date;
   joinCode: string;
   members: IWorkingBoardMember[];
@@ -204,11 +225,6 @@ export interface IColorPickerParams {
 }
 
 // Response
-export interface IError {
-  config?: object;
-  status?: number;
-  code?: number;
-}
 export interface IUserResponse {
   accessToken?: string;
   displayName: string | null;

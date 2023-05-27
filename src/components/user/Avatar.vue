@@ -79,6 +79,7 @@ export default defineComponent({
   border-radius: 4px;
   color: $color-black;
   background-color: $color-dark-grey4;
+  filter: none;
   .c-loader {
     position: static !important;
   }
