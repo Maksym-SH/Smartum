@@ -60,16 +60,18 @@ export default function firebaseAuth(): IUserAuth {
               });
 
             // Create user configuration field in database.
-            configurationStore.createUserConfiguration(currentUser.uid);
+            configurationStore
+              .createUserConfiguration(currentUser.uid)
+              .then(() => configurationStore.getUserConfiguration(currentUser.uid));
+
+            notify({
+              title: "Вы успешно вошли в аккаунт.",
+              type: "success",
+            });
+
+            userStore.setCurrentUser(currentUser as User);
+            router.push({ name: "Notifications" });
           }
-
-          notify({
-            title: "Вы успешно вошли в аккаунт.",
-            type: "success",
-          });
-
-          userStore.setCurrentUser(getAuth().currentUser as User);
-          router.push({ name: "Notifications" });
         })
         .catch((error: ErrorCode): void => ShowErrorMessage(error))
         .finally((): void => commonStore.setLoadingStatus(false));
