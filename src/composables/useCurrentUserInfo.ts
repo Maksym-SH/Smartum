@@ -4,7 +4,7 @@ import type { IUserCreated, IUserForList, IUserInfo } from "@/types/interfaces";
 
 import useStores from "./useStores";
 
-function useUserUnicId() {
+export default function useCurrentUserInfo() {
   const { userStore } = useStores();
 
   const unicID = computed((): string => (userStore.currentUser as User).uid);
@@ -22,5 +22,3 @@ function useUserUnicId() {
     getFullName,
   };
 }
-
-export default useUserUnicId;

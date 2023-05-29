@@ -27,6 +27,7 @@
                     :avatar="item.avatarParams"
                     :first-name="item.firstName"
                     :last-name="item.lastName"
+                    :size="30"
                     :class="{ admin: item.role === 'Администратор' }"
                     v-bind="props"
                     circle
@@ -258,10 +259,10 @@ export default defineComponent({
     padding: 10px;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: 10px;
-    background-color: rgba($color-grey, 0.75);
-    box-shadow: 0 10px 15px rgba($color-grey, 0.8);
+    background-color: $color-dark-blue2;
     &-about {
       width: 50%;
       flex-shrink: 2;
@@ -277,7 +278,7 @@ export default defineComponent({
       display: flex;
       align-items: center;
       .user-avatar {
-        margin-left: -10px;
+        margin-left: -7px;
         &.admin {
           position: relative;
           &::after {
@@ -295,14 +296,16 @@ export default defineComponent({
       }
     }
   }
-  @include tablet(max) {
+  @include mobile(max) {
     &__board-info {
+      padding-bottom: 5px;
       &--additional {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         .avatars-wrapper {
+          margin-top: 6px;
           width: 100%;
           order: 2;
           justify-content: flex-end;

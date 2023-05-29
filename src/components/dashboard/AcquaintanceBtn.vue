@@ -113,10 +113,13 @@ export default defineComponent({
       justify-content: flex-end;
       height: 100%;
       &-picture {
-        width: 100%;
+        width: 95%;
+        display: block;
+        margin: 0 auto;
         height: auto;
       }
       &-info {
+        margin-top: 5px;
         color: var(--color-text);
       }
       &-title {

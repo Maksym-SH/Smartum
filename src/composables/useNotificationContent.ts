@@ -1,7 +1,7 @@
 import type { INotification, IWorkingBoardItem } from "@/types/interfaces";
 import { NotificationActionType, NotificationType } from "@/types/enums";
 
-function useNewNotificationContent(
+export default function useNewNotificationContent(
   type: NotificationType,
   title?: string,
   info?: IWorkingBoardItem // | any smt else. ToDo.
@@ -85,5 +85,3 @@ function useNewNotificationContent(
     date: new Date(),
   };
 }
-
-export default useNewNotificationContent;

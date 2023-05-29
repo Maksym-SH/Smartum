@@ -148,6 +148,7 @@ export default defineComponent({
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 148px;
   .c-button {
     text-transform: none;
   }

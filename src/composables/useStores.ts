@@ -4,7 +4,7 @@ import useNotificationStore from "@/store/notifications";
 import useUserStore from "@/store/user";
 import useDashboardStore from "@/store/dashboard";
 
-function useStore() {
+export default function useStore() {
   const commonStore = useCommonStore();
   const userStore = useUserStore();
   const notificationStore = useNotificationStore();
@@ -19,5 +19,3 @@ function useStore() {
     dashboardStore,
   };
 }
-
-export default useStore;

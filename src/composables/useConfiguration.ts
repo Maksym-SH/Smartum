@@ -15,7 +15,7 @@ import useStores from "./useStores";
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 
-function useConfiguration() {
+export default function useConfiguration() {
   const { userStore, configurationStore, notificationStore } = useStores();
 
   const { unicID } = useCurrentUserInfo();
@@ -136,5 +136,3 @@ function useConfiguration() {
     saveBackgroundAvatar,
   };
 }
-
-export default useConfiguration;

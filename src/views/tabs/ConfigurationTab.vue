@@ -68,7 +68,7 @@
                 <ColorPicker v-model="avatarParams.bgAvatar" theme="light" />
               </div>
               <small class="change-avatar-hint">
-                Примечание: другие пользователи увидят выбраный вами цвет.
+                Примечание: другие пользователи увидят выбранный вами цвет.
               </small>
             </div>
           </template>

@@ -5,7 +5,7 @@ import useStores from "./useStores";
 import useCurrentUserInfo from "./useCurrentUserInfo";
 import { ArrayHasValues } from "@/helpers/methods";
 
-function useNotifications() {
+export default function useNotifications() {
   const { notificationStore, commonStore } = useStores();
 
   const { unicID } = useCurrentUserInfo();
@@ -34,5 +34,3 @@ function useNotifications() {
     allNotifications,
   };
 }
-
-export default useNotifications;

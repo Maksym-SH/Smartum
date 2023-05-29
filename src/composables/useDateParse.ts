@@ -5,13 +5,11 @@ import { Language, Numbers } from "@/types/enums";
 
 import useTimestamp from "@/helpers/dateTime/stamp";
 
-function useDateParseToString(date: Date | IServerDate): string {
+export default function useDateParseToString(date: Date | IServerDate): string {
   const dateSent = computed((): string => {
     const dateParam = (date as IServerDate).seconds;
 
-    const recievedDate = dateParam
-      ? new Date(Number(dateParam) * Numbers.Second)
-      : date;
+    const recievedDate = dateParam ? new Date(Number(dateParam) * Numbers.Second) : date;
 
     const dateBetween: string = GetBetweenDateString(recievedDate as Date);
     const time: string = useTimestamp(
@@ -25,5 +23,3 @@ function useDateParseToString(date: Date | IServerDate): string {
 
   return dateSent.value;
 }
-
-export default useDateParseToString;

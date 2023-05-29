@@ -1,9 +1,5 @@
 <template>
-  <aside
-    class="aside"
-    :style="{ backgroundColor: asideBackgroundColor }"
-    :class="{ 'aside-minimize': minimizeAside }"
-  >
+  <aside class="aside" :class="{ 'aside-minimize': minimizeAside }">
     <div class="aside__logo">
       <img class="aside__logo-picture" src="/images/icons/logo.svg" alt="" />
     </div>
@@ -277,6 +273,7 @@ export default defineComponent({
     flex-direction: column;
     height: calc(100% - 101px);
     color: $color-black;
+    background-color: v-bind(asideBackgroundColor);
     overflow: hidden scroll;
     .c-loader {
       position: absolute !important;
@@ -343,7 +340,7 @@ export default defineComponent({
     right: -26.9px;
     cursor: pointer;
     &-wrapper {
-      background-color: $color-grey;
+      background-color: v-bind(asideBackgroundColor);
       padding: 15px 10px;
       clip-path: polygon(0 0, 100% 21%, 100% 76%, 0% 100%);
     }
@@ -393,7 +390,7 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgba($color-light-grey, 0.78);
+        opacity: 0.78;
         clip-path: none;
         border-radius: 0 10px 10px 0;
         width: 45px;
