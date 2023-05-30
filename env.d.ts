@@ -10,8 +10,10 @@ interface ImportMetaEnv {
   readonly VITE_APP_ID: string;
   readonly VITE_APP_MEASUREMENT_ID: string;
   readonly VITE_APP_DATABASE_URL: string;
+  readonly VITE_APP_ALL_USER_COLLECTION: string;
+  readonly VITE_APP_ALL_AVATAR_PATH: string;
 }
 
 interface ImportMeta {
-  readonly env: ImportMetaEnv
+  readonly env: ImportMetaEnv;
 }
