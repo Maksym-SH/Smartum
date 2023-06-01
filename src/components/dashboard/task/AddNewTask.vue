@@ -4,7 +4,7 @@
       input-placeholder="Ввести заголовок для этой карточки"
       button-title="Добавить карточку"
       buttonVariant="text"
-      :last-id="taskLength"
+      :new-id="taskLength"
       @create="createTask"
     />
   </div>

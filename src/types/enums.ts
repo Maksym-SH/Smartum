@@ -41,6 +41,7 @@ export enum Numbers {
   MorningRU = 6,
   MorningENG = "6 PM",
   JoinCodeSize = 10,
+  AnimationTaskMove = 250,
 }
 
 export enum Layout {

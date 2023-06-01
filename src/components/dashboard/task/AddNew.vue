@@ -48,7 +48,7 @@ export default defineComponent({
   inheritAttrs: false,
   emits: ["create", "close"],
   props: {
-    lastId: {
+    newId: {
       type: Number,
       required: true,
     },
@@ -73,7 +73,7 @@ export default defineComponent({
     const create = () => {
       if (title.value.length < Length.Text) return;
 
-      const elementID = props.lastId + 1;
+      const elementID = props.newId;
 
       const element: Partial<IWorkingBoardTask | IWorkingBoardTaskColumn> = {
         id: elementID,

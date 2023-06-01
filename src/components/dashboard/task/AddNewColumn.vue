@@ -3,7 +3,7 @@
     <AddNew
       input-placeholder="Ввести заголовок списка"
       button-title="Добавить колонку"
-      :last-id="columnLength"
+      :new-id="columnLength"
       @create="createColumn"
       @click="columnStyleType = true"
       @close="columnStyleType = false"

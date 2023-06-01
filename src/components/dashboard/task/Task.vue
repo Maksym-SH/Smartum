@@ -78,8 +78,12 @@ export default defineComponent({
   border-radius: 4px;
   background-color: var(--color-background-task);
   box-shadow: 0 0 5px rgba($color-black, 0.1);
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
+  }
   &:hover {
-    filter: brightness(110%);
+    filter: brightness(115%);
 
     .initially-transparent {
       opacity: 1;
