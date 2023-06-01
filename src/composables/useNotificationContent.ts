@@ -13,7 +13,7 @@ export default function useNewNotificationContent(
       currentContent = {
         title: "Добро пожаловать в Smartum task management!",
         description:
-          "Подтвердите свой электронный адрес, для подтверждения нажмите на это уведомление.",
+          "Чтобы получить доступ ко всем функциям приложения подтвердите свой электронный адрес, для подтверждения нажмите на это уведомление.",
         image: `${import.meta.env.BASE_URL}images/notifyIcons/mail.svg`,
         type: NotificationActionType.Verify,
       };
