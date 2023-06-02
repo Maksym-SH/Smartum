@@ -102,3 +102,8 @@ export enum Colors {
   GradientGray = "#7a7d89 linear-gradient(90deg, #7a7d89 0%, #222e48 100%)",
   GradientRedBlue = "#ff2a00 linear-gradient(90deg, #ff2a00 20%, #0057ff 100%)",
 }
+
+export enum UserRole {
+  Admin = "Администратор",
+  Member = "Участник",
+}

@@ -70,7 +70,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 import type { IBackgroundDashboard, IWorkingBoardItem } from "@/types/interfaces";
-import { Colors, Length, Numbers } from "@/types/enums";
+import { Colors, Length, Numbers, UserRole } from "@/types/enums";
 import { GenerateJoinCode } from "@/helpers/methods";
 
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
@@ -112,7 +112,7 @@ export default defineComponent({
           tasks: [],
         },
       ],
-      members: [{ role: "Администратор", uid: unicID.value }],
+      members: [{ role: UserRole.Admin, uid: unicID.value }],
       uid: unicID.value,
     });
 

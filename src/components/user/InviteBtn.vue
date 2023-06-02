@@ -71,7 +71,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed } from "vue";
-import useStore from "@/composables/useStores";
 import type {
   INotification,
   IServerDate,
@@ -80,8 +79,9 @@ import type {
 } from "@/types/interfaces";
 import { notify } from "@kyvg/vue3-notification";
 import { OpenPopup } from "@/helpers/methods";
-import { Colors, NotificationType } from "@/types/enums";
+import { Colors, NotificationType, UserRole } from "@/types/enums";
 
+import useStore from "@/composables/useStores";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 import UserListItem from "./UserItem.vue";
@@ -95,7 +95,7 @@ export default defineComponent({
   emits: ["invited"],
   props: {
     board: {
-      type: Object as PropType<IWorkingBoardItem | {}>,
+      type: Object as PropType<IWorkingBoardItem>,
       required: true,
     },
   },
@@ -109,8 +109,6 @@ export default defineComponent({
     const { getFullName } = useUserInfo();
     const usersList = ref<IUserForList[]>([]);
     const usersListFiltered = ref<IUserForList[]>([]);
-
-    const board = props.board as IWorkingBoardItem;
 
     // Search
     const searchText = ref("");
@@ -214,16 +212,16 @@ export default defineComponent({
     // Set roles.
     const setAdminRole = (list: IUserForList[]): void => {
       const adminRole = list.find(
-        (item) => item.uid === board.members[0].uid // 0 - board creator index.
+        (item) => item.uid === props.board.members[0].uid // 0 - board creator index.
       );
       if (adminRole) {
-        adminRole.role = "Администратор";
+        adminRole.role = UserRole.Admin;
       }
     };
 
     const setUserRoles = (list: IUserForList[]): void => {
       const boardMembers = list.filter((item) => {
-        const member = board.members.find((user) => user.uid === item.uid);
+        const member = props.board.members.find((user) => user.uid === item.uid);
 
         return member ?? false;
       });
@@ -231,7 +229,7 @@ export default defineComponent({
       if (boardMembers.length) {
         list.forEach((user) => {
           if (boardMembers.includes(user)) {
-            const invitedUsers = board.members.filter((item) => item.invited);
+            const invitedUsers = props.board.members.filter((item) => item.invited);
 
             const currentUserInvited = invitedUsers.find(
               (invited) => invited.uid === user.uid
@@ -240,7 +238,7 @@ export default defineComponent({
             if (currentUserInvited) {
               user.invited = true;
               // Not admin.
-            } else if (user.uid !== board.members[0].uid) {
+            } else if (user.uid !== props.board.members[0].uid) {
               user.role = "Участник";
             }
           }

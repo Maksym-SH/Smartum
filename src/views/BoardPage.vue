@@ -28,7 +28,7 @@
                     :first-name="item.firstName"
                     :last-name="item.lastName"
                     :size="30"
-                    :class="{ admin: item.role === 'Администратор' }"
+                    :class="{ admin: item.role === UserRole.Admin }"
                     v-bind="props"
                     circle
                   />
@@ -46,6 +46,7 @@
           :column="column"
           v-model:column-title="column.title"
           v-model:column-tasks="column.tasks"
+          @save-changes="saveChanges"
         />
         <AddColumn :column-length="columnLength" @createColumn="createColumn" />
       </div>
@@ -54,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from "vue";
+import { defineComponent, onMounted, ref, computed, watch, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import type {
   IUserForList,
@@ -62,8 +63,8 @@ import type {
   IWorkingBoardMember,
   IWorkingBoardTaskColumn,
 } from "@/types/interfaces";
-import { ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
-import { Colors } from "@/types/enums";
+import { ObjectHasValues, ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
+import { Colors, UserRole } from "@/types/enums";
 import { notify } from "@kyvg/vue3-notification";
 
 import useStore from "@/composables/useStores";
@@ -136,13 +137,13 @@ export default defineComponent({
             },
           },
           callback: (): void => {
-            dashboardStore.leaveWorkingBoard(currentMember, boardItem.value).then(() =>
+            dashboardStore.leaveWorkingBoard(currentMember, boardItem.value).then(() => {
               notify({
                 title: "Вы успешно покинули рабочее пространство!",
                 text: "Пространство было удалено из вашего списка рабочих досок.",
                 type: "success",
-              })
-            );
+              });
+            });
           },
         });
       }
@@ -164,11 +165,47 @@ export default defineComponent({
     // Tasks
     const createColumn = (column: IWorkingBoardTaskColumn): void => {
       boardItem.value.tasks.push(column);
+      saveChanges();
     };
 
     const columnLength = computed((): number => {
       return boardItem.value.tasks?.length || 0;
     });
+    // Check members status in real time.
+    watch(
+      () => dashboardStore.boardItem,
+      (updatedBoard, oldValue) => {
+        if (ObjectHasValues(oldValue) && ObjectHasValues(updatedBoard)) {
+          boardItem.value = updatedBoard;
+
+          if (boardMembers.value.length !== boardItem.value.members?.length) {
+            const remainingMembers = boardMembers.value.filter(
+              (user, index) => user.uid === boardItem.value.members[index]?.uid
+            );
+
+            const membersIds = remainingMembers.map((item) => item.uid);
+
+            boardMembers.value.forEach((item, index, members) => {
+              if (!membersIds.includes(item.uid)) {
+                members.splice(index, 1);
+              }
+            });
+            // Write local admin after admin leave.
+            const someAdmin = boardMembers.value.some(
+              (user) => user.role === UserRole.Admin
+            );
+            if (!someAdmin) {
+              // Admin leaved board.
+              boardMembers.value[0].role = UserRole.Admin;
+            }
+          }
+        }
+      }
+    );
+
+    const saveChanges = (): void => {
+      dashboardStore.updateWorkingBoard(boardItem.value, false);
+    };
 
     onMounted((): void => {
       const joinCode = router.currentRoute.value.params.code as string;
@@ -178,10 +215,16 @@ export default defineComponent({
         .then((info) => {
           boardItem.value = info.value;
           boardMembers.value = info.members;
+
+          dashboardStore.boardUpdateRealTime(unicID.value, joinCode);
         })
         .catch(() => {
           router.push({ name: "Dashboard" });
         });
+    });
+
+    onUnmounted(() => {
+      dashboardStore.boardUpdateRealTime(unicID.value, boardItem.value.joinCode, true);
     });
 
     return {
@@ -193,8 +236,10 @@ export default defineComponent({
       userInfo,
       showedCommonLoader,
       columnLength,
+      UserRole,
       boardLeave,
       getFullName,
+      saveChanges,
       setInviteUserToBoard,
       createColumn,
     };

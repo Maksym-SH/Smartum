@@ -1,6 +1,6 @@
 import type { EmailAuthCredential, User, UserCredential } from "firebase/auth";
 import type { ComputedRef } from "vue";
-import type { Colors } from "./enums";
+import type { Colors, UserRole } from "./enums";
 import type {
   AsideExpPanelNavigation,
   ButtonVariant,
@@ -8,7 +8,6 @@ import type {
   NotificationCategory,
   NotificationStatus,
   OmitUserInfo,
-  BoardRole,
 } from "./types";
 
 export interface IServerDate {
@@ -130,7 +129,7 @@ export interface IWorkingBoardItem {
 }
 export interface IWorkingBoardMember {
   uid: string;
-  role?: BoardRole;
+  role?: UserRole;
   invited?: boolean;
 }
 

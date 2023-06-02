@@ -1,15 +1,22 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { notify } from "@kyvg/vue3-notification";
 import { database } from "@/helpers/firebase/firebaseInitialize";
-import { DataCollection, NotificationType } from "@/types/enums";
+import { DataCollection, NotificationType, UserRole } from "@/types/enums";
 import type {
   IWorkingBoardItem,
   IWorkingBoardMember,
   IWorkingBoardResolve,
 } from "@/types/interfaces";
-import type { BoardRole, ErrorCode } from "@/types/types";
+import type { ErrorCode } from "@/types/types";
 
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
@@ -20,6 +27,8 @@ const useDashboardStore = defineStore("dashboard", () => {
   const { commonStore, userStore, notificationStore } = useStores();
 
   const allDashboards = ref<IWorkingBoardItem[]>([]);
+
+  const boardItem = ref<IWorkingBoardItem>({} as IWorkingBoardItem);
 
   const setAllDashboard = (dashboards: IWorkingBoardItem[]): void => {
     allDashboards.value = dashboards;
@@ -134,12 +143,12 @@ const useDashboardStore = defineStore("dashboard", () => {
               }
             });
 
-            const dashboardInfo = await membersExist({
+            const boardInfo = await membersExist({
               value: currentBoard,
               members: sortedUsersAsMembers,
             });
 
-            resolve(dashboardInfo);
+            resolve(boardInfo);
           });
         } else {
           reject(new Error("Not found"));
@@ -154,6 +163,26 @@ const useDashboardStore = defineStore("dashboard", () => {
         commonStore.setLoadingStatus(false);
       });
     });
+  };
+
+  const boardUpdateRealTime = (unicID: string, joinCode: string, unwatch = false) => {
+    const unsubscribe = onSnapshot(
+      doc(database, DataCollection.Dashboard, unicID),
+      async (doc) => {
+        if (doc.data() && !unwatch) {
+          const allBoards = doc.data()?.collection as IWorkingBoardItem[];
+
+          if (allBoards) {
+            const currentBoard = allBoards.find((item) => item.joinCode === joinCode);
+            boardItem.value = currentBoard ?? ({} as IWorkingBoardItem);
+          }
+        }
+      }
+    );
+    if (unwatch) {
+      unsubscribe();
+      boardItem.value = {} as IWorkingBoardItem;
+    }
   };
 
   const updateWorkingBoard = (
@@ -207,7 +236,7 @@ const useDashboardStore = defineStore("dashboard", () => {
               (member) => member.uid === unicID
             );
             if (invitedMember) {
-              invitedMember.role = "Участник";
+              invitedMember.role = UserRole.Member;
               delete invitedMember.invited;
 
               updateWorkingBoard(boardToUpdate);
@@ -231,19 +260,20 @@ const useDashboardStore = defineStore("dashboard", () => {
     fromBoard: IWorkingBoardItem
   ): Promise<void> => {
     const memberID = member.uid;
-
     const leavedMemberIndex = fromBoard.members.findIndex(
       (user) => user.uid === memberID
     );
 
     if (leavedMemberIndex !== -1) {
+      boardUpdateRealTime(member.uid, fromBoard.joinCode, true); // Stop watching database.
+
       fromBoard.members.splice(leavedMemberIndex, 1); // Remove user.
 
       const firstInvitedUser = fromBoard.members[0];
 
       if (fromBoard.uid === member.uid && firstInvitedUser) {
         fromBoard.uid = firstInvitedUser.uid; // Set as admin the first invited user.
-        firstInvitedUser.role = "Администратор";
+        firstInvitedUser.role = UserRole.Admin;
 
         const notification = useNewNotificationContent(
           NotificationType.SetAdmin,
@@ -294,21 +324,21 @@ const useDashboardStore = defineStore("dashboard", () => {
     if (loadedMembers.length !== savedMembers.length) {
       const exist: IWorkingBoardMember[] = loadedMembers.map((item) => {
         return {
-          role: item.role as BoardRole,
+          role: item.role as UserRole,
           uid: item.uid,
           invited: item?.invited,
         };
       });
 
-      const adminExist = exist.some((member) => member.role === "Администратор");
+      const adminExist = exist.some((member) => member.role === UserRole.Admin);
 
       // Set new admin board for first invited user.
       if (!adminExist) {
         const newAdmin = exist[0];
-        newAdmin.role = "Администратор";
+        newAdmin.role = UserRole.Admin;
 
         // Set for saved members.
-        boardInfo.members[0].role = "Администратор";
+        boardInfo.members[0].role = UserRole.Admin;
 
         const newAdminNotification = useNewNotificationContent(
           NotificationType.SetAdmin,
@@ -348,6 +378,7 @@ const useDashboardStore = defineStore("dashboard", () => {
 
   return {
     allDashboards,
+    boardItem,
     clearList,
     setAllDashboard,
     addNewBoard,
@@ -359,6 +390,7 @@ const useDashboardStore = defineStore("dashboard", () => {
     joinWorkingBoard,
     leaveWorkingBoard,
     deleteAllBoards,
+    boardUpdateRealTime,
   };
 });
 

@@ -3,11 +3,12 @@
     <div class="task-column__header">
       <h3
         @input="changeColumnName"
+        @blur="saveColumnName"
         class="task-column__header-title"
         contenteditable
         @keydown.enter.prevent
       >
-        {{ column.title }}
+        {{ columnTitle }}
       </h3>
       <cButton
         class="task-column__header-params"
@@ -48,7 +49,12 @@ export default defineComponent({
     AddNewTask,
     Draggable,
   },
-  emits: ["taskCreatedInColumn", "update:column-title", "update:column-tasks"],
+  emits: [
+    "taskCreatedInColumn",
+    "update:column-title",
+    "update:column-tasks",
+    "save-changes",
+  ],
   props: {
     column: {
       type: Object as PropType<IWorkingBoardTaskColumn>,
@@ -76,16 +82,23 @@ export default defineComponent({
       emit("update:column-title", (event.target as HTMLInputElement).innerText);
     };
 
+    const saveColumnName = () => {
+      emit("save-changes");
+    };
+
     const dragEnd = () => {
       emit("update:column-tasks", props.columnTasks);
-
       showDropZone.value = false;
+
+      emit("save-changes");
     };
 
     const createTask = (newTask: IWorkingBoardTask): void => {
       props.columnTasks.push(newTask);
 
       emit("update:column-tasks", props.columnTasks);
+
+      emit("save-changes");
     };
 
     return {
@@ -95,6 +108,7 @@ export default defineComponent({
       Numbers,
       createTask,
       dragEnd,
+      saveColumnName,
       changeColumnName,
     };
   },

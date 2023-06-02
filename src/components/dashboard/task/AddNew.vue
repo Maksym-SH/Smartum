@@ -14,7 +14,7 @@
       <form v-else class="add-new__params" @submit.prevent="create">
         <cInput
           class="add-new__params-input"
-          v-model.trim="title"
+          v-model="title"
           :maxLength="Length.Maximum"
           :min="Length.Text"
           :placeholder="inputPlaceholder"
