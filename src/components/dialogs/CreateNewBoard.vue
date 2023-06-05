@@ -95,7 +95,7 @@ export default defineComponent({
     const newBoard = reactive<Partial<IWorkingBoardItem>>({
       title: "",
       background: Colors.GradientBluePink,
-      tasks: [
+      columns: [
         {
           id: 1,
           title: "Нужно сделать",
@@ -121,12 +121,12 @@ export default defineComponent({
 
       // Set date of creation working board.
       const dateOfCreation: Date = new Date();
-      newBoard.dateOfCreation = dateOfCreation;
+      newBoard.dateOfCreation = dateOfCreation.toString();
 
       newBoard.joinCode = GenerateJoinCode(
         newBoard as Required<IWorkingBoardItem>,
         Numbers.JoinCodeSize
-      ); // Set unic id for dashboard.
+      ); // Set unic code for board joining.
 
       emit("createNew", Object.assign({}, newBoard));
 

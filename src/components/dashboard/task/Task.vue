@@ -57,10 +57,14 @@ export default defineComponent({
     const { getFullName, unicID } = useUserInfo();
 
     const currenUserInvited = computed((): boolean => {
-      const isInvited = props.task.assignedMembers.find(
-        (member) => member.uid === unicID.value
-      );
-      return Boolean(isInvited) || false;
+      if (props.task.assignedMembers) {
+        const isInvited = props.task.assignedMembers.find(
+          (member) => member.uid === unicID.value
+        );
+        return Boolean(isInvited);
+      }
+
+      return false;
     });
 
     return {

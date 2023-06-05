@@ -73,7 +73,7 @@ export default defineComponent({
     const categoryTitle = ref("");
 
     const taskLength = computed((): number => {
-      return props.column.tasks.length;
+      return props.column.tasks?.length || 0;
     });
 
     const showDropZone = ref(false);
@@ -87,7 +87,7 @@ export default defineComponent({
     };
 
     const dragEnd = () => {
-      emit("update:column-tasks", props.columnTasks);
+      emit("update:column-tasks", props.columnTasks || []);
       showDropZone.value = false;
 
       emit("save-changes");
@@ -95,8 +95,7 @@ export default defineComponent({
 
     const createTask = (newTask: IWorkingBoardTask): void => {
       props.columnTasks.push(newTask);
-
-      emit("update:column-tasks", props.columnTasks);
+      emit("update:column-tasks", props.columnTasks || []);
 
       emit("save-changes");
     };

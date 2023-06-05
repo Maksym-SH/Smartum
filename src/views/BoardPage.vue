@@ -41,31 +41,35 @@
       </transition>
       <div class="board-item-page__content-tasks">
         <Column
-          v-for="column in boardItem.tasks"
+          v-for="column in boardItem.columns"
           :key="column.id"
           :column="column"
           v-model:column-title="column.title"
           v-model:column-tasks="column.tasks"
           @save-changes="saveChanges"
         />
-        <AddColumn :column-length="columnLength" @createColumn="createColumn" />
+        <AddColumn
+          v-show="boardNotEmpty"
+          :column-length="columnLength"
+          @createColumn="createColumn"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed, watch, onUnmounted } from "vue";
+import { defineComponent, onMounted, computed, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import type {
-  IUserForList,
   IWorkingBoardItem,
   IWorkingBoardMember,
   IWorkingBoardTaskColumn,
 } from "@/types/interfaces";
-import { ObjectHasValues, ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
+import { ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
 import { Colors, UserRole } from "@/types/enums";
 import { notify } from "@kyvg/vue3-notification";
+import { storeToRefs } from "pinia";
 
 import useStore from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
@@ -94,9 +98,7 @@ export default defineComponent({
 
     const { unicID, userInfo, getFullName } = useCurrentUserInfo();
 
-    const boardItem = ref<IWorkingBoardItem>({} as IWorkingBoardItem);
-
-    const boardMembers = ref<IUserForList[]>([]);
+    const { boardItem, boardMembers } = storeToRefs(dashboardStore);
 
     const membersCount = computed((): number => {
       return boardItem.value.members.filter((member) => !member.invited).length;
@@ -164,44 +166,13 @@ export default defineComponent({
 
     // Tasks
     const createColumn = (column: IWorkingBoardTaskColumn): void => {
-      boardItem.value.tasks.push(column);
+      boardItem.value.columns.push(column);
       saveChanges();
     };
 
     const columnLength = computed((): number => {
-      return boardItem.value.tasks?.length || 0;
+      return boardItem.value.columns?.length || 0;
     });
-    // Check members status in real time.
-    watch(
-      () => dashboardStore.boardItem,
-      (updatedBoard, oldValue) => {
-        if (ObjectHasValues(oldValue) && ObjectHasValues(updatedBoard)) {
-          boardItem.value = updatedBoard;
-
-          if (boardMembers.value.length !== boardItem.value.members?.length) {
-            const remainingMembers = boardMembers.value.filter(
-              (user, index) => user.uid === boardItem.value.members[index]?.uid
-            );
-
-            const membersIds = remainingMembers.map((item) => item.uid);
-
-            boardMembers.value.forEach((item, index, members) => {
-              if (!membersIds.includes(item.uid)) {
-                members.splice(index, 1);
-              }
-            });
-            // Write local admin after admin leave.
-            const someAdmin = boardMembers.value.some(
-              (user) => user.role === UserRole.Admin
-            );
-            if (!someAdmin) {
-              // Admin leaved board.
-              boardMembers.value[0].role = UserRole.Admin;
-            }
-          }
-        }
-      }
-    );
 
     const saveChanges = (): void => {
       dashboardStore.updateWorkingBoard(boardItem.value, false);
@@ -210,21 +181,13 @@ export default defineComponent({
     onMounted((): void => {
       const joinCode = router.currentRoute.value.params.code as string;
 
-      dashboardStore
-        .getWorkingBoardItem(unicID.value, joinCode)
-        .then((info) => {
-          boardItem.value = info.value;
-          boardMembers.value = info.members;
-
-          dashboardStore.boardUpdateRealTime(unicID.value, joinCode);
-        })
-        .catch(() => {
-          router.push({ name: "Dashboard" });
-        });
+      dashboardStore.getWorkingBoardItem(unicID.value, joinCode).catch(() => {
+        router.push({ name: "Dashboard" });
+      });
     });
 
-    onUnmounted(() => {
-      dashboardStore.boardUpdateRealTime(unicID.value, boardItem.value.joinCode, true);
+    onBeforeUnmount(() => {
+      boardItem.value = {} as IWorkingBoardItem;
     });
 
     return {

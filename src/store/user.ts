@@ -316,7 +316,7 @@ const useUserStore = defineStore("user", () => {
 
           notificationStore.deleteNotificationList(unicID);
           configurationStore.deleteUserConfiguration(unicID);
-          dashboardStore.deleteAllBoards(unicID);
+          dashboardStore.deleteAllCodes(unicID);
 
           updateUsersList(unicID, true); // Delete user from list.
 

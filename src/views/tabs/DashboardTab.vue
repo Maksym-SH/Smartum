@@ -13,12 +13,13 @@
         mode="out-in"
         name="toggle-content"
       >
-        <BoardCard
-          v-for="board in dashboardStore.allDashboards"
-          :key="board.joinCode"
-          :element="board"
-          @click="openBoard(board.joinCode)"
-        />
+        <template v-for="board in dashboardStore.allBoards" :key="board.joinCode">
+          <BoardCard
+            v-if="board.members"
+            :element="board"
+            @click="openBoard(board.joinCode)"
+          />
+        </template>
       </transition-group>
       <transition name="fade">
         <div
@@ -35,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, ref, watch } from "vue";
+import { computed, defineComponent, onBeforeMount, watch } from "vue";
 import { useRouter } from "vue-router";
 import { notify } from "@kyvg/vue3-notification";
 import type { User } from "@firebase/auth";
@@ -49,6 +50,7 @@ import LockAccess from "@/components/dashboard/NeedEmailConfirmation.vue";
 import EmptyList from "@/components/UI/EmptyList.vue";
 import CreateNewBoard from "@/components/dialogs/CreateNewBoard.vue";
 import BoardCard from "@/components/dashboard/BoardItem.vue";
+import { ArrayHasValues } from "@/helpers/methods";
 
 export default defineComponent({
   components: {
@@ -70,10 +72,12 @@ export default defineComponent({
       (): boolean => !(currentUser.value as User).emailVerified
     );
 
-    const listEmpty = ref(false);
+    const listEmpty = computed((): boolean => {
+      return !ArrayHasValues(dashboardStore.allBoards) && !showPreload.value;
+    });
 
     const centeringContent = computed(
-      () => (showLockAccess.value || listEmpty.value) && !showPreload.value
+      () => (showLockAccess.value || listEmpty.value) && listEmpty.value
     );
 
     const createNewBoard = (board: IWorkingBoardItem): void => {
@@ -85,8 +89,6 @@ export default defineComponent({
             text: `Рабочая доска ${newBoard.title} была успешно создана!`,
             type: "success",
           });
-
-          listEmpty.value = false;
 
           // Add new notification.
           const notification = newNotificationContent(
@@ -109,27 +111,17 @@ export default defineComponent({
 
     // Handler for emptyList boards after confirm email and empty boards.
     watch(
-      [dashboardStore.allDashboards, () => showLockAccess.value],
+      [dashboardStore.allBoards, () => showLockAccess.value],
       ([boards], [_, oldEmailConfirmValue]) => {
         if (!boards.length || typeof oldEmailConfirmValue !== "boolean") {
-          listEmpty.value = true;
-        } else {
-          listEmpty.value = false;
+          dashboardStore.allBoards.length = 0;
         }
       }
     );
 
     // Get all boards.
     onBeforeMount((): void => {
-      if (!dashboardStore.allDashboards.length) {
-        dashboardStore.getAllWorkingBoards(unicID.value).then((boards) => {
-          if (boards && boards.length) {
-            dashboardStore.setAllDashboard(boards);
-          } else {
-            listEmpty.value = true;
-          }
-        });
-      }
+      dashboardStore.getAllWorkingBoards(unicID.value);
     });
 
     return {

@@ -1,17 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import {
-  deleteDoc,
-  doc,
-  getDoc,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { notify } from "@kyvg/vue3-notification";
-import { database } from "@/helpers/firebase/firebaseInitialize";
+import { database, RTDatabase } from "@/helpers/firebase/firebaseInitialize";
+import { child, get, onValue, ref as Refference, set, update } from "firebase/database";
 import { DataCollection, NotificationType, UserRole } from "@/types/enums";
 import type {
+  IUserForList,
   IWorkingBoardItem,
   IWorkingBoardMember,
   IWorkingBoardResolve,
@@ -26,35 +21,66 @@ import useNewNotificationContent from "@/composables/useNotificationContent";
 const useDashboardStore = defineStore("dashboard", () => {
   const { commonStore, userStore, notificationStore } = useStores();
 
-  const allDashboards = ref<IWorkingBoardItem[]>([]);
+  const allBoards = ref<IWorkingBoardItem[]>([]);
 
   const boardItem = ref<IWorkingBoardItem>({} as IWorkingBoardItem);
 
+  const boardMembers = ref([] as IUserForList[]);
+
+  const boardCodes = ref<string[]>([]);
+
   const setAllDashboard = (dashboards: IWorkingBoardItem[]): void => {
-    allDashboards.value = dashboards;
+    allBoards.value = dashboards;
   };
   const addNewBoard = (item: IWorkingBoardItem): void => {
-    allDashboards.value.push(item);
+    allBoards.value.push(item);
   };
   const clearList = (): void => {
-    allDashboards.value = [];
+    allBoards.value = [];
+    boardCodes.value = [];
   };
   const createNewWorkingBoard = (
     board: IWorkingBoardItem,
     unicID: string
   ): Promise<IWorkingBoardItem> => {
-    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
     commonStore.setLoadingStatus(true);
 
     return new Promise((resolve, reject) => {
-      getDoc(dashboardRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          const currentCollectionDasboard = allDashboards.value;
-          currentCollectionDasboard.push(board);
+      createJoinCode(unicID, board.joinCode)
+        .then(() => {
+          const refference = Refference(RTDatabase, board.joinCode);
 
-          updateDoc(dashboardRef, "collection", currentCollectionDasboard)
+          set(refference, board).then(() => {
+            onValue(
+              refference,
+              (boardSnapshot) => {
+                allBoards.value.push(boardSnapshot.val());
+              },
+              { onlyOnce: true }
+            );
+            resolve(board);
+          });
+        })
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          commonStore.setLoadingStatus(false);
+          reject(error);
+        });
+    });
+  };
+
+  // Codes actions.
+  const createJoinCode = (unicID: string, joinCode: string): Promise<string> => {
+    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+
+    return new Promise((resolve, reject) => {
+      getDoc(dashboardRef).then((codesDoc) => {
+        if (codesDoc.exists()) {
+          boardCodes.value.push(joinCode);
+
+          updateDoc(dashboardRef, "collection", boardCodes.value)
             .then(() => {
-              resolve(board);
+              resolve(joinCode);
             })
             .catch((error: ErrorCode) => {
               ShowErrorMessage(error);
@@ -63,11 +89,11 @@ const useDashboardStore = defineStore("dashboard", () => {
             .finally(() => commonStore.setLoadingStatus(false));
         } else {
           setDoc(doc(database, DataCollection.Dashboard, unicID), {
-            collection: [board],
+            collection: [joinCode],
           })
             .then(() => {
-              addNewBoard(board);
-              resolve(board);
+              boardCodes.value.push(joinCode);
+              resolve(joinCode);
             })
             .catch((error: ErrorCode) => {
               ShowErrorMessage(error);
@@ -78,14 +104,31 @@ const useDashboardStore = defineStore("dashboard", () => {
       });
     });
   };
-  const getAllWorkingBoards = (unicID: string): Promise<IWorkingBoardItem[]> => {
+  const deleteAllCodes = (unicID: string): Promise<void> => {
+    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+
+    commonStore.setLoadingStatus(true);
+    return new Promise((resolve, reject) => {
+      deleteDoc(dashboardRef)
+        .then(() => {
+          clearList();
+          resolve();
+        })
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          reject(error);
+        })
+        .finally(() => commonStore.setLoadingStatus(false));
+    });
+  };
+  const getAllJoinCodes = (unicID: string): Promise<void> => {
     const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
 
     return new Promise((resolve, reject) => {
       getDoc(dashboardRef)
-        .then((dashboards) => {
-          const allDashboards = dashboards.data()?.collection;
-          resolve(allDashboards as IWorkingBoardItem[]);
+        .then((response) => {
+          boardCodes.value = (response.data()?.collection as string[]) || [];
+          resolve();
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
@@ -93,62 +136,116 @@ const useDashboardStore = defineStore("dashboard", () => {
         });
     });
   };
-  const updateAllWorkingBoards = (
-    unicID: string,
-    board: IWorkingBoardItem[],
-    showLoading = true
-  ): Promise<void> => {
+  const updateAllJoinCodes = (unicID: string): Promise<void> => {
     const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
 
-    commonStore.setLoadingStatus(showLoading);
-
     return new Promise((resolve, reject) => {
-      updateDoc(dashboardRef, {
-        collection: board,
-      })
+      updateDoc(dashboardRef, "collection", boardCodes.value)
         .then(() => {
           resolve();
         })
-        .catch((error) => {
+        .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
           reject(error);
+        });
+    });
+  };
+  // Board actions.
+  const getAllWorkingBoards = (unicID: string): Promise<IWorkingBoardItem[]> => {
+    commonStore.setLoadingStatus(true);
+    return new Promise((resolve, reject) => {
+      getAllJoinCodes(unicID)
+        .then(() => {
+          if (boardCodes.value.length) {
+            boardCodes.value.map((joinCode) => {
+              onValue(Refference(RTDatabase, joinCode), (boardSnapshot) => {
+                if (boardSnapshot.val() !== null) {
+                  const boardExistIndex = allBoards.value.findIndex(
+                    (board) => board.joinCode === joinCode
+                  );
+
+                  if (boardExistIndex !== -1) {
+                    allBoards.value[boardExistIndex].members =
+                      boardSnapshot.val().members;
+                  } else {
+                    allBoards.value.push(boardSnapshot.val());
+                  }
+
+                  commonStore.setLoadingStatus(false);
+                }
+              });
+            });
+            resolve(allBoards.value);
+          } else {
+            resolve([]);
+
+            commonStore.setLoadingStatus(false);
+          }
         })
-        .finally(() => commonStore.setLoadingStatus(false));
+        .catch((error: ErrorCode) => {
+          commonStore.setLoadingStatus(false);
+          ShowErrorMessage(error);
+          reject(error);
+        });
     });
   };
 
   const getWorkingBoardItem = (
     unicID: string,
     joinCode: string
-  ): Promise<IWorkingBoardResolve> => {
+  ): Promise<IWorkingBoardItem> => {
     commonStore.setLoadingStatus(true);
+
     return new Promise((resolve, reject) => {
-      getAllWorkingBoards(unicID).then(async (boards) => {
-        const currentBoard = boards?.find((item) => item.joinCode === joinCode);
+      getAllJoinCodes(unicID).then(() => {
+        if (boardCodes.value.includes(joinCode)) {
+          onValue(Refference(RTDatabase, joinCode), async (boardData) => {
+            const currentBoard = boardData.val() as IWorkingBoardItem;
+            if (currentBoard) {
+              if (currentBoard.members?.length) {
+                await userStore.getUsersList(true, false).then(async (users) => {
+                  const membersID = currentBoard.members.map((item) => item.uid);
 
-        if (currentBoard) {
-          // Load users.
-          await userStore.getUsersList(true, false).then(async (users) => {
-            const membersID = currentBoard.members.map((item) => item.uid);
+                  const sortedUsersAsMembers = users.filter((user) =>
+                    membersID.includes(user.uid)
+                  );
 
-            const sortedUsersAsMembers = users.filter((user) =>
-              membersID.includes(user.uid)
-            );
+                  // Set tasks if none exist.
+                  currentBoard.columns.map((column) => {
+                    if (!column.tasks) column.tasks = [];
+                  });
 
-            sortedUsersAsMembers.forEach((item) => {
-              const member = currentBoard.members.find((user) => user.uid === item.uid);
-              if (member) {
-                item.role = member.role ?? "";
-                item.invited = member.invited ?? false;
+                  sortedUsersAsMembers.forEach((item) => {
+                    const member = currentBoard.members.find(
+                      (user) => user.uid === item.uid
+                    );
+                    if (member) {
+                      item.role = member.role ?? "";
+                      item.invited = member.invited ?? false;
+                    }
+                  });
+
+                  await membersExist({
+                    value: currentBoard,
+                    members: sortedUsersAsMembers,
+                  });
+
+                  boardMembers.value = sortedUsersAsMembers;
+                  boardItem.value = currentBoard;
+
+                  resolve(boardItem.value);
+                });
+              } else {
+                set(Refference(RTDatabase, joinCode), null); // Delete board from database.
+
+                const currentBoardCodeIndex = boardCodes.value.findIndex(
+                  (code) => code === joinCode
+                );
+
+                boardCodes.value.splice(currentBoardCodeIndex, 1);
+                await updateAllJoinCodes(unicID);
               }
-            });
-
-            const boardInfo = await membersExist({
-              value: currentBoard,
-              members: sortedUsersAsMembers,
-            });
-
-            resolve(boardInfo);
+            }
           });
         } else {
           reject(new Error("Not found"));
@@ -159,98 +256,66 @@ const useDashboardStore = defineStore("dashboard", () => {
             type: "error",
           });
         }
-
-        commonStore.setLoadingStatus(false);
       });
+
+      commonStore.setLoadingStatus(false);
     });
   };
 
-  const boardUpdateRealTime = (unicID: string, joinCode: string, unwatch = false) => {
-    const unsubscribe = onSnapshot(
-      doc(database, DataCollection.Dashboard, unicID),
-      async (doc) => {
-        if (doc.data() && !unwatch) {
-          const allBoards = doc.data()?.collection as IWorkingBoardItem[];
-
-          if (allBoards) {
-            const currentBoard = allBoards.find((item) => item.joinCode === joinCode);
-            boardItem.value = currentBoard ?? ({} as IWorkingBoardItem);
-          }
-        }
-      }
-    );
-    if (unwatch) {
-      unsubscribe();
-      boardItem.value = {} as IWorkingBoardItem;
-    }
-  };
-
-  const updateWorkingBoard = (
+  const updateWorkingBoard = async (
     updatedBoard: IWorkingBoardItem,
     showLoading = true
-  ): Promise<IWorkingBoardItem> => {
-    const responseForAllMembers = updatedBoard.members.map((user) => {
-      if (!user.invited) {
-        const userID = user.uid as string;
+  ): Promise<void> => {
+    commonStore.setLoadingStatus(showLoading);
 
-        getAllWorkingBoards(userID).then((list) => {
-          if (list) {
-            const boardToUpdate = list.find(
-              (board) => board.joinCode === updatedBoard.joinCode
-            );
-
-            if (boardToUpdate) {
-              Object.assign(boardToUpdate, updatedBoard);
-
-              updateAllWorkingBoards(userID, list, showLoading);
-            }
-          }
-        });
-      }
-    });
-    return new Promise((resolve, reject) => {
-      Promise.all(responseForAllMembers)
-        .then(() => {
-          resolve(updatedBoard);
-        })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error);
-        })
-        .finally(() => commonStore.setLoadingStatus(false));
-    });
+    await update(Refference(RTDatabase, updatedBoard.joinCode), updatedBoard)
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+      })
+      .finally(() => {
+        commonStore.setLoadingStatus(false);
+      });
   };
 
   const joinWorkingBoard = (
-    { uid, joinCode }: Pick<IWorkingBoardItem, "uid" | "joinCode">,
+    { joinCode }: Pick<IWorkingBoardItem, "uid" | "joinCode">,
     unicID: string
   ) => {
-    getWorkingBoardItem(uid, joinCode).then((board) => {
-      if (board) {
-        // Update data for other users.
-        getAllWorkingBoards(uid).then((list) => {
-          const boardToUpdate = list.find((board) => board.joinCode === joinCode);
+    get(child(Refference(RTDatabase), joinCode)).then((boardDoc) => {
+      if (boardDoc.exists()) {
+        createJoinCode(unicID, joinCode).then(() => {
+          const board = boardDoc.val() as IWorkingBoardItem;
 
-          if (boardToUpdate) {
-            const invitedMember = boardToUpdate.members.find(
-              (member) => member.uid === unicID
-            );
-            if (invitedMember) {
-              invitedMember.role = UserRole.Member;
-              delete invitedMember.invited;
+          // Set task arrays if none exist.
+          board.columns.map((column) => {
+            if (!column.tasks) column.tasks = [];
+          });
 
-              updateWorkingBoard(boardToUpdate);
-            }
+          // Change invited status
+          const currentInvitedUser = board.members.find((user) => user.uid === unicID);
 
-            // Create new board for invited user.
-            createNewWorkingBoard(boardToUpdate, unicID).then(() => {
-              notify({
-                title: "Успешно!",
-                text: "Вы успешно присоединились к рабочему пространству!",
-              });
+          if (currentInvitedUser) {
+            delete currentInvitedUser.invited;
+            currentInvitedUser.role = UserRole.Member;
+
+            updateWorkingBoard(board);
+
+            allBoards.value.push(board);
+
+            notify({
+              title: "Успешно!",
+              text: "Вы успешно присоединились к рабочему пространству!",
             });
           }
         });
+      } else {
+        notify({
+          title: "Рабочая доска недоступна!",
+          text: "Текущая доска не существует или код приглашения неверный.",
+          type: "error",
+        });
+
+        router.push({ name: "Dashboard" });
       }
     });
   };
@@ -265,8 +330,6 @@ const useDashboardStore = defineStore("dashboard", () => {
     );
 
     if (leavedMemberIndex !== -1) {
-      boardUpdateRealTime(member.uid, fromBoard.joinCode, true); // Stop watching database.
-
       fromBoard.members.splice(leavedMemberIndex, 1); // Remove user.
 
       const firstInvitedUser = fromBoard.members[0];
@@ -288,21 +351,29 @@ const useDashboardStore = defineStore("dashboard", () => {
       try {
         await updateWorkingBoard(fromBoard);
 
-        const myBoards = await getAllWorkingBoards(memberID);
-
-        const myBoardIndex = myBoards.findIndex(
-          (board) => board.joinCode === fromBoard.joinCode
-        );
-
-        myBoards.splice(myBoardIndex, 1);
-
-        await updateAllWorkingBoards(memberID, myBoards);
-        router.push({ name: "Dashboard" });
+        // Delete join code from own collection.
+        await getAllJoinCodes(memberID).then(() => {
+          const myBoardJoinCodeIndex = boardCodes.value.findIndex(
+            (code) => code === fromBoard.joinCode
+          );
+          if (myBoardJoinCodeIndex !== -1) {
+            boardCodes.value.splice(myBoardJoinCodeIndex, 1);
+          }
+        });
 
         // Delete local board.
-        if (allDashboards.value.length) {
-          allDashboards.value.splice(myBoardIndex, 1);
+        if (allBoards.value.length) {
+          const myBoardIndex = allBoards.value.findIndex(
+            (board) => board.joinCode === fromBoard.joinCode
+          );
+          if (myBoardIndex !== -1) {
+            allBoards.value.splice(myBoardIndex, 1);
+          }
         }
+
+        router.push({ name: "Dashboard" });
+
+        await updateAllJoinCodes(memberID);
 
         resolve();
       } catch (error: unknown) {
@@ -358,39 +429,20 @@ const useDashboardStore = defineStore("dashboard", () => {
     }
   };
 
-  const deleteAllBoards = (unicID: string): Promise<void> => {
-    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
-
-    commonStore.setLoadingStatus(true);
-    return new Promise((resolve, reject) => {
-      deleteDoc(dashboardRef)
-        .then(() => {
-          allDashboards.value = [];
-          resolve();
-        })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          reject(error);
-        })
-        .finally(() => commonStore.setLoadingStatus(false));
-    });
-  };
-
   return {
-    allDashboards,
+    allBoards,
     boardItem,
+    boardMembers,
     clearList,
     setAllDashboard,
     addNewBoard,
     createNewWorkingBoard,
     getAllWorkingBoards,
     updateWorkingBoard,
-    updateAllWorkingBoards,
     getWorkingBoardItem,
     joinWorkingBoard,
     leaveWorkingBoard,
-    deleteAllBoards,
-    boardUpdateRealTime,
+    deleteAllCodes,
   };
 });
 

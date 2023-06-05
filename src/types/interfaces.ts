@@ -121,8 +121,8 @@ export interface IWorkingBoardTaskColumn {
 export interface IWorkingBoardItem {
   title: string;
   background: string;
-  tasks: IWorkingBoardTaskColumn[];
-  dateOfCreation: IServerDate | Date;
+  columns: IWorkingBoardTaskColumn[];
+  dateOfCreation: string;
   joinCode: string;
   members: IWorkingBoardMember[];
   uid: string;
