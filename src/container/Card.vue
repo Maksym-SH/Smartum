@@ -53,6 +53,7 @@ export default defineComponent({
 .card {
   border: 1px solid var(--color-border-card);
   background-color: var(--color-background-card);
+  transition: background-color 0.3s;
   border-radius: 4px;
 
   &__header {

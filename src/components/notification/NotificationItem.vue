@@ -31,9 +31,9 @@
       </p>
     </div>
     <cButton
-      class="notification-item__close"
+      class="notification-item--close"
       variant="text"
-      icon="mdi-close-circle"
+      icon="close-circle"
       @click.stop="deleteNotification"
     />
   </div>
@@ -185,7 +185,7 @@ export default defineComponent({
     color: var(--color-text);
     opacity: 0.8;
   }
-  &__close {
+  &--close {
     position: absolute;
     top: 1px;
     right: 1px;

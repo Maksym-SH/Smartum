@@ -40,10 +40,15 @@ import { computed, defineComponent, ref } from "vue";
 import { Colors } from "@/types/enums";
 import { useSelectProps } from "./use/useProps";
 
+import InlineSvg from "vue-inline-svg";
+
 export default defineComponent({
   inheritAttrs: false,
   props: useSelectProps,
   emits: ["selected"],
+  components: {
+    InlineSvg,
+  },
   setup(props) {
     const selectActive = ref(false);
 
@@ -115,15 +120,10 @@ export default defineComponent({
         border-radius: 3px 3px 0 0 !important;
       }
       :deep() {
-        .v-icon {
+        svg {
           margin-right: 10px;
         }
       }
-    }
-    .btn-icon {
-      margin-right: 110px;
-      width: 12px;
-      height: 12px;
     }
     &--caret {
       top: -10px;

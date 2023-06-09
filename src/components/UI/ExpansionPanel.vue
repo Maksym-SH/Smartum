@@ -2,7 +2,7 @@
   <v-expansion-panels :variant="variant">
     <v-expansion-panel>
       <v-expansion-panel-title>
-        <span v-if="icon" class="icon mdi" :class="[`mdi-${icon}`]"></span>
+        <InlineSvg v-if="icon" :src="`/images/icons/${icon}.svg`" class="icon" />
         <span class="text" :class="{ 'no-icon': !icon }">{{ name }}</span>
       </v-expansion-panel-title>
       <template v-if="showExpansionPanelContent">
@@ -22,8 +22,13 @@
 import { computed, defineComponent } from "vue";
 import { useExpansionPanelProps } from "./use/useProps";
 
+import InlineSvg from "vue-inline-svg";
+
 export default defineComponent({
   props: useExpansionPanelProps,
+  components: {
+    InlineSvg,
+  },
   setup(props) {
     const showExpansionPanelContent = computed((): number => props.content.length);
 
@@ -59,8 +64,8 @@ export default defineComponent({
   &-title {
     .icon {
       margin-right: 12px;
-      max-width: 14px;
-      max-height: 14px;
+      max-width: 17px;
+      max-height: 17px;
     }
     .no-icon {
       padding-left: 26px;

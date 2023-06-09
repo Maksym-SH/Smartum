@@ -4,7 +4,7 @@
       <BoardImageResult
         :background="element.background"
         :image="element.background"
-        image-decor="/images/icons/dashboard-template.webp"
+        image-decor="/images/dashboard-template.webp"
       />
     </div>
     <div class="card-element-item__content">
@@ -13,11 +13,11 @@
       </h4>
       <div class="card-element-item__description">
         <p v-if="element.members" class="members-count">
-          <span class="mdi mdi-account-multiple icon"></span>
+          <InlineSvg src="/images/icons/account-multiple.svg" class="icon" />
           Участников: {{ membersCount }}
         </p>
         <time v-if="element.dateOfCreation" class="date-of-create">
-          <span class="mdi mdi-clock-edit icon"></span>
+          <InlineSvg src="/images/icons/clock-edit.svg" class="icon" />
           {{ dateOfCreate }}
         </time>
       </div>
@@ -30,12 +30,14 @@ import { computed, PropType } from "vue";
 import { defineComponent } from "vue";
 import type { IWorkingBoardItem } from "@/types/interfaces";
 
+import InlineSvg from "vue-inline-svg";
 import useDateParseToString from "@/composables/useDateParse";
 import BoardImageResult from "@/components/dashboard/BoardImageResult.vue";
 
 export default defineComponent({
   components: {
     BoardImageResult,
+    InlineSvg,
   },
   props: {
     element: {
@@ -70,6 +72,7 @@ export default defineComponent({
   }
   &__content {
     padding: 5px 10px;
+    transition: background-color 0.3s;
     background-color: var(--color-dasboard-card);
   }
   &__title {
@@ -91,18 +94,19 @@ export default defineComponent({
     align-items: center;
     justify-content: space-between;
     padding: 5px;
-    border: 1px solid var(--color-dasboard-card);
+    transition: background-color 0.3s;
     background-color: var(--color-dasboard-card);
     .members-count,
     .date-of-create {
       font-size: 11px;
+      line-height: 13px;
       color: var(--color-text);
       opacity: 0.7;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       gap: 5px;
       .icon {
-        font-size: 14px;
+        width: 16px;
       }
     }
   }

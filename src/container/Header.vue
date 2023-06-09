@@ -53,6 +53,7 @@ export default defineComponent({
   z-index: 3;
   padding: 10px 20px 10px 40px;
   background-color: var(--color-background-secondary);
+  transition: background-color 0.3s;
   box-shadow: 0 2px 5px rgba($color-black, 0.5);
   width: 100%;
   min-height: 63px;

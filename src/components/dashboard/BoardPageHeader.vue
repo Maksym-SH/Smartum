@@ -54,7 +54,7 @@ export default defineComponent({
       addNewAction({
         title: "Покинуть доску",
         callback: () => emit("boardLeave"),
-        icon: "mdi-clipboard-arrow-left-outline",
+        icon: "clipboard-arrow-left-outline",
         color: Colors.Danger,
         displaying: true,
       });

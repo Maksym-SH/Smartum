@@ -117,6 +117,7 @@ export default defineComponent({
   grid-template-rows: 1fr;
   min-height: 100%;
   background-color: var(--color-background);
+  transition: background-color 0.3s;
   &__wrapper {
     display: grid;
     grid-template-rows: auto 1fr;

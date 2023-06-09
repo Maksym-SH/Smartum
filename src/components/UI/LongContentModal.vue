@@ -8,7 +8,7 @@
   >
     <v-card>
       <v-toolbar color="indigo" class="modal__actions">
-        <v-btn icon="mdi-close" dark @click="closeModal"> </v-btn>
+        <cButton class="modal__actions--close" icon="close" variant="text" rounded @click="closeModal" />
         <v-toolbar-title class="modal__header-title">
           {{ modalContent.title }}
         </v-toolbar-title>
@@ -109,6 +109,13 @@ export default defineComponent({
           padding-left: 50px;
         }
       }
+    }
+  }
+  &__actions {
+    &--close {
+      font-size: 20px;
+      color: $color-white1 !important;
+      padding: 6px;
     }
   }
   @include tablet(max) {

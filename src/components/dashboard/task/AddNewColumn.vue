@@ -56,7 +56,11 @@ export default defineComponent({
   &.task-column {
     border-radius: 4px;
     height: fit-content;
+    transition: background-color 0.3s;
     background-color: var(--color-background);
+  }
+  .creation-mode {
+    min-height: 100px;
   }
 }
 </style>

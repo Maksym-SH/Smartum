@@ -6,7 +6,7 @@
       class="file-upload--delete"
       :color="Colors.Danger"
       @click.stop="deleteImgPopup"
-      icon="mdi-delete-outline"
+      icon="delete-outline"
     />
     <v-img
       v-if="showImageTemplate"
@@ -138,7 +138,6 @@ export default defineComponent({
     padding: 5px;
     color: $color-white1;
     height: 25px;
-    border: 1px solid $color-black;
     border-radius: 4px;
     background-color: $color-red;
     &:hover {

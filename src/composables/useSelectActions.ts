@@ -28,14 +28,14 @@ export default function useSelectActions() {
     {
       title: "Мой профиль",
       callback: () => router.push("/profile"),
-      icon: "mdi-account",
+      icon: "account",
       color: Colors.Default,
       displaying: true,
     },
     {
       title: "Подтвердить адрес",
       callback: () => verifyEmail(currentUser.value),
-      icon: "mdi-email-check-outline",
+      icon: "email-check-outline",
       color: Colors.Info,
       displaying: computed(() => !emailVerified.value), // Not verified.
     },
@@ -48,7 +48,7 @@ export default function useSelectActions() {
           });
         });
       },
-      icon: "mdi-logout",
+      icon: "logout",
       color: Colors.Danger,
       displaying: true,
     },

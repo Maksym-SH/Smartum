@@ -13,7 +13,7 @@
             <div class="v-card__wrapper">
               <BoardImageResult
                 :background="String(newBoard.background)"
-                image-decor="/images/icons/dashboard-template.webp"
+                image-decor="/images/dashboard-template.webp"
                 :image="newBoard.background"
               />
               <cInput

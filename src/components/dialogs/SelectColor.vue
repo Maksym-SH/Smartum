@@ -17,7 +17,7 @@
           <small class="color-picker__button-title"> Выбрать цвет </small>
         </cButton>
         <span class="color-picker--generate" @click="generateColor">
-          <span class="mdi mdi-refresh"></span>
+          <InlineSvg src="/images/icons/refresh.svg" />
           Сгенерировать ({{ colorPickParams.target }})
         </span>
       </div>
@@ -73,11 +73,13 @@ import { Colors } from "@/types/enums";
 import type { IColorPickerParams } from "@/types/interfaces";
 import { GenerateColorHexFormat } from "@/helpers/methods";
 
+import InlineSvg from "vue-inline-svg";
 import BackgroundItem from "../UI/BackgroundItem.vue";
 
 export default defineComponent({
   components: {
     BackgroundItem,
+    InlineSvg,
   },
   props: {
     modelValue: {
@@ -156,12 +158,17 @@ export default defineComponent({
     width: 15px;
   }
   &--generate {
+    display: inline-flex;
+    align-items: flex-start;
     margin-top: 5px;
     color: $color-blue;
     font-size: 11px;
     white-space: nowrap;
     cursor: pointer;
     user-select: none;
+    svg {
+      width: 14px;
+    }
   }
 }
 .v-dialog {

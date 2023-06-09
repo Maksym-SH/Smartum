@@ -10,11 +10,7 @@
       >
         {{ columnTitle }}
       </h3>
-      <cButton
-        class="task-column__header-params"
-        variant="text"
-        icon="mdi-dots-horizontal"
-      />
+      <cButton class="task-column__header-params" variant="text" icon="dots-horizontal" />
     </div>
     <Draggable
       v-model="column.tasks"
@@ -121,7 +117,7 @@ export default defineComponent({
   border-radius: 4px;
   height: fit-content;
   background-color: var(--color-background);
-  transition: all 0.5s;
+  transition: all 0.3s;
   &__tasks {
     display: flex;
     flex-direction: column;

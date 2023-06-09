@@ -43,12 +43,12 @@
                 class="aside__navigation-list-item"
                 @click="navigationCallbackHandler(item?.callback?.())"
               >
-                <div class="navigation-list">
-                  <span
+                <div class="navigation-group-content">
+                  <InlineSvg
                     v-if="item.icon"
-                    class="icon mdi"
-                    :class="[`mdi-${item.icon}`]"
-                  ></span>
+                    :src="`/images/icons/${item.icon}.svg`"
+                    class="icon"
+                  />
                   <span class="navigation-title" :class="{ 'no-icon': !item.icon }">
                     {{ item.title }}
                   </span>
@@ -98,6 +98,7 @@ import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 
 import User from "@/components/user/Container.vue";
 import SwitchTheme from "@/components/UI/SwitchTheme.vue";
+import InlineSvg from "vue-inline-svg";
 import useStores from "@/composables/useStores";
 import packageJson from "package.json";
 
@@ -105,6 +106,7 @@ export default defineComponent({
   components: {
     User,
     SwitchTheme,
+    InlineSvg,
   },
   props: {
     minimizeAside: {
@@ -229,11 +231,13 @@ export default defineComponent({
       width: 100%;
       justify-content: space-between;
     }
+    .navigation-group-content {
+      display: flex;
+      align-items: center;
+    }
     .icon {
-      width: 14px;
-      max-height: 14px;
+      width: 17px;
       margin-right: 12px;
-      text-align: center;
     }
     .notify {
       display: inline-flex;

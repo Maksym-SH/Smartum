@@ -2,7 +2,7 @@
   <div class="notifications">
     <cButton
       @click="toggleNotificationsWindow"
-      icon="mdi-bell-outline"
+      icon="bell-outline"
       class="notifications__btn"
       variant="text"
     >
@@ -35,7 +35,7 @@
               @click="showNotificationsWindow = false"
               variant="text"
               class="notifications__window--close"
-              icon="mdi-close"
+              icon="close"
             />
           </nav>
         </div>

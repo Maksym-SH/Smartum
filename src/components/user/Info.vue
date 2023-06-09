@@ -11,7 +11,10 @@
       class="user-info__name--status"
       :class="{ verified: emailVerified }"
     >
-      <span class="user-info__name--status-icon mdi" :class="[statusIcon]"></span>
+      <InlineSvg
+        class="user-info__name--status-icon"
+        :src="`/images/icons/${statusIcon}.svg`"
+      />
       {{ userStatusText }}
     </small>
   </div>
@@ -24,9 +27,13 @@ import { useInfoProps } from "./use/useProps";
 import type { EmailVerify, StatusVueIcon } from "@/types/types";
 
 import useStores from "@/composables/useStores";
+import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({
   props: useInfoProps,
+  components: {
+    InlineSvg,
+  },
   setup() {
     const { userStore, configurationStore } = useStores();
 
@@ -45,9 +52,7 @@ export default defineComponent({
       }
     });
 
-    const statusIcon: StatusVueIcon = emailVerified.value
-      ? "mdi-email-check"
-      : "mdi-email-alert";
+    const statusIcon: StatusVueIcon = emailVerified.value ? "email-check" : "email-alert";
 
     return {
       statusIcon,
@@ -71,6 +76,9 @@ export default defineComponent({
     white-space: pre-wrap;
   }
   &--status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     padding-top: 10px;
     margin-top: auto;
     font-size: 11px;
@@ -78,6 +86,9 @@ export default defineComponent({
     color: $color-yellow;
     &.verified {
       color: $color-green;
+    }
+    &-icon {
+      width: 15px;
     }
   }
 }

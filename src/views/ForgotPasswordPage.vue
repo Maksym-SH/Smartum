@@ -22,7 +22,7 @@
       </form>
       <div class="forgot-page__window-link">
         <a class="forgot-page__window-link--go-back" @click="goBack">
-          <v-icon icon="mdi mdi-arrow-left" />
+          <InlineSvg src="/images/icons/arrow-left.svg" />
           Вернуться назад
         </a>
       </div>
@@ -35,8 +35,12 @@ import { defineComponent, ref, watch } from "vue";
 
 import firebaseReset from "@/helpers/firebase/firebaseReset";
 import router from "@/router";
+import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({
+  components: {
+    InlineSvg,
+  },
   setup() {
     const errorEmail = ref(false);
 
@@ -101,14 +105,19 @@ export default defineComponent({
       text-align: center;
 
       &--go-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
         color: $color-blue;
         text-decoration: none;
         cursor: pointer;
-        display: inline-block;
         padding-bottom: 2px;
         border-bottom: 1px solid transparent;
         &:hover {
           border-color: inherit;
+        }
+        svg {
+          width: 20px;
         }
       }
     }

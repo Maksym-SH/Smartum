@@ -5,7 +5,7 @@
         v-if="!showCreationTemplate"
         v-bind="$attrs"
         @click="showCreationTemplate = true"
-        icon="mdi-plus"
+        icon="plus"
         size="small"
         :title="buttonTitle"
         :variant="buttonVariant"
@@ -30,7 +30,7 @@
             @click="closeCreateMode"
             class="add-new__params-actions--close"
             variant="text"
-            icon="mdi-close"
+            icon="close"
           />
         </div>
       </form>

@@ -7,7 +7,7 @@
     :rounded="rounded"
     :size="size"
   >
-    <v-icon v-if="icon" :icon="icon" class="c-button__icon" />
+    <InlineSvg v-if="icon" :src="`/images/icons/${icon}.svg`" class="c-button__icon" />
     <slot>{{ title }}</slot>
   </v-btn>
 </template>
@@ -17,8 +17,13 @@ import { defineComponent } from "vue";
 import { useButtonProps } from "./use/useProps";
 import { Colors } from "@/types/enums";
 
+import InlineSvg from "vue-inline-svg";
+
 export default defineComponent({
   props: useButtonProps,
+  components: {
+    InlineSvg,
+  },
   setup() {
     return {
       Colors,
@@ -30,11 +35,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .c-button {
   min-width: auto !important;
-
   &:disabled {
     :deep(.v-btn__content) {
       color: $color-white1;
     }
+  }
+  &__icon {
+    width: 1.2em;
   }
 }
 </style>

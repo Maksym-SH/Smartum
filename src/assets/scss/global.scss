@@ -75,6 +75,7 @@ h6 {
     z-index: 3;
     bottom: 0;
     background-color: var(--color-background);
+    transition: background-color 0.3s;
     padding-bottom: 10px;
     width: calc(100% - 45px);
     border-radius: 4px;

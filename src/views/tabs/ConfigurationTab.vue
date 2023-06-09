@@ -14,14 +14,15 @@
               class="card-content-info__item"
             >
               <td class="card-content-info__item--text">
-                <span class="icon mdi" :class="`mdi-${navigate.icon}`"></span>
+                <InlineSvg class="icon" :src="`/images/icons/${navigate.icon}.svg`" />
                 <span>
                   {{ navigate.title }}
                 </span>
-                <span
+                <InlineSvg
                   v-if="navigate.alwaysDisplay"
-                  class="disable-icon mdi mdi-lock"
-                ></span>
+                  class="disable-icon"
+                  src="/images/icons/lock.svg"
+                />
               </td>
               <td class="card-content-info__item--actions">
                 <cCheckbox
@@ -143,12 +144,14 @@ import useConfiguration from "@/composables/useConfiguration";
 import Card from "@/container/Card.vue";
 import Avatar from "@/components/user/Avatar.vue";
 import ColorPicker from "@/components/dialogs/SelectColor.vue";
+import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({
   components: {
     Card,
     Avatar,
     ColorPicker,
+    InlineSvg,
   },
   setup() {
     return useConfiguration();
@@ -224,17 +227,26 @@ export default defineComponent({
       &-content-info {
         &__item {
           &--text {
+            width: 100%;
             position: relative;
+            display: inline-flex;
+            align-items: center;
             .icon {
               margin-right: 10px;
+              width: 17px;
             }
             .disable-icon {
               position: absolute;
-              right: 0;
+              right: 2px;
+              width: 15px;
             }
           }
           &--actions {
             text-align: center;
+          }
+          &--text,
+          &--actions {
+            height: 50px;
           }
         }
       }
@@ -290,7 +302,7 @@ export default defineComponent({
             }
 
             &--text {
-              width: 35%;
+              width: 230px;
               white-space: nowrap;
             }
             &--actions {
@@ -317,6 +329,13 @@ export default defineComponent({
             padding-right: 50px;
           }
         }
+        &-content-info {
+          &__item {
+            &--text {
+              width: 100%;
+            }
+          }
+        }
       }
     }
   }
@@ -338,12 +357,14 @@ export default defineComponent({
             &--actions {
               padding: 10px 10px 10px 15px;
               font-size: 12px;
-              .icon {
-                display: none;
-              }
             }
             &--text {
               padding-right: 20px;
+              gap: 5px;
+              .icon {
+                margin: 0;
+                width: 10px;
+              }
             }
           }
         }
@@ -398,7 +419,7 @@ export default defineComponent({
         &-info {
           &__title,
           &__title--settings-avatar {
-            font-size: 12px;
+            font-size: 13px;
             padding: 5px;
           }
           &__change-background-avatar {

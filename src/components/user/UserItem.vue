@@ -25,7 +25,7 @@
           {{ user.role }}
         </span>
         <span v-if="user.invited" class="user-item__actions--invited">
-          <span class="mdi mdi-email-fast-outline"></span>
+          <InlineSvg src="/images/icons/email-fast-outline.svg" />
           Приглашён
         </span>
         <cButton
@@ -33,17 +33,17 @@
           @click="$emit('invite')"
           variant="text"
           class="user-item__actions--add"
-          icon="mdi-account-plus"
+          icon="account-plus"
         />
         <span class="user-item__actions-caret">
-          <span class="mdi mdi-chevron-down"></span>
+          <InlineSvg src="/images/icons/chevron-down.svg" />
         </span>
       </div>
     </summary>
     <div class="user-item__details">
       <div class="info-item">
         <h5 class="info-item__name">
-          <span class="mdi mdi-phone-outline"></span>
+          <InlineSvg class="info-item__icon" src="/images/icons/phone-outline.svg" />
           Телефон
         </h5>
         <a
@@ -56,7 +56,10 @@
       </div>
       <div class="info-item">
         <h5 class="info-item__name">
-          <span class="mdi mdi-information-outline"></span>
+          <InlineSvg
+            class="info-item__icon"
+            src="/images/icons/information-outline.svg"
+          />
           О себе
         </h5>
         <span v-if="user.about" class="info-item__description about">
@@ -71,13 +74,15 @@
 <script lang="ts">
 import { IUserForList } from "@/types/interfaces";
 import { defineComponent, computed } from "vue";
+import { useUserItemProps } from "./use/useProps";
 
 import Avatar from "./Avatar.vue";
-import { useUserItemProps } from "./use/useProps";
+import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({
   components: {
     Avatar,
+    InlineSvg,
   },
   props: useUserItemProps,
   emits: ["invite"],
@@ -116,6 +121,7 @@ export default defineComponent({
     justify-content: space-between;
     padding: 5px;
     cursor: pointer;
+    outline: none;
   }
   &__main-info {
     display: flex;
@@ -142,18 +148,26 @@ export default defineComponent({
     }
     &--invited {
       display: inline-flex;
+      align-items: flex-end;
       color: $color-dark-green;
       gap: 5px;
       font-size: 12px;
+      svg {
+        width: 18px;
+      }
     }
     &--add {
       padding: 0 7px;
       font-size: 20px;
     }
     &-caret {
-      font-size: 25px;
+      display: inline-flex;
+      align-items: center;
       color: var(--color-text);
       transition: all 0.2s;
+      svg {
+        width: 25px;
+      }
     }
   }
   &__details {
@@ -162,8 +176,13 @@ export default defineComponent({
       margin-top: 5px;
       width: 100%;
       line-height: 15px;
+      &__icon {
+        width: 18px;
+      }
       &__name {
-        display: inline;
+        display: inline-flex;
+        gap: 6px;
+        align-items: flex-end;
         font-weight: 500;
         user-select: none;
         font-size: 14px;

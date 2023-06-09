@@ -5,7 +5,7 @@
       <cButton
         class="task-item__info--edit initially-transparent"
         variant="text"
-        icon="mdi-brush"
+        icon="brush"
       />
     </div>
     <div class="task-item__members">
@@ -15,10 +15,11 @@
         location="bottom"
       >
         <template v-slot:activator="{ props }">
-          <span
+          <InlineSvg
             v-bind="props"
-            class="task-item__members--icon-assign initially-transparent mdi mdi-eye-outline"
-          ></span>
+            src="/images/icons/eye-outline.svg"
+            class="task-item__members--icon-assign initially-transparent"
+          />
         </template>
       </v-tooltip>
       <div class="task-item__members-avatars">
@@ -42,10 +43,12 @@ import { IWorkingBoardTask } from "@/types/interfaces";
 
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import Avatar from "@/components/user/Avatar.vue";
+import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({
   components: {
     Avatar,
+    InlineSvg,
   },
   props: {
     task: {
@@ -83,6 +86,7 @@ export default defineComponent({
   background-color: var(--color-background-task);
   box-shadow: 0 0 5px rgba($color-black, 0.1);
   cursor: grab;
+  transition: background-color 0.3s;
   &:active {
     cursor: grabbing;
   }
@@ -120,7 +124,7 @@ export default defineComponent({
     justify-content: space-between;
     margin-top: 10px;
     &--icon-assign {
-      font-size: 18px;
+      width: 25px;
       color: var(--color-text);
     }
     &-avatars {

@@ -38,7 +38,7 @@
         {{ label }}
       </label>
       <span v-if="required" class="c-input--required"></span>
-      <span v-if="isPhone" class="phone mdi mdi-phone"></span>
+      <InlineSvg v-if="isPhone" src="/images/icons/phone.svg" class="phone" />
       <Transition name="error-message">
         <span v-show="errorText" class="c-input--error-text">{{ errorText }}</span>
       </Transition>
@@ -48,27 +48,28 @@
         @click="toggleInputType"
       >
         <transition mode="out-in" name="toggle-content">
-          <span
+          <InlineSvg
             v-if="!showPassword"
             key="open"
-            class="mdi mdi-eye c-input--toggle-password__icon"
-          ></span>
-          <span
+            src="/images/icons/eye.svg"
+            class="c-input--toggle-password__icon"
+          />
+          <InlineSvg
             v-else
             key="close"
-            class="mdi mdi-eye-off c-input--toggle-password__icon"
-          ></span>
+            src="/images/icons/eye-off.svg"
+            class="c-input--toggle-password__icon"
+          />
         </transition>
       </span>
       <cButton
         v-if="type === 'search'"
         class="c-input--search-btn"
+        icon="magnify"
         variant="text"
         rounded
         @click="$emit('search')"
-      >
-        <span class="mdi mdi-magnify c-input--search-btn_icon"></span>
-      </cButton>
+      />
     </div>
   </div>
 </template>
@@ -79,13 +80,16 @@ import * as emailValidator from "email-validator";
 import { useInputProps } from "./use/useProps";
 import type { AutoComplete, ModelValue, RefElement } from "@/types/types";
 
+import InlineSvg from "vue-inline-svg";
 import RegExp from "@/helpers/regExp";
 
 export default defineComponent({
   inheritAttrs: false,
   props: useInputProps,
   emits: ["invalid", "update:modelValue", "search"],
-
+  components: {
+    InlineSvg,
+  },
   setup(props, { emit }) {
     const errorText = ref("");
 
@@ -236,9 +240,11 @@ export default defineComponent({
       padding-left: 30px;
       & ~ .phone {
         position: absolute;
-        top: 10px;
+        top: 50%;
+        transform: translateY(-50%);
         left: 10px;
         color: var(--color-text);
+        width: 17px;
       }
       & ~ .label {
         left: 30px !important;
@@ -288,33 +294,27 @@ export default defineComponent({
   }
   &--toggle-password {
     position: absolute;
+    display: inline-flex;
+    align-items: center;
     top: 50%;
     right: 10px;
     cursor: pointer;
     transform: translate(0, -50%);
-    font-size: 20px;
+    &__icon {
+      width: 22px;
+    }
   }
   &--search-btn {
     position: absolute;
     top: 50%;
     height: 30px !important;
-    min-width: 22px;
+    width: 22px;
+    font-size: 22px;
     transform: translate(0, -50%);
     right: 10px;
-    font-size: 22px;
     color: var(--color-text) !important;
-    &:hover {
-      color: var(--color-text);
-    }
     &:active {
       background-color: rgba($color-brown, 0.3);
-    }
-    &_icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      outline: none;
     }
   }
   &--required {

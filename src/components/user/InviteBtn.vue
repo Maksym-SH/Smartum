@@ -2,7 +2,7 @@
   <div class="invite-users">
     <cButton
       @click="toggleInviteWindow"
-      icon="mdi-account-multiple"
+      icon="account-multiple"
       class="invite-users__btn"
       size="small"
     >
@@ -31,13 +31,13 @@
             <cButton
               variant="text"
               class="invite-users__window--refresh"
-              icon="mdi-refresh"
+              icon="refresh"
               @click="refreshUsers"
             />
             <cButton
               class="invite-users__window--close"
               variant="text"
-              icon="mdi-close"
+              icon="close"
               @click="showInviteWindow = false"
             />
           </nav>

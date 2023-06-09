@@ -11,7 +11,6 @@ import notifications from "@kyvg/vue3-notification";
 // Styles
 import "normalize.css";
 import "vuetify/styles";
-import "@mdi/font/css/materialdesignicons.css";
 
 import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 

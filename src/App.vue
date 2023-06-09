@@ -77,6 +77,10 @@ body {
   height: 100%;
 }
 
+svg {
+  outline: none;
+}
+
 // Notifications design.
 .vue-notification-wrapper {
   margin-top: 8px;

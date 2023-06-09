@@ -3,7 +3,7 @@
     <cButton
       @click="toggleAcquaintanceWindow"
       variant="text"
-      icon="mdi-information-outline"
+      icon="information-outline"
       class="acquaintance__btn"
     />
     <DropdownWindow
@@ -18,7 +18,7 @@
           <cButton
             class="acquaintance__window-header--close"
             variant="text"
-            icon="mdi-close"
+            icon="close"
             @click="showAcquaintanceWindow = false"
           />
         </div>
@@ -102,7 +102,7 @@ export default defineComponent({
         color: var(--color-text);
       }
       &--close {
-        font-size: 20px;
+        font-size: 25px;
         color: var(--color-text) !important;
         padding: 0 5px;
       }

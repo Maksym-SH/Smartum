@@ -25,7 +25,7 @@ export type ColorThemeText = "Тёмный" | "Светлый";
 
 export type Icon = "moon" | "sun";
 
-export type StatusVueIcon = "mdi-email-check" | "mdi-email-alert";
+export type StatusVueIcon = "email-check" | "email-alert";
 
 export type ImageSource = string | ArrayBuffer | null;
 
