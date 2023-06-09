@@ -13,7 +13,7 @@
       class="file-upload--image"
       cover
       :src="currentImgPath"
-      @load="imgLoad"
+      @load="imageLoad"
     />
     <img class="file-upload--icon" src="/images/icons/upload.svg" alt="Upload" />
   </div>
@@ -27,6 +27,7 @@ import { OpenPopup } from "@/helpers/methods";
 import { Colors } from "@/types/enums";
 
 import fileValidate from "@/helpers/file/validate";
+import useImageLoad from "@/composables/useImageLoad";
 
 export default defineComponent({
   props: {
@@ -43,7 +44,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const upload = ref<RefElement>();
     // Image
-    const imgLoaded = ref(false);
+    const { imageLoaded, imageLoad } = useImageLoad();
 
     const imgDeleted = ref(false);
 
@@ -53,10 +54,9 @@ export default defineComponent({
       String(imageSource.value || props.avatarParams)
     );
     const showImageTemplate = computed(
-      (): string | boolean => (imgLoaded.value || props.avatarParams) && !imgDeleted.value
+      (): string | boolean =>
+        (imageLoaded.value || props.avatarParams) && !imgDeleted.value
     );
-
-    const imgLoad = (): boolean => (imgLoaded.value = true);
 
     // File load.
     const fileUpload = (): void => {
@@ -72,7 +72,7 @@ export default defineComponent({
 
             if (props.fileType === "image") {
               imageSource.value = reader.result;
-              imgLoaded.value = true;
+              imageLoaded.value = true;
               imgDeleted.value = false;
 
               emit("loaded", file);
@@ -101,14 +101,14 @@ export default defineComponent({
     };
 
     return {
-      imgLoaded,
+      imageLoaded,
       upload,
       currentImgPath,
       imgDeleted,
       showImageTemplate,
       deleteImgPopup,
       fileUpload,
-      imgLoad,
+      imageLoad,
       Colors,
     };
   },

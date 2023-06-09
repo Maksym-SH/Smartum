@@ -4,34 +4,43 @@
     :style="avatarStyles"
     :class="{ 'user-avatar--circle': circle }"
   >
-    <cLoader v-show="showPreload" inline :size="30" />
+    <v-skeleton-loader
+      v-show="showSkeletonLoader"
+      color="info"
+      :height="size"
+      :elevation="24"
+    />
+    <span v-show="showInitials" class="user-avatar--initials" :style="sizeInitials">
+      {{ initials }}
+    </span>
     <img
-      v-if="!showPreload && avatar.url"
+      v-show="showPhoto"
       class="user-avatar__picture"
       :src="avatar.url"
+      @load="imageLoad"
       @error="$emit('failedLoad')"
       alt=""
     />
-    <span
-      v-else-if="firstName && !showPreload"
-      class="user-avatar--initials"
-      :style="sizeInitials"
-    >
-      {{ initials }}
-    </span>
     <span v-show="online" class="user-avatar--online"></span>
   </span>
 </template>
 
 <script lang="ts">
-import type { CSSProperties } from "vue";
+import { CSSProperties, watch } from "vue";
 import { computed, defineComponent } from "vue";
 import { useAvatarProps } from "./use/useProps";
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+import useImageLoad from "@/composables/useImageLoad";
 
 export default defineComponent({
   props: useAvatarProps,
   emits: ["failedLoad"],
+  components: {
+    VSkeletonLoader,
+  },
   setup(props) {
+    const { imageLoaded, imageLoad } = useImageLoad();
+
     const initials = computed((): string | null => {
       if (props.firstName) {
         const firstNameInitial = props.firstName[0].toUpperCase();
@@ -43,10 +52,29 @@ export default defineComponent({
       return null;
     });
 
-    const showPreload = computed(
+    const showSkeletonLoader = computed(
       () =>
         (!initials.value && !props.avatar.url) ||
-        (!props.avatar.bgAvatar && !props.noBackground)
+        (!props.avatar.bgAvatar && !props.noBackground) ||
+        (!imageLoaded.value && props.avatar.url)
+    );
+
+    const showInitials = computed(() => {
+      return props.firstName && !showSkeletonLoader.value;
+    });
+
+    const showPhoto = computed(() => {
+      return props.avatar.url && imageLoaded.value;
+    });
+
+    // Disable image loading when an image has been deleted.
+    watch(
+      () => props.avatar.url,
+      (hasImage) => {
+        if (!hasImage) {
+          imageLoaded.value = false;
+        }
+      }
     );
 
     const avatarStyles = computed((): CSSProperties => {
@@ -64,7 +92,11 @@ export default defineComponent({
       avatarStyles,
       initials,
       sizeInitials,
-      showPreload,
+      showSkeletonLoader,
+      showPhoto,
+      showInitials,
+      imageLoaded,
+      imageLoad,
     };
   },
 });
@@ -80,11 +112,19 @@ export default defineComponent({
   color: $color-black;
   background-color: $color-dark-grey4;
   filter: none;
-  .c-loader {
-    position: static !important;
+
+  .v-skeleton-loader {
+    width: 100%;
+    height: 100%;
+    :deep(.v-skeleton-loader__bone) {
+      border-radius: inherit;
+      height: 100%;
+    }
   }
+
   &.user-avatar--circle {
     border-radius: 50%;
+    .v-skeleton-loader,
     .user-avatar__picture {
       border-radius: 50%;
     }
@@ -105,6 +145,7 @@ export default defineComponent({
   }
   &--online {
     position: absolute;
+    z-index: 2;
     bottom: 4px;
     right: -6px;
     display: inline-block;

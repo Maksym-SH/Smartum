@@ -1,15 +1,16 @@
 <template>
   <div class="background-result">
     <div class="background-result__wrapper" :style="{ background }">
-      <img
-        v-if="imageDecor"
-        :src="imageDecor"
-        class="background-result__decor"
-        alt=""
+      <img v-if="imageDecor" :src="imageDecor" class="background-result__decor" alt="" />
+      <v-skeleton-loader
+        v-show="isImage && !imageLoaded"
+        color="info"
+        :elevation="24"
       />
       <img
-        v-if="showSelectedImage"
+        v-show="isImage && imageLoaded"
         :src="image"
+        @load="imageLoad"
         class="background-result__image"
         alt=""
       />
@@ -19,6 +20,9 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+
+import useImageLoad from "@/composables/useImageLoad";
 
 export default defineComponent({
   props: {
@@ -35,15 +39,20 @@ export default defineComponent({
       required: true,
     },
   },
+  components: {
+    VSkeletonLoader,
+  },
   setup(props) {
-    const showSelectedImage = computed((): boolean => {
-      return (
-        Boolean(props.image) && props.background.includes("dashboardTemplates")
-      );
+    const { imageLoad, imageLoaded } = useImageLoad();
+
+    const isImage = computed((): boolean => {
+      return Boolean(props.image) && props.background.includes("dashboardTemplates");
     });
 
     return {
-      showSelectedImage,
+      isImage,
+      imageLoaded,
+      imageLoad,
     };
   },
 });
@@ -54,6 +63,7 @@ export default defineComponent({
   width: 100%;
   display: flex;
   justify-content: center;
+  border-radius: 4px;
   &__wrapper {
     width: 200px;
     height: 120px;
@@ -62,6 +72,16 @@ export default defineComponent({
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .v-skeleton-loader {
+      width: 100%;
+      height: 100%;
+      border-radius: 4px 4px 0 0;
+      box-shadow: none !important;
+      :deep(.v-skeleton-loader__bone) {
+        height: 100%;
+      }
+    }
   }
   &__decor {
     position: absolute;
@@ -77,7 +97,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0;
   }
 }
 </style>

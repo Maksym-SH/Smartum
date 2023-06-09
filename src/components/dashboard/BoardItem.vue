@@ -64,8 +64,11 @@ export default defineComponent({
   min-width: 240px;
   cursor: pointer;
   box-shadow: 0 10px 5px rgba($color-black, 0.2);
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.02);
+  }
   &__content {
-    border-radius: 0 0 5px 5px;
     padding: 5px 10px;
     background-color: var(--color-dasboard-card);
   }
