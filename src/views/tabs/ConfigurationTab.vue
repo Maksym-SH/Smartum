@@ -45,17 +45,17 @@
           </template>
         </Card>
       </div>
-      <div class="configuration-tab__content-avatar-settings">
+      <div class="configuration-tab__avatar-settings">
         <Card>
           <template #header>
-            <h2 class="card-info__title--settings-avatar">
+            <h2 class="card-info__title settings-avatar">
               Изменить цвет фона профиля
               <cButton size="small" title="Сохранить" @click="saveBackgroundAvatar" />
             </h2>
           </template>
           <template #content>
-            <div class="card-info__change-background-avatar">
-              <div class="card-info__change-background-avatar--result">
+            <div class="card-info__change-avatar">
+              <div class="card-info__change-avatar--result">
                 <h5 class="card-info__avatar-title">Результат:</h5>
                 <Avatar
                   :size="80"
@@ -64,7 +64,7 @@
                   :last-name="userName.lastName"
                 />
               </div>
-              <div class="card-info__change-background-avatar--params">
+              <div class="card-info__change-avatar--params">
                 <h5>Изменить цвет</h5>
                 <ColorPicker v-model="avatarParams.bgAvatar" theme="light" />
               </div>
@@ -75,7 +75,7 @@
           </template>
         </Card>
       </div>
-      <div class="configuration-tab__content-additional-settings">
+      <div class="configuration-tab__additional-settings">
         <Card>
           <template #header>
             <h2 class="card-info__title">Дополнительные настройки</h2>
@@ -83,13 +83,13 @@
           <template #content>
             <div class="card-info__additional-settings">
               <div class="card-info__additional-settings-item">
-                <h4 class="card-info__additional-settings-title">
+                <h4 class="card-info__additional-settings-name">
                   Изменить фон боковой панели
                 </h4>
                 <ColorPicker v-model="asideBackgroundColor" theme="dark" />
               </div>
               <div class="card-info__additional-settings-item">
-                <h4 class="card-info__additional-settings-title">
+                <h4 class="card-info__additional-settings-name">
                   Статус подтверждения адреса
                 </h4>
                 <cCheckbox
@@ -101,7 +101,7 @@
                 />
               </div>
               <div class="card-info__additional-settings-item">
-                <h4 class="card-info__additional-settings-title">Дата и время</h4>
+                <h4 class="card-info__additional-settings-name">Дата и время</h4>
                 <cCheckbox
                   v-model="additionalParams.showCurrentDate"
                   switch-box
@@ -111,7 +111,7 @@
                 />
               </div>
               <div class="card-info__additional-settings-item">
-                <h4 class="card-info__additional-settings-title">
+                <h4 class="card-info__additional-settings-name">
                   Кнопка "Удалить аккаунт"
                 </h4>
                 <cCheckbox
@@ -162,11 +162,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .configuration-tab {
   padding: 20px 0 20px 0;
+
   &__content {
     display: grid;
     grid-template-columns: repeat(2, 480px);
     gap: 50px;
     color: var(--color-text);
+
     &-navigation-filter {
       grid-area: 1/1/3/1;
     }
@@ -175,6 +177,7 @@ export default defineComponent({
       text-transform: none;
       color: $color-white1;
     }
+
     .card {
       width: 100%;
       height: 100%;
@@ -183,26 +186,32 @@ export default defineComponent({
       &-info {
         &__title {
           font-weight: 500;
+
           &.center {
             text-align: center;
           }
-          &--settings-avatar {
+
+          &.settings-avatar {
             display: flex;
             justify-content: space-between;
           }
         }
+
         &--save-changes {
           margin: auto 10px 10px auto;
           display: block;
           min-width: 40%;
         }
-        &__change-background-avatar {
+
+        &__change-avatar {
           display: flex;
           justify-content: space-between;
           position: relative;
+
           .user-avatar {
             border: 1px solid var(--color-text);
           }
+
           .change-avatar-hint {
             position: absolute;
             bottom: 0;
@@ -211,10 +220,12 @@ export default defineComponent({
             text-align: end;
           }
         }
+
         &__additional-settings {
           display: flex;
           flex-direction: column;
           gap: 10px;
+
           &-item {
             display: flex;
             width: 100%;
@@ -224,57 +235,65 @@ export default defineComponent({
           }
         }
       }
+
       &-content-info {
-        &__item {
-          &--text {
-            width: 100%;
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            .icon {
-              margin-right: 10px;
-              width: 17px;
-            }
-            .disable-icon {
-              position: absolute;
-              right: 2px;
-              width: 15px;
-            }
+        &__item--text {
+          width: 100%;
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+
+          .icon {
+            margin-right: 10px;
+            width: 17px;
           }
-          &--actions {
-            text-align: center;
+
+          .disable-icon {
+            position: absolute;
+            right: 2px;
+            width: 15px;
           }
-          &--text,
-          &--actions {
-            height: 50px;
-          }
+        }
+
+        &--actions {
+          text-align: center;
+        }
+
+        &--text,
+        &--actions {
+          height: 50px;
         }
       }
     }
+
     &-avatar-settings {
       .c-button {
         min-width: 90px;
         margin-left: 30px;
       }
     }
+
     &-additional-settings {
       grid-area: 2/2/3/3;
       .card {
         width: 100%;
+
         &-info {
-          &__additional-settings-title {
+          &__additional-settings-name {
             font-weight: 500;
           }
         }
       }
     }
   }
+
   @include responsive($xxl, max) {
     &__content {
       display: flex;
       flex-direction: column;
       max-width: none;
       gap: 12px;
+
       &-wrapper {
         gap: 12px;
       }
@@ -288,6 +307,7 @@ export default defineComponent({
             min-width: 20%;
             max-width: 100px;
           }
+
           &__title.center {
             text-align: end;
             padding-right: 60px;
@@ -305,6 +325,7 @@ export default defineComponent({
               width: 230px;
               white-space: nowrap;
             }
+
             &--actions {
               text-align: end;
             }
@@ -319,16 +340,20 @@ export default defineComponent({
       }
     }
   }
+
   @include mobile(max) {
     padding-top: 0;
+
     &__content {
       .card {
         width: 100%;
+
         &-info {
           &__title.center {
             padding-right: 50px;
           }
         }
+
         &-content-info {
           &__item {
             &--text {
@@ -339,18 +364,22 @@ export default defineComponent({
       }
     }
   }
+
   @include responsive($us, max) {
     &__content {
       .card {
         :deep(.card__header) {
           padding: 0;
         }
+
         :deep(.card__content) {
           padding: 15px;
         }
+
         .c-checkbox {
           min-width: 140px;
         }
+
         &-content-info {
           &__item {
             &--text,
@@ -358,9 +387,11 @@ export default defineComponent({
               padding: 10px 10px 10px 15px;
               font-size: 12px;
             }
+
             &--text {
               padding-right: 20px;
               gap: 5px;
+
               .icon {
                 margin: 0;
                 width: 10px;
@@ -368,6 +399,7 @@ export default defineComponent({
             }
           }
         }
+
         &-info {
           &__title,
           &__title--settings-avatar {
@@ -375,8 +407,10 @@ export default defineComponent({
             font-size: 15px;
             padding: 15px;
           }
-          &__change-background-avatar {
+
+          &__change-avatar {
             padding-bottom: 20px;
+
             .change-avatar-hint {
               right: 0;
               bottom: 15px;
@@ -385,25 +419,30 @@ export default defineComponent({
               text-align: end;
             }
           }
+
           &__additional-settings-item {
             font-size: 12px;
           }
-          &__additional-settings-title {
+
+          &__additional-settings-name {
             padding-right: 5px;
           }
         }
       }
     }
   }
+
   @include responsive($tiny, max) {
     &__content {
       .card {
         :deep(.card__content) {
           padding: 5px;
         }
+
         .c-checkbox {
           min-width: 140px;
         }
+
         &-content-info {
           &__item {
             &--text,
@@ -411,18 +450,21 @@ export default defineComponent({
               padding: 5px;
               font-size: 12px;
             }
+
             &--text {
               padding-right: 20px;
             }
           }
         }
+
         &-info {
           &__title,
           &__title--settings-avatar {
             font-size: 13px;
             padding: 5px;
           }
-          &__change-background-avatar {
+
+          &__change-avatar {
             .change-avatar-hint {
               font-size: 10px;
               width: 70%;

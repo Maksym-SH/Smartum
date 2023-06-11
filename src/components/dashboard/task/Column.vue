@@ -118,6 +118,7 @@ export default defineComponent({
   height: fit-content;
   background-color: var(--color-background);
   transition: all 0.3s;
+
   &__tasks {
     display: flex;
     flex-direction: column;
@@ -126,23 +127,27 @@ export default defineComponent({
     gap: 10px;
     border: 1px dashed transparent;
     padding: 2px;
+
     &.drop-zone {
       border-color: $color-blue;
       border-radius: 4px;
       min-height: 55px;
     }
   }
+
   &__header {
     max-width: 350px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+
     &-title {
       font-size: 14px;
       width: 80%;
       font-family: $RobotoRG;
       color: var(--color-text);
       cursor: pointer;
+
       &:focus {
         border: 0;
         outline: 1px solid var(--color-text);
@@ -151,12 +156,14 @@ export default defineComponent({
         border-radius: 4px;
       }
     }
+
     &-params {
       padding: 0 5px;
       height: 25px;
       color: var(--color-text) !important;
     }
   }
+
   &__list {
     margin-top: 10px;
     display: flex;

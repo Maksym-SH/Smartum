@@ -216,14 +216,17 @@ export default defineComponent({
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto 1fr;
+
   &__name,
   &__members-count {
     color: $color-white5;
   }
+
   &__name {
     word-break: break-word;
     font-size: 16px;
   }
+
   &__content {
     width: 100%;
     background-repeat: no-repeat !important;
@@ -234,6 +237,7 @@ export default defineComponent({
     grid-template-columns: auto;
     grid-template-rows: auto 1fr;
     padding-bottom: 10px;
+
     &-tasks {
       margin-top: 20px;
       padding: 10px;
@@ -263,6 +267,7 @@ export default defineComponent({
       }
     }
   }
+
   &__board-info {
     padding: 10px;
     display: flex;
@@ -271,10 +276,12 @@ export default defineComponent({
     justify-content: space-between;
     gap: 10px;
     background-color: $color-dark-blue2;
+
     &-about {
       width: 50%;
       flex-shrink: 2;
     }
+
     &--additional {
       justify-content: flex-end;
       display: flex;
@@ -282,13 +289,16 @@ export default defineComponent({
       align-items: center;
       padding-left: 10px;
     }
+
     .avatars-wrapper {
       display: flex;
       align-items: center;
+
       .user-avatar {
         margin-left: -7px;
         &.admin {
           position: relative;
+
           &::after {
             content: "";
             position: absolute;
@@ -304,14 +314,17 @@ export default defineComponent({
       }
     }
   }
+
   @include mobile(max) {
     &__board-info {
       padding-bottom: 5px;
+
       &--additional {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+
         .avatars-wrapper {
           margin-top: 6px;
           width: 100%;

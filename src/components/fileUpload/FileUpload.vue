@@ -140,6 +140,7 @@ export default defineComponent({
     height: 25px;
     border-radius: 4px;
     background-color: $color-red;
+
     &:hover {
       background-color: $color-red-hover;
     }
@@ -164,6 +165,7 @@ export default defineComponent({
     animation: upload 0.5s infinite alternate-reverse;
     width: 32px;
     height: 32px;
+
     @include mobile(max) {
       width: 50px;
       height: 50px;

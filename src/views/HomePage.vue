@@ -118,28 +118,34 @@ export default defineComponent({
   min-height: 100%;
   background-color: var(--color-background);
   transition: background-color 0.3s;
+
   &__wrapper {
     display: grid;
     grid-template-rows: auto 1fr;
     min-height: 100%;
     padding-left: 260px;
     transition: padding-left 0.5s ease;
+
     &.minimize-info {
       padding-left: 0 !important;
     }
+
     @include responsive($xs, max) {
       padding-left: 0;
     }
   }
+
   &__tab-info {
     position: absolute;
     top: 100px;
     padding-left: 40px;
     color: var(--color-text);
+
     &-title {
       font-size: 24px;
       line-height: 24px;
     }
+
     &-description {
       font-size: 14px;
       margin-top: 11px;
@@ -147,26 +153,31 @@ export default defineComponent({
       line-height: 17px;
     }
   }
+
   &__content {
     margin-top: 120px;
     width: 100%;
     padding-left: 40px;
     padding-right: 40px;
   }
+
   @include responsive($xs, max) {
     &__tab-info {
       padding-left: 20px;
     }
+
     &__content {
       padding-left: 20px;
       padding-right: 20px;
     }
   }
+
   @include mobile(max) {
     &__tab-info {
       top: 70px;
       padding-left: 10px;
     }
+
     &__content {
       padding: 10px;
       margin-top: 110px;

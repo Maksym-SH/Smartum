@@ -34,10 +34,12 @@ export default defineComponent({
   display: flex;
   align-items: center;
   flex-direction: column;
+
   &__icon {
     width: 70px;
     height: 70px;
   }
+
   &__title {
     color: var(--color-text);
     margin-top: 10px;
@@ -45,11 +47,13 @@ export default defineComponent({
     font-weight: 400;
     font-family: $RobotoRG;
   }
+
   @include mobile(max) {
     &__icon {
       width: 60px;
       height: 60px;
     }
+
     &__title {
       font-size: 18px;
     }

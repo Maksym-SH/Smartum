@@ -37,16 +37,20 @@ export default defineComponent({
 <style lang="scss" scoped>
 .user-info {
   display: flex;
+
   .user-avatar {
     margin-right: 16px;
   }
+
   &__content {
     position: relative;
     min-width: 137px;
+
     :deep(.c-select) {
       position: absolute;
       top: 2px;
       right: -30px;
+
       .c-button--round {
         img {
           width: 22px;

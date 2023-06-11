@@ -73,25 +73,31 @@ export default defineComponent({
   width: 100%;
   padding: 10px;
   background-color: $color-dark-grey3;
+
   &__wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
   &__logo {
     width: 150px;
     display: flex;
+
     &-image {
       width: 100%;
     }
   }
+
   &__actions {
     display: flex;
     align-items: center;
     gap: 10px;
   }
+
   @include mobile(max) {
     padding: 10px 8px 7px;
+
     &__logo {
       width: 100px;
     }

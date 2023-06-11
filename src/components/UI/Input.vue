@@ -171,10 +171,12 @@ export default defineComponent({
   padding-bottom: 15px;
   height: fit-content;
   padding-top: 20px;
+
   &--relative {
     position: relative;
     color: var(--color-text);
   }
+
   &__field {
     padding: 10px;
     border: 1px solid var(--color-input);
@@ -184,12 +186,15 @@ export default defineComponent({
     border-radius: 4px;
     transition: all 0.3s ease;
     color: var(--color-text);
+
     &::placeholder {
       color: $color-brown;
+
       &::first-letter {
         text-transform: uppercase;
       }
     }
+
     &:focus {
       & + .label {
         top: -8px;
@@ -204,6 +209,7 @@ export default defineComponent({
       border-radius: 4px;
       -webkit-text-fill-color: var(--color-text);
       -webkit-box-shadow: 0 0 0 1000px var(--color-background) inset;
+
       & + .label {
         color: $color-blue;
         top: -8px;
@@ -214,12 +220,15 @@ export default defineComponent({
     &.c-input--password {
       padding-right: 44px;
     }
+
     &:disabled {
       border-color: $color-brown;
       color: $color-brown;
+
       &::placeholder {
         color: $color-brown;
       }
+
       & ~ .c-input--toggle-password {
         color: $color-brown;
         pointer-events: none;
@@ -229,15 +238,19 @@ export default defineComponent({
     &.c-input__field--light-theme {
       border-color: $color-white1;
       color: $color-white1;
+
       & + .label {
         color: $color-white1;
       }
+
       & ~ .c-button {
         color: $color-white1 !important;
       }
     }
+
     &--phone {
       padding-left: 30px;
+
       & ~ .phone {
         position: absolute;
         top: 50%;
@@ -246,35 +259,44 @@ export default defineComponent({
         color: var(--color-text);
         width: 17px;
       }
+
       & ~ .label {
         left: 30px !important;
       }
     }
+
     &--error {
       border-color: $color-red !important;
       background-color: $color-pink;
+
       &:not(.c-input__field--transparent) {
         color: $color-black !important;
       }
+
       & + .label {
         color: $color-red !important;
       }
+
       & ~ .phone {
         color: $color-black;
       }
+
       & ~ .c-input--toggle-password {
         color: $color-black;
       }
     }
+
     &--search {
       padding-right: 45px;
     }
+
     &--transparent {
       border: none;
       border-bottom: 2px solid $color-white3;
       border-radius: 0;
       background-color: transparent;
       color: $color-white3;
+
       & ~ .c-input--required {
         width: 5px;
         height: 5px;
@@ -282,16 +304,19 @@ export default defineComponent({
         top: 5px;
         border-radius: 50%;
       }
+
       &.c-input__field--error {
         & ~ .phone {
           color: $color-black;
         }
+
         & ~ .c-input--toggle-password {
           color: $color-white1;
         }
       }
     }
   }
+
   &--toggle-password {
     position: absolute;
     display: inline-flex;
@@ -300,10 +325,12 @@ export default defineComponent({
     right: 10px;
     cursor: pointer;
     transform: translate(0, -50%);
+
     &__icon {
       width: 22px;
     }
   }
+
   &--search-btn {
     position: absolute;
     top: 50%;
@@ -313,10 +340,12 @@ export default defineComponent({
     transform: translate(0, -50%);
     right: 10px;
     color: var(--color-text) !important;
+
     &:active {
       background-color: rgba($color-brown, 0.3);
     }
   }
+
   &--required {
     display: inline-block;
     width: 3px;
@@ -326,6 +355,7 @@ export default defineComponent({
     right: 0;
     background-color: $color-red;
   }
+
   &--error-text {
     color: $color-red;
     position: absolute;
@@ -333,6 +363,7 @@ export default defineComponent({
     font-size: 12px;
     left: 0;
   }
+
   .label {
     position: absolute;
     top: 50%;
@@ -342,10 +373,12 @@ export default defineComponent({
     color: var(--color-text);
     font-size: 13px;
     pointer-events: none;
+
     &.top-fixed {
       top: -8px;
       left: 0 !important;
     }
+
     &.label-disable {
       user-select: none;
       color: $color-light-brown;

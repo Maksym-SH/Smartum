@@ -49,6 +49,7 @@ export default defineComponent({
   position: relative;
   width: 50px;
   height: 25px;
+
   &__label {
     position: absolute;
     width: 100%;
@@ -57,12 +58,15 @@ export default defineComponent({
     border-radius: 50px;
     cursor: pointer;
   }
+
   &__input {
     position: absolute;
     display: none;
+
     &:checked {
       ~ .toggle-theme-switch__icon {
         background-color: $color-dark-grey4;
+
         &::before {
           transform: translateX(26.5px);
           background-color: $color-yellow;
@@ -71,6 +75,7 @@ export default defineComponent({
       }
     }
   }
+
   &__icon {
     position: absolute;
     width: 100%;
@@ -78,6 +83,7 @@ export default defineComponent({
     border-radius: 50px;
     transition: 0.3s;
   }
+
   &__icon::before {
     content: "";
     position: absolute;
@@ -93,9 +99,11 @@ export default defineComponent({
 
   &.small {
     width: 50px;
+
     .toggle-theme-switch__label {
       height: 25px;
     }
+
     .toggle-theme-switch__input {
       &:checked {
         ~ .toggle-theme-switch__icon {
@@ -105,6 +113,7 @@ export default defineComponent({
         }
       }
     }
+
     .toggle-theme-switch__icon {
       &::before {
         top: 0;

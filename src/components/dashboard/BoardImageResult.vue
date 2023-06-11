@@ -2,11 +2,7 @@
   <div class="background-result">
     <div class="background-result__wrapper" :style="{ background }">
       <img v-if="imageDecor" :src="imageDecor" class="background-result__decor" alt="" />
-      <v-skeleton-loader
-        v-show="isImage && !imageLoaded"
-        color="info"
-        :elevation="24"
-      />
+      <v-skeleton-loader v-show="isImage && !imageLoaded" color="info" :elevation="24" />
       <img
         v-show="isImage && imageLoaded"
         :src="image"
@@ -64,6 +60,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   border-radius: 4px;
+
   &__wrapper {
     width: 200px;
     height: 120px;
@@ -78,11 +75,13 @@ export default defineComponent({
       height: 100%;
       border-radius: 4px 4px 0 0;
       box-shadow: none !important;
+
       :deep(.v-skeleton-loader__bone) {
         height: 100%;
       }
     }
   }
+
   &__decor {
     position: absolute;
     z-index: 2;
@@ -92,6 +91,7 @@ export default defineComponent({
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
   &__image {
     position: absolute;
     width: 100%;

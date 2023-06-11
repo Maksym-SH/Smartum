@@ -57,6 +57,7 @@ export default defineComponent({
   box-shadow: 0 2px 5px rgba($color-black, 0.5);
   width: 100%;
   min-height: 63px;
+
   &__wrapper {
     display: flex;
     justify-content: space-between;
@@ -65,6 +66,7 @@ export default defineComponent({
 
   &__search-content {
     width: 50%;
+
     .c-input {
       width: 100%;
       max-width: 600px;
@@ -74,6 +76,7 @@ export default defineComponent({
 
   @include responsive($xs, max) {
     padding: 10px 5px 10px 50px;
+
     &__search-content {
       width: 40%;
     }
@@ -81,6 +84,7 @@ export default defineComponent({
 
   @include mobile(max) {
     padding: 10px;
+
     &__wrapper {
       justify-content: flex-end;
     }

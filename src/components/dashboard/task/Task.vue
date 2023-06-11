@@ -87,16 +87,18 @@ export default defineComponent({
   box-shadow: 0 0 5px rgba($color-black, 0.1);
   cursor: grab;
   transition: background-color 0.3s;
+
   &:active {
     cursor: grabbing;
   }
-  &:hover {
-    filter: brightness(115%);
 
+  &:hover {
+    background-color: var(--color-hover-background-task-card);
     .initially-transparent {
       opacity: 1;
     }
   }
+
   .initially-transparent {
     transition: all 0.5s ease;
     opacity: 0;

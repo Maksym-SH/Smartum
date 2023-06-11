@@ -109,13 +109,16 @@ export default defineComponent({
     rgba($color-black, 0) 0%,
     rgba($color-dark-blue, 0.2) 100%
   );
+
   &[open] {
     height: 175px;
+
     .user-item__actions-caret {
       transform: rotate(180deg);
       color: $color-blue;
     }
   }
+
   &__summary {
     display: flex;
     justify-content: space-between;
@@ -123,19 +126,23 @@ export default defineComponent({
     cursor: pointer;
     outline: none;
   }
+
   &__main-info {
     display: flex;
     gap: 10px;
   }
+
   &__info {
     color: var(--color-text);
     width: 137px;
     overflow-x: hidden;
+
     &-first-name,
     &-last-name {
       font-size: 14px;
     }
   }
+
   &__actions {
     display: flex;
     align-items: center;
@@ -143,42 +150,52 @@ export default defineComponent({
     gap: 15px;
     color: var(--color-text);
     min-height: 47px;
+
     &-role {
       font-size: 13px;
     }
+
     &--invited {
       display: inline-flex;
       align-items: flex-end;
       color: $color-dark-green;
       gap: 5px;
       font-size: 12px;
+
       svg {
         width: 18px;
       }
     }
+
     &--add {
       padding: 0 7px;
       font-size: 20px;
     }
+
     &-caret {
       display: inline-flex;
       align-items: center;
       color: var(--color-text);
       transition: all 0.2s;
+
       svg {
         width: 25px;
       }
     }
   }
+
   &__details {
     padding: 0 5px;
+
     .info-item {
       margin-top: 5px;
       width: 100%;
       line-height: 15px;
+
       &__icon {
         width: 18px;
       }
+
       &__name {
         display: inline-flex;
         gap: 6px;
@@ -189,10 +206,12 @@ export default defineComponent({
         color: var(--color-text);
         white-space: nowrap;
       }
+
       &__description {
         margin-top: 5px;
         font-size: 12px;
         user-select: none;
+
         &:not(.phone) {
           display: -webkit-box;
           -webkit-box-orient: vertical;
@@ -203,6 +222,7 @@ export default defineComponent({
           word-break: break-all;
           max-height: 70px;
         }
+
         &.phone {
           display: block;
           width: fit-content;
@@ -210,20 +230,26 @@ export default defineComponent({
       }
     }
   }
+
   @include mobile(max) {
     margin: 5px 0;
+
     &__info {
       gap: 8px;
     }
+
     &__info {
       width: 110px;
+
       &-first-name,
       &-last-name {
         font-size: 13px;
       }
     }
+
     &__actions {
       gap: 5px;
+
       &-role {
         font-size: 12px;
       }

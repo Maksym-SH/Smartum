@@ -34,10 +34,12 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   background-color: rgba($color-black, 0.5);
+
   &:not(.inline-transparent) {
     width: 100%;
-    height: 100vh;
+    height: 100%;
   }
+
   &__spinner {
     position: relative;
     width: 48px;
@@ -48,6 +50,7 @@ export default defineComponent({
     border-color: $color-blue $color-blue transparent transparent;
     box-sizing: border-box;
     animation: rotation 2s linear infinite;
+
     &::after,
     &::before {
       content: "";
@@ -62,6 +65,7 @@ export default defineComponent({
       animation: rotationBack 1s linear infinite;
     }
   }
+
   &.inline-transparent {
     position: static;
     background-color: transparent;
@@ -73,14 +77,17 @@ export default defineComponent({
   0% {
     transform: rotate(360deg);
   }
+
   100% {
     transform: rotate(0deg);
   }
 }
+
 @keyframes rotationBack {
   0% {
     transform: rotate(-360deg);
   }
+
   100% {
     transform: rotate(0deg);
   }

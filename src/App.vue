@@ -50,6 +50,7 @@ export default defineComponent({
 html {
   overflow-y: auto !important;
 }
+
 body {
   min-width: 320px;
   position: fixed;
@@ -73,6 +74,7 @@ body {
     background-color: $color-light-grey;
   }
 }
+
 #app {
   height: 100%;
 }
@@ -84,6 +86,7 @@ svg {
 // Notifications design.
 .vue-notification-wrapper {
   margin-top: 8px;
+
   .vue-notification-template {
     cursor: pointer;
     border-radius: 4px;

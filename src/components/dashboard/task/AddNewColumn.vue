@@ -1,12 +1,12 @@
 <template>
-  <div class="add-new-column" :class="{ 'task-column': columnStyleType }">
+  <div class="add-new-column" :class="{ 'task-column': columnStyle }">
     <AddNew
       input-placeholder="Ввести заголовок списка"
       button-title="Добавить колонку"
       :new-id="columnLength"
       @create="createColumn"
-      @click="columnStyleType = true"
-      @close="columnStyleType = false"
+      @click="columnStyle = true"
+      @close="columnStyle = false"
     />
   </div>
 </template>
@@ -32,7 +32,7 @@ export default defineComponent({
   setup(_, { emit }) {
     const columnTitle = ref("");
 
-    const columnStyleType = ref(false);
+    const columnStyle = ref(false);
 
     const createColumn = (newColumn: IWorkingBoardTaskColumn) => {
       newColumn.tasks = [];
@@ -42,7 +42,7 @@ export default defineComponent({
 
     return {
       columnTitle,
-      columnStyleType,
+      columnStyle,
       Length,
       createColumn,
     };
@@ -53,12 +53,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 .add-new-column {
   min-width: 250px;
+
   &.task-column {
     border-radius: 4px;
     height: fit-content;
     transition: background-color 0.3s;
     background-color: var(--color-background);
   }
+
   .creation-mode {
     min-height: 100px;
   }

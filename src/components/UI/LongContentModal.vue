@@ -8,7 +8,13 @@
   >
     <v-card>
       <v-toolbar color="indigo" class="modal__actions">
-        <cButton class="modal__actions--close" icon="close" variant="text" rounded @click="closeModal" />
+        <cButton
+          class="modal__actions--close"
+          icon="close"
+          variant="text"
+          rounded
+          @click="closeModal"
+        />
         <v-toolbar-title class="modal__header-title">
           {{ modalContent.title }}
         </v-toolbar-title>
@@ -82,10 +88,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .modal {
   z-index: 90 !important;
+
   &__subheader {
     display: flex;
     justify-content: flex-end;
   }
+
   .v-list {
     padding: 20px;
     background-color: var(--color-background-secondary);
@@ -111,6 +119,7 @@ export default defineComponent({
       }
     }
   }
+
   &__actions {
     &--close {
       font-size: 20px;
@@ -118,39 +127,48 @@ export default defineComponent({
       padding: 6px;
     }
   }
+
   @include tablet(max) {
     .modal {
       &__header {
         padding: 0;
         padding-inline-start: 0 !important;
+
         &-title {
           margin: 0;
           font-size: 16px;
         }
+
         :deep(.v-list-subheader__text) {
           display: flex;
           flex-direction: column;
           align-items: center;
           width: 100%;
+
           .modal__mobile-title {
             display: block;
             font-size: 17px;
             color: $color-dark-grey3;
           }
+
           .c-checkbox {
             align-self: flex-end;
           }
         }
       }
     }
+
     .v-list {
       padding: 10px;
+
       &::-webkit-scrollbar {
         width: 3px;
       }
+
       .modal__content {
         :deep() {
           font-size: 14px;
+
           h2 {
             margin: 5px;
             font-size: 16px;

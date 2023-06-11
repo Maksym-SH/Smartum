@@ -94,10 +94,12 @@ export default defineComponent({
 .c-textarea {
   width: 100%;
   padding-top: 20px;
+
   &--relative {
     position: relative;
     height: 100%;
   }
+
   &__field {
     padding: 10px;
     border: 1px solid var(--color-input);
@@ -109,16 +111,20 @@ export default defineComponent({
     transition: all 0.3s ease;
     resize: none;
     color: var(--color-text);
+
     &::-webkit-scrollbar {
       width: 6px;
     }
+
     &::-webkit-scrollbar-track {
       background: transparent;
     }
+
     &::-webkit-scrollbar-thumb {
       border-radius: 3px;
       background-color: var(--color-scroll-track);
     }
+
     &--error {
       border-color: $color-red;
       background-color: $color-pink;
@@ -127,20 +133,24 @@ export default defineComponent({
         color: $color-grey;
       }
     }
+
     &:focus {
       & + label {
         top: -18px;
         left: 0 !important;
       }
     }
+
     &:disabled {
       border-color: $color-brown;
       color: $color-brown;
     }
+
     &--resize {
       resize: vertical;
     }
   }
+
   &--error-text {
     color: $color-red;
     position: absolute;
@@ -148,6 +158,7 @@ export default defineComponent({
     font-size: 12px;
     left: 0;
   }
+
   &--required {
     display: inline-block;
     width: 3px;
@@ -155,8 +166,9 @@ export default defineComponent({
     border-radius: 0 4px 4px 0;
     position: absolute;
     right: 0;
-    background-color: red;
+    background-color: $color-red;
   }
+
   label {
     transition: all 0.2s;
     color: var(--color-text);
@@ -165,6 +177,7 @@ export default defineComponent({
     font-size: 13px;
     top: 10px;
     left: 10px;
+
     &.top-fixed {
       top: -18px;
       left: 0;

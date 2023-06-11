@@ -77,13 +77,16 @@ export default defineComponent({
   top: calc(100% + 15px);
   right: 0;
   background-color: var(--color-background);
+
   &__header {
     padding: 5px;
     border-bottom: 1px solid var(--color-border-card);
   }
+
   &__content {
     overflow: hidden scroll;
     padding: 5px 5px 5px 10px;
+
     &.centering {
       height: 100%;
       display: flex;
@@ -104,10 +107,12 @@ export default defineComponent({
     }
   }
 }
+
 @include mobile(max) {
   .dropdown-background {
     display: none;
   }
+
   .dropdown-window {
     width: 100%;
     height: 100%;
@@ -116,13 +121,16 @@ export default defineComponent({
     left: 0;
     z-index: 3;
     border-radius: 0;
+
     &__header {
       height: 76px;
     }
+
     &__content {
       width: 100% !important;
       height: calc(100% - 76px) !important;
       padding: 7px 2px 7px 7px;
+
       &.no-header {
         height: 100% !important;
       }

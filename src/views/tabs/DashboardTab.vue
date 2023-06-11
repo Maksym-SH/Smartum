@@ -141,10 +141,13 @@ export default defineComponent({
 .dashboard-tab {
   position: relative;
   height: 100%;
+
   &__content {
     height: 100%;
+
     &--single {
       height: calc(100% - 85px);
+
       &.centering {
         display: flex;
         align-items: center;
@@ -157,6 +160,7 @@ export default defineComponent({
       justify-content: flex-end;
     }
   }
+
   &__cards {
     width: 100%;
     padding: 20px 0;
@@ -164,29 +168,35 @@ export default defineComponent({
     grid-template-columns: repeat(5, minmax(280px, 300px));
     gap: 10px;
   }
+
   @include responsive($custom-large, min) {
     &__cards {
       grid-template-columns: repeat(4, minmax(auto, 25%));
     }
   }
+
   @include responsive($custom-large, max) {
     &__cards {
       grid-template-columns: repeat(3, minmax(240px, 32.2%));
     }
   }
+
   @include responsive($xxl, max) {
     &__cards {
       grid-template-columns: repeat(2, 49.4%);
     }
   }
+
   @include tablet(max) {
     &__cards {
       grid-template-columns: 1fr;
     }
   }
+
   @include tablet(max) {
     height: 100%;
     padding-bottom: 45px;
+
     &__container {
       padding-top: 0;
     }

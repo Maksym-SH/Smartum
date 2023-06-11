@@ -86,10 +86,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .acquaintance {
   position: relative;
+
   &__btn {
     padding: 0 5px;
     font-size: 20px;
   }
+
   &__window {
     &-header {
       display: flex;
@@ -97,34 +99,41 @@ export default defineComponent({
       justify-content: space-between;
       height: 100%;
       padding: 0 5px;
+
       &-title {
         font-size: 20px;
         color: var(--color-text);
       }
+
       &--close {
         font-size: 25px;
         color: var(--color-text) !important;
         padding: 0 5px;
       }
     }
+
     &-content {
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       height: 100%;
+
       &-picture {
         width: 95%;
         display: block;
         margin: 0 auto;
         height: auto;
       }
+
       &-info {
         margin-top: 5px;
         color: var(--color-text);
       }
+
       &-title {
         font-size: 20px;
       }
+
       &-description {
         margin-top: auto;
         padding: 10px 0;
@@ -140,13 +149,16 @@ export default defineComponent({
           font-size: 17px;
         }
       }
+
       &-content {
         display: flex;
         flex-direction: column;
+
         &-description {
           margin-top: 0;
         }
       }
+
       &-content-info {
         display: flex;
         flex-direction: column;
@@ -158,6 +170,7 @@ export default defineComponent({
         margin-top: auto;
         padding: 15px 0;
       }
+
       &--confirm {
         color: $color-white1;
         font-size: 18px;

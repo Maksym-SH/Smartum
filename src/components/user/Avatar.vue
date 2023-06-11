@@ -116,6 +116,7 @@ export default defineComponent({
   .v-skeleton-loader {
     width: 100%;
     height: 100%;
+
     :deep(.v-skeleton-loader__bone) {
       border-radius: inherit;
       height: 100%;
@@ -124,11 +125,13 @@ export default defineComponent({
 
   &.user-avatar--circle {
     border-radius: 50%;
+
     .v-skeleton-loader,
     .user-avatar__picture {
       border-radius: 50%;
     }
   }
+
   &__picture {
     position: absolute;
     top: 0;
@@ -139,10 +142,12 @@ export default defineComponent({
     border-radius: 4px;
     user-select: none;
   }
+
   &--initials {
     letter-spacing: 0.1px;
     user-select: none;
   }
+
   &--online {
     position: absolute;
     z-index: 2;

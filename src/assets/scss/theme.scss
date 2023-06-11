@@ -34,6 +34,9 @@
 
   --color-background-task-light: #ffffff;
   --color-background-task-dark: #22272b;
+
+  --color-hover-background-task-card-light: #f4f3f3;
+  --color-hover-background-task-card-dark: #212528;
 }
 
 // Dark theme.
@@ -53,6 +56,7 @@ body[data-theme="dark"] {
   --color-disable: var(--color-disable-dark);
   --color-dasboard-card: var(--color-dasboard-card-dark);
   --color-background-task: var(--color-background-task-dark);
+  --color-hover-background-task-card: var(--color-hover-background-task-card-dark);
 }
 
 // Light theme.
@@ -72,4 +76,5 @@ body[data-theme="light"] {
   --color-disable: var(--color-disable-light);
   --color-dasboard-card: var(--color-dasboard-card-light);
   --color-background-task: var(--color-background-task-light);
+  --color-hover-background-task-card: var(--color-hover-background-task-card-light);
 }

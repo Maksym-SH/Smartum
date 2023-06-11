@@ -67,28 +67,34 @@ export default defineComponent({
   cursor: pointer;
   box-shadow: 0 10px 5px rgba($color-black, 0.2);
   transition: transform 0.2s;
+
   &:hover {
     transform: scale(1.02);
   }
+
   &__content {
     padding: 5px 10px;
     transition: background-color 0.3s;
     background-color: var(--color-dasboard-card);
   }
+
   &__title {
     font-weight: 500;
     padding-left: 6px;
     color: var(--color-text);
   }
+
   &__background {
     :deep(.background-result__wrapper) {
       width: 100%;
       border-radius: 4px 4px 0 0;
+
       .background-result__image {
         width: 100%;
       }
     }
   }
+
   &__description {
     display: flex;
     align-items: center;
@@ -96,6 +102,7 @@ export default defineComponent({
     padding: 5px;
     transition: background-color 0.3s;
     background-color: var(--color-dasboard-card);
+
     .members-count,
     .date-of-create {
       font-size: 11px;

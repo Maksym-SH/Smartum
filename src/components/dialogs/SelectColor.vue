@@ -151,12 +151,15 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   width: 148px;
+
   .c-button {
     text-transform: none;
   }
+
   &__palette {
     width: 15px;
   }
+
   &--generate {
     display: inline-flex;
     align-items: flex-start;
@@ -166,32 +169,39 @@ export default defineComponent({
     white-space: nowrap;
     cursor: pointer;
     user-select: none;
+
     svg {
       width: 14px;
     }
   }
 }
+
 .v-dialog {
   :deep(.v-overlay__scrim) {
     opacity: 1;
     background: $color-transp-black !important;
   }
+
   .v-card {
     &__header {
       background-color: var(--color-background-secondary);
       border-bottom: 1px solid var(--color-border-card);
+
       &-title {
         display: inline-flex;
         align-items: center;
         padding: 0 30px;
         color: var(--color-text);
+
         &--additional {
           margin-left: 10px;
         }
       }
     }
+
     &-colors__content {
       background-color: var(--color-background);
+
       &-grid {
         display: grid;
         justify-content: center;
@@ -201,10 +211,12 @@ export default defineComponent({
         gap: 20px;
       }
     }
+
     &__footer {
       display: flex;
       justify-content: flex-end;
       background-color: var(--color-background-secondary);
+
       &--select-color {
         &:disabled {
           :deep(.v-btn__content) {
@@ -214,6 +226,7 @@ export default defineComponent({
       }
     }
   }
+
   @include mobile(max) {
     :deep(.v-overlay__content) {
       max-width: 100%;
@@ -222,6 +235,7 @@ export default defineComponent({
       height: 100%;
       margin: 0;
     }
+
     .v-card {
       height: 100%;
       &__header {
@@ -229,9 +243,11 @@ export default defineComponent({
           padding-left: 25px;
         }
       }
+
       &-colors__content {
         &-grid {
           grid-template-columns: repeat(4, 1fr);
+
           .image-example {
             max-width: none;
             width: 100% !important;

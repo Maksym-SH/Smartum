@@ -38,18 +38,22 @@ export default defineComponent({
   max-width: 470px;
   border-radius: 4px;
   padding: 20px;
+
   &__content {
     text-align: center;
     color: var(--color-text);
   }
+
   &__image {
     max-width: 40px;
     height: 40px;
   }
+
   &__description {
     font-size: 14px;
     line-height: 23px;
   }
+
   &--email-confirm {
     color: $color-blue;
     font-size: 14px;

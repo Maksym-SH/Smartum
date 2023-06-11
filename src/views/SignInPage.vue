@@ -5,7 +5,7 @@
         <img class="auth__window-logo-picture" src="/images/icons/logo.svg" alt="Logo" />
       </div>
       <div class="auth__window-form">
-        <form class="auth__window-form_wrapper" @submit.prevent="submitForm">
+        <form class="auth__window-form-wrapper" @submit.prevent="submitForm">
           <div class="auth__window-form__inputs">
             <cInput
               v-model="userData.email"
@@ -90,26 +90,31 @@ export default defineComponent({
 <style lang="scss" scoped>
 .auth {
   @include auth-window;
+
   &__swap-entry-type {
     display: flex;
     flex-direction: column;
     text-align: center;
     margin-top: 40px;
     padding-bottom: 10px;
+
     .c-button {
       padding: 0;
       color: $color-blue;
       width: fit-content;
       margin: 0 auto;
+
       &:hover {
         color: $color-blue;
       }
     }
+
     .auth__description {
       margin-bottom: 20px;
       color: $color-white4;
     }
   }
+
   &__window {
     position: relative;
     min-width: 400px;
@@ -117,12 +122,14 @@ export default defineComponent({
     margin: 30px;
     background-color: rgba($color-grey, 0.8);
     box-shadow: 0 30px 10px rgba($color-grey, 0.3);
+
     &-logo {
       display: flex;
       justify-content: center;
       margin-bottom: 50px;
       height: 40px;
     }
+
     &--title {
       color: $color-blue;
       font-weight: 500;
@@ -130,17 +137,20 @@ export default defineComponent({
       line-height: 10px;
       text-align: center;
     }
+
     &-form {
       &__inputs {
         &--send {
           text-align: center;
           margin-top: 80px;
+
           .c-button {
             color: $color-white1;
             width: 150px;
           }
         }
       }
+
       &__forgot {
         margin-top: 10px;
         font-size: 14px;
@@ -149,31 +159,38 @@ export default defineComponent({
       }
     }
   }
+
   @include mobile(max) {
     height: 100%;
     min-height: 500px;
+
     &__window {
       margin: 0;
       min-width: 100%;
       height: 100%;
+
       &-form {
         display: flex;
         flex-direction: column;
         height: calc(100% - 65px);
-        &_wrapper {
+
+        &-wrapper {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           width: 100%;
           margin: 0 auto;
           height: 100%;
+
           .c-input {
             width: 100%;
           }
         }
+
         &--actions {
           margin-top: 10px;
         }
+
         &__inputs {
           &--send {
             .c-button {
@@ -182,6 +199,7 @@ export default defineComponent({
           }
         }
       }
+
       .auth__swap-entry-type {
         font-size: 14px;
         margin-top: 20px;

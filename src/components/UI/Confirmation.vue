@@ -140,21 +140,25 @@ export default defineComponent({
       margin: 20px 0;
       width: 100%;
       max-width: 370px;
+
       .c-input {
         padding-bottom: 0;
         font-size: 14px;
       }
     }
+
     &-forgot-password {
       text-align: end;
       padding: 5px 0 20px 0;
     }
+
     .confirmation__button {
       margin-top: 10px;
       display: flex;
       gap: 15px;
       justify-content: center;
       color: $color-white1;
+
       .c-button {
         text-transform: none;
         min-width: 49% !important;
@@ -166,24 +170,31 @@ export default defineComponent({
     &__window {
       width: 310px;
       padding: 15px 18px;
+
       &-title {
         font-size: 18px;
       }
+
       &-description {
         font-size: 15px;
       }
+
       &-input-field {
         width: 100%;
         margin: 20px auto 0 auto;
       }
+
       &-forgot-password {
         padding-top: 10px;
+
         &--go-page {
           font-size: 13px;
         }
       }
+
       .confirmation__button {
         margin-top: 0;
+
         .c-button {
           min-width: 48%;
           padding: 10px;
@@ -191,6 +202,7 @@ export default defineComponent({
       }
     }
   }
+
   @include mobile(max) {
     &__window {
       width: 90%;
@@ -199,6 +211,7 @@ export default defineComponent({
       padding: 20px;
       margin: 5px;
     }
+
     &__button {
       .c-button {
         padding: 10px;

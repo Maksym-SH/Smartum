@@ -211,6 +211,7 @@ export default defineComponent({
   background-color: $color-grey;
   transition: all 0.5s ease;
   box-shadow: 10px 0 10px rgba($color-dark-grey, 0.2);
+
   &.aside-minimize {
     box-shadow: none;
     transform: translateX(-261px);
@@ -226,19 +227,23 @@ export default defineComponent({
     color: $color-white1 !important;
     margin: 0;
     box-shadow: 0px 3px 2px -1px rgba($color-black, 0.5);
+
     .v-list-item__content {
       display: flex;
       width: 100%;
       justify-content: space-between;
     }
+
     .navigation-group-content {
       display: flex;
       align-items: center;
     }
+
     .icon {
       width: 17px;
       margin-right: 12px;
     }
+
     .notify {
       display: inline-flex;
       justify-content: center;
@@ -248,22 +253,27 @@ export default defineComponent({
       font-size: 10px;
       margin-left: auto;
       margin-right: 18px;
+
       .v-badge__badge {
         background-color: $color-red;
       }
+
       &.empty-list {
         .v-badge__badge {
           background-color: $color-dark-grey3;
         }
       }
     }
+
     &:hover {
       background-color: $color-dark-grey2;
     }
+
     &:active {
       background-color: $color-dark-grey3;
     }
   }
+
   &__navigations {
     .c-button {
       width: 100%;
@@ -278,6 +288,7 @@ export default defineComponent({
     color: $color-black;
     background-color: v-bind(asideBackgroundColor);
     overflow: hidden scroll;
+
     .c-loader {
       position: absolute !important;
       top: 50%;
@@ -305,6 +316,7 @@ export default defineComponent({
     min-height: 66.8px;
     background-color: $color-dark-grey;
     width: 100%;
+
     &-picture {
       width: 140px;
     }
@@ -312,14 +324,17 @@ export default defineComponent({
 
   &__mobile-content {
     padding: 10px 24px;
+
     .c-input {
       margin-top: 15px;
       padding: 0;
+
       :deep(.c-input__field--search) {
         display: none;
         border: 5px solid $color-white1 !important;
       }
     }
+
     .aside__theme-switch {
       transform: translateX(20px);
       z-index: 2;
@@ -342,21 +357,25 @@ export default defineComponent({
     bottom: 34px;
     right: -26.9px;
     cursor: pointer;
+
     &-wrapper {
       background-color: v-bind(asideBackgroundColor);
       padding: 15px 10px;
       clip-path: polygon(0 0, 100% 21%, 100% 76%, 0% 100%);
     }
+
     &--toggle {
       img {
         width: 7px;
       }
     }
+
     &--notify-badge {
       position: absolute;
       top: 10px;
       right: 0;
       pointer-events: none;
+
       .v-badge__badge {
         background-color: $color-red;
       }
@@ -370,6 +389,7 @@ export default defineComponent({
     padding: 10px 0;
     background-color: $color-grey;
     color: $color-white1;
+
     &_description {
       display: flex;
       justify-content: space-between;
@@ -384,11 +404,13 @@ export default defineComponent({
   @include responsive($xs, max) {
     transform: translateX(0);
     z-index: 5;
+
     &__collapse {
       position: absolute;
       top: 0%;
       right: -45px;
       bottom: auto;
+
       &-wrapper {
         display: flex;
         justify-content: center;
@@ -399,24 +421,29 @@ export default defineComponent({
         width: 45px;
         height: 66px;
       }
+
       &--toggle {
         img {
           width: 12px;
         }
       }
+
       &--notify-badge {
         right: 3px;
       }
     }
   }
+
   @include mobile(max) {
     &__logo {
       min-height: 63px;
     }
+
     &__user {
       min-height: 89px;
       padding: 10px 24px;
     }
+
     &__collapse {
       &-wrapper {
         height: 63px;

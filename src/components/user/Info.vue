@@ -69,12 +69,14 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   max-width: 140px;
+
   &--name {
     color: $color-white3;
     font-size: 14px;
     line-height: 21px;
     white-space: pre-wrap;
   }
+
   &--status {
     display: inline-flex;
     align-items: center;
@@ -84,9 +86,11 @@ export default defineComponent({
     font-size: 11px;
     line-height: 16.5px;
     color: $color-yellow;
+
     &.verified {
       color: $color-green;
     }
+
     &-icon {
       width: 15px;
     }

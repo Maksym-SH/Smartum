@@ -107,9 +107,11 @@ export default defineComponent({
 .add-new {
   transition: all 0.5s ease;
   border-radius: 4px;
+
   &.creation-mode {
     padding: 5px;
   }
+
   &__button {
     width: 100%;
     font-size: 13px;
@@ -117,24 +119,29 @@ export default defineComponent({
     text-transform: none;
     color: $color-white1;
   }
+
   &__params {
     .c-input {
       padding-top: 0;
+
+      :deep(.c-input__field) {
+        font-size: 11px;
+        padding: 6px;
+        height: 30px;
+      }
     }
-    :deep(.c-input__field) {
-      font-size: 11px;
-      padding: 6px;
-      height: 30px;
-    }
+
     &-actions {
       margin-top: 5px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       &--create {
         color: $color-white1;
         text-transform: none;
       }
+
       &--close {
         color: var(--color-text) !important;
         height: fit-content;

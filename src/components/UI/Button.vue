@@ -35,11 +35,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .c-button {
   min-width: auto !important;
+
   &:disabled {
     :deep(.v-btn__content) {
       color: $color-white1;
     }
   }
+
   &__icon {
     width: 1.2em;
   }

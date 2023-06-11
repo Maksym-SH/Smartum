@@ -10,7 +10,7 @@
           @deleted="deletePhoto"
         />
       </div>
-      <div class="profile-tab__form_item first-name">
+      <div class="profile-tab__form-item first-name">
         <cInput
           v-model.trim="userInfo.firstName"
           :min="userInfo.firstName ? Length.Text : Length.None"
@@ -20,7 +20,7 @@
           @keydown.enter.prevent
         />
       </div>
-      <div class="profile-tab__form_item last-name">
+      <div class="profile-tab__form-item last-name">
         <cInput
           v-model.trim="userInfo.lastName"
           :min="userInfo.lastName ? Length.Text : Length.None"
@@ -30,7 +30,7 @@
           @keydown.enter.prevent
         />
       </div>
-      <div class="profile-tab__form_item textarea">
+      <div class="profile-tab__form-item textarea">
         <cTextarea
           v-model.trim="userInfo.about"
           :max="Length.Textarea"
@@ -38,7 +38,7 @@
           name="userAbout"
         />
       </div>
-      <div class="profile-tab__form_item phone">
+      <div class="profile-tab__form-item phone">
         <cInput
           v-model.trim="userInfo.phone"
           class="phone"
@@ -48,7 +48,7 @@
           @keydown.enter.prevent
         />
       </div>
-      <div class="profile-tab__form_item email">
+      <div class="profile-tab__form-item email">
         <cInput
           v-model="userInfo.email"
           disabled
@@ -57,7 +57,7 @@
           name="userEmail"
         />
       </div>
-      <div class="profile-tab__form_item new-password">
+      <div class="profile-tab__form-item new-password">
         <Hint
           v-if="emailNotVerified"
           content="Для изменения пароля подтвердите электронный адрес."
@@ -73,7 +73,7 @@
           @keydown.enter.prevent
         />
       </div>
-      <div class="profile-tab__form_buttons-wrapper">
+      <div class="profile-tab__form-buttons-wrapper">
         <cButton
           class="btn-save"
           :class="{ 'full-width-mobile': saveChangesButtonToFullScreen }"
@@ -141,29 +141,22 @@ export default defineComponent({
         (userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
         (!userInfo.firstName || userInfo.firstName.length >= Length.Text) &&
         (!userInfo.lastName || userInfo.lastName.length >= Length.Text) &&
-        (!userInfo.newPassword ||
-          userInfo.newPassword.length >= Length.Password)
+        (!userInfo.newPassword || userInfo.newPassword.length >= Length.Password)
       )
         return true;
 
       return false;
     });
 
-    const emailNotVerified = computed(
-      (): boolean => !currentUser.value.emailVerified
-    );
+    const emailNotVerified = computed((): boolean => !currentUser.value.emailVerified);
 
-    const passwordChanged = computed(
-      (): boolean => userInfo.newPassword !== ""
-    );
+    const passwordChanged = computed((): boolean => userInfo.newPassword !== "");
 
     const showDeleteAccountButton = computed((): boolean => {
       return configurationStore.additionalParams.showDeleteAccountButton;
     });
 
-    const saveChangesButtonToFullScreen = computed(
-      () => !showDeleteAccountButton.value
-    );
+    const saveChangesButtonToFullScreen = computed(() => !showDeleteAccountButton.value);
 
     // Update methods.
     const updatePhoto = (file: File) => {
@@ -188,9 +181,7 @@ export default defineComponent({
 
     const updatePassword = (): void => {
       PasswordUpdate(currentUser.value, userInfo.newPassword).then((): void => {
-        const notification = newNotificationContent(
-          NotificationType.PasswordChange
-        );
+        const notification = newNotificationContent(NotificationType.PasswordChange);
 
         notificationStore.setNewNotification(notification);
         userInfo.newPassword = ""; // After update password reset input value.
@@ -253,14 +244,17 @@ export default defineComponent({
 .profile-tab {
   position: relative;
   padding-top: 20px;
+
   &__form {
     display: grid;
     grid-template-columns: minmax(auto, 200px) repeat(2, 0.5fr);
     gap: 22px 25px;
     padding-bottom: 20px;
     max-width: 1200px;
-    &_item {
+
+    &-item {
       position: relative;
+
       &.new-password {
         .c-hint {
           top: -15%;
@@ -273,12 +267,15 @@ export default defineComponent({
         }
       }
     }
+
     &--upload {
+      grid-area: 1/1/3/1;
+
       .label {
         font-size: 13px;
         color: var(--color-text);
       }
-      grid-area: 1/1/3/1;
+
       .file-upload {
         width: 100%;
         height: 100%;
@@ -286,25 +283,31 @@ export default defineComponent({
         max-width: 200px;
       }
     }
+
     .c-input {
       padding-bottom: 0;
       margin-top: 2px;
     }
+
     .textarea {
       grid-area: 2/2/3/4;
+
       .c-textarea {
         height: 130px;
       }
     }
+
     .btn-delete {
       grid-column-start: 3;
       max-width: 200px;
       justify-self: end;
     }
-    &_buttons-wrapper {
+
+    &-buttons-wrapper {
       display: flex;
       justify-content: space-between;
       grid-area: 4/1/4/4;
+
       .btn-save,
       .btn-delete {
         color: $color-white1;
@@ -313,33 +316,40 @@ export default defineComponent({
         max-width: 200px;
       }
     }
+
     @include responsive($lg, max) {
       max-width: 100%;
       grid-template-columns: 200px 0.5fr 0.5fr;
     }
+
     @include responsive($md, max) {
       grid-template-columns: 170px 1fr 1fr;
       gap: 13px 15px;
+
       &--upload {
         .label {
           font-size: 14px;
         }
+
         .file-upload {
           max-width: 170px;
           max-height: 170px;
         }
       }
-      &_item {
+
+      &-item {
         &.new-password {
           .c-hint {
             font-size: 9px;
           }
         }
       }
+
       .c-textarea {
         height: 110px !important;
       }
-      &_buttons-wrapper {
+
+      &-buttons-wrapper {
         .btn-save,
         .btn-delete {
           width: 170px;
@@ -347,28 +357,34 @@ export default defineComponent({
       }
     }
   }
+
   @include mobile(max) {
     height: 100%;
     padding-bottom: 20px;
+
     &__form {
       padding: 0;
       display: flex;
       height: 100%;
       flex-direction: column;
       align-items: center;
+
       &--upload {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
+
         .label {
           font-size: 16px;
         }
+
         .file-upload {
           max-width: none;
           max-height: none;
           height: 320px;
           max-width: 320px;
+
           :deep(.file-upload--delete) {
             width: 40px;
             height: 40px;
@@ -376,10 +392,12 @@ export default defineComponent({
           }
         }
       }
-      &_item {
+
+      &-item {
         margin: 0 auto;
         width: 100%;
         max-width: 440px;
+
         &.new-password {
           .c-hint {
             font-size: 11px;
@@ -388,20 +406,24 @@ export default defineComponent({
           }
         }
       }
-      &_buttons-wrapper {
+
+      &-buttons-wrapper {
         width: 100%;
         max-width: 440px;
         justify-content: space-between;
         margin-top: auto;
         padding-top: 30px;
+
         .btn-save,
         .btn-delete {
           font-size: 13px;
           width: 47%;
           max-width: none;
         }
+
         .btn-save {
           order: 2;
+
           &.full-width-mobile {
             width: 100%;
             max-width: 400px;

@@ -90,11 +90,13 @@ export default defineComponent({
   width: 235px;
   color: var(--color-text);
   text-align: center;
+
   &-wrapper {
     position: relative;
     height: 43.2px;
     min-width: 130px;
   }
+
   &__title {
     display: flex;
     align-items: flex-start;
@@ -102,16 +104,20 @@ export default defineComponent({
     letter-spacing: 0.3px;
     line-height: 24px;
   }
+
   &__icon {
     margin-right: 10px;
   }
+
   &__timestamp {
     font-size: 12px;
+
     &--time {
       position: relative;
       margin-right: 10px;
       min-width: 51px;
       display: inline-block;
+
       &::after {
         content: "";
         position: absolute;
@@ -124,8 +130,10 @@ export default defineComponent({
         background-color: $color-yellow;
       }
     }
+
     &--date {
       display: inline-block;
+
       &:first-letter {
         text-transform: uppercase;
       }

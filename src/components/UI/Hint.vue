@@ -24,15 +24,19 @@ export default defineComponent({
   display: inline-block;
   padding: 5px;
   border-radius: 5px;
+
   &.c-hint-variant--info {
     background-color: $color-blue;
   }
+
   &.c-hint-variant--danger {
     background-color: $color-red;
   }
+
   &.c-hint-varinat--success {
     background-color: $color-green;
   }
+
   &::before {
     content: "";
     position: absolute;

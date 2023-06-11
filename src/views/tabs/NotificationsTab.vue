@@ -90,25 +90,30 @@ export default defineComponent({
 <style lang="scss" scoped>
 .notifications-tab {
   position: relative;
+
   &.empty {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
   }
+
   &__container {
     padding-top: 20px;
     width: 100%;
     height: 100%;
   }
+
   &__filters {
     display: flex;
     justify-content: flex-end;
     color: $color-white1;
   }
+
   @include tablet(max) {
     height: 100%;
     padding-bottom: 45px;
+
     &__container {
       padding-top: 0;
     }

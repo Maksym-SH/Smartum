@@ -108,6 +108,7 @@ export default defineComponent({
     background-color: var(--color-background-modal);
     color: var(--color-text);
   }
+
   &__title {
     text-align: center;
     word-break: break-word;
@@ -119,12 +120,14 @@ export default defineComponent({
       text-transform: uppercase;
     }
   }
+
   &__description {
     font-size: 14px;
     text-align: center;
     line-height: 20px;
     opacity: 0.9;
   }
+
   &__button {
     margin-top: auto;
     padding-top: 30px;
@@ -132,6 +135,7 @@ export default defineComponent({
     gap: 15px;
     justify-content: center;
     color: $color-white1;
+
     .c-button {
       text-transform: none;
       width: 49%;
@@ -146,6 +150,7 @@ export default defineComponent({
       padding: 20px;
       margin: 5px;
     }
+
     &__button {
       .c-button {
         padding: 10px;

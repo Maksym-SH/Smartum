@@ -148,17 +148,21 @@ export default defineComponent({
   transition: all 0.2s;
   cursor: pointer;
   color: var(--color-text);
+
   &.not-read {
     background-color: var(--color-background-notification-new);
   }
+
   &__background-avatar {
     min-width: 45px;
     height: 45px;
     border-radius: 50%;
   }
+
   &__content {
     width: 100%;
     margin-left: 10px;
+
     &-info {
       display: flex;
       flex-wrap: nowrap;
@@ -166,11 +170,13 @@ export default defineComponent({
       overflow-x: hidden;
     }
   }
+
   &__title {
     display: inline;
     word-break: break-word;
     font-size: 15px;
   }
+
   &__date {
     font-size: 14px;
     white-space: nowrap;
@@ -178,6 +184,7 @@ export default defineComponent({
     line-height: 22px;
     color: $color-dark-grey4;
   }
+
   &__description {
     margin-top: 7px;
     font-size: 13px;
@@ -185,6 +192,7 @@ export default defineComponent({
     color: var(--color-text);
     opacity: 0.8;
   }
+
   &--close {
     position: absolute;
     top: 1px;
@@ -195,15 +203,19 @@ export default defineComponent({
     font-size: 17px;
     cursor: pointer;
     transition: all 0.1s;
+
     &:hover {
       color: $color-red-hover !important;
     }
   }
+
   @include mobile(max) {
     padding: 20px 10px 30px 5px;
+
     &__title {
       font-size: 14px;
     }
+
     &__date {
       position: absolute;
       bottom: 5px;

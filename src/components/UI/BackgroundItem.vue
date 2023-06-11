@@ -81,10 +81,12 @@ export default defineComponent({
   &.active {
     outline-color: $color-cyan;
     border-radius: 0px;
+
     .image-example__picture {
       border-radius: 0;
     }
   }
+
   &__picture {
     border-radius: 4px;
     width: 100%;

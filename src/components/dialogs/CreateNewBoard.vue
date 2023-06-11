@@ -152,6 +152,7 @@ export default defineComponent({
 .create-dashboard-btn {
   color: $color-white1;
 }
+
 .v-dialog {
   z-index: 90 !important;
 
@@ -162,35 +163,43 @@ export default defineComponent({
 
   .v-card {
     background-color: var(--color-background);
+
     &-header__title {
       font-size: 15px;
       padding-left: 20px;
     }
+
     &__wrapper {
       display: flex;
       align-items: center;
       gap: 40px;
+
       &-background-select {
         margin-top: 20px;
       }
     }
+
     &__title {
       text-align: center;
       color: var(--color-text);
     }
+
     &__footer-action {
       display: flex;
       justify-content: flex-end;
     }
+
     &__backgrounds {
       margin-top: 5px;
       display: flex;
       justify-content: center;
       gap: 5px;
     }
+
     &--create-board {
       color: $color-blue;
     }
+
     &--cancel-create {
       color: var(--color-text) !important;
     }
@@ -206,18 +215,21 @@ export default defineComponent({
     }
     .v-card {
       height: 100%;
+
       &__wrapper {
         display: flex;
         margin: 0 auto;
         max-width: 370px;
         flex-direction: column;
       }
+
       &__form {
         height: 100%;
         display: flex;
         justify-content: center;
         flex-direction: column;
       }
+
       &__footer-action {
         margin-top: auto;
       }

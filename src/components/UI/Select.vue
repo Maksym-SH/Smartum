@@ -76,15 +76,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 .c-select {
   position: relative;
+
   &.active {
     > .c-button {
       background-color: $color-black !important;
     }
   }
+
   &__icon {
     width: 25px;
     height: 25px;
   }
+
   &__picker {
     position: absolute;
     right: calc(50% - 15px);
@@ -92,11 +95,13 @@ export default defineComponent({
     z-index: 3;
     border: 1px solid $color-black;
     border-radius: 4px;
+
     &-actions-wrapper {
       background-color: $color-white2;
       overflow: hidden;
       border-radius: 4px;
     }
+
     .c-button {
       display: flex;
       justify-content: flex-start;
@@ -109,22 +114,27 @@ export default defineComponent({
       text-transform: none;
       border-radius: 0 !important;
       border-bottom: 1px solid $color-black;
+
       &.no-icon {
         padding-left: 44px !important;
       }
+
       &:last-child {
         border-bottom-color: transparent;
       }
+
       &:hover {
         background-color: $color-white3;
         border-radius: 3px 3px 0 0 !important;
       }
+
       :deep() {
         svg {
           margin-right: 10px;
         }
       }
     }
+
     &--caret {
       top: -10px;
       right: 7px;

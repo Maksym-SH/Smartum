@@ -71,6 +71,7 @@ export default defineComponent({
 @import "@/assets/scss/mixins";
 .forgot-page {
   @include auth-window;
+
   &__window {
     margin: 20px;
     background-color: rgba($color-dark-grey, 0.8);
@@ -79,27 +80,33 @@ export default defineComponent({
     max-width: 400px;
     color: $color-white1;
     border-radius: 20px;
+
     &-header {
       margin-bottom: 40px;
+
       &__title {
         font-size: 25px;
       }
+
       &__description {
         line-height: 15px;
       }
     }
+
     &-content {
       .c-input {
         :deep(.c-input__field) {
           border: 1px solid $color-white1;
         }
       }
+
       .c-button {
         margin-top: 20px;
         width: 100%;
         padding: 7px 0;
       }
     }
+
     &-link {
       margin-top: 20px;
       text-align: center;
@@ -113,18 +120,22 @@ export default defineComponent({
         cursor: pointer;
         padding-bottom: 2px;
         border-bottom: 1px solid transparent;
+
         &:hover {
           border-color: inherit;
         }
+
         svg {
           width: 20px;
         }
       }
     }
   }
+
   @include mobile(max) {
     height: 100%;
     min-height: 300px;
+
     &__window {
       display: flex;
       flex-direction: column;
@@ -134,23 +145,30 @@ export default defineComponent({
       padding: 15px 15px 80px 15px;
       margin: 0;
       min-height: 300px;
+
       &-header {
         margin-bottom: 40px;
+
         &__title {
           font-size: 18px;
         }
+
         &__description {
           line-height: 15px;
         }
       }
+
       &-link {
         margin-top: auto;
+
         &--go-back {
           font-size: 16px;
         }
       }
+
       &-content {
         min-height: 70px;
+
         .c-button {
           position: absolute;
           bottom: 30px;

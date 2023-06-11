@@ -20,14 +20,14 @@
         </div>
         <div class="sign-up__window--welcome-logo">
           <img
-            class="sign-up__window--welcome-logo_image"
+            class="sign-up__window--welcome-logo-image"
             src="/images/icons/logo.svg"
             alt="Logo"
           />
         </div>
       </div>
-      <div class="sign-up__window_content content">
-        <h2 class="sign-up__window_content-title">Создание аккаунта</h2>
+      <div class="sign-up__window-content content">
+        <h2 class="sign-up__window-content-title">Создание аккаунта</h2>
         <form class="sign-up__window-form-inputs" @submit.prevent="submitForm">
           <cInput
             v-model.trim="userData.firstName"
@@ -157,10 +157,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .sign-up {
   @include auth-window;
+
   &__window {
     margin: 30px;
     display: flex;
     box-shadow: 0 30px 10px rgba($color-grey, 0.3);
+
     &--welcome {
       position: relative;
       background-color: $color-dark-blue;
@@ -168,6 +170,7 @@ export default defineComponent({
       min-width: 360px;
       padding: 65px 30px 20px 30px;
       color: $color-white3;
+
       &__grid-image {
         outline: none;
         width: 70%;
@@ -177,6 +180,7 @@ export default defineComponent({
         opacity: 0.1;
         user-select: none;
       }
+
       &__tasks-image {
         outline: none;
         width: 85%;
@@ -186,11 +190,13 @@ export default defineComponent({
         right: -100px;
         user-select: none;
       }
+
       &-title {
         text-align: center;
         font-size: 25px;
         font-family: $RobotoRG;
       }
+
       &-description {
         margin-top: 200px;
         font-weight: 500;
@@ -198,34 +204,41 @@ export default defineComponent({
         text-align: center;
         font-family: $RobotoRG;
       }
+
       &-logo {
         position: absolute;
         bottom: 0;
         width: 100%;
         left: 0;
         text-align: center;
-        &_image {
+
+        &-image {
           user-select: none;
           width: 50%;
         }
       }
     }
-    &_content {
+
+    &-content {
       width: 60%;
       padding: 20px;
       color: $color-white3;
       background-color: rgba($color-grey, 0.8);
+
       .content__swap-type-entry {
         margin-top: 40px;
         text-align: center;
       }
+
       &-title {
         margin-bottom: 30px;
       }
+
       .modal-terms-of-use {
         color: $color-blue;
         cursor: pointer;
       }
+
       .sign-up__window-description {
         width: 100%;
         max-width: 300px;
@@ -233,52 +246,65 @@ export default defineComponent({
         margin-top: 20px;
         text-align: center;
         font-size: 12px;
+
         &--open-modal {
           cursor: pointer;
           color: $color-blue;
+
           &:hover {
             color: $color-dark-blue;
           }
         }
       }
     }
+
     &-form-inputs {
       height: calc(400px + 50px);
       display: flex;
       flex-direction: column;
+
       &__send {
         margin-top: auto;
+
         :deep(.c-button) {
           width: 100%;
         }
       }
     }
   }
+
   @include responsive($md, max) {
     &__window {
       width: 400px;
+
       &--welcome {
         display: none;
       }
-      &_content {
+
+      &-content {
         width: 100%;
       }
     }
   }
+
   @include mobile(max) {
     height: 100%;
     min-height: 660px;
+
     &__window {
       margin: 0;
       width: 100%;
       height: 100%;
-      &_content {
+
+      &-content {
         border-radius: 0;
         min-height: 100%;
+
         .content__swap-type-entry {
           margin: 8px 0 20px 0;
           font-size: 14px;
         }
+
         .sign-up__window-description {
           margin-top: 0;
           margin-bottom: 15px;
@@ -288,10 +314,12 @@ export default defineComponent({
           line-height: 17px;
         }
       }
+
       &-form-inputs {
         display: flex;
         min-height: calc(100% - 102px);
         flex-direction: column;
+
         &__send {
           margin-top: auto;
           padding-top: 40px;

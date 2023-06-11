@@ -44,29 +44,36 @@ export default defineComponent({
   background-color: transparent;
   color: $color-white1;
   border-radius: 0;
+
   &:hover {
     background-color: $color-dark-grey3;
   }
+
   &-text {
     background-color: $color-dark-grey;
     cursor: pointer;
     font-size: 13px;
+
     &:active {
       background-color: $color-dark-grey3;
     }
+
     &:hover {
       background-color: $color-dark-grey2;
     }
+
     :deep(.v-expansion-panel-text__wrapper) {
       padding: 16px 24px;
     }
   }
+
   &-title {
     .icon {
       margin-right: 12px;
       max-width: 17px;
       max-height: 17px;
     }
+
     .no-icon {
       padding-left: 26px;
     }

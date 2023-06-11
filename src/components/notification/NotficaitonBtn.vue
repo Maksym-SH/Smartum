@@ -123,20 +123,24 @@ export default defineComponent({
 <style lang="scss" scoped>
 .notifications {
   position: relative;
+
   &__btn {
     font-size: 20px;
     padding: 0 5px;
   }
+
   &__badge {
     position: absolute;
     right: 7px;
     z-index: 2;
     top: -2px;
     display: inline-flex;
+
     :deep(.v-badge__badge) {
       background-color: $color-red;
     }
   }
+
   &__window {
     &-header {
       display: flex;
@@ -144,27 +148,33 @@ export default defineComponent({
       justify-content: space-between;
       gap: 10px;
     }
+
     &-title {
       padding-left: 10px;
       color: var(--color-text);
       font-size: 20px;
     }
+
     &--actions {
       display: flex;
       align-items: center;
       gap: 10px;
+
       :deep(.main-label) {
         font-size: 12px;
       }
     }
+
     &--close {
       color: var(--color-text) !important;
       font-size: 25px;
       padding: 0 5px;
     }
+
     &-items {
       .notification-item {
         padding-bottom: 25px;
+
         :deep(.notification-item__content) {
           .notification-item__date {
             font-size: 12px;
@@ -176,15 +186,18 @@ export default defineComponent({
       }
     }
   }
+
   @include mobile(max) {
     &__window {
       &-header {
         height: 100%;
       }
+
       &-title {
         padding-left: 5px;
         font-size: 14px;
       }
+
       &--actions {
         gap: 5px;
       }

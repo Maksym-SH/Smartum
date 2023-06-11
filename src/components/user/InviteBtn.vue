@@ -265,15 +265,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 .invite-users {
   position: relative;
+
   &__btn {
     text-transform: none;
     color: $color-white1;
     display: flex;
     align-items: center;
+
     .icon {
       font-size: 20px;
     }
   }
+
   &__window {
     &-header {
       display: flex;
@@ -282,34 +285,41 @@ export default defineComponent({
       gap: 10px;
       padding: 10px 5px;
       text-align: end;
+
       &--actions {
         display: flex;
         gap: 5px;
+
         .c-button {
           padding: 0 5px;
         }
       }
+
       &--search {
         .c-input {
           padding: 0;
         }
       }
     }
+
     &-content {
       &--empty {
         color: var(--color-text);
       }
     }
+
     &--close {
       color: var(--color-text) !important;
       font-size: 25px;
       padding: 0;
     }
+
     &--refresh {
       font-size: 20px;
       padding: 5px;
       cursor: pointer;
       color: $color-blue;
+
       &:hover {
         color: $color-blue-hover;
       }
