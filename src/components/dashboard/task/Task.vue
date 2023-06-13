@@ -1,12 +1,30 @@
 <template>
   <div class="task-item">
     <div class="task-item__info">
-      <h3 class="task-item__info-title">{{ task.title }}</h3>
-      <cButton
-        class="task-item__info--edit initially-transparent"
-        variant="text"
-        icon="brush"
-      />
+      <div class="task-item__info-main">
+        <div class="task-item__info-marks" v-if="task.marks">
+          <BackgroundItem
+            v-for="mark in task.marks"
+            :height="7"
+            :width="25"
+            :key="mark"
+            :background="mark"
+          />
+        </div>
+        <h3 class="task-item__info-title">{{ task.title }}</h3>
+      </div>
+      <span class="task-item__info-actions">
+        <cButton
+          @click="taskModalActive = true"
+          class="task-item__info--edit initially-transparent"
+          variant="text"
+          icon="information-outline"
+        />
+        <span v-if="subtasksCount" class="task-item__info-subtasks">
+          <InlineSvg src="/images/icons/task.svg" />
+          {{ subtasksCount }}
+        </span>
+      </span>
     </div>
     <div class="task-item__members">
       <v-tooltip
@@ -34,30 +52,50 @@
         />
       </div>
     </div>
+    <Teleport to="body">
+      <transition name="toggle-content" mode="out-in">
+        <TaskInfoModal
+          v-if="taskModalActive"
+          :task-id="task.id"
+          :column-id="columnId"
+          v-model:taskModalActive="taskModalActive"
+        />
+      </transition>
+    </Teleport>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from "vue";
+import { defineComponent, PropType, computed, ref } from "vue";
 import { IWorkingBoardTask } from "@/types/interfaces";
 
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import Avatar from "@/components/user/Avatar.vue";
+import TaskInfoModal from "@/components/dialogs/TaskInfo.vue";
 import InlineSvg from "vue-inline-svg";
+import BackgroundItem from "@/components/UI/BackgroundItem.vue";
 
 export default defineComponent({
   components: {
     Avatar,
     InlineSvg,
+    TaskInfoModal,
+    BackgroundItem,
   },
   props: {
     task: {
       type: Object as PropType<IWorkingBoardTask>,
       required: true,
     },
+    columnId: {
+      type: Number,
+      required: true,
+    },
   },
   setup(props) {
     const { getFullName, unicID } = useUserInfo();
+
+    const taskModalActive = ref(false);
 
     const currenUserInvited = computed((): boolean => {
       if (props.task.assignedMembers) {
@@ -70,8 +108,23 @@ export default defineComponent({
       return false;
     });
 
+    const subtasksCount = computed((): string | false => {
+      if (props.task.subtasks && props.task.subtasks.length) {
+        const completedCount = props.task.subtasks.filter(
+          (subtask) => subtask.done
+        ).length;
+        const substasksCount = props.task.subtasks.length;
+
+        return `${completedCount} / ${substasksCount}`;
+      }
+
+      return false;
+    });
+
     return {
+      taskModalActive,
       currenUserInvited,
+      subtasksCount,
       getFullName,
     };
   },
@@ -107,10 +160,37 @@ export default defineComponent({
   &__info {
     display: flex;
     justify-content: space-between;
+    &-actions {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end; 
+      gap: 5px;
+    }
+
+    &-subtasks {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--color-text);
+      font-size: 10px;
+      svg {
+        width: 12px;
+      }
+    }
+
+    &-marks {
+      display: flex;
+      gap: 5px;
+      .image-example {
+        cursor: inherit;
+      }
+    }
+    &-main {
+      max-width: 80%;
+    }
     &-title {
       font-size: 14px;
       color: var(--color-text);
-      max-width: 80%;
       word-break: break-word;
     }
     &--edit {

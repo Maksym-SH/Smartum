@@ -97,17 +97,17 @@ export default defineComponent({
       background: Colors.GradientBluePink,
       columns: [
         {
-          id: 1,
+          id: 0,
           title: "Нужно сделать",
           tasks: [],
         },
         {
-          id: 2,
+          id: 1,
           title: "В процессе",
           tasks: [],
         },
         {
-          id: 3,
+          id: 2,
           title: "Окончено",
           tasks: [],
         },

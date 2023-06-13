@@ -43,6 +43,7 @@ export default defineComponent({
   }
 
   &__icon {
+    transition: all 0.2s ease;
     width: 1.2em;
   }
 }

@@ -23,15 +23,15 @@
       @end="dragEnd"
     >
       <template #item="{ element }">
-        <Task :task="element" />
+        <Task :task="element" :column-id="column.id" />
       </template>
     </Draggable>
-    <AddNewTask :task-length="taskLength" @createTask="createTask" />
+    <AddNewTask @createTask="createTask" />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces";
 import { Numbers } from "@/types/enums";
 
@@ -68,10 +68,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const categoryTitle = ref("");
 
-    const taskLength = computed((): number => {
-      return props.column.tasks?.length || 0;
-    });
-
     const showDropZone = ref(false);
 
     const changeColumnName = (event: Event) => {
@@ -97,7 +93,6 @@ export default defineComponent({
     };
 
     return {
-      taskLength,
       categoryTitle,
       showDropZone,
       Numbers,
@@ -112,6 +107,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .task-column {
+  max-width: 250px;
   min-width: 250px;
   padding: 4px;
   border-radius: 4px;

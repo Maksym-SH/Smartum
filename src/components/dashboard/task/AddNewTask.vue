@@ -4,7 +4,6 @@
       input-placeholder="Ввести заголовок для этой карточки"
       button-title="Добавить карточку"
       buttonVariant="text"
-      :new-id="taskLength"
       @create="createTask"
     />
   </div>
@@ -22,17 +21,8 @@ export default defineComponent({
     AddNew,
   },
   emits: ["createTask"],
-  props: {
-    taskLength: {
-      type: Number,
-      required: true,
-    },
-  },
   setup(_, { emit }) {
     const createTask = (newTask: IWorkingBoardTask) => {
-      newTask.assignedMembers = [];
-      newTask.comments = [];
-
       emit("createTask", newTask);
     };
 

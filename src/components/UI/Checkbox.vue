@@ -29,8 +29,10 @@
       v-if="label"
       class="label main-label"
       :class="{
-        'not-selected': !checked,
+        'not-selected': !checked && switchBox,
         disabled: disabled,
+        'line-through': lineThrough,
+        active: checked && !switchBox
       }"
       @click="checkboxToggle(true)"
     >
@@ -96,6 +98,31 @@ export default defineComponent({
       pointer-events: none;
       cursor: default;
       color: var(--color-disable) !important;
+    }
+  }
+
+  .main-label {
+    color: var(--color-text);
+    padding-left: 5px;
+
+    &.line-through {
+      position: relative;
+      &::before {
+        content: "";
+        width: 0;
+        height: 2px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        background-color: var(--color-text);
+        transition: width 0.3s;
+      }
+      &.active {
+        &::before {
+          width: calc(100% + 5px);
+        }
+      }
     }
   }
 
@@ -177,11 +204,6 @@ export default defineComponent({
     .secondary-label {
       color: var(--color-text);
       padding-right: 5px;
-    }
-
-    .main-label {
-      color: var(--color-text);
-      padding-left: 5px;
     }
 
     .c-checkbox__input {

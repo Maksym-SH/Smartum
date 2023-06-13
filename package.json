@@ -20,6 +20,7 @@
     "vue": "^3.2.13",
     "vue-inline-svg": "^3.1.2",
     "vue-router": "^4.0.3",
+    "vue3-emoji-picker": "^1.1.7",
     "vuedraggable": "^4.1.0",
     "vuetify": "^3.2.1"
   },

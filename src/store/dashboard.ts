@@ -267,7 +267,6 @@ const useDashboardStore = defineStore("dashboard", () => {
     showLoading = true
   ): Promise<void> => {
     commonStore.setLoadingStatus(showLoading);
-
     await update(Refference(RTDatabase, updatedBoard.joinCode), updatedBoard)
       .catch((error: ErrorCode) => {
         ShowErrorMessage(error);

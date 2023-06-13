@@ -19,6 +19,10 @@ export function ObjectHasValues(object: Object): boolean {
   });
 }
 
+export function TheSameObject(firstObject: Object, secondObject: Object): boolean {
+  return JSON.stringify(firstObject) === JSON.stringify(secondObject);
+}
+
 export function ObjectNotEmpty(object: object): boolean {
   return Object.keys(object).length > 0;
 }
@@ -128,4 +132,10 @@ export function DeleteAccountPopup(
       },
     });
   };
+}
+
+let debounceTimer: ReturnType<typeof setTimeout>;
+export function Debounce(callback: Function, ms: number) {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => callback(), ms);
 }

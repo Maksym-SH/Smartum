@@ -102,15 +102,37 @@ export interface ITaskComment {
   id: number;
   member: IUserForList;
   message: string;
+  emoji: IEmoji[];
   dateOfCreate: Date | IServerDate;
+  edited: boolean;
+}
+
+export interface IEmoji {
+  smile: string;
+  authors?: string[];
+}
+
+export interface INewEmojiParams {
+  emoji: Required<IEmoji>,
+  newAuthor: string;
 }
 
 export interface IWorkingBoardTask {
   id: number;
   title: string;
-  assignedMembers: IUserForList[];
-  comments?: ITaskComment[];
+  marks?: string[];
+  subtasks?: ISubTasks[];
+  description?: string;
+  subscribedToNotifications?: IWorkingBoardMember[];
+  assignedMembers?: IUserForList[];
+  comments: ITaskComment[];
   dateOfCreate: Date | IServerDate;
+}
+
+export interface ISubTasks {
+  id: number;
+  title: string;
+  done: boolean;
 }
 
 export interface IWorkingBoardTaskColumn {

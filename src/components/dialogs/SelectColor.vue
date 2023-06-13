@@ -5,18 +5,21 @@
         <cButton
           v-bind="props"
           size="small"
-          :color="modelValue"
+          class="color-picker--open-modal"
+          :color="buttonColor"
           :style="`color: ${colorPickParams.textColor}`"
           @click="showDialog = true"
         >
-          <img
-            class="color-picker__palette"
-            src="/images/icons/color-palette.svg"
-            alt=""
-          />
-          <small class="color-picker__button-title"> Выбрать цвет </small>
+          <slot name="button-title">
+            <img
+              class="color-picker__palette"
+              src="/images/icons/color-palette.svg"
+              alt=""
+            />
+            <small class="color-picker__button-title"> Выбрать цвет </small>
+          </slot>
         </cButton>
-        <span class="color-picker--generate" @click="generateColor">
+        <span v-if="regenerate" class="color-picker--generate" @click="generateColor">
           <InlineSvg src="/images/icons/refresh.svg" />
           Сгенерировать ({{ colorPickParams.target }})
         </span>
@@ -27,7 +30,7 @@
         <v-toolbar class="v-card__header">
           <h4 class="v-card__header-title">
             Выбор цвета
-            <p class="v-card__header-title--additional">
+            <p v-if="showColorsTarget" class="v-card__header-title--additional">
               ({{ colorPickParams.target }} оттенок)
             </p>
           </h4>
@@ -90,8 +93,20 @@ export default defineComponent({
       type: String as PropType<Theme>,
       required: true,
     },
+    regenerate: {
+      type: Boolean,
+      default: true,
+    },
+    showColorsTarget: {
+      type: Boolean,
+      default: true,
+    },
+    applyButtonColor: {
+      type: Boolean,
+      default: true,
+    },
   },
-  emits: ["selectColor", "update:modelValue"],
+  emits: ["selectColor", "update:modelValue", "selected"],
   setup(props, { emit }) {
     const showDialog = ref(false);
 
@@ -111,6 +126,13 @@ export default defineComponent({
 
     const colorsCollection = props.theme === "dark" ? DarkColors() : LightColors();
 
+    const buttonColor = computed(() => {
+      if (props.applyButtonColor) {
+        return props.modelValue;
+      }
+      return Colors.LightGrey;
+    });
+
     const selectedColor = ref<string>("");
 
     const closeDialog = () => {
@@ -121,6 +143,7 @@ export default defineComponent({
     const changeColor = (generatedColor?: string) => {
       const colorToSave = generatedColor || selectedColor.value;
       emit("update:modelValue", colorToSave);
+      emit("selected");
 
       closeDialog();
     };
@@ -135,6 +158,7 @@ export default defineComponent({
       showDialog,
       colorPickParams,
       selectedColor,
+      buttonColor,
       colorsCollection,
       Colors,
       generateColor,
@@ -150,7 +174,8 @@ export default defineComponent({
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 148px;
+  width: 100%;
+  max-width: 148px;
 
   .c-button {
     text-transform: none;

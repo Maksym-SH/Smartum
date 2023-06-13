@@ -89,7 +89,11 @@ export const useTextareaProps = {
   },
   name: {
     type: String,
-    required: true,
+    default: (props: any) => {
+      if (props.label) {
+        throw new Error("Props label not found.");
+      }
+    },
   },
   disabled: {
     type: Boolean,
@@ -162,6 +166,10 @@ export const useCheckboxProps = {
   label: {
     type: String,
     default: "",
+  },
+  lineThrough: {
+    type: Boolean,
+    default: false,
   },
   switchBox: {
     type: Boolean,

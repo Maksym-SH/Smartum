@@ -50,7 +50,7 @@ export default defineComponent({
   props: {
     newId: {
       type: Number,
-      required: true,
+      default: 0,
     },
     buttonTitle: {
       type: String,
@@ -73,8 +73,7 @@ export default defineComponent({
     const create = () => {
       if (title.value.length < Length.Text) return;
 
-      const elementID = props.newId;
-
+      const elementID = props.newId || Date.now();
       const element: Partial<IWorkingBoardTask | IWorkingBoardTaskColumn> = {
         id: elementID,
         title: title.value,

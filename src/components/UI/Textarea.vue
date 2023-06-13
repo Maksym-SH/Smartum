@@ -10,6 +10,7 @@
           'c-textarea__field--error': errorText,
           'c-textarea__field--required': required,
           'c-textarea__field--resize': resize,
+          'c-textarea__field--has-validate': min >= 0,
         }"
         :name="name"
         :placeholder="placeholder"
@@ -128,10 +129,14 @@ export default defineComponent({
     &--error {
       border-color: $color-red;
       background-color: $color-pink;
-
+      color: $color-black;
       &::placeholder {
         color: $color-grey;
       }
+    }
+
+    &--has-validate {
+      height: calc(100% - 6px) !important;
     }
 
     &:focus {
