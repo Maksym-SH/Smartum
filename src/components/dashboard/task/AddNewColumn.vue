@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Length } from "@/types/enums";
-import { IWorkingBoardTaskColumn } from "@/types/interfaces";
+import type { IWorkingBoardTaskColumn } from "@/types/interfaces";
 import { defineComponent, ref } from "vue";
 
 import AddNew from "./AddNew.vue";

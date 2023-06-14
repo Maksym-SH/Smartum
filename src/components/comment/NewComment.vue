@@ -29,7 +29,7 @@
 import { defineComponent, ref } from "vue";
 import type { PropType } from "vue";
 import { Length } from "@/types/enums";
-import { ITaskComment, IUserForList } from "@/types/interfaces";
+import type { ITaskComment, IUserForList } from "@/types/interfaces";
 
 import Avatar from "../user/Avatar.vue";
 

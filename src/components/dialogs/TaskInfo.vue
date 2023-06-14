@@ -474,6 +474,7 @@ export default defineComponent({
             color: $color-black;
             height: 36px;
             padding: 2px;
+
             svg {
               width: 30px;
               height: 30px;
@@ -563,8 +564,19 @@ export default defineComponent({
         padding-left: 20px;
       }
 
+      &-content {
+        &-description {
+          .c-textarea {
+            height: 80px !important;
+            &:deep(.c-textarea__field) {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+
       &-inner {
-        padding: 0 0 20px 0;
+        padding: 0px 10px 10px;
         max-height: 100%;
 
         &::-webkit-scrollbar {
@@ -578,6 +590,14 @@ export default defineComponent({
         &-comments {
           .comment-items {
             margin-top: 10px;
+
+            .comment {
+              :deep(.comment__info) {
+                .avatar {
+                  display: none;
+                }
+              }
+            }
           }
         }
       }
@@ -595,11 +615,25 @@ export default defineComponent({
 
     &__window {
       &-header {
-        padding: 13px 0 0 0;
+        padding: 0;
 
         &-title {
           width: 85%;
         }
+      }
+      &-inner {
+        padding-top: 15px;
+      }
+    }
+  }
+
+  @include responsive($tiny, max) {
+    &__window {
+      &-header {
+        padding-top: 7px;
+      }
+      &-inner {
+        padding: 7px 2px 2px;
       }
     }
   }

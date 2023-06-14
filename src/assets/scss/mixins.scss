@@ -12,12 +12,11 @@
 
 // Responsive
 @mixin mobile($direction) {
-  @if($direction == min) {
+  @if ($direction == min) {
     @media screen and (min-width: $sm) {
       @content;
     }
-  }
-  @else {
+  } @else {
     @media screen and (max-width: $sm) {
       @content;
     }
@@ -25,12 +24,11 @@
 }
 
 @mixin desktop($direction) {
-  @if($direction == min) {
+  @if ($direction == min) {
     @media screen and (min-width: $xl) {
       @content;
     }
-  }
-  @else {
+  } @else {
     @media screen and (max-width: $xl) {
       @content;
     }
@@ -38,12 +36,11 @@
 }
 
 @mixin tablet($direction) {
-  @if($direction == min) {
+  @if ($direction == min) {
     @media screen and (min-width: $md) {
       @content;
     }
-  }
-  @else {
+  } @else {
     @media screen and (max-width: $md) {
       @content;
     }
@@ -51,12 +48,11 @@
 }
 
 @mixin responsive($responsive, $direction) {
-  @if($direction == min) {
+  @if ($direction == min) {
     @media screen and (min-width: $responsive) {
       @content;
     }
-  }
-  @else {
+  } @else {
     @media screen and (max-width: $responsive) {
       @content;
     }

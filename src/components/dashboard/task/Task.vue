@@ -147,6 +147,7 @@ export default defineComponent({
 
   &:hover {
     background-color: var(--color-hover-background-task-card);
+
     .initially-transparent {
       opacity: 1;
     }
@@ -160,10 +161,11 @@ export default defineComponent({
   &__info {
     display: flex;
     justify-content: space-between;
+
     &-actions {
       display: inline-flex;
       flex-direction: column;
-      align-items: flex-end; 
+      align-items: flex-end;
       gap: 5px;
     }
 
@@ -173,6 +175,7 @@ export default defineComponent({
       gap: 5px;
       color: var(--color-text);
       font-size: 10px;
+
       svg {
         width: 12px;
       }
@@ -181,18 +184,22 @@ export default defineComponent({
     &-marks {
       display: flex;
       gap: 5px;
+
       .image-example {
         cursor: inherit;
       }
     }
+
     &-main {
       max-width: 80%;
     }
+
     &-title {
       font-size: 14px;
       color: var(--color-text);
       word-break: break-word;
     }
+
     &--edit {
       padding: 5px;
       height: fit-content;
@@ -200,22 +207,31 @@ export default defineComponent({
       color: var(--color-text) !important;
     }
   }
+
   &__members {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 10px;
+
     &--icon-assign {
       width: 25px;
       color: var(--color-text);
     }
+
     &-avatars {
       display: flex;
       flex-grow: 2;
       justify-content: flex-end;
+
       .user-avatar {
         margin-left: -7px;
       }
+    }
+  }
+  @include tablet(max) {
+    .initially-transparent {
+      opacity: 1;
     }
   }
 }

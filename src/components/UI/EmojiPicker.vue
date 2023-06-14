@@ -48,7 +48,7 @@ export default defineComponent({
 
       emit("addEmoji", {
         emoji: newEmoji,
-        newAuthor: unicID.value
+        newAuthor: unicID.value,
       });
 
       openEmojiWindow.value = false;
@@ -66,15 +66,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 .emoji-picker {
   position: relative;
+
   &__add-new {
     height: 30px;
     padding: 5px;
   }
+
   &__window {
     position: absolute;
     bottom: 100%;
   }
 }
+
 .emoji-window-enter-active,
 .emoji-window-leave-active {
   transition: all 0.2s ease;

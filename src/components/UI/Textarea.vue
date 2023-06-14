@@ -130,6 +130,7 @@ export default defineComponent({
       border-color: $color-red;
       background-color: $color-pink;
       color: $color-black;
+
       &::placeholder {
         color: $color-grey;
       }

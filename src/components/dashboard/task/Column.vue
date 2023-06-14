@@ -166,6 +166,7 @@ export default defineComponent({
     flex-direction: column;
     gap: 10px;
   }
+
   .add-new-task {
     margin-top: 10px;
   }

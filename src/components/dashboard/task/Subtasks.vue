@@ -104,10 +104,12 @@ export default defineComponent({
 .subtasks {
   width: 100%;
   min-height: 70px;
+
   &__new {
     display: flex;
     align-items: center;
     gap: 5px;
+
     .c-input {
       padding: 0;
       width: 100%;
@@ -120,6 +122,7 @@ export default defineComponent({
         border-radius: 4px 0 0 4px;
       }
     }
+
     .c-button {
       color: $color-white1;
       padding: 2px 20px;
@@ -127,49 +130,60 @@ export default defineComponent({
       height: 30px;
     }
   }
+
   &__items {
     margin-top: 15px;
     display: inline-flex;
     flex-direction: column;
     gap: 5px;
   }
+
   &__item {
     display: inline-flex;
     align-items: flex-end;
     gap: 20px;
     white-space: nowrap;
+
     &--delete {
       width: 15px;
       height: 22px;
       color: $color-white1;
       margin-right: 10px;
     }
+
     &-count {
       margin-right: 10px;
       color: var(--color-text);
     }
   }
+
   @include mobile(max) {
     width: 100%;
+
     .c-input {
       max-width: none;
     }
+
     .subtasks__item {
       .c-checkbox {
         font-size: 13px;
       }
     }
   }
+
   @include responsive($us, max) {
     .subtasks__item {
       gap: 8px;
+
       &-count {
         display: none;
       }
+
       &--delete {
         padding: 0 10px;
         margin-right: 5px;
       }
+
       .c-checkbox {
         font-size: 10.7px;
       }

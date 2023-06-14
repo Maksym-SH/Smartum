@@ -98,9 +98,11 @@ export default defineComponent({
     padding: 20px;
     background-color: var(--color-background-secondary);
     color: var(--color-text);
+
     &::-webkit-scrollbar {
       width: 10px;
     }
+
     &::-webkit-scrollbar-track {
       background: $color-light-grey;
     }
@@ -108,11 +110,13 @@ export default defineComponent({
     &::-webkit-scrollbar-thumb {
       background-color: $color-dark-blue;
     }
+
     .modal__content {
       :deep() {
         h2 {
           margin: 5px;
         }
+
         ul {
           padding-left: 50px;
         }
@@ -173,6 +177,7 @@ export default defineComponent({
             margin: 5px;
             font-size: 16px;
           }
+
           ul {
             padding-left: 10px;
           }

@@ -248,14 +248,13 @@ export default defineComponent({
     &-actions {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
+      overflow-y: auto;
       gap: 5px;
       margin-top: 5px;
-      /*       overflow-x: auto; */
       padding-bottom: 10px;
 
       &::-webkit-scrollbar {
-        height: 5px;
+        height: 3px;
       }
 
       &::-webkit-scrollbar-track {
@@ -265,11 +264,13 @@ export default defineComponent({
       &::-webkit-scrollbar-thumb {
         background-color: var(--color-scroll-track);
       }
+
       .reactions {
         display: inline-flex;
         align-items: center;
         gap: 5px;
       }
+
       .add-new {
         padding: 0 7px;
         height: 30px;
@@ -287,6 +288,7 @@ export default defineComponent({
         height: 30px;
         background-color: rgba($color-light-blue, 0.4);
         transition: background-color 0.2s;
+
         &.active {
           background-color: $color-blue;
         }

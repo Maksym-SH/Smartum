@@ -104,11 +104,11 @@
 import { computed, defineComponent, ref } from "vue";
 import type { PropType } from "vue";
 import { IUserForList } from "@/types/interfaces";
+import { ArrayHasValues } from "@/helpers/methods";
 
 import InlineSvg from "vue-inline-svg";
 import DropdownWindow from "@/container/DropdownWindow.vue";
 import Avatar from "@/components/user/Avatar.vue";
-import { ArrayHasValues } from "@/helpers/methods";
 
 export default defineComponent({
   props: {

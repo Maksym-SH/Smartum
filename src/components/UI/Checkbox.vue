@@ -32,7 +32,7 @@
         'not-selected': !checked && switchBox,
         disabled: disabled,
         'line-through': lineThrough,
-        active: checked && !switchBox
+        active: checked && !switchBox,
       }"
       @click="checkboxToggle(true)"
     >
@@ -107,6 +107,7 @@ export default defineComponent({
 
     &.line-through {
       position: relative;
+
       &::before {
         content: "";
         width: 0;
@@ -118,6 +119,7 @@ export default defineComponent({
         background-color: var(--color-text);
         transition: width 0.3s;
       }
+
       &.active {
         &::before {
           width: calc(100% + 5px);

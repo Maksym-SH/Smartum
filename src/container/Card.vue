@@ -51,16 +51,16 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .card {
-  border: 1px solid var(--color-border-card);
+  border: 1px solid $color-dark-grey5;
   background-color: var(--color-background-card);
   transition: background-color 0.3s;
   border-radius: 4px;
 
   &__header {
-    border-bottom: 1px solid var(--color-border-card);
+    border-bottom: 1px solid $color-dark-grey5;
   }
   &__footer {
-    border-top: 1px solid var(--color-border-card);
+    border-top: 1px solid $color-dark-grey5;
   }
 
   &__header,
@@ -75,7 +75,7 @@ export default defineComponent({
 
     &-header,
     &-footer {
-      border-bottom: 1px solid var(--color-border-card);
+      border-bottom: 1px solid $color-dark-grey5;
 
       :deep(th) {
         font-size: 18px;
@@ -87,7 +87,7 @@ export default defineComponent({
     }
 
     &-footer {
-      border-top: 1px solid var(--color-border-card);
+      border-top: 1px solid $color-dark-grey5;
 
       :deep(td) {
         color: var(--color-text);
