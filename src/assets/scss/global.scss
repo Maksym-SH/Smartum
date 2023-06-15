@@ -157,3 +157,14 @@ h6 {
 .fade-leave-to {
   opacity: 0;
 }
+
+.smooth-height-enter-active,
+.smooth-height-leave-active {
+  transition: all 0.6s ease-in;
+  max-height: 500px;
+}
+.smooth-height-enter-from,
+.smooth-height-leave-to {
+  opacity: 0;
+  max-height: 0;
+}

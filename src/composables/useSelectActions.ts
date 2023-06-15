@@ -45,6 +45,7 @@ export default function useSelectActions() {
         userStore.userLogout().then(() => {
           notify({
             title: "До скорого!",
+            type: "success",
           });
         });
       },

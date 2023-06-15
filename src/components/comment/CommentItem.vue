@@ -27,22 +27,24 @@
         <p v-else key="text" class="comment__info-message">{{ commentMessage }}</p>
       </transition>
       <div class="comment__info-actions">
-        <span class="reactions">
-          <EmojiPicker @add-emoji="addEmoji" />
-          <span
-            v-for="(emoji, index) in commentEmoji"
-            :key="emoji.smile"
-            @click="emojiAction(index, emoji as Required<IEmoji>)"
-            class="comment__info-actions-smile"
-            :class="{ active: emoji.authors?.includes(unicID) }"
-          >
-            {{ emoji.smile }} {{ emoji.authors?.length }}
+        <EmojiPicker @add-emoji="addEmoji" />
+        <div class="comment__info-actions--scrolled">
+          <span class="reactions">
+            <span
+              v-for="(emoji, index) in commentEmoji"
+              :key="emoji.smile"
+              @click="emojiAction(index, emoji as Required<IEmoji>)"
+              class="comment__info-actions-smile"
+              :class="{ active: emoji.authors?.includes(unicID) }"
+            >
+              {{ emoji.smile }} {{ emoji.authors?.length }}
+            </span>
           </span>
-        </span>
-        <span class="comment__info-actions-edit" v-if="authorCurrentUser">
-          <span class="edit-action" @click="deleteCommentPopup">Удалить</span>
-          <span class="edit-action" @click="toggleEditMode">{{ editModeTitle }}</span>
-        </span>
+          <span class="comment__info-actions-edit" v-if="authorCurrentUser">
+            <span class="edit-action" @click="deleteCommentPopup">Удалить</span>
+            <span class="edit-action" @click="toggleEditMode">{{ editModeTitle }}</span>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -207,6 +209,8 @@ export default defineComponent({
 
   &__info {
     position: relative;
+    display: flex;
+    flex-direction: column;
 
     .avatar {
       position: absolute;
@@ -214,7 +218,12 @@ export default defineComponent({
     }
 
     &-title {
+      width: 100%;
+      display: inline-block;
+      overflow-x: auto;
+      white-space: nowrap;
       color: var(--color-text);
+      padding: 0 2px;
 
       &-date {
         font-size: 13px;
@@ -225,6 +234,18 @@ export default defineComponent({
         font-style: italic;
         margin-left: 10px;
         font-size: 12px;
+      }
+
+      &::-webkit-scrollbar {
+        height: 2px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: var(--color-scroll-track-invert);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--color-scroll-track);
       }
     }
 
@@ -247,22 +268,28 @@ export default defineComponent({
 
     &-actions {
       display: flex;
-      align-items: center;
-      overflow-y: auto;
       gap: 5px;
       margin-top: 5px;
-      padding-bottom: 10px;
 
-      &::-webkit-scrollbar {
-        height: 3px;
-      }
+      &--scrolled {
+        display: inline-flex;
+        gap: 5px;
+        margin-right: 5px;
+        height: 37px;
+        padding: 0 5px 5px 0;
+        overflow-y: auto;
 
-      &::-webkit-scrollbar-track {
-        background-color: var(--color-scroll-track-invert);
-      }
+        &::-webkit-scrollbar {
+          height: 3px;
+        }
 
-      &::-webkit-scrollbar-thumb {
-        background-color: var(--color-scroll-track);
+        &::-webkit-scrollbar-track {
+          background-color: var(--color-scroll-track-invert);
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: var(--color-scroll-track);
+        }
       }
 
       .reactions {
@@ -291,6 +318,7 @@ export default defineComponent({
 
         &.active {
           background-color: $color-blue;
+          color: $color-white1;
         }
       }
 

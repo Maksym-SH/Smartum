@@ -7,6 +7,7 @@ import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import { IUserForList, IWorkingBoardTask } from "@/types/interfaces";
 import useDateParseToString from "./useDateParse";
 import { notify } from "@kyvg/vue3-notification";
+import { Numbers } from "@/types/enums";
 
 export default function useTaskInfo(columnId: number, taskId: number) {
   const { dashboardStore } = useStores();
@@ -107,7 +108,10 @@ export default function useTaskInfo(columnId: number, taskId: number) {
         );
         boardItem.value.columns[columnId].tasks[updatedTaskIndex] = currentTask.value;
 
-        Debounce(() => dashboardStore.updateWorkingBoard(boardItem.value, false), 500);
+        Debounce(
+          () => dashboardStore.updateWorkingBoard(boardItem.value, false),
+          Numbers.Second
+        );
       }
     },
     { deep: true }

@@ -29,7 +29,7 @@
     <div class="task-item__members">
       <v-tooltip
         v-if="currenUserInvited"
-        text="Вы приглашены в эту карточку"
+        text="Вы назначены на эту карточку"
         location="bottom"
       >
         <template v-slot:activator="{ props }">

@@ -144,6 +144,7 @@ export default defineComponent({
     &-title {
       font-size: 24px;
       line-height: 24px;
+      font-weight: bold;
     }
 
     &-description {

@@ -2,10 +2,11 @@
   <span class="emoji-picker">
     <transition name="emoji-window">
       <EmojiPicker
-        v-show="openEmojiWindow"
+        v-if="openEmojiWindow"
         class="emoji-picker__window"
         native
         hide-search
+        :theme="emojiWindowTheme"
         disable-skin-tones
         @select="selectEmoji"
       />
@@ -21,9 +22,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { Colors } from "@/types/enums";
 import type { IEmoji } from "@/types/interfaces";
+import { Theme } from "@/types/types";
 
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import EmojiPicker from "vue3-emoji-picker";
@@ -38,6 +40,8 @@ export default defineComponent({
     const { unicID } = useCurrentUserInfo();
 
     const openEmojiWindow = ref(false);
+
+    const emojiWindowTheme = ref<Theme>("dark");
 
     const selectEmoji = ({ i }: { i: string }) => {
       const emoji = i;
@@ -54,8 +58,15 @@ export default defineComponent({
       openEmojiWindow.value = false;
     };
 
+    onMounted((): void => {
+      const savedTheme = localStorage.getItem("smartumTheme") as Theme;
+
+      emojiWindowTheme.value = savedTheme;
+    });
+
     return {
       Colors,
+      emojiWindowTheme,
       openEmojiWindow,
       selectEmoji,
     };

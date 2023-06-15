@@ -39,7 +39,12 @@
           </div>
         </div>
       </transition>
-      <div class="board-item-page__content-tasks">
+      <transition-group
+        tag="div"
+        name="smooth-height"
+        mode="out-in"
+        class="board-item-page__content-tasks"
+      >
         <Column
           v-for="column in boardItem.columns"
           :key="column.id"
@@ -50,10 +55,11 @@
         />
         <AddColumn
           v-show="boardNotEmpty"
+          key="add-new"
           :column-length="columnLength"
           @createColumn="createColumn"
         />
-      </div>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -141,7 +147,7 @@ export default defineComponent({
           callback: (): void => {
             dashboardStore.leaveWorkingBoard(currentMember, boardItem.value).then(() => {
               notify({
-                title: "Вы успешно покинули рабочее пространство!",
+                title: "Вы успешно покинули пространство!",
                 text: "Пространство было удалено из вашего списка рабочих досок.",
                 type: "success",
               });
@@ -213,6 +219,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .board-item-page {
   height: 100%;
+  min-height: 550px;
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto 1fr;
@@ -316,6 +323,7 @@ export default defineComponent({
   }
 
   @include mobile(max) {
+    min-height: auto;
     &__board-info {
       padding-bottom: 5px;
 

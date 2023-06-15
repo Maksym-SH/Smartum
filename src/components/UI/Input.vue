@@ -273,6 +273,10 @@ export default defineComponent({
         color: $color-black !important;
       }
 
+      &::placeholder {
+        color: $color-black;
+      }
+
       & + .label {
         color: $color-red !important;
       }

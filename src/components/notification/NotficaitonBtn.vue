@@ -41,7 +41,12 @@
         </div>
       </template>
       <template #content>
-        <div class="notifications__window-items">
+        <transition-group
+          tag="div"
+          name="notification-fade"
+          mode="in-out"
+          class="notifications__window-items"
+        >
           <NotificationItem
             v-for="notification in filteredList"
             :key="notification.id"
@@ -49,8 +54,8 @@
             @read-notification="notifyAction($event, 'readNotification')"
             @delete-notification="notifyAction($event, 'deleteNotification')"
           />
-          <EmptyList v-show="!filteredList.length" type="notification" />
-        </div>
+          <EmptyList key="empty-list" v-show="!filteredList.length" type="notification" />
+        </transition-group>
       </template>
     </DropdownWindow>
   </div>
@@ -203,5 +208,17 @@ export default defineComponent({
       }
     }
   }
+}
+
+.notification-fade-enter-active,
+.notification-fade-leave-active {
+  transition: all 0.4s ease-in;
+  max-height: 400px;
+}
+.notification-fade-enter-from,
+.notification-fade-leave-to {
+  opacity: 0;
+  max-height: 0;
+  transform: scale(0.8);
 }
 </style>

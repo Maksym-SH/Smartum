@@ -9,7 +9,7 @@
       />
       <cButton icon="plus" type="submit" :disabled="!newSubtaskTitle" />
     </form>
-    <transition-group class="subtasks__items" tag="div" name="toggle-content">
+    <transition-group class="subtasks__items" tag="div" name="smooth-height">
       <span v-for="(subtask, index) in subtasks" :key="subtask.id" class="subtasks__item">
         <span class="subtaks__item-info">
           <cButton

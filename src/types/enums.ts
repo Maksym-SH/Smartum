@@ -40,7 +40,7 @@ export enum Numbers {
   EveningENG = "6 AM",
   MorningRU = 6,
   MorningENG = "6 PM",
-  JoinCodeSize = 10,
+  JoinCodeSize = 15,
   AnimationTaskMove = 250,
 }
 

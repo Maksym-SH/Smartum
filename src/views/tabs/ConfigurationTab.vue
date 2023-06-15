@@ -208,6 +208,9 @@ export default defineComponent({
           justify-content: space-between;
           position: relative;
 
+          &--result {
+            height: 100px;
+          }
           .user-avatar {
             border: 1px solid var(--color-text);
           }

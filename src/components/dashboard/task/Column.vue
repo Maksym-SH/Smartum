@@ -10,7 +10,12 @@
       >
         {{ columnTitle }}
       </h3>
-      <cButton class="task-column__header-params" variant="text" icon="dots-horizontal" />
+      <cButton
+        @click="columnSettings"
+        class="task-column__header-params"
+        variant="text"
+        icon="dots-horizontal"
+      />
     </div>
     <Draggable
       v-model="column.tasks"
@@ -38,6 +43,7 @@ import { Numbers } from "@/types/enums";
 import Task from "./Task.vue";
 import AddNewTask from "./AddNewTask.vue";
 import Draggable from "vuedraggable";
+import { notify } from "@kyvg/vue3-notification";
 
 export default defineComponent({
   components: {
@@ -92,6 +98,13 @@ export default defineComponent({
       emit("save-changes");
     };
 
+    const columnSettings = () => {
+      notify({
+        title: "В разработке",
+        type: "success",
+      });
+    };
+
     return {
       categoryTitle,
       showDropZone,
@@ -100,6 +113,7 @@ export default defineComponent({
       dragEnd,
       saveColumnName,
       changeColumnName,
+      columnSettings,
     };
   },
 });

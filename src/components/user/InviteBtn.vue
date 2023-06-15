@@ -12,7 +12,7 @@
       :visible="showInviteWindow"
       class="invite-users__window"
       :width="375"
-      :height="385"
+      :height="320"
       :centering="showLoader || emptyList"
       @hide-dropdown="showInviteWindow = false"
     >
@@ -47,7 +47,7 @@
         <div v-if="showInviteWindow" class="invite-users__window">
           <div class="invite-users__window-content">
             <cLoader v-show="showLoader" class="invite-load" inline />
-            <div class="invite-users__user-list">
+            <div v-show="!showLoader" class="invite-users__user-list">
               <UserListItem
                 v-if="filteredList.length"
                 v-for="user in filteredList"
@@ -56,7 +56,7 @@
                 @invite="invite(user)"
               />
               <div
-                v-show="!filteredList.length && !showLoader"
+                v-show="!filteredList.length"
                 class="invite-users__window-content--empty"
               >
                 Ничего не найдено

@@ -25,8 +25,8 @@
           />
         </div>
         <transition-group
-          name="toggle-content"
-          mode="out-in"
+          name="smooth-height"
+          mode="in-out"
           tag="div"
           class="aside__navigations"
         >

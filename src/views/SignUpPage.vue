@@ -13,11 +13,9 @@
           alt="Tasks"
         />
         <h3 class="sign-up__window--welcome-title">Добро пожаловать!</h3>
-        <div class="sign-up__window-content">
-          <h4 class="sign-up__window--welcome-description">
-            Заполните форму чтобы создать аккаунт.
-          </h4>
-        </div>
+        <h4 class="sign-up__window--welcome-description">
+          Заполните форму чтобы создать аккаунт.
+        </h4>
         <div class="sign-up__window--welcome-logo">
           <img
             class="sign-up__window--welcome-logo-image"
@@ -231,6 +229,7 @@ export default defineComponent({
       }
 
       &-title {
+        font-weight: bold;
         margin-bottom: 30px;
       }
 

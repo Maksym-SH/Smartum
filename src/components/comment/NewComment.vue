@@ -20,7 +20,7 @@
         name="taskDescription"
         placeholder="Напишите комментарий"
       />
-      <cButton :disabled="!newCommentMessage" title="Отправить" type="submit" />
+      <cButton :disabled="!newCommentMessage" size="small" title="Отправить" type="submit" />
     </form>
   </div>
 </template>

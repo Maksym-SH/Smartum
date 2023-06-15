@@ -123,10 +123,8 @@ export default defineComponent({
       const dateOfCreation: Date = new Date();
       newBoard.dateOfCreation = dateOfCreation.toString();
 
-      newBoard.joinCode = GenerateJoinCode(
-        newBoard as Required<IWorkingBoardItem>,
-        Numbers.JoinCodeSize
-      ); // Set unic code for board joining.
+      // Set unic code for board joining.
+      newBoard.joinCode = GenerateJoinCode(Numbers.JoinCodeSize);
 
       emit("createNew", Object.assign({}, newBoard));
 

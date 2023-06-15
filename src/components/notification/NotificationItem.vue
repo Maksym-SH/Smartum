@@ -175,18 +175,18 @@ export default defineComponent({
     display: inline;
     word-break: break-word;
     font-size: 15px;
+    font-weight: bold;
   }
 
   &__date {
     font-size: 14px;
     white-space: nowrap;
     margin-left: 10px;
-    line-height: 22px;
+    line-height: 25px;
     color: $color-dark-grey4;
   }
 
   &__description {
-    margin-top: 7px;
     font-size: 13px;
     line-height: 16px;
     color: var(--color-text);

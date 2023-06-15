@@ -1,7 +1,7 @@
 import { getAuth } from "@firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 import { Colors } from "@/types/enums";
-import type { IPopupParams, IWorkingBoardItem } from "@/types/interfaces";
+import type { IPopupParams } from "@/types/interfaces";
 import type { Theme } from "@/types/types";
 
 import useStores from "@/composables/useStores";
@@ -64,10 +64,10 @@ export function GenerateColorHexFormat(Theme: Theme): string {
   }
 }
 
-export function GenerateJoinCode(board: IWorkingBoardItem, length: number) {
+export function GenerateJoinCode(length: number) {
   const joinCode = GenerateRandomString(length);
 
-  return `${board.title}-${joinCode}`;
+  return joinCode;
 }
 
 export function GenerateRandomString(length: number) {

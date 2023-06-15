@@ -32,7 +32,13 @@ export default defineComponent({
 
     onMounted(() => {
       const savedTheme = (localStorage.getItem("smartumTheme") as Theme) ?? "dark";
-      switchModel.value = savedTheme !== "dark";
+
+      if (savedTheme !== "dark" && savedTheme !== "light") {
+        switchModel.value = savedTheme === "dark";
+        return;
+      }
+
+      switchModel.value = savedTheme === "light";
 
       SetTheme(savedTheme);
     });

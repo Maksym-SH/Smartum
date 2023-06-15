@@ -85,6 +85,7 @@ export default defineComponent({
       margin-bottom: 40px;
 
       &__title {
+        font-weight: bold;
         font-size: 25px;
       }
 

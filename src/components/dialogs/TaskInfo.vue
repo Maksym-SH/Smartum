@@ -80,14 +80,12 @@
               </div>
               <div class="task-info-modal__window-action-item">
                 <span class="action__title">Участники</span>
-                <transition name="toggle-content">
-                  <MembersAssign
-                    v-if="currentTask.assignedMembers"
-                    :all-members="boardMembers"
-                    :assigned-members="currentTask.assignedMembers"
-                    @assign-new-member="assignNewMember"
-                  />
-                </transition>
+                <MembersAssign
+                  v-if="currentTask.assignedMembers"
+                  :all-members="boardMembers"
+                  :assigned-members="currentTask.assignedMembers"
+                  @assign-new-member="assignNewMember"
+                />
               </div>
             </div>
           </header>
@@ -150,7 +148,7 @@
               <transition-group
                 tag="div"
                 class="comment-items"
-                name="toggle-content"
+                name="smooth-height"
                 mode="out-in"
               >
                 <CommentItem
@@ -431,6 +429,7 @@ export default defineComponent({
           display: flex;
           flex-direction: column;
           gap: 10px;
+          margin-top: 15px;
         }
       }
     }
@@ -566,8 +565,14 @@ export default defineComponent({
 
       &-content {
         &-description {
+          .action__decription {
+            height: 80px;
+            font-size: 14px;
+          }
+
           .c-textarea {
             height: 80px !important;
+
             &:deep(.c-textarea__field) {
               font-size: 14px;
             }
@@ -586,20 +591,6 @@ export default defineComponent({
 
       &-content {
         padding: 0 5px 0 0;
-
-        &-comments {
-          .comment-items {
-            margin-top: 10px;
-
-            .comment {
-              :deep(.comment__info) {
-                .avatar {
-                  display: none;
-                }
-              }
-            }
-          }
-        }
       }
     }
   }
@@ -623,6 +614,21 @@ export default defineComponent({
       }
       &-inner {
         padding-top: 15px;
+      }
+      &-content {
+        &-comments {
+          .comment-items {
+            margin-top: 10px;
+
+            .comment {
+              :deep(.comment__info) {
+                .avatar {
+                  display: none;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

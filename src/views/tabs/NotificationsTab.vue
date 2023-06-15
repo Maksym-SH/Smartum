@@ -14,8 +14,8 @@
       v-if="showList"
       class="notifications-tab__container"
       tag="div"
-      name="toggle-content"
-      mode="in-out"
+      name="smooth-height"
+      mode="out-in"
     >
       <Notification
         v-for="notify in allNotifications"
