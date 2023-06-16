@@ -204,6 +204,7 @@ export default defineComponent({
       .member {
         display: flex;
         justify-content: space-between;
+        padding-left: 5px;
 
         &__info {
           display: inline-flex;
@@ -217,6 +218,11 @@ export default defineComponent({
             color: var(--color-text);
             font-size: 13px;
             white-space: nowrap;
+          }
+        }
+        &__actions {
+          .c-button {
+            font-size: 18px;
           }
         }
       }
@@ -244,13 +250,29 @@ export default defineComponent({
       align-items: center;
       justify-content: space-between;
       height: 100%;
-      padding: 7px 0;
+      padding: 7px 8px 7px;
+
+      &-title {
+        font-size: 14px;
+      }
 
       &--close {
-        margin-right: 7px;
         padding: 5px;
         color: var(--color-text) !important;
         font-size: 25px;
+      }
+    }
+    &__window-content {
+      padding: 5px;
+
+      .member {
+        padding-left: 0;
+        &__actions {
+          .c-button {
+            padding: 5px 10px;
+            font-size: 20px;
+          }
+        }
       }
     }
   }

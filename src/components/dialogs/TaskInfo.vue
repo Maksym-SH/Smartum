@@ -337,7 +337,7 @@ export default defineComponent({
     border-radius: 10px;
 
     &-inner {
-      max-height: 98vh;
+      max-height: 94vh;
       overflow: hidden auto;
 
       &::-webkit-scrollbar {
