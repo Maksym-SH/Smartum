@@ -47,6 +47,8 @@ export default defineComponent({
 
 <style lang="scss">
 @import "./assets/scss/global.scss";
+@import "@/assets/scss/theme.scss";
+
 html {
   overflow-y: auto !important;
 }
