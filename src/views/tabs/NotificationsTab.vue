@@ -1,14 +1,14 @@
 <template>
   <div class="notifications-tab" :class="{ empty: !showList }">
     <div v-if="showList" class="notifications-tab__filters full-width--tablet">
-      <cButton
+      <AppButton
         class="notifications-tab__filters--clear"
         :color="Colors.Info"
         variant="flat"
         @click="clearAll"
       >
         Очистить все
-      </cButton>
+      </AppButton>
     </div>
     <transition-group
       v-if="showList"

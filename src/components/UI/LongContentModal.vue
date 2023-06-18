@@ -8,7 +8,7 @@
   >
     <v-card>
       <v-toolbar color="indigo" class="modal__actions">
-        <cButton
+        <AppButton
           class="modal__actions--close"
           icon="close"
           variant="text"
@@ -21,7 +21,7 @@
       </v-toolbar>
       <v-list>
         <v-list-subheader class="modal__subheader">
-          <cCheckbox
+          <AppCheckbox
             v-model="switchLanguage"
             switch-box
             name="language"

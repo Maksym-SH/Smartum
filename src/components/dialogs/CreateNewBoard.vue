@@ -1,7 +1,9 @@
 <template>
   <v-dialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
     <template #activator="{ props }">
-      <cButton class="create-dashboard-btn" v-bind="props"> Создать новую доску </cButton>
+      <AppButton class="create-dashboard-btn" v-bind="props">
+        Создать новую доску
+      </AppButton>
     </template>
     <template #default>
       <v-card>
@@ -16,7 +18,7 @@
                 image-decor="/images/dashboard-template.webp"
                 :image="newBoard.background"
               />
-              <cInput
+              <AppInput
                 v-model="newBoard.title"
                 label="Заголовок доски"
                 required
@@ -50,16 +52,16 @@
             </div>
           </v-card-text>
           <v-card-actions class="v-card__footer-action">
-            <cButton
+            <AppButton
               class="v-card--cancel-create"
               variant="text"
               @click="showDialog = false"
             >
               Отмена
-            </cButton>
-            <cButton class="v-card--create-board" variant="text" type="submit">
+            </AppButton>
+            <AppButton class="v-card--create-board" variant="text" type="submit">
               Создать
-            </cButton>
+            </AppButton>
           </v-card-actions>
         </form>
       </v-card>
@@ -75,7 +77,7 @@ import { GenerateJoinCode } from "@/helpers/methods";
 
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDashboardItemBackgroundTemplate from "@/composables/useDashboardItemBackground";
-import BoardImageResult from "../dashboard/BoardImageResult.vue";
+import BoardImageResult from "../board/BoardImageResult.vue";
 import ImageBackgroundExample from "../UI/BackgroundItem.vue";
 
 export default defineComponent({

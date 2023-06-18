@@ -2,7 +2,7 @@
   <v-dialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
     <template #activator="{ props }">
       <div class="color-picker">
-        <cButton
+        <AppButton
           v-bind="props"
           size="small"
           class="color-picker--open-modal"
@@ -18,7 +18,7 @@
             />
             <small class="color-picker__button-title"> Выбрать цвет </small>
           </slot>
-        </cButton>
+        </AppButton>
         <span v-if="regenerate" class="color-picker--generate" @click="generateColor">
           <InlineSvg src="/images/icons/refresh.svg" />
           Сгенерировать ({{ colorPickParams.target }})
@@ -49,10 +49,10 @@
           </div>
         </v-card-text>
         <v-card-actions class="v-card__footer">
-          <cButton class="v-card__footer--cancel" variant="text" @click="closeDialog">
+          <AppButton class="v-card__footer--cancel" variant="text" @click="closeDialog">
             Отмена
-          </cButton>
-          <cButton
+          </AppButton>
+          <AppButton
             class="v-card__footer--select-color"
             variant="text"
             type="submit"
@@ -60,7 +60,7 @@
             @click="changeColor()"
           >
             Применить
-          </cButton>
+          </AppButton>
         </v-card-actions>
       </v-card>
     </template>

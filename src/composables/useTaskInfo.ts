@@ -94,7 +94,6 @@ export default function useTaskInfo(columnId: number, taskId: number) {
 
   onMounted(() => {
     getCurrentTask();
-
     dateSent.value = useDateParseToString(currentTask.value.dateOfCreate);
   });
 

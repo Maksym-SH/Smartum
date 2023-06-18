@@ -1,7 +1,7 @@
 <template>
   <div class="assigned-members">
     <div class="assigned-members__relative">
-      <cButton
+      <AppButton
         class="assigned-members__btn"
         icon="plus"
         color="info"
@@ -17,7 +17,7 @@
         <template #header>
           <div class="assigned-members__window-header">
             <h2 class="assigned-members__window-header-title">Добавить участников</h2>
-            <cButton
+            <AppButton
               class="assigned-members__window-header--close mobile-only"
               variant="text"
               icon="close"
@@ -34,42 +34,43 @@
                 v-if="notAssignedMembersExist"
                 key="members"
               >
-                <div
-                  v-for="member in notAssignedMembers"
-                  :key="member.uid"
-                  class="assigned-members__window-member-item member"
-                >
-                  <div class="member__info">
-                    <Avatar
-                      class="member__avatar"
-                      :size="30"
-                      :firstName="member.firstName"
-                      :last-name="member.lastName"
-                      :avatar="member.avatarParams"
-                      circle
-                    />
-                    <div class="members__info-text">
-                      <h5 class="member__info-title text-ellipsis">
-                        {{ member.firstName }}
-                      </h5>
-                      <h5 class="member__info-title text-ellipsis">
-                        {{ member.lastName }}
-                      </h5>
+                <template v-for="member in notAssignedMembers" :key="member.uid">
+                  <div
+                    v-if="!member.invited"
+                    class="assigned-members__window-member-item member"
+                  >
+                    <div class="member__info">
+                      <Avatar
+                        class="member__avatar"
+                        :size="30"
+                        :firstName="member.firstName"
+                        :last-name="member.lastName"
+                        :avatar="member.avatarParams"
+                        circle
+                      />
+                      <div class="members__info-text">
+                        <h5 class="member__info-title text-ellipsis">
+                          {{ member.firstName }}
+                        </h5>
+                        <h5 class="member__info-title text-ellipsis">
+                          {{ member.lastName }}
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="member__actions">
+                      <v-tooltip text="Назначить" location="bottom">
+                        <template v-slot:activator="{ props }">
+                          <AppButton
+                            v-bind="props"
+                            @click="assignMember(member)"
+                            icon="clipboard-account-outline"
+                            variant="text"
+                          />
+                        </template>
+                      </v-tooltip>
                     </div>
                   </div>
-                  <div class="member__actions">
-                    <v-tooltip text="Назначить" location="bottom">
-                      <template v-slot:activator="{ props }">
-                        <cButton
-                          v-bind="props"
-                          @click="assignMember(member)"
-                          icon="clipboard-account-outline"
-                          variant="text"
-                        />
-                      </template>
-                    </v-tooltip>
-                  </div>
-                </div>
+                </template>
               </transition-group>
               <span v-else class="assigned-members__window--empty-list" key="empty-list">
                 <InlineSvg src="/images/icons/clipboard-account-outline.svg" />
@@ -107,8 +108,8 @@ import { IUserForList } from "@/types/interfaces";
 import { ArrayHasValues } from "@/helpers/methods";
 
 import InlineSvg from "vue-inline-svg";
-import DropdownWindow from "@/container/DropdownWindow.vue";
-import Avatar from "@/components/user/Avatar.vue";
+import DropdownWindow from "@/layout/DropdownWindow.vue";
+import Avatar from "@/components/user/AppAvatar.vue";
 
 export default defineComponent({
   props: {

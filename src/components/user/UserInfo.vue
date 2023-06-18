@@ -2,8 +2,8 @@
   <div class="user-info">
     <Avatar online :first-name="firstName" :last-name="lastName" :avatar="avatar" />
     <div class="user-info__content">
-      <Info :first-name="firstName" :last-name="lastName" />
-      <cSelect :items="actions" rounded @selected="selected" />
+      <UserData :first-name="firstName" :last-name="lastName" />
+      <AppSelect :items="actions" rounded @selected="selected" />
     </div>
   </div>
 </template>
@@ -13,13 +13,13 @@ import { defineComponent } from "vue";
 import { useContainerProps } from "./use/useProps";
 
 import useSelectActions from "@/composables/useSelectActions";
-import Avatar from "./Avatar.vue";
-import Info from "./Info.vue";
+import Avatar from "./AppAvatar.vue";
+import UserData from "./UserData.vue";
 
 export default defineComponent({
   components: {
     Avatar,
-    Info,
+    UserData,
   },
   props: useContainerProps,
   emits: ["userMenuPicked"],

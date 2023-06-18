@@ -32,7 +32,7 @@ import type { IWorkingBoardItem } from "@/types/interfaces";
 
 import InlineSvg from "vue-inline-svg";
 import useDateParseToString from "@/composables/useDateParse";
-import BoardImageResult from "@/components/dashboard/BoardImageResult.vue";
+import BoardImageResult from "@/components/board/BoardImageResult.vue";
 
 export default defineComponent({
   components: {

@@ -16,13 +16,13 @@ import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 
 // Components
 import App from "./App.vue";
-import cButton from "@/components/UI/Button.vue";
-import cInput from "@/components/UI/Input.vue";
-import cTextarea from "@/components/UI/Textarea.vue";
-import cCheckbox from "@/components/UI/Checkbox.vue";
-import cLoader from "@/components/UI/Loader.vue";
-import cSelect from "@/components/UI/Select.vue";
-import cExpPanel from "@/components/UI/ExpansionPanel.vue";
+import AppButton from "@/components/UI/AppButton.vue";
+import AppInput from "@/components/UI/AppInput.vue";
+import AppTextarea from "@/components/UI/AppTextarea.vue";
+import AppCheckbox from "@/components/UI/AppCheckbox.vue";
+import AppLoader from "@/components/UI/AppLoader.vue";
+import AppSelect from "@/components/UI/AppSelect.vue";
+import AppExpansionPanel from "@/components/UI/AppExpansionPanel.vue";
 
 const vuetify = createVuetify({
   components,
@@ -33,13 +33,13 @@ const pinia = createPinia();
 const app = createApp(App);
 
 // Global components
-app.component("CInput", cInput);
-app.component("CTextarea", cTextarea);
-app.component("CButton", cButton);
-app.component("CCheckbox", cCheckbox);
-app.component("CLoader", cLoader);
-app.component("CSelect", cSelect);
-app.component("CExpPanel", cExpPanel);
+app.component("AppInput", AppInput);
+app.component("AppTextarea", AppTextarea);
+app.component("AppButton", AppButton);
+app.component("AppCheckbox", AppCheckbox);
+app.component("AppLoader", AppLoader);
+app.component("AppSelect", AppSelect);
+app.component("AppExpansionPanel", AppExpansionPanel);
 
 // Plugins
 app.use(router);

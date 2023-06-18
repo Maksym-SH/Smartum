@@ -28,7 +28,7 @@
           <InlineSvg src="/images/icons/email-fast-outline.svg" />
           Приглашён
         </span>
-        <cButton
+        <AppButton
           v-else-if="!user.role"
           @click="$emit('invite')"
           variant="text"
@@ -76,7 +76,7 @@ import { IUserForList } from "@/types/interfaces";
 import { defineComponent, computed } from "vue";
 import { useUserItemProps } from "./use/useProps";
 
-import Avatar from "./Avatar.vue";
+import Avatar from "./AppAvatar.vue";
 import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({

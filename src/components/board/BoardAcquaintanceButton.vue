@@ -1,6 +1,6 @@
 <template>
   <div class="acquaintance">
-    <cButton
+    <AppButton
       @click="toggleAcquaintanceWindow"
       variant="text"
       icon="information-outline"
@@ -9,13 +9,14 @@
     <DropdownWindow
       :visible="showAcquaintanceWindow"
       :width="400"
-      :height="500"
+      :height="525"
+      :centering="!showTemplate"
       @hide-dropdown="showAcquaintanceWindow = false"
     >
       <template #header>
         <div class="acquaintance__window-header">
           <h2 class="acquaintance__window-header-title">Информация</h2>
-          <cButton
+          <AppButton
             class="acquaintance__window-header--close"
             variant="text"
             icon="close"
@@ -25,11 +26,13 @@
       </template>
       <template #content>
         <div class="acquaintance__window-content">
-          <div class="acquaintance__window-content-info">
+          <AppLoader v-show="!showTemplate" inline />
+          <div v-show="showTemplate" class="acquaintance__window-content-info">
             <img
               class="acquaintance__window-content-picture"
               src="/images/acquintance.webp"
               alt=""
+              @load="showTemplate = true"
             />
             <div class="acquaintance__window-content-info">
               <h4 class="acquaintance__window-content-title">Добро пожаловать</h4>
@@ -45,14 +48,14 @@
               </p>
             </div>
           </div>
-          <footer class="acquaintance__window-footer mobile-only">
-            <cButton
+          <footer v-show="showTemplate" class="acquaintance__window-footer mobile-only">
+            <AppButton
               class="acquaintance__window--confirm"
               size="large"
               @click="showAcquaintanceWindow = false"
             >
               Ознакомлен
-            </cButton>
+            </AppButton>
           </footer>
         </div>
       </template>
@@ -63,13 +66,15 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import DropdownWindow from "@/container/DropdownWindow.vue";
+import DropdownWindow from "@/layout/DropdownWindow.vue";
 
 export default defineComponent({
   components: {
     DropdownWindow,
   },
   setup() {
+    const showTemplate = ref(false);
+
     const showAcquaintanceWindow = ref(false);
 
     const toggleAcquaintanceWindow = () => {
@@ -77,6 +82,7 @@ export default defineComponent({
     };
 
     return {
+      showTemplate,
       showAcquaintanceWindow,
       toggleAcquaintanceWindow,
     };
@@ -117,10 +123,9 @@ export default defineComponent({
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      height: 100%;
 
       &-picture {
-        width: 95%;
+        width: 100%;
         display: block;
         margin: 0 auto;
         height: auto;
@@ -164,12 +169,10 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        height: 100%;
       }
 
       &-footer {
-        margin-top: auto;
-        padding: 15px 0;
+        padding: 15px 10px;
       }
 
       &--confirm {

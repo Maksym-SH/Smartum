@@ -10,7 +10,7 @@
       >
         {{ columnTitle }}
       </h3>
-      <cButton
+      <AppButton
         @click="columnSettings"
         class="task-column__header-params"
         variant="text"
@@ -39,11 +39,11 @@
 import { defineComponent, PropType, ref } from "vue";
 import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces";
 import { Numbers } from "@/types/enums";
-
-import Task from "./Task.vue";
-import AddNewTask from "./AddNewTask.vue";
-import Draggable from "vuedraggable";
 import { notify } from "@kyvg/vue3-notification";
+
+import Task from "./TaskItem.vue";
+import AddNewTask from "./TaskAddNew.vue";
+import Draggable from "vuedraggable";
 
 export default defineComponent({
   components: {

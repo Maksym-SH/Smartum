@@ -17,9 +17,10 @@
         </transition>
       </span>
       <transition name="toggle-content" mode="out-in">
-        <cTextarea
+        <AppTextarea
           v-if="editMode"
           key="textarea"
+          :name="dateOfCreate"
           v-model="messageValue"
           :max="Length.Textarea"
           :min="Length.Text"
@@ -59,7 +60,7 @@ import { ArrayHasValues, NewObjectLink, OpenPopup } from "@/helpers/methods";
 
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDateParseToString from "@/composables/useDateParse";
-import Avatar from "../user/Avatar.vue";
+import Avatar from "../user/AppAvatar.vue";
 import EmojiPicker from "../UI/EmojiPicker.vue";
 
 export default defineComponent({

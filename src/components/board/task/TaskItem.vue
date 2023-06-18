@@ -14,7 +14,7 @@
         <h3 class="task-item__info-title">{{ task.title }}</h3>
       </div>
       <span class="task-item__info-actions">
-        <cButton
+        <AppButton
           @click="taskModalActive = true"
           class="task-item__info--edit initially-transparent"
           variant="text"
@@ -70,7 +70,7 @@ import { defineComponent, PropType, computed, ref } from "vue";
 import { IWorkingBoardTask } from "@/types/interfaces";
 
 import useUserInfo from "@/composables/useCurrentUserInfo";
-import Avatar from "@/components/user/Avatar.vue";
+import Avatar from "@/components/user/AppAvatar.vue";
 import TaskInfoModal from "@/components/dialogs/TaskInfo.vue";
 import InlineSvg from "vue-inline-svg";
 import BackgroundItem from "@/components/UI/BackgroundItem.vue";

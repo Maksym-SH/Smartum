@@ -42,15 +42,15 @@ import { notify } from "@kyvg/vue3-notification";
 import type { User } from "@firebase/auth";
 import type { IWorkingBoardItem } from "@/types/interfaces";
 import { NotificationType } from "@/types/enums";
+import { ArrayHasValues } from "@/helpers/methods";
 
 import newNotificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
-import LockAccess from "@/components/dashboard/NeedEmailConfirmation.vue";
+import LockAccess from "@/components/access/NeedEmailConfirmation.vue";
 import EmptyList from "@/components/UI/EmptyList.vue";
 import CreateNewBoard from "@/components/dialogs/CreateNewBoard.vue";
-import BoardCard from "@/components/dashboard/BoardItem.vue";
-import { ArrayHasValues } from "@/helpers/methods";
+import BoardCard from "@/components/board/BoardItem.vue";
 
 export default defineComponent({
   components: {
@@ -121,7 +121,9 @@ export default defineComponent({
 
     // Get all boards.
     onBeforeMount((): void => {
-      dashboardStore.getAllWorkingBoards(unicID.value);
+      if (!ArrayHasValues(dashboardStore.allBoards)) {
+        dashboardStore.getAllWorkingBoards(unicID.value);
+      }
     });
 
     return {

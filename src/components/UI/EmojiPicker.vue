@@ -11,7 +11,7 @@
         @select="selectEmoji"
       />
     </transition>
-    <cButton
+    <AppButton
       @click="openEmojiWindow = !openEmojiWindow"
       class="emoji-picker__add-new"
       rounded

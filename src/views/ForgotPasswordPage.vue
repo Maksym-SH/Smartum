@@ -9,7 +9,7 @@
         </p>
       </div>
       <form class="forgot-page__window-content" @submit.prevent="submitForm">
-        <cInput
+        <AppInput
           v-model="email"
           label="Введите адрес электронной почты"
           name="userEmail"
@@ -18,7 +18,7 @@
           light-theme
           @invalid="errorEmail = true"
         />
-        <cButton class="submit-form" title="Отправить" type="submit" />
+        <AppButton class="submit-form" title="Отправить" type="submit" />
       </form>
       <div class="forgot-page__window-link">
         <a class="forgot-page__window-link--go-back" @click="goBack">

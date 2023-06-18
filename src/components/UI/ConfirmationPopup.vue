@@ -7,7 +7,7 @@
         регистрации в поле ниже.
       </p>
       <form class="confirmation__window-input-field" @submit.prevent>
-        <cInput
+        <AppInput
           v-model="password"
           label="Ваш пароль"
           type="password"
@@ -24,21 +24,21 @@
           </router-link>
         </div>
         <div class="confirmation__button">
-          <cButton
+          <AppButton
             variant="outlined"
             class="confirmation__button--no"
             @click="result(false)"
           >
             Отмена
-          </cButton>
-          <cButton
+          </AppButton>
+          <AppButton
             type="submit"
             :disabled="btnConfirmDisable"
             class="confirmation__buttons--yes"
             @click="result(true)"
           >
             Подтвердить
-          </cButton>
+          </AppButton>
         </div>
       </form>
     </div>

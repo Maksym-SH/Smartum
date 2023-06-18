@@ -1,6 +1,6 @@
 <template>
   <div class="c-select" :class="{ active: selectActive }">
-    <cButton
+    <AppButton
       :style="selectSize"
       variant="text"
       size="small"
@@ -11,13 +11,13 @@
       <slot>
         <img class="c-select__icon" src="/images/icons/dots-vertical.svg" alt="" />
       </slot>
-    </cButton>
+    </AppButton>
     <transition name="toggle-selectActive" mode="in-out">
       <div v-show="selectActive" class="c-select__picker">
         <span class="c-select__picker--caret"></span>
         <div class="c-select__picker-actions-wrapper">
           <template v-for="item in items" :key="item.title">
-            <cButton
+            <AppButton
               v-if="item.displaying"
               :class="{ 'no-icon': !item.icon }"
               :color="item.color"

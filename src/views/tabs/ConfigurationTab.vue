@@ -2,7 +2,7 @@
   <div class="configuration-tab">
     <div class="configuration-tab__content">
       <div class="configuration-tab__content-navigation-filter">
-        <Card table>
+        <AppCard table>
           <template #table-header>
             <th class="card-info__title">Страницы</th>
             <th class="card-info__title center">Действие</th>
@@ -25,7 +25,7 @@
                 />
               </td>
               <td class="card-content-info__item--actions">
-                <cCheckbox
+                <AppCheckbox
                   v-model="navigate.showed"
                   switch-box
                   :disabled="navigate.alwaysDisplay"
@@ -37,20 +37,20 @@
             </tr>
           </template>
           <template #custom>
-            <cButton
+            <AppButton
               class="card-info--save-changes"
               title="Сохранить"
               @click="saveNavigationList"
             />
           </template>
-        </Card>
+        </AppCard>
       </div>
       <div class="configuration-tab__avatar-settings">
-        <Card>
+        <AppCard>
           <template #header>
             <h2 class="card-info__title settings-avatar">
               Изменить цвет фона профиля
-              <cButton size="small" title="Сохранить" @click="saveBackgroundAvatar" />
+              <AppButton size="small" title="Сохранить" @click="saveBackgroundAvatar" />
             </h2>
           </template>
           <template #content>
@@ -73,10 +73,10 @@
               </small>
             </div>
           </template>
-        </Card>
+        </AppCard>
       </div>
       <div class="configuration-tab__additional-settings">
-        <Card>
+        <AppCard>
           <template #header>
             <h2 class="card-info__title">Дополнительные настройки</h2>
           </template>
@@ -92,7 +92,7 @@
                 <h4 class="card-info__additional-settings-name">
                   Статус подтверждения адреса
                 </h4>
-                <cCheckbox
+                <AppCheckbox
                   v-model="additionalParams.showEmailConfirm"
                   switch-box
                   name="ToggleStatus"
@@ -102,7 +102,7 @@
               </div>
               <div class="card-info__additional-settings-item">
                 <h4 class="card-info__additional-settings-name">Дата и время</h4>
-                <cCheckbox
+                <AppCheckbox
                   v-model="additionalParams.showCurrentDate"
                   switch-box
                   name="ToggleTime"
@@ -114,7 +114,7 @@
                 <h4 class="card-info__additional-settings-name">
                   Кнопка "Удалить аккаунт"
                 </h4>
-                <cCheckbox
+                <AppCheckbox
                   v-model="additionalParams.showDeleteAccountButton"
                   switch-box
                   name="ToggleDeleteAccount"
@@ -125,13 +125,13 @@
             </div>
           </template>
           <template #custom>
-            <cButton
+            <AppButton
               class="card-info--save-changes"
               title="Сохранить"
               @click="saveAdditional"
             />
           </template>
-        </Card>
+        </AppCard>
       </div>
     </div>
   </div>
@@ -141,14 +141,14 @@
 import { defineComponent } from "vue";
 
 import useConfiguration from "@/composables/useConfiguration";
-import Card from "@/container/Card.vue";
-import Avatar from "@/components/user/Avatar.vue";
+import AppCard from "@/layout/AppCard.vue";
+import Avatar from "@/components/user/AppAvatar.vue";
 import ColorPicker from "@/components/dialogs/SelectColor.vue";
 import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({
   components: {
-    Card,
+    AppCard,
     Avatar,
     ColorPicker,
     InlineSvg,

@@ -1,7 +1,7 @@
 <template>
   <notifications />
   <transition name="toggle-popup" mode="out-in">
-    <Popup v-if="showPopup" />
+    <AppPopup v-if="showPopup" />
   </transition>
   <LongContentModal
     v-if="commonStore.modalContentType"
@@ -10,7 +10,7 @@
   <transition name="toggle-popup" mode="out-in">
     <ConfirmationPopup v-if="commonStore.openConfirmPopup" />
   </transition>
-  <cLoader v-show="commonStore.loadingStatus" />
+  <AppLoader v-show="commonStore.loadingStatus" />
   <router-view v-slot="{ Component }">
     <transition name="router-nav" mode="out-in">
       <component :is="Component" v-if="commonStore.showTemplateApplication" />
@@ -26,9 +26,9 @@ import useStores from "./composables/useStores";
 
 export default defineComponent({
   components: {
-    Popup: defineAsyncComponent(() => import("@/components/UI/Popup.vue")),
+    AppPopup: defineAsyncComponent(() => import("@/components/UI/AppPopup.vue")),
     ConfirmationPopup: defineAsyncComponent(
-      () => import("@/components/UI/Confirmation.vue")
+      () => import("@/components/UI/ConfirmationPopup.vue")
     ),
     LongContentModal: defineAsyncComponent(
       () => import("@/components/UI/LongContentModal.vue")

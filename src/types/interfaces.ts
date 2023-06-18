@@ -113,7 +113,7 @@ export interface IEmoji {
 }
 
 export interface INewEmojiParams {
-  emoji: Required<IEmoji>,
+  emoji: Required<IEmoji>;
   newAuthor: string;
 }
 
@@ -121,7 +121,7 @@ export interface IWorkingBoardTask {
   id: number;
   title: string;
   marks?: string[];
-  subtasks?: ISubTasks[];
+  subtasks?: ISubTask[];
   description?: string;
   subscribedToNotifications?: IWorkingBoardMember[];
   assignedMembers?: IUserForList[];
@@ -129,7 +129,7 @@ export interface IWorkingBoardTask {
   dateOfCreate: Date | IServerDate;
 }
 
-export interface ISubTasks {
+export interface ISubTask {
   id: number;
   title: string;
   done: boolean;

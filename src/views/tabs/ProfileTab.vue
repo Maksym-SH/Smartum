@@ -11,7 +11,7 @@
         />
       </div>
       <div class="profile-tab__form-item first-name">
-        <cInput
+        <AppInput
           v-model.trim="userInfo.firstName"
           :min="userInfo.firstName ? Length.Text : Length.None"
           :max-length="Length.Maximum"
@@ -21,7 +21,7 @@
         />
       </div>
       <div class="profile-tab__form-item last-name">
-        <cInput
+        <AppInput
           v-model.trim="userInfo.lastName"
           :min="userInfo.lastName ? Length.Text : Length.None"
           :max-length="Length.Maximum"
@@ -31,7 +31,7 @@
         />
       </div>
       <div class="profile-tab__form-item textarea">
-        <cTextarea
+        <AppTextarea
           v-model.trim="userInfo.about"
           :max="Length.Textarea"
           label="Дополнительная информация"
@@ -39,7 +39,7 @@
         />
       </div>
       <div class="profile-tab__form-item phone">
-        <cInput
+        <AppInput
           v-model.trim="userInfo.phone"
           class="phone"
           is-phone
@@ -49,7 +49,7 @@
         />
       </div>
       <div class="profile-tab__form-item email">
-        <cInput
+        <AppInput
           v-model="userInfo.email"
           disabled
           is-email
@@ -58,12 +58,12 @@
         />
       </div>
       <div class="profile-tab__form-item new-password">
-        <Hint
+        <AppHint
           v-if="emailNotVerified"
           content="Для изменения пароля подтвердите электронный адрес."
           variant="danger"
         />
-        <cInput
+        <AppInput
           v-model.trim="userInfo.newPassword"
           type="password"
           :disabled="emailNotVerified"
@@ -74,14 +74,14 @@
         />
       </div>
       <div class="profile-tab__form-buttons-wrapper">
-        <cButton
+        <AppButton
           class="btn-save"
           :class="{ 'full-width-mobile': saveChangesButtonToFullScreen }"
           title="Сохранить"
           @click="saveChanges"
         />
         <transition name="toggle-content">
-          <cButton
+          <AppButton
             v-if="showDeleteAccountButton"
             class="btn-delete"
             :color="Colors.Danger"
@@ -107,12 +107,12 @@ import newNotificationContent from "@/composables/useNotificationContent";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
-import Hint from "@/components/UI/Hint.vue";
+import AppHint from "@/components/UI/AppHint.vue";
 
 export default defineComponent({
   components: {
     ImageUpload: FileUpload,
-    Hint,
+    AppHint,
   },
   setup() {
     const { userStore, configurationStore, notificationStore } = useStores();

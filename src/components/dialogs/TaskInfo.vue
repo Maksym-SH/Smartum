@@ -4,7 +4,7 @@
       <div class="task-info-modal__window-inner">
         <template v-if="currentTask">
           <header class="task-info-modal__window-header">
-            <cButton
+            <AppButton
               variant="text"
               icon="close"
               class="task-info-modal__window--close"
@@ -15,9 +15,10 @@
               <InlineSvg class="icon" src="/images/icons/task.svg" />
               <v-tooltip text="Нажмите чтобы редактировать" location="top">
                 <template v-slot:activator="{ props }">
-                  <cInput
+                  <AppInput
                     v-bind="props"
                     v-model="currentTask.title"
+                    :name="currentTask.title"
                     :min="Length.Text"
                     :maxLength="Length.Maximum"
                   />
@@ -68,7 +69,7 @@
                   location="bottom"
                 >
                   <template v-slot:activator="{ props }">
-                    <cButton
+                    <AppButton
                       v-bind="props"
                       icon="eye"
                       :color="Colors.LightGrey"
@@ -97,7 +98,7 @@
                   Описание
                 </span>
                 <transition name="toggle-content" mode="out-in">
-                  <cTextarea
+                  <AppTextarea
                     v-if="editDescriptionMode"
                     key="textarea"
                     @blur="saveDescriptionText"
@@ -123,7 +124,7 @@
                   <InlineSvg class="icon" src="/images/icons/info-box-outline.svg" />
                   Дополнительне задачи
                 </span>
-                <Subtasks
+                <SubtasksList
                   v-if="currentTask.subtasks"
                   v-model:subtasks="currentTask.subtasks"
                 />
@@ -181,11 +182,11 @@ import useTaskInfo from "@/composables/useTaskInfo";
 import InlineSvg from "vue-inline-svg";
 import SelectColor from "./SelectColor.vue";
 import BackgroundItem from "../UI/BackgroundItem.vue";
-import Avatar from "../user/Avatar.vue";
-import NewComment from "../comment/NewComment.vue";
+import Avatar from "../user/AppAvatar.vue";
+import NewComment from "../comment/CommentAddNew.vue";
 import CommentItem from "../comment/CommentItem.vue";
-import MembersAssign from "../dashboard/task/TaskAssign.vue";
-import Subtasks from "../dashboard/task/Subtasks.vue";
+import MembersAssign from "../board/task/TaskAssign.vue";
+import SubtasksList from "../board/task/subtask/SubtasksList.vue";
 
 export default defineComponent({
   emits: ["update:taskModalActive"],
@@ -211,7 +212,7 @@ export default defineComponent({
     NewComment,
     CommentItem,
     MembersAssign,
-    Subtasks,
+    SubtasksList,
   },
   setup(props, { emit }) {
     const closeModal = (): void => {

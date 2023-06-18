@@ -1,6 +1,6 @@
 <template>
   <div class="home-page">
-    <CAside
+    <TheAside
       v-model:minimizeAside="minimizeAside"
       :notification-count="notificationsSize"
     />
@@ -9,7 +9,7 @@
       :class="{ 'minimize-info': minimizeAside }"
       @click.capture="toggleAsideVisible(false, true)"
     >
-      <CHeader class="home-page__header" />
+      <TheHeader lass="home-page__header" />
       <div class="home-page__tab-info">
         <h1 class="home-page__tab-info-title">
           {{ tabName.ru }}
@@ -41,13 +41,13 @@ import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
 import useNotifications from "@/composables/useNotifications";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
-import cHeader from "@/container/Header.vue";
-import cAside from "@/container/Aside.vue";
+import TheHeader from "@/layout/TheHeader.vue";
+import TheAside from "@/layout/TheAside.vue";
 
 export default defineComponent({
   components: {
-    CHeader: cHeader,
-    CAside: cAside,
+    TheAside,
+    TheHeader,
   },
   setup() {
     const { commonStore, userStore } = useStores();

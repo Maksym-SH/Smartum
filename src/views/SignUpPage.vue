@@ -27,7 +27,7 @@
       <div class="sign-up__window-content content">
         <h2 class="sign-up__window-content-title">Создание аккаунта</h2>
         <form class="sign-up__window-form-inputs" @submit.prevent="submitForm">
-          <cInput
+          <AppInput
             v-model.trim="userData.firstName"
             required
             label="Имя"
@@ -36,7 +36,7 @@
             :min="Length.Text"
             transparent
           />
-          <cInput
+          <AppInput
             v-model.trim="userData.lastName"
             :min="userData.lastName ? Length.Text : Length.None"
             name="userLastName"
@@ -44,7 +44,7 @@
             label="Фамилия"
             transparent
           />
-          <cInput
+          <AppInput
             v-model.trim="userData.email"
             required
             type="email"
@@ -53,7 +53,7 @@
             transparent
             label="Электронный адрес"
           />
-          <cInput
+          <AppInput
             v-model="userData.password"
             required
             type="password"
@@ -65,7 +65,7 @@
           />
 
           <div class="sign-up__window-form-inputs__send">
-            <cButton title="Регистрация" type="submit" />
+            <AppButton title="Регистрация" type="submit" />
           </div>
           <small class="sign-up__window-description">
             Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте согласие на

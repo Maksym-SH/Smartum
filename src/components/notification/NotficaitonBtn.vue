@@ -1,6 +1,6 @@
 <template>
   <div class="notifications">
-    <cButton
+    <AppButton
       @click="toggleNotificationsWindow"
       icon="bell-outline"
       class="notifications__btn"
@@ -11,7 +11,7 @@
         class="notifications__badge"
         :content="notificationsSize"
       />
-    </cButton>
+    </AppButton>
     <DropdownWindow
       :visible="showNotificationsWindow"
       class="notifications__window"
@@ -24,14 +24,14 @@
         <div class="notifications__window-header">
           <h2 class="notifications__window-title">Уведомления</h2>
           <nav class="notifications__window--actions">
-            <cCheckbox
+            <AppCheckbox
               v-model="onlyUnread"
               :disabled="!notificationsSize"
               switch-box
               name="changeWatchType"
               label="Только непрочитанные"
-            ></cCheckbox>
-            <cButton
+            ></AppCheckbox>
+            <AppButton
               @click="showNotificationsWindow = false"
               variant="text"
               class="notifications__window--close"
@@ -68,7 +68,7 @@ import type { NotifyAction } from "@/types/types";
 import useNotifications from "@/composables/useNotifications";
 import useStore from "@/composables/useStores";
 import NotificationItem from "./NotificationItem.vue";
-import DropdownWindow from "@/container/DropdownWindow.vue";
+import DropdownWindow from "@/layout/DropdownWindow.vue";
 import EmptyList from "../UI/EmptyList.vue";
 
 export default defineComponent({

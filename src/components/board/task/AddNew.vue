@@ -1,7 +1,7 @@
 <template>
   <div class="add-new" :class="{ 'creation-mode': showCreationTemplate }">
     <transition name="toggle-content" mode="out-in">
-      <cButton
+      <AppButton
         v-if="!showCreationTemplate"
         v-bind="$attrs"
         @click="showCreationTemplate = true"
@@ -12,7 +12,7 @@
         class="add-new__button"
       />
       <form v-else class="add-new__params" @submit.prevent="create">
-        <cInput
+        <AppInput
           class="add-new__params-input"
           v-model="title"
           :maxLength="Length.Maximum"
@@ -20,13 +20,13 @@
           :placeholder="inputPlaceholder"
         />
         <div class="add-new__params-actions">
-          <cButton
+          <AppButton
             class="add-new__params-actions--create"
             type="submit"
             size="small"
             :title="buttonTitle"
           />
-          <cButton
+          <AppButton
             @click="closeCreateMode"
             class="add-new__params-actions--close"
             variant="text"

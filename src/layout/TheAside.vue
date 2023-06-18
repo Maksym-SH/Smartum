@@ -4,11 +4,11 @@
       <img class="aside__logo-picture" src="/images/icons/logo.svg" alt="" />
     </div>
     <div class="aside__content">
-      <cLoader v-if="!showContent" :size="defaultLoaderSize" inline />
+      <AppLoader v-if="!showContent" :size="defaultLoaderSize" inline />
       <template v-else>
         <div class="aside__mobile-content mobile-only">
           <SwitchTheme class="aside__theme-switch" small name="switchThemeMobile" />
-          <cInput
+          <AppInput
             v-model="searchInput"
             type="search"
             light-theme
@@ -17,7 +17,7 @@
           />
         </div>
         <div class="aside__user">
-          <User
+          <UserInfo
             :first-name="userInfo.firstName"
             :last-name="userInfo.lastName"
             :avatar="userInfo.avatarParams"
@@ -32,7 +32,7 @@
         >
           <template v-for="item in navigationList" :key="item.id">
             <template v-if="item.showed">
-              <cExpPanel
+              <AppExpansionPanel
                 v-if="item.panels"
                 :name="item.title"
                 :icon="item.icon"
@@ -96,7 +96,7 @@ import { Layout, Numbers } from "@/types/enums";
 import type { IAsideNavigationItem, IUserCreated } from "@/types/interfaces";
 import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 
-import User from "@/components/user/Container.vue";
+import UserInfo from "@/components/user/UserInfo.vue";
 import SwitchTheme from "@/components/UI/SwitchTheme.vue";
 import InlineSvg from "vue-inline-svg";
 import useStores from "@/composables/useStores";
@@ -104,7 +104,7 @@ import packageJson from "package.json";
 
 export default defineComponent({
   components: {
-    User,
+    UserInfo,
     SwitchTheme,
     InlineSvg,
   },

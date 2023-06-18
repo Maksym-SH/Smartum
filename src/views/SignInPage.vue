@@ -7,7 +7,7 @@
       <div class="auth__window-form">
         <form class="auth__window-form-wrapper" @submit.prevent="submitForm">
           <div class="auth__window-form__inputs">
-            <cInput
+            <AppInput
               v-model="userData.email"
               required
               is-email
@@ -16,7 +16,7 @@
               label="Электронный адрес"
               transparent
             />
-            <cInput
+            <AppInput
               v-model="userData.password"
               required
               type="password"
@@ -36,7 +36,7 @@
             </div>
           </div>
           <div class="auth__window-form__inputs--send">
-            <cButton title="Войти" type="submit" />
+            <AppButton title="Войти" type="submit" />
           </div>
         </form>
         <div class="auth__window-form--actions">

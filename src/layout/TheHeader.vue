@@ -2,7 +2,7 @@
   <header class="c-header">
     <div class="c-header__wrapper">
       <div class="c-header__search-content not-mobile">
-        <cInput
+        <AppInput
           v-model="searchInput"
           type="search"
           name="searchContentDesktop"
@@ -10,7 +10,7 @@
         />
       </div>
       <transition name="toggle-content">
-        <Date v-show="showDateTemplate" />
+        <Date v-if="showDateTemplate" />
       </transition>
       <SwitchTheme class="not-mobile" name="toggleThemeDesktop" />
     </div>

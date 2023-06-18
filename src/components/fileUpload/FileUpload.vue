@@ -1,7 +1,7 @@
 <template>
   <div class="file-upload" @click="upload?.click()">
     <input ref="upload" type="file" class="file-upload--input" @change="fileUpload" />
-    <cButton
+    <AppButton
       v-if="showImageTemplate"
       class="file-upload--delete"
       :color="Colors.Danger"

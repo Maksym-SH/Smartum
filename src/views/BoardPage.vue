@@ -2,7 +2,7 @@
   <div class="board-item-page">
     <BoardHeader :user-info="userInfo" @board-leave="boardLeave" />
     <div class="board-item-page__content" :style="{ background: boardBackground }">
-      <cLoader v-if="!showedCommonLoader && !boardNotEmpty" />
+      <AppLoader v-if="!showedCommonLoader && !boardNotEmpty" />
       <transition name="toggle-content">
         <div v-if="boardNotEmpty" class="board-item-page__board-info">
           <div class="board-item-page__board-info-about">
@@ -35,7 +35,7 @@
                 </template>
               </v-tooltip>
             </div>
-            <BtnInviteUsers :board="boardItem" @invited="setInviteUserToBoard" />
+            <InviteUserButton :board="boardItem" @invited="setInviteUserToBoard" />
           </div>
         </div>
       </transition>
@@ -45,7 +45,7 @@
         mode="out-in"
         class="board-item-page__content-tasks"
       >
-        <Column
+        <TaskColumn
           v-for="column in boardItem.columns"
           :key="column.id"
           :column="column"
@@ -53,7 +53,7 @@
           v-model:column-tasks="column.tasks"
           @save-changes="saveChanges"
         />
-        <AddColumn
+        <AddNewColumn
           v-show="boardNotEmpty"
           key="add-new"
           :column-length="columnLength"
@@ -79,19 +79,19 @@ import { storeToRefs } from "pinia";
 
 import useStore from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
-import BoardHeader from "@/components/dashboard/BoardPageHeader.vue";
-import BtnInviteUsers from "@/components/user/InviteBtn.vue";
-import Avatar from "@/components/user/Avatar.vue";
-import Column from "@/components/dashboard/task/Column.vue";
-import AddColumn from "@/components/dashboard/task/AddNewColumn.vue";
+import BoardHeader from "@/components/board/BoardPageHeader.vue";
+import InviteUserButton from "@/components/user/UserInviteButton.vue";
+import Avatar from "@/components/user/AppAvatar.vue";
+import TaskColumn from "@/components/board/task/TaskColumn.vue";
+import AddNewColumn from "@/components/board/task/TaskColumnAddNew.vue";
 
 export default defineComponent({
   components: {
     BoardHeader,
     Avatar,
-    BtnInviteUsers,
-    Column,
-    AddColumn,
+    InviteUserButton,
+    TaskColumn,
+    AddNewColumn,
   },
   setup() {
     const router = useRouter();

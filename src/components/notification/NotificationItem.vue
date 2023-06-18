@@ -30,7 +30,7 @@
         {{ params.description }}
       </p>
     </div>
-    <cButton
+    <AppButton
       class="notification-item--close"
       variant="text"
       icon="close-circle"
@@ -50,7 +50,7 @@ import router from "@/router";
 import useStore from "@/composables/useStores";
 import useDateParseToString from "@/composables/useDateParse";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
-import Avatar from "../user/Avatar.vue";
+import Avatar from "../user/AppAvatar.vue";
 
 export default defineComponent({
   components: {

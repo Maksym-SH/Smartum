@@ -62,7 +62,7 @@
           />
         </transition>
       </span>
-      <cButton
+      <AppButton
         v-if="type === 'search'"
         class="c-input--search-btn"
         icon="magnify"

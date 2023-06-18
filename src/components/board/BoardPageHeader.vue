@@ -5,17 +5,17 @@
         <img class="board-header__logo-image" src="/images/icons/logo.svg" alt="" />
       </router-link>
       <div class="board-header__actions">
-        <AcquaintanceBtn />
+        <AcquaintanceButton />
         <BtnNotify />
         <SwitchTheme name="switchThemeBoard" />
-        <cSelect :items="actions" :size="42" rounded @selected="selected">
+        <AppSelect :items="actions" :size="42" rounded @selected="selected">
           <Avatar
             circle
             :first-name="userInfo.firstName"
             :last-name="userInfo.lastName"
             :avatar="userInfo.avatarParams"
           />
-        </cSelect>
+        </AppSelect>
       </div>
     </div>
   </header>
@@ -28,16 +28,16 @@ import type { IUserCreated } from "@/types/interfaces";
 import { Colors } from "@/types/enums";
 
 import useSelectActions from "@/composables/useSelectActions";
-import Avatar from "../user/Avatar.vue";
+import Avatar from "../user/AppAvatar.vue";
 import BtnNotify from "@/components/notification/NotficaitonBtn.vue";
 import SwitchTheme from "../UI/SwitchTheme.vue";
-import AcquaintanceBtn from "./AcquaintanceBtn.vue";
+import AcquaintanceButton from "./BoardAcquaintanceButton.vue";
 
 export default defineComponent({
   components: {
     Avatar,
     BtnNotify,
-    AcquaintanceBtn,
+    AcquaintanceButton,
     SwitchTheme,
   },
   emits: ["boardLeave", "userMenuPicked"],

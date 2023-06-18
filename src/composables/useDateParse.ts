@@ -5,8 +5,10 @@ import { Language, Numbers } from "@/types/enums";
 
 import useTimestamp from "@/helpers/dateTime/stamp";
 
-export default function useDateParseToString(date: Date | IServerDate | string): string {
+export default function useDateParseToString(date: Date | IServerDate | string | null): string {
   const dateSent = computed((): string => {
+    if (!date) return ""
+
     const dateParam = (date as IServerDate).seconds;
 
     let recievedDate = dateParam ? new Date(Number(dateParam) * Numbers.Second) : date;

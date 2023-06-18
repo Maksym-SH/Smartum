@@ -1,13 +1,13 @@
 <template>
   <div class="invite-users">
-    <cButton
+    <AppButton
       @click="toggleInviteWindow"
       icon="account-multiple"
       class="invite-users__btn"
       size="small"
     >
       Пригласить
-    </cButton>
+    </AppButton>
     <DropDownWindow
       :visible="showInviteWindow"
       class="invite-users__window"
@@ -19,7 +19,7 @@
       <template #header>
         <div class="invite-users__window-header">
           <div class="invite-users__window-header--search">
-            <cInput
+            <AppInput
               v-model="searchText"
               placeholder="Поиск"
               type="search"
@@ -28,13 +28,13 @@
             />
           </div>
           <nav class="invite-users__window-header--actions">
-            <cButton
+            <AppButton
               variant="text"
               class="invite-users__window--refresh"
               icon="refresh"
               @click="refreshUsers"
             />
-            <cButton
+            <AppButton
               class="invite-users__window--close"
               variant="text"
               icon="close"
@@ -46,7 +46,7 @@
       <template #content>
         <div v-if="showInviteWindow" class="invite-users__window">
           <div class="invite-users__window-content">
-            <cLoader v-show="showLoader" class="invite-load" inline />
+            <AppLoader v-show="showLoader" class="invite-load" inline />
             <div v-show="!showLoader" class="invite-users__user-list">
               <UserListItem
                 v-if="filteredList.length"
@@ -85,7 +85,7 @@ import useStore from "@/composables/useStores";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 import UserListItem from "./UserItem.vue";
-import DropDownWindow from "@/container/DropdownWindow.vue";
+import DropDownWindow from "@/layout/DropdownWindow.vue";
 
 export default defineComponent({
   components: {

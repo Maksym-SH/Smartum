@@ -8,7 +8,7 @@
         {{ params.text }}
       </p>
       <div class="popup__button">
-        <cButton
+        <AppButton
           outline
           :variant="btnParam.no?.variant"
           :color="btnParam.no?.color"
@@ -16,8 +16,8 @@
           @click="result(false)"
         >
           {{ btnParam.no?.text }}
-        </cButton>
-        <cButton
+        </AppButton>
+        <AppButton
           :variant="btnParam.yes.variant"
           :color="btnParam.yes?.color"
           class="popup__buttons--yes"
@@ -25,7 +25,7 @@
           @click="result(true)"
         >
           {{ btnParam.yes.text }}
-        </cButton>
+        </AppButton>
       </div>
     </div>
   </div>

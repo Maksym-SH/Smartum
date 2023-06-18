@@ -12,7 +12,7 @@ import type {
 } from "@/types/types";
 import { Colors, Length } from "@/types/enums";
 
-// Input.vue
+// AppInput.vue
 export const useInputProps = {
   modelValue: {
     type: [String, Number],
@@ -73,7 +73,7 @@ export const useInputProps = {
   },
 };
 
-// Textarea.vue
+// AppTextarea.vue
 export const useTextareaProps = {
   modelValue: {
     type: String,
@@ -117,7 +117,7 @@ export const useTextareaProps = {
   },
 };
 
-// Button.vue
+// AppButton.vue
 export const useButtonProps = {
   title: {
     type: String,
@@ -153,7 +153,7 @@ export const useButtonProps = {
   },
 };
 
-// Checkbox.vue
+// AppCheckbox.vue
 export const useCheckboxProps = {
   modelValue: {
     type: Boolean,
@@ -185,7 +185,7 @@ export const useCheckboxProps = {
   },
 };
 
-// ExpansionPanel.vue
+// AppExpansionPanel.vue
 export const useExpansionPanelProps = {
   variant: {
     type: String as PropType<ExpansionPanelVariant>,
@@ -241,7 +241,7 @@ export const useEmptyListProps = {
   },
 };
 
-// Hint.vue
+// VHint.vue
 export const useHintProps = {
   content: {
     type: String,
@@ -253,7 +253,7 @@ export const useHintProps = {
   },
 };
 
-// Loader.vue
+// AppLoader.vue
 export const useLoaderProps = {
   inline: {
     type: Boolean,
@@ -273,7 +273,7 @@ export const useLongContentModalProps = {
   },
 };
 
-// Select.vue
+// AppSelect.vue
 export const useSelectProps = {
   items: {
     type: Array as PropType<SelectElements>,

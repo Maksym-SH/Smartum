@@ -13,14 +13,19 @@
       Оставить комментарий
     </span>
     <form class="new-comment__textarea-inner" @submit.prevent="createComment">
-      <cTextarea
+      <AppTextarea
         v-model.trim="newCommentMessage"
         :max="Length.Textarea"
         :min="newCommentMessage ? Length.Text : Length.None"
         name="taskDescription"
         placeholder="Напишите комментарий"
       />
-      <cButton :disabled="!newCommentMessage" size="small" title="Отправить" type="submit" />
+      <AppButton
+        :disabled="!newCommentMessage"
+        size="small"
+        title="Отправить"
+        type="submit"
+      />
     </form>
   </div>
 </template>
@@ -31,7 +36,7 @@ import type { PropType } from "vue";
 import { Length } from "@/types/enums";
 import type { ITaskComment, IUserForList } from "@/types/interfaces";
 
-import Avatar from "../user/Avatar.vue";
+import Avatar from "../user/AppAvatar.vue";
 
 export default defineComponent({
   props: {

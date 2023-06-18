@@ -130,10 +130,22 @@ export default defineComponent({
     &__content {
       width: 100% !important;
       height: calc(100% - 76px) !important;
-      padding: 7px 2px 7px 7px;
+      padding: 7px;
 
       &.no-header {
         height: 100% !important;
+      }
+
+      &::-webkit-scrollbar {
+        width: 2px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--color-scroll-track-invert);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: $color-dark-grey2;
       }
     }
   }
