@@ -134,8 +134,11 @@ export function DeleteAccountPopup(
   };
 }
 
-let debounceTimer: ReturnType<typeof setTimeout>;
-export function Debounce(callback: Function, ms: number) {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => callback(), ms);
+export function CreateDebounce(ms: number): Function {
+  let CreateDebounceTimer: number;
+
+  return function (callback: Function): void {
+    clearTimeout(CreateDebounceTimer);
+    CreateDebounceTimer = setTimeout(callback, ms);
+  };
 }

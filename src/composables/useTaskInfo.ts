@@ -1,5 +1,5 @@
 import { ref, computed, watch, onMounted } from "vue";
-import { Debounce, ObjectHasValues, TheSameObject } from "@/helpers/methods";
+import { CreateDebounce, ObjectHasValues, TheSameObject } from "@/helpers/methods";
 import { storeToRefs } from "pinia";
 
 import useStores from "@/composables/useStores";
@@ -98,6 +98,8 @@ export default function useTaskInfo(columnId: number, taskId: number) {
   });
 
   // Save changes.
+
+  const debounce = CreateDebounce(Numbers.Second);
   watch(
     currentTask,
     (_, oldValue) => {
@@ -107,10 +109,7 @@ export default function useTaskInfo(columnId: number, taskId: number) {
         );
         boardItem.value.columns[columnId].tasks[updatedTaskIndex] = currentTask.value;
 
-        Debounce(
-          () => dashboardStore.updateWorkingBoard(boardItem.value, false),
-          Numbers.Second
-        );
+        debounce(() => dashboardStore.updateWorkingBoard(boardItem.value, false));
       }
     },
     { deep: true }
