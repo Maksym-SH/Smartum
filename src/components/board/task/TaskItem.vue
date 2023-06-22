@@ -40,17 +40,22 @@
           />
         </template>
       </v-tooltip>
-      <div class="task-item__members-avatars">
-        <Avatar
-          v-for="user in task.assignedMembers"
-          :key="user.uid"
-          :size="30"
-          :avatar="user.avatarParams"
-          :first-name="user.firstName"
-          :last-name="user.lastName"
-          circle
-        />
-      </div>
+      <transition-group
+        tag="div"
+        class="task-item__members-avatars"
+        name="toggle-content"
+      >
+        <template v-for="user in task.assignedMembers" :key="user.uid">
+          <Avatar
+            v-if="memebersIds.includes(user.uid)"
+            :size="30"
+            :avatar="user.avatarParams"
+            :first-name="user.firstName"
+            :last-name="user.lastName"
+            circle
+          />
+        </template>
+      </transition-group>
     </div>
     <Teleport to="body">
       <transition name="toggle-content" mode="out-in">
@@ -70,6 +75,7 @@ import { defineComponent, PropType, computed, ref } from "vue";
 import { IWorkingBoardTask } from "@/types/interfaces";
 
 import useUserInfo from "@/composables/useCurrentUserInfo";
+import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
 import Avatar from "@/components/user/AppAvatar.vue";
 import TaskInfoModal from "@/components/dialogs/TaskInfo.vue";
 import InlineSvg from "vue-inline-svg";
@@ -94,6 +100,8 @@ export default defineComponent({
   },
   setup(props) {
     const { getFullName, unicID } = useUserInfo();
+
+    const { memebersIds } = useBoardMembersInfo();
 
     const taskModalActive = ref(false);
 
@@ -125,6 +133,7 @@ export default defineComponent({
       taskModalActive,
       currenUserInvited,
       subtasksCount,
+      memebersIds,
       getFullName,
     };
   },

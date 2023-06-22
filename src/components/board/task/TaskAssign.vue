@@ -87,16 +87,17 @@
       name="toggle-content"
       mode="out-in"
     >
-      <Avatar
-        v-for="member in assignedMembers"
-        class="avatar"
-        :key="member.uid"
-        circle
-        :size="36"
-        :firstName="member.firstName"
-        :last-name="member.lastName"
-        :avatar="member.avatarParams"
-      />
+      <template v-for="member in assignedMembers" :key="member.uid">
+        <Avatar
+          v-if="memebersIds.includes(member.uid)"
+          class="avatar"
+          circle
+          :size="36"
+          :firstName="member.firstName"
+          :last-name="member.lastName"
+          :avatar="member.avatarParams"
+        />
+      </template>
     </transition-group>
   </div>
 </template>
@@ -107,6 +108,7 @@ import type { PropType } from "vue";
 import { IUserForList } from "@/types/interfaces";
 import { ArrayHasValues } from "@/helpers/methods";
 
+import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
 import InlineSvg from "vue-inline-svg";
 import DropdownWindow from "@/layout/DropdownWindow.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
@@ -129,6 +131,8 @@ export default defineComponent({
     InlineSvg,
   },
   setup(props, { emit }) {
+    const { memebersIds } = useBoardMembersInfo();
+
     const showWindowAssign = ref(false);
 
     const notAssignedMembers = computed((): IUserForList[] => {
@@ -148,6 +152,7 @@ export default defineComponent({
     };
 
     return {
+      memebersIds,
       showWindowAssign,
       notAssignedMembers,
       notAssignedMembersExist,
