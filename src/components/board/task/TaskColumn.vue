@@ -24,7 +24,8 @@
       class="task-column__tasks"
       item-key="tasks"
       :class="{ 'drop-zone': showDropZone }"
-      @start="showDropZone = true"
+      :style="{ height: showDropZone ? dropZoneHeight + 'px' : 'auto' }"
+      @start="dragStart"
       @end="dragEnd"
     >
       <template #item="{ element }">
@@ -76,6 +77,8 @@ export default defineComponent({
 
     const showDropZone = ref(false);
 
+    const dropZoneHeight = ref(0);
+
     const changeColumnName = (event: Event) => {
       emit("update:column-title", (event.target as HTMLInputElement).innerText);
     };
@@ -84,7 +87,12 @@ export default defineComponent({
       emit("save-changes");
     };
 
-    const dragEnd = () => {
+    // Drag handlers.
+    const dragStart = (e: Event): void => {
+      dropZoneHeight.value = (e.target as HTMLDivElement).clientHeight;
+      showDropZone.value = true;
+    };
+    const dragEnd = (): void => {
       emit("update:column-tasks", props.columnTasks || []);
       showDropZone.value = false;
 
@@ -109,8 +117,10 @@ export default defineComponent({
       categoryTitle,
       showDropZone,
       Numbers,
+      dropZoneHeight,
       createTask,
       dragEnd,
+      dragStart,
       saveColumnName,
       changeColumnName,
       columnSettings,
@@ -141,7 +151,6 @@ export default defineComponent({
     &.drop-zone {
       border-color: $color-blue;
       border-radius: 4px;
-      min-height: 55px;
     }
   }
 
