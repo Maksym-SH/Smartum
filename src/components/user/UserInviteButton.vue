@@ -48,13 +48,14 @@
           <div class="invite-users__window-content">
             <AppLoader v-show="showLoader" class="invite-load" inline />
             <div v-show="!showLoader" class="invite-users__user-list">
-              <UserListItem
-                v-if="filteredList.length"
-                v-for="user in filteredList"
-                :key="user.uid"
-                :user-info="user"
-                @invite="invite(user)"
-              />
+              <template v-if="filteredList.length">
+                <UserListItem
+                  v-for="user in filteredList"
+                  :key="user.uid"
+                  :user-info="user"
+                  @invite="invite(user)"
+                />
+              </template>
               <div
                 v-show="!filteredList.length"
                 class="invite-users__window-content--empty"

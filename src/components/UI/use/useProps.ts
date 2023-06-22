@@ -241,7 +241,7 @@ export const useEmptyListProps = {
   },
 };
 
-// VHint.vue
+// AppHint.vue
 export const useHintProps = {
   content: {
     type: String,

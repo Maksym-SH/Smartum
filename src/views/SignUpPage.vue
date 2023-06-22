@@ -63,7 +63,6 @@
             label="Пароль"
             autocomplete="new-password"
           />
-
           <div class="sign-up__window-form-inputs__send">
             <AppButton title="Регистрация" type="submit" />
           </div>
