@@ -187,7 +187,7 @@ export default defineComponent({
               board.title,
               board
             );
-            notificationList.push(notificationToSend);
+            notificationList.unshift(notificationToSend);
             notificationStore
               .updateNotificationList(invitedUser.uid, notificationList)
               .then(() => {

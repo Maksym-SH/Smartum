@@ -17,6 +17,7 @@
         v-model.trim="newCommentMessage"
         :max="Length.Textarea"
         :min="newCommentMessage ? Length.Text : Length.None"
+        @keyup.enter="createComment"
         name="taskDescription"
         placeholder="Напишите комментарий"
       />

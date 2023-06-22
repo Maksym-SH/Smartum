@@ -54,7 +54,7 @@ export default defineComponent({
 .toggle-theme-switch {
   position: relative;
   width: 50px;
-  height: 25px;
+  height: 24px;
 
   &__label {
     position: absolute;

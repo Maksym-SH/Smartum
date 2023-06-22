@@ -129,7 +129,7 @@ const useNotificationStore = defineStore("notification", () => {
   ): Promise<INotification<IServerDate>[]> => {
     const listTarget = notifications || allNotifications.value;
 
-    listTarget.push(newNotification);
+    listTarget.unshift(newNotification);
 
     const docID = unicID || (userStore.currentUser as User).uid;
 
