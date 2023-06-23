@@ -6,7 +6,7 @@
       </router-link>
       <div class="board-header__actions">
         <AcquaintanceButton />
-        <BtnNotify />
+        <NotificationsButton />
         <SwitchTheme name="switchThemeBoard" />
         <AppSelect :items="actions" :size="42" rounded @selected="selected">
           <Avatar
@@ -29,14 +29,14 @@ import { Colors } from "@/types/enums";
 
 import useSelectActions from "@/composables/useSelectActions";
 import Avatar from "../user/AppAvatar.vue";
-import BtnNotify from "@/components/notification/NotficaitonBtn.vue";
+import NotificationsButton from "@/components/notification/NotificationsButton.vue";
 import SwitchTheme from "../UI/SwitchTheme.vue";
 import AcquaintanceButton from "./BoardAcquaintanceButton.vue";
 
 export default defineComponent({
   components: {
     Avatar,
-    BtnNotify,
+    NotificationsButton,
     AcquaintanceButton,
     SwitchTheme,
   },
