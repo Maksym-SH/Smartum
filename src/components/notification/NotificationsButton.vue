@@ -68,7 +68,7 @@ import type { NotifyAction } from "@/types/types";
 import useNotifications from "@/composables/useNotifications";
 import useStore from "@/composables/useStores";
 import NotificationItem from "./NotificationItem.vue";
-import DropdownWindow from "@/layout/DropdownWindow.vue";
+import DropdownWindow from "../container/DropdownWindow.vue";
 import EmptyList from "../UI/EmptyList.vue";
 
 export default defineComponent({

@@ -110,7 +110,7 @@ import { ArrayHasValues } from "@/helpers/methods";
 
 import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
 import InlineSvg from "vue-inline-svg";
-import DropdownWindow from "@/layout/DropdownWindow.vue";
+import DropdownWindow from "@/components/container/DropdownWindow.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
 
 export default defineComponent({

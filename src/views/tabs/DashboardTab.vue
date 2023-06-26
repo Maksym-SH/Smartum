@@ -5,7 +5,7 @@
         v-if="!showLockAccess"
         class="dashboard-tab__content--create-new full-width--tablet"
       >
-        <CreateNewBoard @create-new="createNewBoard" />
+        <ModalCreateNewBoard @create-new="createNewBoard" />
       </div>
       <transition-group
         tag="div"
@@ -49,14 +49,14 @@ import useStores from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import LockAccess from "@/components/access/NeedEmailConfirmation.vue";
 import EmptyList from "@/components/UI/EmptyList.vue";
-import CreateNewBoard from "@/components/dialogs/CreateNewBoard.vue";
+import ModalCreateNewBoard from "@/components/modals/ModalCreateNewBoard.vue";
 import BoardCard from "@/components/board/BoardItem.vue";
 
 export default defineComponent({
   components: {
     LockAccess,
     EmptyList,
-    CreateNewBoard,
+    ModalCreateNewBoard,
     BoardCard,
   },
   setup() {

@@ -45,7 +45,7 @@
                     :height="36"
                     :background="mark"
                   />
-                  <SelectColor
+                  <ModalColorPicker
                     v-if="showAddMarkBtn"
                     theme="light"
                     :showColorsTarget="false"
@@ -59,7 +59,7 @@
                         <InlineSvg src="/images/icons/plus.svg" />
                       </span>
                     </template>
-                  </SelectColor>
+                  </ModalColorPicker>
                 </div>
               </div>
               <div class="task-info-modal__window-action-item">
@@ -180,7 +180,7 @@ import { Length } from "@/types/enums";
 
 import useTaskInfo from "@/composables/useTaskInfo";
 import InlineSvg from "vue-inline-svg";
-import SelectColor from "./SelectColor.vue";
+import ModalColorPicker from "./ModalColorPicker.vue";
 import BackgroundItem from "../UI/BackgroundItem.vue";
 import Avatar from "../user/AppAvatar.vue";
 import NewComment from "../comment/CommentAddNew.vue";
@@ -206,7 +206,7 @@ export default defineComponent({
   },
   components: {
     InlineSvg,
-    SelectColor,
+    ModalColorPicker,
     BackgroundItem,
     Avatar,
     NewComment,

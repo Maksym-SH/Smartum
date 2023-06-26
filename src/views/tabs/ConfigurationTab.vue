@@ -66,7 +66,7 @@
               </div>
               <div class="card-info__change-avatar--params">
                 <h5>Изменить цвет</h5>
-                <ColorPicker v-model="avatarParams.bgAvatar" theme="light" />
+                <ModalColorPicker v-model="avatarParams.bgAvatar" theme="light" />
               </div>
               <small class="change-avatar-hint">
                 Примечание: другие пользователи увидят выбранный вами цвет.
@@ -86,7 +86,7 @@
                 <h4 class="card-info__additional-settings-name">
                   Изменить фон боковой панели
                 </h4>
-                <ColorPicker v-model="asideBackgroundColor" theme="dark" />
+                <ModalColorPicker v-model="asideBackgroundColor" theme="dark" />
               </div>
               <div class="card-info__additional-settings-item">
                 <h4 class="card-info__additional-settings-name">
@@ -141,16 +141,16 @@
 import { defineComponent } from "vue";
 
 import useConfiguration from "@/composables/useConfiguration";
-import AppCard from "@/layout/AppCard.vue";
+import AppCard from "@/components/container/AppCard.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
-import ColorPicker from "@/components/dialogs/SelectColor.vue";
+import ModalColorPicker from "@/components/modals/ModalColorPicker.vue";
 import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({
   components: {
     AppCard,
     Avatar,
-    ColorPicker,
+    ModalColorPicker,
     InlineSvg,
   },
   setup() {

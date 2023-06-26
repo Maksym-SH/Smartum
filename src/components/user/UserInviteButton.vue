@@ -86,7 +86,7 @@ import useStore from "@/composables/useStores";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 import UserListItem from "./UserItem.vue";
-import DropDownWindow from "@/layout/DropdownWindow.vue";
+import DropDownWindow from "@/components/container/DropdownWindow.vue";
 
 export default defineComponent({
   components: {

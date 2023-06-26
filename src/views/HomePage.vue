@@ -41,8 +41,8 @@ import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
 import useNotifications from "@/composables/useNotifications";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
-import TheHeader from "@/layout/TheHeader.vue";
-import TheAside from "@/layout/TheAside.vue";
+import TheHeader from "@/components/container/TheHeader.vue";
+import TheAside from "@/components/container/TheAside.vue";
 
 export default defineComponent({
   components: {

@@ -77,7 +77,7 @@ import { IWorkingBoardTask } from "@/types/interfaces";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
 import Avatar from "@/components/user/AppAvatar.vue";
-import TaskInfoModal from "@/components/dialogs/TaskInfo.vue";
+import TaskInfoModal from "@/components/modals/ModalInfoTask.vue";
 import InlineSvg from "vue-inline-svg";
 import BackgroundItem from "@/components/UI/BackgroundItem.vue";
 
