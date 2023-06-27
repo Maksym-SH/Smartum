@@ -226,6 +226,7 @@ export default defineComponent({
             white-space: nowrap;
           }
         }
+
         &__actions {
           .c-button {
             font-size: 18px;
@@ -273,6 +274,7 @@ export default defineComponent({
 
       .member {
         padding-left: 0;
+
         &__actions {
           .c-button {
             padding: 5px 10px;

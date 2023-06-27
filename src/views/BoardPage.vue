@@ -324,6 +324,7 @@ export default defineComponent({
 
   @include mobile(max) {
     min-height: auto;
+
     &__board-info {
       padding-bottom: 5px;
 

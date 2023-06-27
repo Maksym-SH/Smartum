@@ -66,7 +66,6 @@ export const useInputProps = {
     type: Number,
     default: Length.None,
   },
-
   autoComplete: {
     type: [Boolean, String],
     default: true,

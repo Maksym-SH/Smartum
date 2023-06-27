@@ -29,8 +29,8 @@
   --color-disable-light: #bdc4d5;
   --color-disable-dark: #69727e;
 
-  --color-dasboard-card-light: #c5f7ff;
-  --color-dasboard-card-dark: #303256;
+  --color-dashboard-card-light: #c5f7ff;
+  --color-dashboard-card-dark: #303256;
 
   --color-background-task-light: #ffffff;
   --color-background-task-dark: #22272b;
@@ -54,7 +54,7 @@ body[data-theme="dark"] {
   --color-background-notification-new: var(--color-dark-notification-background-new);
   --color-background-modal: var(--color-dark-modal-background);
   --color-disable: var(--color-disable-dark);
-  --color-dasboard-card: var(--color-dasboard-card-dark);
+  --color-dashboard-card: var(--color-dashboard-card-dark);
   --color-background-task: var(--color-background-task-dark);
   --color-hover-background-task-card: var(--color-hover-background-task-card-dark);
 }
@@ -74,7 +74,7 @@ body[data-theme="light"] {
   --color-background-notification-new: var(--color-light-notification-background-new);
   --color-background-modal: var(--color-light-modal-background);
   --color-disable: var(--color-disable-light);
-  --color-dasboard-card: var(--color-dasboard-card-light);
+  --color-dashboard-card: var(--color-dashboard-card-light);
   --color-background-task: var(--color-background-task-light);
   --color-hover-background-task-card: var(--color-hover-background-task-card-light);
 }

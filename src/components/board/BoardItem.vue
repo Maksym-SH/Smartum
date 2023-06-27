@@ -75,7 +75,7 @@ export default defineComponent({
   &__content {
     padding: 5px 10px;
     transition: background-color 0.3s;
-    background-color: var(--color-dasboard-card);
+    background-color: var(--color-dashboard-card);
   }
 
   &__title {
@@ -101,7 +101,7 @@ export default defineComponent({
     justify-content: space-between;
     padding: 5px;
     transition: background-color 0.3s;
-    background-color: var(--color-dasboard-card);
+    background-color: var(--color-dashboard-card);
 
     .members-count,
     .date-of-create {
@@ -112,6 +112,7 @@ export default defineComponent({
       display: flex;
       align-items: flex-end;
       gap: 5px;
+
       .icon {
         width: 16px;
       }

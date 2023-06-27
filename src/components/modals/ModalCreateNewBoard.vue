@@ -213,6 +213,7 @@ export default defineComponent({
       height: 100%;
       margin: 0;
     }
+
     .v-card {
       height: 100%;
 

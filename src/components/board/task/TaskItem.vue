@@ -238,6 +238,7 @@ export default defineComponent({
       }
     }
   }
+
   @include tablet(max) {
     .initially-transparent {
       opacity: 1;

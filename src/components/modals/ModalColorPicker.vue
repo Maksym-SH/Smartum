@@ -263,6 +263,7 @@ export default defineComponent({
 
     .v-card {
       height: 100%;
+
       &__header {
         &-title {
           padding-left: 25px;

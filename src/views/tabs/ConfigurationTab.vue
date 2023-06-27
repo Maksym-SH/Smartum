@@ -183,6 +183,7 @@ export default defineComponent({
       height: 100%;
       display: flex;
       flex-direction: column;
+
       &-info {
         &__title {
           font-weight: 500;
@@ -278,6 +279,7 @@ export default defineComponent({
 
     &-additional-settings {
       grid-area: 2/2/3/3;
+
       .card {
         width: 100%;
 

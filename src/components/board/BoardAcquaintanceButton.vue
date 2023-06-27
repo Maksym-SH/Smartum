@@ -148,6 +148,7 @@ export default defineComponent({
       }
     }
   }
+
   @include mobile(max) {
     &__window {
       &-header {
