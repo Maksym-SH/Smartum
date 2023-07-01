@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import { notify } from "@kyvg/vue3-notification";
 import type { Routes } from "@/types/types";
 
@@ -127,7 +127,7 @@ const routes: Routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

@@ -4,6 +4,14 @@
       <v-expansion-panel-title>
         <InlineSvg v-if="icon" :src="`/images/icons/${icon}.svg`" class="icon" />
         <span class="text" :class="{ 'no-icon': !icon }">{{ name }}</span>
+        <template v-slot:actions="{ expanded }">
+          <InlineSvg
+            class="expansion-icon"
+            :class="{ expanded }"
+            src="/images/icons/caret.svg"
+            v-bind="expanded"
+          />
+        </template>
       </v-expansion-panel-title>
       <template v-if="showExpansionPanelContent">
         <v-expansion-panel-text
@@ -47,6 +55,15 @@ export default defineComponent({
 
   &:hover {
     background-color: $color-dark-grey3;
+  }
+
+  .expansion-icon {
+    transition: all 0.2s;
+    transform: rotate(-90deg) scale(1.2);
+
+    &.expanded {
+      transform: rotate(90deg) scale(1.2);
+    }
   }
 
   &-text {
