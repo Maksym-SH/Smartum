@@ -1,15 +1,18 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { CreateDebounce, ObjectHasValues, TheSameObject } from "@/helpers/methods";
 import { storeToRefs } from "pinia";
-
-import useStores from "@/composables/useStores";
-import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
-import { IUserForList, IWorkingBoardTask } from "@/types/interfaces";
-import useDateParseToString from "./useDateParse";
 import { notify } from "@kyvg/vue3-notification";
 import { Numbers } from "@/types/enums";
+import { IUserForList, IWorkingBoardTask } from "@/types/interfaces";
+
+import i18n from "@/i18n";
+import useStores from "@/composables/useStores";
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
+import useDateParseToString from "./useDateParse";
 
 export default function useTaskInfo(columnId: number, taskId: number) {
+  const { t } = i18n.global;
+
   const { dashboardStore } = useStores();
 
   const { unicID } = useCurrentUserInfo();
@@ -84,8 +87,8 @@ export default function useTaskInfo(columnId: number, taskId: number) {
     );
     if (!updatedTask) {
       notify({
-        title: "Карточка была перемещена!",
-        text: "Окно дополнительной информации было закрыто",
+        title: t("notify.taskModalClosed.title"),
+        text: t("notify.taskModalClosed.text"),
       });
     } else if (!TheSameObject(updatedTask, currentTask.value)) {
       getCurrentTask();

@@ -1,14 +1,21 @@
 <template>
-  <div class="c-select" :class="{ active: selectActive }">
+  <div
+    class="c-select"
+    :class="[
+      { active: selectActive, 'show-active-style': activeStyle },
+      `position-${location}`,
+    ]"
+  >
     <AppButton
       :style="selectSize"
-      variant="text"
+      :variant="variant"
       size="small"
+      :icon="selectIcon"
       v-bind="$attrs"
+      :title="buttonTitle"
       @click="togglePicker"
-      @blur="selectActive = false"
     >
-      <slot>
+      <slot v-if="!buttonTitle">
         <img class="c-select__icon" src="/images/icons/dots-vertical.svg" alt="" />
       </slot>
     </AppButton>
@@ -19,13 +26,13 @@
           <template v-for="item in items" :key="item.title">
             <AppButton
               v-if="item.displaying"
-              :class="{ 'no-icon': !item.icon }"
+              :class="{ 'no-icon': !item.icon, active: item.active }"
               :color="item.color"
               :icon="item.icon"
               variant="text"
               :title="item.title"
               :rounded="false"
-              @click="$emit('selected', item.callback)"
+              @click="selected(item.callback)"
             />
           </template>
         </div>
@@ -49,15 +56,20 @@ export default defineComponent({
   components: {
     InlineSvg,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const selectActive = ref(false);
 
     const selectSize = computed((): CSSProperties => {
       return {
-        width: `${props.size}px`,
-        height: `${props.size}px`,
+        width: `${props.width || props.size}px`,
+        height: `${props.height || props.size}px`,
       };
     });
+
+    const selected = (callback: Function): void => {
+      emit("selected", callback);
+      selectActive.value = false;
+    };
 
     const togglePicker = (): void => {
       selectActive.value = !selectActive.value;
@@ -65,9 +77,10 @@ export default defineComponent({
 
     return {
       selectActive,
-      togglePicker,
       Colors,
       selectSize,
+      togglePicker,
+      selected,
     };
   },
 });
@@ -77,10 +90,15 @@ export default defineComponent({
 .c-select {
   position: relative;
 
-  &.active {
+  &.active.show-active-style {
     > .c-button {
       background-color: $color-black !important;
     }
+  }
+
+  > .c-button {
+    text-transform: none;
+    color: $color-white1;
   }
 
   &__icon {
@@ -88,9 +106,27 @@ export default defineComponent({
     height: 25px;
   }
 
+  &.position-start {
+    .c-select__picker {
+      left: 0;
+
+      .c-select__picker--caret {
+        left: 7px;
+      }
+    }
+  }
+  &.position-end {
+    .c-select__picker {
+      right: calc(50% - 15px);
+
+      .c-select__picker--caret {
+        right: 7px;
+      }
+    }
+  }
+
   &__picker {
     position: absolute;
-    right: calc(50% - 15px);
     top: calc(100% + 15px);
     z-index: 3;
     border: 1px solid $color-black;
@@ -115,6 +151,23 @@ export default defineComponent({
       border-radius: 0 !important;
       border-bottom: 1px solid $color-black;
 
+      &.active {
+        position: relative;
+        color: $color-dark-green !important;
+        &::after {
+          content: "";
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: $color-dark-green;
+          opacity: 1;
+          position: absolute;
+          left: 90%;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
       &.no-icon {
         padding-left: 44px !important;
       }
@@ -137,7 +190,6 @@ export default defineComponent({
 
     &--caret {
       top: -10px;
-      right: 7px;
       display: inline-block;
       width: 15px;
       height: 10px;

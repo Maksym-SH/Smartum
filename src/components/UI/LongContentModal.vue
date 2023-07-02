@@ -16,20 +16,11 @@
           @click="closeModal"
         />
         <v-toolbar-title class="modal__header-title">
-          {{ modalContent.title }}
+          {{ currentContent.title }}
         </v-toolbar-title>
       </v-toolbar>
       <v-list>
-        <v-list-subheader class="modal__subheader">
-          <AppCheckbox
-            v-model="switchLanguage"
-            switch-box
-            name="language"
-            label="English"
-            secondary-label="Русский"
-          />
-        </v-list-subheader>
-        <div class="modal__content" v-html="modalContent.text"></div>
+        <div class="modal__content" v-html="currentContent.content"></div>
       </v-list>
     </v-card>
   </v-dialog>
@@ -38,25 +29,32 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
 import type { IModalContent } from "@/types/interfaces";
-import type { ModalContentLanguage, ModalLanguageType } from "@/types/types";
 import { useLongContentModalProps } from "./use/useProps";
 
-import TermsOfUse from "@/helpers/content/TermsOfUse.json";
-import Confidentially from "@/helpers/content/Сonfidentiality.json";
+import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 
 export default defineComponent({
   props: useLongContentModalProps,
   setup(props) {
+    const { t } = i18n.global;
+
     const { commonStore } = useStores();
 
     const dialog = ref(true);
     const switchLanguage = ref(false); // "Русский" by default.
 
-    const currentContentType = computed((): IModalContent => {
-      if (props.contentType === "termsOfUse") return TermsOfUse;
+    const currentContent = computed((): IModalContent => {
+      if (props.contentType === "termsOfUse")
+        return {
+          title: t("termsOfUse.title"),
+          content: t("termsOfUse.content"),
+        };
 
-      return Confidentially;
+      return {
+        title: t("confideniality.title"),
+        content: t("confideniality.content"),
+      };
     });
 
     const closeModal = (): void => {
@@ -67,17 +65,9 @@ export default defineComponent({
       if (!value) commonStore.setModalContentType("");
     });
 
-    const currentLanguage = computed((): ModalLanguageType => {
-      return !switchLanguage.value ? "ru" : "eng"; // "Русский" / "English"
-    });
-
-    const modalContent = computed(
-      (): ModalContentLanguage => currentContentType.value[currentLanguage.value]
-    );
-
     return {
       dialog,
-      modalContent,
+      currentContent,
       switchLanguage,
       closeModal,
     };

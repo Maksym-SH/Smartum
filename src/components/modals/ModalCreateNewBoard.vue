@@ -1,14 +1,16 @@
 <template>
   <v-dialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
     <template #activator="{ props }">
-      <AppButton class="create-dashboard-btn" v-bind="props">
-        Создать новую доску
-      </AppButton>
+      <AppButton
+        class="create-dashboard-btn"
+        v-bind="props"
+        :title="$t('buttons.newBoard')"
+      />
     </template>
     <template #default>
       <v-card>
         <v-toolbar color="primary">
-          <h4 class="v-card-header__title">Создание новой доски</h4>
+          <h4 class="v-card-header__title">{{ $t("modal.createBoard") }}</h4>
         </v-toolbar>
         <form class="v-card__form" @submit.prevent="createNewBoard">
           <v-card-text>
@@ -20,7 +22,7 @@
               />
               <AppInput
                 v-model="newBoard.title"
-                label="Заголовок доски"
+                :label="$t('labels.boardTitle')"
                 required
                 name="DashboardHeader"
                 :min="Length.Text"
@@ -28,7 +30,7 @@
               />
             </div>
             <div class="v-card__wrapper-background-select">
-              <h5 class="v-card__title">Фон</h5>
+              <h5 class="v-card__title">{{ $t("labels.background") }}</h5>
               <div class="v-card__backgrounds">
                 <ImageBackgroundExample
                   v-for="photo in backgrounds.photos"
@@ -55,13 +57,15 @@
             <AppButton
               class="v-card--cancel-create"
               variant="text"
+              :title="$t('buttons.cancel')"
               @click="showDialog = false"
-            >
-              Отмена
-            </AppButton>
-            <AppButton class="v-card--create-board" variant="text" type="submit">
-              Создать
-            </AppButton>
+            />
+            <AppButton
+              class="v-card--create-board"
+              variant="text"
+              type="submit"
+              :title="$t('buttons.create')"
+            />
           </v-card-actions>
         </form>
       </v-card>
@@ -75,6 +79,7 @@ import type { IBackgroundDashboard, IWorkingBoardItem } from "@/types/interfaces
 import { Colors, Length, Numbers, UserRole } from "@/types/enums";
 import { GenerateJoinCode } from "@/helpers/methods";
 
+import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDashboardItemBackgroundTemplate from "@/composables/useDashboardItemBackground";
 import BoardImageResult from "../board/BoardImageResult.vue";
@@ -88,6 +93,8 @@ export default defineComponent({
   emits: ["createNew"],
 
   setup(_, { emit }) {
+    const { t } = i18n.global;
+
     const backgrounds: IBackgroundDashboard = useDashboardItemBackgroundTemplate();
 
     const { unicID } = useCurrentUserInfo();
@@ -100,17 +107,17 @@ export default defineComponent({
       columns: [
         {
           id: 0,
-          title: "Нужно сделать",
+          title: t("columnsName[0].title"),
           tasks: [],
         },
         {
           id: 1,
-          title: "В процессе",
+          title: t("columnsName[1].title"),
           tasks: [],
         },
         {
           id: 2,
-          title: "Окончено",
+          title: t("columnsName[2].title"),
           tasks: [],
         },
       ],

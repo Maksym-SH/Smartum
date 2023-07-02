@@ -1,19 +1,23 @@
+import { computed } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 import type { AsideNavigationItems, ModalContentType } from "@/types/types";
 import type { IAsideNavigationItem } from "@/types/interfaces";
 import { Links } from "@/types/enums";
 
+import i18n from "@/i18n";
 import useStores from "./useStores";
 import router from "@/router";
 
 export default function Navigation(): AsideNavigationItems {
+  const { t } = i18n.global;
+
   const { commonStore } = useStores();
 
   const DashboardTab: IAsideNavigationItem = {
     id: 0,
     showed: true,
     alwaysDisplay: true,
-    title: "Рабочие доски",
+    title: computed(() => t("navigation.workBoards.title")),
     icon: "view-dashboard",
     callback() {
       router.push({ name: "Dashboard" });
@@ -24,7 +28,7 @@ export default function Navigation(): AsideNavigationItems {
     id: 2,
     showed: true,
     alwaysDisplay: true,
-    title: "Конфигурация",
+    title: computed(() => t("navigation.configuration.title")),
     icon: "tune-vertical-variant",
     callback() {
       router.push({ name: "Configuration" });
@@ -34,7 +38,7 @@ export default function Navigation(): AsideNavigationItems {
   const NotificationTab: IAsideNavigationItem = {
     id: 1,
     showed: true,
-    title: "Уведомления",
+    title: computed(() => t("navigation.notifications.title")),
     icon: "bell",
     notify: true,
     callback() {
@@ -45,23 +49,23 @@ export default function Navigation(): AsideNavigationItems {
   const ReportsTab: IAsideNavigationItem = {
     id: 3,
     showed: true,
-    title: "Отчёты",
+    title: computed(() => t("navigation.reports.title")),
     icon: "chart-timeline-variant",
     panels: [
       {
-        title: "Отчёт об использовании",
+        title: computed(() => t("navigation.reports.panels[0].title")),
         callback() {
           notify({
-            title: "Страница в разработке!",
+            title: t("notify.development.title"),
             type: "success",
           });
         },
       },
       {
-        title: "Отчёт приложения",
+        title: computed(() => t("navigation.reports.panels[1].title")),
         callback() {
           notify({
-            title: "Страница в разработке!",
+            title: t("notify.development.title"),
             type: "success",
           });
         },
@@ -72,11 +76,11 @@ export default function Navigation(): AsideNavigationItems {
   const StatisticsTab: IAsideNavigationItem = {
     id: 4,
     showed: true,
-    title: "Статистика",
+    title: computed(() => t("navigation.statistic.title")),
     icon: "chart-bar",
     callback(): void {
       notify({
-        title: "Страница в разработке!",
+        title: t("notify.development.title"),
         type: "success",
       });
     },
@@ -85,17 +89,17 @@ export default function Navigation(): AsideNavigationItems {
   const AuthorTab: IAsideNavigationItem = {
     id: 5,
     showed: true,
-    title: "Связь с автором",
+    title: computed(() => t("navigation.contact.title")),
     icon: "message-bulleted",
     panels: [
       {
-        title: "GitHub",
+        title: computed(() => t("navigation.contact.panels[0].title")),
         callback(): void {
           window.open(Links.GitHubAccount, "_blank");
         },
       },
       {
-        title: "Telegram",
+        title: computed(() => t("navigation.contact.panels[1].title")),
         callback(): void {
           window.open(Links.TelegramAccount, "_blank");
         },
@@ -106,18 +110,18 @@ export default function Navigation(): AsideNavigationItems {
   const ConditionUseTab: IAsideNavigationItem = {
     id: 6,
     showed: true,
-    title: "Об использовании",
+    title: computed(() => t("navigation.usage.title")),
     icon: "shield-alert",
     panels: [
       {
-        title: "Пользовательское соглашение",
+        title: computed(() => t("navigation.usage.panels[0].title")),
         callback(): void {
           const termsOfUse: ModalContentType = "termsOfUse";
           commonStore.setModalContentType(termsOfUse);
         },
       },
       {
-        title: "Конфидециальность",
+        title: computed(() => t("navigation.usage.panels[1].title")),
         callback(): void {
           const confidentiality: ModalContentType = "confidentiality";
           commonStore.setModalContentType(confidentiality);

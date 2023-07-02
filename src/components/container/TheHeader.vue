@@ -6,13 +6,18 @@
           v-model="searchInput"
           type="search"
           name="searchContentDesktop"
-          placeholder="Поиск"
+          :placeholder="$t('labels.search')"
         />
       </div>
+
       <transition name="toggle-content">
         <Date v-if="showDateTemplate" />
       </transition>
-      <SwitchTheme class="not-mobile" name="toggleThemeDesktop" />
+
+      <div class="c-header__actions">
+        <SwitchLanguageButton class="not-mobile" />
+        <SwitchTheme name="toggleThemeDesktop" class="not-mobile" />
+      </div>
     </div>
   </header>
 </template>
@@ -23,11 +28,13 @@ import { computed, defineComponent, ref } from "vue";
 import useStores from "@/composables/useStores";
 import Date from "@/components/date/DateTime.vue";
 import SwitchTheme from "@/components/UI/SwitchTheme.vue";
+import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 
 export default defineComponent({
   components: {
     Date,
     SwitchTheme,
+    SwitchLanguageButton,
   },
   setup() {
     const { configurationStore } = useStores();
@@ -61,16 +68,29 @@ export default defineComponent({
   &__wrapper {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     align-items: center;
   }
 
   &__search-content {
-    width: 50%;
+    width: 40%;
 
     .c-input {
       width: 100%;
-      max-width: 600px;
+      max-width: 500px;
       padding: 0;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  @include tablet(max) {
+    &__actions {
+      gap: 10px;
     }
   }
 

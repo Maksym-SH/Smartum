@@ -26,7 +26,7 @@
         </span>
         <span v-if="user.invited" class="user-item__actions--invited">
           <InlineSvg src="/images/icons/email-fast-outline.svg" />
-          Приглашён
+          {{ $t("role.invited") }}
         </span>
         <AppButton
           v-else-if="!user.role"
@@ -44,7 +44,7 @@
       <div class="info-item">
         <h5 class="info-item__name">
           <InlineSvg class="info-item__icon" src="/images/icons/phone-outline.svg" />
-          Телефон
+          {{ $t("labels.phone") }}
         </h5>
         <a
           v-if="user.phone"
@@ -52,7 +52,7 @@
           class="info-item__description phone"
           >{{ user.phone }}
         </a>
-        <span v-else class="info-item__description"> Нет данных </span>
+        <span v-else class="info-item__description">{{ $t("emptyList.noData") }}</span>
       </div>
       <div class="info-item">
         <h5 class="info-item__name">
@@ -60,12 +60,12 @@
             class="info-item__icon"
             src="/images/icons/information-outline.svg"
           />
-          О себе
+          {{ $t("labels.about") }}
         </h5>
         <span v-if="user.about" class="info-item__description about">
           {{ user.about }}
         </span>
-        <span v-else class="info-item__description"> Нет данных </span>
+        <span v-else class="info-item__description">{{ $t("emptyList.noData") }}</span>
       </div>
     </div>
   </details>

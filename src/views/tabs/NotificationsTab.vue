@@ -5,10 +5,9 @@
         class="notifications-tab__filters--clear"
         :color="Colors.Info"
         variant="flat"
+        :title="$t('buttons.clearAll')"
         @click="clearAll"
-      >
-        Очистить все
-      </AppButton>
+      />
     </div>
     <transition-group
       v-if="showList"

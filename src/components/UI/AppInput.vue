@@ -80,6 +80,7 @@ import * as emailValidator from "email-validator";
 import { useInputProps } from "./use/useProps";
 import type { AutoComplete, ModelValue, RefElement } from "@/types/types";
 
+import i18n from "@/i18n";
 import InlineSvg from "vue-inline-svg";
 import RegExp from "@/helpers/regExp";
 
@@ -91,6 +92,8 @@ export default defineComponent({
     InlineSvg,
   },
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const errorText = ref("");
 
     const model = computed({
@@ -111,13 +114,13 @@ export default defineComponent({
 
     const validator = (): void => {
       if (props.isEmail && !emailValidator.validate(model.value as string))
-        errorText.value = "Введите корректный адрес.";
+        errorText.value = t("errors.email");
       else if (props.isPhone && !String(model.value).match(RegExp.Phone) && model.value)
-        errorText.value = "Введите корректный формат.";
+        errorText.value = t("errors.phone");
       else if (props.min && String(model.value).length < props.min)
-        errorText.value = `Введите не менее ${props.min} символов.`;
+        errorText.value = t("errors.min", { min: props.min });
       else if (props.type === "password" && String(model.value).match(" "))
-        errorText.value = "Пробелы не допускаются.";
+        errorText.value = t("errors.spaces");
     };
 
     const toggleInputType = (): void => {

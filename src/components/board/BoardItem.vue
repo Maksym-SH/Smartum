@@ -14,7 +14,7 @@
       <div class="card-element-item__description">
         <p v-if="element.members" class="members-count">
           <InlineSvg src="/images/icons/account-multiple.svg" class="icon" />
-          Участников: {{ membersCount }}
+          {{ $t("common.members") }} {{ membersCount }}
         </p>
         <time v-if="element.dateOfCreation" class="date-of-create">
           <InlineSvg src="/images/icons/clock-edit.svg" class="icon" />
@@ -29,7 +29,9 @@
 import { computed, PropType } from "vue";
 import { defineComponent } from "vue";
 import type { IWorkingBoardItem } from "@/types/interfaces";
+import type { I18nLanguage } from "@/types/types";
 
+import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import InlineSvg from "vue-inline-svg";
 import useDateParseToString from "@/composables/useDateParse";
 import BoardImageResult from "@/components/board/BoardImageResult.vue";
@@ -46,7 +48,11 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const dateOfCreate: string = useDateParseToString(props.element.dateOfCreation);
+    const { i18nLocale } = useCurrentLanguage();
+
+    const dateOfCreate = computed(() =>
+      useDateParseToString(props.element.dateOfCreation, i18nLocale.value as I18nLanguage)
+    );
 
     const membersCount = computed((): number => {
       // Filter by only members.

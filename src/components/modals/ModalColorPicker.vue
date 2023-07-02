@@ -16,12 +16,14 @@
               src="/images/icons/color-palette.svg"
               alt=""
             />
-            <small class="color-picker__button-title"> Выбрать цвет </small>
+            <small class="color-picker__button-title">
+              {{ $t("modal.colorPickTitle") }}</small
+            >
           </slot>
         </AppButton>
         <span v-if="regenerate" class="color-picker--generate" @click="generateColor">
           <InlineSvg src="/images/icons/refresh.svg" />
-          Сгенерировать ({{ colorPickParams.target }})
+          {{ $t("common.generate") }} ({{ colorPickParams.target }})
         </span>
       </div>
     </template>
@@ -29,9 +31,13 @@
       <v-card>
         <v-toolbar class="v-card__header">
           <h4 class="v-card__header-title">
-            Выбор цвета
+            {{ $t("modal.colorPickTitle") }}
             <p v-if="showColorsTarget" class="v-card__header-title--additional">
-              ({{ colorPickParams.target }} оттенок)
+              {{
+                $t("common.shade", {
+                  target: colorPickParams.target,
+                })
+              }}
             </p>
           </h4>
         </v-toolbar>
@@ -49,18 +55,20 @@
           </div>
         </v-card-text>
         <v-card-actions class="v-card__footer">
-          <AppButton class="v-card__footer--cancel" variant="text" @click="closeDialog">
-            Отмена
-          </AppButton>
+          <AppButton
+            class="v-card__footer--cancel"
+            :title="$t('buttons.cancel')"
+            variant="text"
+            @click="closeDialog"
+          />
           <AppButton
             class="v-card__footer--select-color"
             variant="text"
             type="submit"
+            :title="$t('buttons.apply')"
             :disabled="!selectedColor"
             @click="changeColor()"
-          >
-            Применить
-          </AppButton>
+          />
         </v-card-actions>
       </v-card>
     </template>
@@ -76,6 +84,7 @@ import { Colors } from "@/types/enums";
 import type { IColorPickerParams } from "@/types/interfaces";
 import { GenerateColorHexFormat } from "@/helpers/methods";
 
+import i18n from "@/i18n";
 import InlineSvg from "vue-inline-svg";
 import BackgroundItem from "../UI/BackgroundItem.vue";
 
@@ -108,19 +117,21 @@ export default defineComponent({
   },
   emits: ["selectColor", "update:modelValue", "selected"],
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const showDialog = ref(false);
 
     const colorPickParams = computed((): IColorPickerParams => {
       if (props.theme === "dark") {
         return {
           textColor: Colors.White,
-          target: "Тёмный",
+          target: t("common.dark"),
         };
       }
       // Light
       return {
         textColor: Colors.Black,
-        target: "Светлый",
+        target: t("common.light"),
       };
     });
 
@@ -175,7 +186,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 148px;
+  width: 145px;
 
   .c-button {
     text-transform: none;
@@ -188,6 +199,7 @@ export default defineComponent({
   &--generate {
     display: inline-flex;
     align-items: flex-start;
+    justify-content: center;
     margin-top: 5px;
     color: $color-blue;
     font-size: 11px;

@@ -1,20 +1,21 @@
 import type { IDateFormat } from "@/types/interfaces";
 import { Language, Numbers } from "@/types/enums";
+import type { I18nLanguage } from "@/types/types";
 
+import i18n from "@/i18n";
 import useTimestamp from "./stamp";
 import RegExp from "@/helpers/regExp";
+import useCurrentLanguage from "@/composables/useCurrentLanguage";
 
-export function GetDate(
-  date: string,
-  lang: Language = Language.Russian,
-  onlyDate = false
-): IDateFormat {
+export function GetDate(date: string, onlyDate = false): IDateFormat {
+  const { i18nLocale } = useCurrentLanguage();
+
   const dateFormat = Number(date);
-  const timestamp = useTimestamp(null, lang, dateFormat);
+  const timestamp = useTimestamp(null, i18nLocale.value as I18nLanguage, dateFormat);
 
   if (onlyDate) {
     const regExp =
-      lang === Language.English
+      i18nLocale.value === Language.English
         ? RegExp.TimeRegisteredEng
         : RegExp.TimeRegisteredRu;
     timestamp.date = timestamp.date.match(regExp)![0];
@@ -24,6 +25,8 @@ export function GetDate(
 }
 
 export function GetBetweenDateString(date: Date): string {
+  const { t } = i18n.global;
+
   const today: Date = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -35,14 +38,14 @@ export function GetBetweenDateString(date: Date): string {
   if (date) {
     switch (true) {
       case date >= today:
-        return "Сегодня";
+        return t("time.today");
       case date >= yesterday:
-        return "Вчера";
+        return t("time.yesterday");
       case date >= weekAgo: {
         const dayAgo = Math.floor(
           (Number(today) - Number(date)) / Numbers.MillisecondsInDay + 1
         );
-        return `${dayAgo} ${GetDayStringFormat(dayAgo)} назад`;
+        return `${dayAgo} ${GetDayStringFormat(dayAgo)} ${t("time.ago")}`;
       }
       default:
         return date.toLocaleDateString();
@@ -51,10 +54,12 @@ export function GetBetweenDateString(date: Date): string {
   return "";
 }
 
-// Get the word "день", "дня" or "дней" depending on the number.
+// Get the word "день | day", "дня | days" or "дней | days" depending on the number.
 export function GetDayStringFormat(num: number): string {
-  if (num === 1) return "день";
-  else if (num >= 2 && num <= 4) return "дня";
+  const { t } = i18n.global;
 
-  return "дней";
+  if (num === 1) return t("time.day");
+  else if (num >= 2 && num <= 4) return t("time.evenDay");
+
+  return t("time.days");
 }

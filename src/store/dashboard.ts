@@ -13,12 +13,15 @@ import type {
 } from "@/types/interfaces";
 import type { ErrorCode } from "@/types/types";
 
+import i18n from "@/i18n";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 import router from "@/router";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 
 const useDashboardStore = defineStore("dashboard", () => {
+  const { t } = i18n.global;
+
   const { commonStore, userStore, notificationStore } = useStores();
 
   const allBoards = ref<IWorkingBoardItem[]>([]);
@@ -201,8 +204,11 @@ const useDashboardStore = defineStore("dashboard", () => {
         if (boardCodes.value.includes(joinCode)) {
           onValue(Refference(RTDatabase, joinCode), async (boardData) => {
             const currentBoard = boardData.val() as IWorkingBoardItem;
+
+            if (router.currentRoute.value.params?.code !== currentBoard.joinCode) return;
+
             if (currentBoard) {
-              if (currentBoard.members?.length) {
+              if (currentBoard.members?.length && !currentBoard.members[0].invited) {
                 await userStore.getUsersList(true, false).then(async (users) => {
                   const membersID = currentBoard.members.map((item) => item.uid);
 
@@ -251,8 +257,8 @@ const useDashboardStore = defineStore("dashboard", () => {
           reject(new Error("Not found"));
 
           notify({
-            title: "Рабочая доска недоступна!",
-            text: "Текущая доска не существует или код приглашения неверный.",
+            title: t("notify.boardNotFound.title"),
+            text: t("notify.boardNotFound.text"),
             type: "error",
           });
         }
@@ -302,15 +308,15 @@ const useDashboardStore = defineStore("dashboard", () => {
             allBoards.value.push(board);
 
             notify({
-              title: "Успешно!",
-              text: "Вы успешно присоединились к рабочему пространству!",
+              title: t("common.success"),
+              text: t("notify.boardJoin.text"),
             });
           }
         });
       } else {
         notify({
-          title: "Рабочая доска недоступна!",
-          text: "Текущая доска не существует или код приглашения неверный.",
+          title: t("notify.boardNotFound.title"),
+          text: t("notify.boardNotFound.text"),
           type: "error",
         });
 
@@ -331,18 +337,18 @@ const useDashboardStore = defineStore("dashboard", () => {
     if (leavedMemberIndex !== -1) {
       fromBoard.members.splice(leavedMemberIndex, 1); // Remove user.
 
-      const firstInvitedUser = fromBoard.members[0];
+      const firstMember = fromBoard.members[0];
 
-      if (fromBoard.uid === member.uid && firstInvitedUser) {
-        fromBoard.uid = firstInvitedUser.uid; // Set as admin the first invited user.
-        firstInvitedUser.role = UserRole.Admin;
+      if (fromBoard.uid === member.uid && firstMember && !firstMember.invited) {
+        fromBoard.uid = firstMember.uid; // Set as admin the first invited user.
+        firstMember.role = UserRole.Admin;
 
         const notification = useNewNotificationContent(
           NotificationType.SetAdmin,
           fromBoard.title,
           fromBoard
         );
-        notificationStore.sendNotificationToUser(firstInvitedUser, notification);
+        notificationStore.sendNotificationToUser(firstMember, notification);
       }
     }
 
@@ -394,7 +400,7 @@ const useDashboardStore = defineStore("dashboard", () => {
     if (loadedMembers.length !== savedMembers.length) {
       const exist: IWorkingBoardMember[] = loadedMembers.map((item) => {
         return {
-          role: item.role as UserRole,
+          role: item.role,
           uid: item.uid,
           invited: item?.invited,
         };

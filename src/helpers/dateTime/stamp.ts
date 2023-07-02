@@ -1,19 +1,17 @@
-import type { LangFormatType } from "@/types/types";
-import { LangFormat, Language } from "@/types/enums";
+import type { I18nLanguage, LangFormatType } from "@/types/types";
+import { LangFormat } from "@/types/enums";
 import type { IDateFormat } from "@/types/interfaces";
 
 import RegExp from "@/helpers/regExp";
 
-function Timestamp(
+export default function Timestamp(
   date: Date | null,
-  lang = Language.Russian,
+  lang: I18nLanguage = "eng",
   exaptDate?: number
 ): IDateFormat {
   const datestamp = date || new Date(Number(exaptDate));
 
-  const dateLang: LangFormatType =
-    lang === Language.Russian ? LangFormat.Ru : LangFormat.Eng;
-
+  const dateLang: LangFormatType = lang === "eng" ? LangFormat.Eng : LangFormat.Ru;
   const RuFormatTime = datestamp
     .toLocaleString(LangFormat.Ru)
     .replace(",", "")
@@ -28,9 +26,7 @@ function Timestamp(
   }).format(datestamp);
 
   return {
-    time: lang === Language.Russian ? RuFormatTime : EngFormatTime,
+    time: lang === "eng" ? EngFormatTime : RuFormatTime,
     date: dateString,
   };
 }
-
-export default Timestamp;

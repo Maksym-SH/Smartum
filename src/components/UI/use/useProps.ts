@@ -287,6 +287,28 @@ export const useSelectProps = {
     type: Number,
     default: 30,
   },
+  width: {
+    type: Number,
+  },
+  height: {
+    type: Number,
+  },
+  selectIcon: {
+    type: String,
+    default: "",
+  },
+  buttonTitle: {
+    type: String,
+    default: "",
+  },
+  variant: {
+    type: String as PropType<ButtonVariant>,
+    default: "text",
+  },
+  activeStyle: {
+    type: Boolean,
+    default: true,
+  },
 };
 
 // SwitchTheme.vue

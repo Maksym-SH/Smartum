@@ -2,9 +2,24 @@ import { getAuth } from "@firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 import { Colors } from "@/types/enums";
 import type { IPopupParams } from "@/types/interfaces";
-import type { Theme } from "@/types/types";
+import type { I18nLanguage, Theme } from "@/types/types";
 
+import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
+
+export function LocalLanguage(): I18nLanguage {
+  let language;
+
+  const savedLanguage = localStorage.getItem("smartumLanguage") ?? "";
+
+  if (["ru", "eng"].includes(savedLanguage)) {
+    language = savedLanguage;
+  } else {
+    language = navigator.language === "ru-RU" ? "ru" : "eng";
+  }
+
+  return language as I18nLanguage;
+}
 
 export function ObjectFull(object: object): boolean {
   return Object.values(object).every((item) => item);
@@ -102,17 +117,19 @@ export function DeleteAccountPopup(
   uid: string,
   params?: Partial<IPopupParams>
 ): Function {
+  const { t } = i18n.global;
+
   const { userStore } = useStores();
   const userUID: string = uid;
   const popupParams: Partial<IPopupParams> | null = params ?? null;
 
   return function () {
     OpenPopup({
-      title: popupParams?.title || "Удалить аккаунт?",
-      text: popupParams?.text || "Это действие необратимо!",
+      title: popupParams?.title || t("popup.deleteAccount.title"),
+      text: popupParams?.text || t("popup.deleteAccount.text"),
       buttons: {
         yes: {
-          text: "Удалить аккаунт",
+          text: t("buttons.deleteAccount"),
           color: Colors.Danger,
         },
       },
@@ -124,8 +141,8 @@ export function DeleteAccountPopup(
               userStore.userLogout();
 
               notify({
-                title: "Ваш аккаунт был успешно удален!",
-                text: "Вы можете авторизоваться другим аккаунтом либо создать новый.",
+                title: t("notify.accountDeleted.title"),
+                text: t("notify.accountDeleted.text"),
               });
             });
         });

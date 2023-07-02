@@ -11,12 +11,16 @@
 import { computed, defineComponent } from "vue";
 import { useEmptyListProps } from "./use/useProps";
 
+import i18n from "@/i18n";
+
 export default defineComponent({
   props: useEmptyListProps,
   setup(props) {
+    const { t } = i18n.global;
+
     const descriptionContent = computed((): string => {
-      if (props.type === "dashboard") return "Список рабочих досок пуст.";
-      else if (props.type === "notification") return "Список уведомлений пуст.";
+      if (props.type === "dashboard") return t("emptyList.boards");
+      else if (props.type === "notification") return t("emptyList.notifications");
 
       // ToDo: smt else
       return "";

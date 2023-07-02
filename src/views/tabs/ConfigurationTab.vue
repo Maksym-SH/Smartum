@@ -4,8 +4,8 @@
       <div class="configuration-tab__content-navigation-filter">
         <AppCard table>
           <template #table-header>
-            <th class="card-info__title">Страницы</th>
-            <th class="card-info__title center">Действие</th>
+            <th class="card-info__title">{{ $t("configuration.card.pages") }}</th>
+            <th class="card-info__title center">{{ $t("configuration.card.action") }}</th>
           </template>
           <template #table-body>
             <tr
@@ -30,8 +30,8 @@
                   switch-box
                   :disabled="navigate.alwaysDisplay"
                   :name="navigate.title"
-                  label="Показать"
-                  secondary-label="Скрыть"
+                  :label="$t('actions.show')"
+                  :secondary-label="$t('actions.hide')"
                 />
               </td>
             </tr>
@@ -39,7 +39,7 @@
           <template #custom>
             <AppButton
               class="card-info--save-changes"
-              title="Сохранить"
+              :title="$t('buttons.save')"
               @click="saveNavigationList"
             />
           </template>
@@ -49,14 +49,20 @@
         <AppCard>
           <template #header>
             <h2 class="card-info__title settings-avatar">
-              Изменить цвет фона профиля
-              <AppButton size="small" title="Сохранить" @click="saveBackgroundAvatar" />
+              {{ $t("configuration.card.changeAvatar.title") }}
+              <AppButton
+                size="small"
+                :title="$t('buttons.save')"
+                @click="saveBackgroundAvatar"
+              />
             </h2>
           </template>
           <template #content>
             <div class="card-info__change-avatar">
               <div class="card-info__change-avatar--result">
-                <h5 class="card-info__avatar-title">Результат:</h5>
+                <h5 class="card-info__avatar-title">
+                  {{ $t("configuration.card.changeAvatar.result") }}
+                </h5>
                 <Avatar
                   :size="80"
                   :avatar="avatarParams"
@@ -65,11 +71,11 @@
                 />
               </div>
               <div class="card-info__change-avatar--params">
-                <h5>Изменить цвет</h5>
+                <h5>{{ $t("common.changeColor") }}</h5>
                 <ModalColorPicker v-model="avatarParams.bgAvatar" theme="light" />
               </div>
               <small class="change-avatar-hint">
-                Примечание: другие пользователи увидят выбранный вами цвет.
+                {{ $t("notify.warning") }}
               </small>
             </div>
           </template>
@@ -78,48 +84,52 @@
       <div class="configuration-tab__additional-settings">
         <AppCard>
           <template #header>
-            <h2 class="card-info__title">Дополнительные настройки</h2>
+            <h2 class="card-info__title">
+              {{ $t("configuration.card.additional.title") }}
+            </h2>
           </template>
           <template #content>
             <div class="card-info__additional-settings">
               <div class="card-info__additional-settings-item">
                 <h4 class="card-info__additional-settings-name">
-                  Изменить фон боковой панели
+                  {{ $t("configuration.card.additional.changeAsideBg") }}
                 </h4>
                 <ModalColorPicker v-model="asideBackgroundColor" theme="dark" />
               </div>
               <div class="card-info__additional-settings-item">
                 <h4 class="card-info__additional-settings-name">
-                  Статус подтверждения адреса
+                  {{ $t("configuration.card.additional.emailStatus") }}
                 </h4>
                 <AppCheckbox
                   v-model="additionalParams.showEmailConfirm"
                   switch-box
                   name="ToggleStatus"
-                  label="Показать"
-                  secondary-label="Скрыть"
-                />
-              </div>
-              <div class="card-info__additional-settings-item">
-                <h4 class="card-info__additional-settings-name">Дата и время</h4>
-                <AppCheckbox
-                  v-model="additionalParams.showCurrentDate"
-                  switch-box
-                  name="ToggleTime"
-                  label="Показать"
-                  secondary-label="Скрыть"
+                  :label="$t('actions.show')"
+                  :secondary-label="$t('actions.hide')"
                 />
               </div>
               <div class="card-info__additional-settings-item">
                 <h4 class="card-info__additional-settings-name">
-                  Кнопка "Удалить аккаунт"
+                  {{ $t("time.dateAndTime") }}
+                </h4>
+                <AppCheckbox
+                  v-model="additionalParams.showCurrentDate"
+                  switch-box
+                  name="ToggleTime"
+                  :label="$t('actions.show')"
+                  :secondary-label="$t('actions.hide')"
+                />
+              </div>
+              <div class="card-info__additional-settings-item">
+                <h4 class="card-info__additional-settings-name">
+                  {{ $t("configuration.card.additional.deleteAccount") }}
                 </h4>
                 <AppCheckbox
                   v-model="additionalParams.showDeleteAccountButton"
                   switch-box
                   name="ToggleDeleteAccount"
-                  label="Показать"
-                  secondary-label="Скрыть"
+                  :label="$t('actions.show')"
+                  :secondary-label="$t('actions.hide')"
                 />
               </div>
             </div>
@@ -127,7 +137,7 @@
           <template #custom>
             <AppButton
               class="card-info--save-changes"
-              title="Сохранить"
+              :title="$t('buttons.save')"
               @click="saveAdditional"
             />
           </template>
@@ -195,13 +205,17 @@ export default defineComponent({
           &.settings-avatar {
             display: flex;
             justify-content: space-between;
+
+            .c-button {
+              min-width: 90px !important;
+            }
           }
         }
 
         &--save-changes {
           margin: auto 10px 10px auto;
           display: block;
-          min-width: 40%;
+          min-width: 115px !important;
         }
 
         &__change-avatar {
@@ -242,6 +256,7 @@ export default defineComponent({
 
       &-content-info {
         &__item--text {
+          line-height: 30px;
           width: 100%;
           position: relative;
           display: inline-flex;
@@ -261,11 +276,6 @@ export default defineComponent({
 
         &--actions {
           text-align: center;
-        }
-
-        &--text,
-        &--actions {
-          height: 50px;
         }
       }
     }

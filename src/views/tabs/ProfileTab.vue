@@ -2,7 +2,7 @@
   <div class="profile-tab">
     <form class="profile-tab__form" @submit.prevent>
       <div class="profile-tab__form--upload">
-        <span class="label">Обновить фото профиля</span>
+        <span class="label">{{ $t("labels.updateAvatar") }}</span>
         <ImageUpload
           file-type="image"
           :avatar-params="userInfo.avatarParams.url"
@@ -15,7 +15,7 @@
           v-model.trim="userInfo.firstName"
           :min="userInfo.firstName ? Length.Text : Length.None"
           :max-length="Length.Maximum"
-          label="Имя"
+          :label="$t('labels.name')"
           name="userFirstName"
           @keydown.enter.prevent
         />
@@ -25,7 +25,7 @@
           v-model.trim="userInfo.lastName"
           :min="userInfo.lastName ? Length.Text : Length.None"
           :max-length="Length.Maximum"
-          label="Фамилия"
+          :label="$t('labels.lastName')"
           name="userLastName"
           @keydown.enter.prevent
         />
@@ -34,7 +34,7 @@
         <AppTextarea
           v-model.trim="userInfo.about"
           :max="Length.Textarea"
-          label="Дополнительная информация"
+          :label="$t('labels.additional')"
           name="userAbout"
         />
       </div>
@@ -43,7 +43,7 @@
           v-model.trim="userInfo.phone"
           class="phone"
           is-phone
-          label="Телефон"
+          :label="$t('labels.phone')"
           name="userPhone"
           @keydown.enter.prevent
         />
@@ -53,14 +53,14 @@
           v-model="userInfo.email"
           disabled
           is-email
-          label="Электронный адрес"
+          :label="$t('labels.email')"
           name="userEmail"
         />
       </div>
       <div class="profile-tab__form-item new-password">
         <AppHint
           v-if="emailNotVerified"
-          content="Для изменения пароля подтвердите электронный адрес."
+          :content="$t('labels.passwordChangeEmailConfirmRequired')"
           variant="danger"
         />
         <AppInput
@@ -68,7 +68,7 @@
           type="password"
           :disabled="emailNotVerified"
           :min="userInfo.newPassword ? Length.Password : Length.None"
-          label="Новый пароль"
+          :label="$t('labels.newPassword')"
           name="userPassword"
           @keydown.enter.prevent
         />
@@ -77,7 +77,7 @@
         <AppButton
           class="btn-save"
           :class="{ 'full-width-mobile': saveChangesButtonToFullScreen }"
-          title="Сохранить"
+          :title="$t('buttons.save')"
           @click="saveChanges"
         />
         <transition name="toggle-content">
@@ -85,7 +85,7 @@
             v-if="showDeleteAccountButton"
             class="btn-delete"
             :color="Colors.Danger"
-            title="Удалить аккаунт"
+            :title="$t('buttons.deleteAccount')"
             @click="deleteAccountConfirm"
           />
         </transition>
@@ -108,6 +108,7 @@ import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import AppHint from "@/components/UI/AppHint.vue";
+import i18n from "@/i18n";
 
 export default defineComponent({
   components: {
@@ -115,6 +116,8 @@ export default defineComponent({
     AppHint,
   },
   setup() {
+    const { t } = i18n.global;
+
     const { userStore, configurationStore, notificationStore } = useStores();
 
     // User info.
@@ -174,7 +177,7 @@ export default defineComponent({
       };
       userStore.updateUserInfo(infoToUpdate).then((): void =>
         notify({
-          title: "Ваши данные были успешно обновлены!",
+          title: t("notify.saveSuccess.title"),
         })
       );
     };

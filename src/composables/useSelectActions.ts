@@ -3,14 +3,17 @@ import { computed, getCurrentInstance, reactive } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 import { Colors } from "@/types/enums";
 import type { SelectElements } from "@/types/types";
+import { ISelectElem } from "@/types/interfaces";
 
+import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
 import useStores from "./useStores";
-import { ISelectElem } from "@/types/interfaces";
 
 export default function useSelectActions() {
+  const { t } = i18n.global;
+
   const { userStore } = useStores();
 
   const { currentUser } = useCurrentUserInfo();
@@ -26,25 +29,25 @@ export default function useSelectActions() {
 
   const actions = reactive<SelectElements>([
     {
-      title: "Мой профиль",
+      title: computed(() => t("buttons.myProfile")),
       callback: () => router.push("/profile"),
       icon: "account",
       color: Colors.Default,
       displaying: true,
     },
     {
-      title: "Подтвердить адрес",
+      title: computed(() => t("buttons.emailConfirm")),
       callback: () => verifyEmail(currentUser.value),
       icon: "email-check-outline",
       color: Colors.Info,
       displaying: computed(() => !emailVerified.value), // Not verified.
     },
     {
-      title: "Выйти с аккаунта",
+      title: computed(() => t("buttons.signOut")),
       callback: () => {
         userStore.userLogout().then(() => {
           notify({
-            title: "До скорого!",
+            title: t("notify.signOut.title"),
             type: "success",
           });
         });
@@ -56,9 +59,11 @@ export default function useSelectActions() {
   ]);
 
   const addNewAction = (action: Required<ISelectElem>) => {
+    const title = action.title as string;
     const displaying = action.displaying as boolean;
+    const active = action.active as boolean;
 
-    actions.push({ ...action, displaying });
+    actions.push({ ...action, title, displaying, active });
   };
 
   return {

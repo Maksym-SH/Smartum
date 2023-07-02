@@ -25,39 +25,45 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from "vue";
-import type { Icon, WelcomeText } from "@/types/types";
+import type { I18nLanguage, Icon } from "@/types/types";
 import { Numbers } from "@/types/enums";
 
+import i18n from "@/i18n";
+import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import timestamp from "@/helpers/dateTime/stamp";
 
 export default defineComponent({
   setup() {
-    const welcomeText = ref<WelcomeText>("Добрый вечер");
+    const { t } = i18n.global;
+
+    const { i18nLocale } = useCurrentLanguage();
+
+    const welcomeText = ref(t("time.morning"));
 
     const updateTimeInterval = ref<ReturnType<typeof setInterval> | null>(null);
 
     const time = ref("");
     const date = ref("");
 
-    const imageType = computed((): Icon => {
-      if (welcomeText.value !== "Добрый вечер") return "sun";
-
-      return "moon";
-    });
+    const imageType = ref<Icon>("" as Icon);
 
     const showTemplate = computed((): boolean => Boolean(time.value && date.value));
 
     // Changing text depending on the time of day.
     watch(time, (): void => {
       // Get current hour between 0 - 23.
-      const currentTime = time.value;
-      const currentTimeHours = Number(currentTime.split("").slice(0, 2).join(""));
+      const currentTimeHours = new Date().getHours();
 
-      // If the time is later than 16:00 and later than 6:00.
-      if (currentTimeHours < Numbers.EveningRU && currentTimeHours > Numbers.MorningRU) {
-        welcomeText.value = "Добрый день";
+      // If the time is later than 16:00 || 4 pm and later than 6:00 || 6 pm.
+      if (
+        currentTimeHours < Numbers.EveningTime &&
+        currentTimeHours > Numbers.MorningTime
+      ) {
+        welcomeText.value = t("time.morning");
+        imageType.value = "sun";
       } else {
-        welcomeText.value = "Добрый вечер";
+        welcomeText.value = t("time.evening");
+        imageType.value = "moon";
       }
     });
 
@@ -65,8 +71,8 @@ export default defineComponent({
       updateTimeInterval.value = setInterval((): void => {
         const currentDate = new Date();
 
-        time.value = timestamp(currentDate).time;
-        date.value = timestamp(currentDate).date;
+        time.value = timestamp(currentDate, i18nLocale.value as I18nLanguage).time;
+        date.value = timestamp(currentDate, i18nLocale.value as I18nLanguage).date;
       }, Numbers.Second);
     });
 
@@ -87,30 +93,26 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .date {
+  position: relative;
   width: 235px;
   color: var(--color-text);
-  text-align: center;
-
-  &-wrapper {
-    position: relative;
-    height: 43.2px;
-    min-width: 130px;
-  }
+  padding-left: 25px;
 
   &__title {
-    display: flex;
-    align-items: flex-start;
     font-size: 14px;
     letter-spacing: 0.3px;
     line-height: 24px;
   }
 
   &__icon {
+    position: absolute;
+    left: 0;
     margin-right: 10px;
   }
 
   &__timestamp {
     font-size: 12px;
+    white-space: nowrap;
 
     &--time {
       position: relative;

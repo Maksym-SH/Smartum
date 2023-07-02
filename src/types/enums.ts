@@ -36,10 +36,8 @@ export enum Numbers {
   Second = 1000,
   MillisecondsInDay = 86400000,
   AppearElement = 400,
-  EveningRU = 18,
-  EveningENG = "6 AM",
-  MorningRU = 6,
-  MorningENG = "6 PM",
+  EveningTime = 18,
+  MorningTime = 6,
   JoinCodeSize = 15,
   AnimationTaskMove = 250,
 }
@@ -105,6 +103,6 @@ export enum Colors {
 }
 
 export enum UserRole {
-  Admin = "Администратор",
-  Member = "Участник",
+  Admin = "Admin",
+  Member = "Member",
 }

@@ -44,12 +44,16 @@ import { computed, defineComponent, ref, watch } from "vue";
 import { useTextareaProps } from "./use/useProps";
 import type { ModelValue, RefElement } from "@/types/types";
 
+import i18n from "@/i18n";
+
 export default defineComponent({
   inheritAttrs: false,
   props: useTextareaProps,
   emits: ["invalid", "update:modelValue", "click"],
 
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const errorText = ref("");
 
     const isRequired = ref(false);
@@ -63,9 +67,9 @@ export default defineComponent({
 
     const validator = (): void => {
       if (props.min && String(model.value).length < props.min)
-        errorText.value = `Введите не менее ${props.min} символов.`;
+        errorText.value = t("errors.min", { min: props.min });
       else if (String(model.value).startsWith(" "))
-        errorText.value = "Начальное пустое значение недопустимо.";
+        errorText.value = t("erros.startEmpty");
     };
 
     watch(

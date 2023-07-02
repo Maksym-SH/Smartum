@@ -24,8 +24,9 @@
 import { computed, defineComponent } from "vue";
 import type { User } from "@firebase/auth";
 import { useInfoProps } from "./use/useProps";
-import type { EmailVerify, StatusVueIcon } from "@/types/types";
+import type { StatusVueIcon } from "@/types/types";
 
+import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 import InlineSvg from "vue-inline-svg";
 
@@ -35,6 +36,8 @@ export default defineComponent({
     InlineSvg,
   },
   setup() {
+    const { t } = i18n.global;
+
     const { userStore, configurationStore } = useStores();
 
     const emailVerified = computed(
@@ -44,11 +47,11 @@ export default defineComponent({
       (): boolean => configurationStore.additionalParams.showEmailConfirm
     );
 
-    const userStatusText = computed((): EmailVerify => {
+    const userStatusText = computed((): string => {
       if (emailVerified.value) {
-        return "Адрес подтверждён";
+        return t("userEmailStatus.confirmed");
       } else {
-        return "Адрес не подтверждён";
+        return t("userEmailStatus.notConfirmed");
       }
     });
 

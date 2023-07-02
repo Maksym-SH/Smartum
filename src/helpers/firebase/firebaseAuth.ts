@@ -17,12 +17,15 @@ import type { ErrorCode } from "@/types/types";
 import { GenerateColorHexFormat } from "@/helpers/methods";
 import { NotificationType } from "@/types/enums";
 
+import i18n from "@/i18n";
 import ShowErrorMessage from "./firebaseErrorMessage";
 import router from "@/router";
 import notificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
 
 export default function firebaseAuth(): IUserAuth {
+  const { t } = i18n.global;
+
   const { commonStore, userStore, notificationStore, configurationStore } = useStores();
 
   const useAuth = {
@@ -65,7 +68,7 @@ export default function firebaseAuth(): IUserAuth {
               .then(() => configurationStore.getUserConfiguration(currentUser.uid));
 
             notify({
-              title: "Вы успешно вошли в аккаунт.",
+              title: t("notify.authSuccess.title"),
               type: "success",
             });
 
@@ -89,7 +92,7 @@ export default function firebaseAuth(): IUserAuth {
 
           userStore.setCurrentUser(getAuth().currentUser as User);
           notify({
-            title: "Вы успешно вошли в аккаунт.",
+            title: t("notify.authSuccess.title"),
             type: "success",
           });
           router.push({ name: "Home" });

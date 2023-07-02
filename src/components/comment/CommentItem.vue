@@ -13,7 +13,9 @@
         {{ getFullName(member) }}
         <span class="comment__info-title-date">{{ dateOfCreate }}</span>
         <transition name="toggle-content">
-          <span v-show="edited" class="comment__info-title-status"> (Изменено) </span>
+          <span v-show="edited" class="comment__info-title-status">
+            {{ $t("common.comments.changed") }}
+          </span>
         </transition>
       </span>
       <transition name="toggle-content" mode="out-in">
@@ -42,7 +44,9 @@
             </span>
           </span>
           <span class="comment__info-actions-edit" v-if="authorCurrentUser">
-            <span class="edit-action" @click="deleteCommentPopup">Удалить</span>
+            <span class="edit-action" @click="deleteCommentPopup">{{
+              $t("common.comments.commentEditor.delete")
+            }}</span>
             <span class="edit-action" @click="toggleEditMode">{{ editModeTitle }}</span>
           </span>
         </div>
@@ -58,6 +62,7 @@ import { Colors, Length } from "@/types/enums";
 import { IEmoji, INewEmojiParams, ITaskComment } from "@/types/interfaces";
 import { ArrayHasValues, NewObjectLink, OpenPopup } from "@/helpers/methods";
 
+import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDateParseToString from "@/composables/useDateParse";
 import Avatar from "../user/AppAvatar.vue";
@@ -93,6 +98,8 @@ export default defineComponent({
     "deleteComment",
   ],
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const { getFullName, unicID } = useCurrentUserInfo();
 
     const member = ref(props.comment.member);
@@ -104,7 +111,9 @@ export default defineComponent({
     const messageValue = ref(props.commentMessage);
 
     const editModeTitle = computed(() => {
-      return editMode.value ? "Сохранить" : "Редактировать";
+      const editModeName = editMode.value ? "save" : "edit";
+
+      return t(`common.comments.commentEditor.${editModeName}`);
     });
 
     const toggleEditMode = () => {
@@ -126,10 +135,10 @@ export default defineComponent({
 
     const deleteCommentPopup = () => {
       OpenPopup({
-        title: "Удалить комментарий?",
+        title: t("popup.deleteComment.title"),
         buttons: {
           yes: {
-            text: "Удалить",
+            text: t("buttons.delete"),
             color: Colors.Danger,
           },
         },

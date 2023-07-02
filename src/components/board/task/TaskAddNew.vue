@@ -1,8 +1,8 @@
 <template>
   <div class="add-new-task">
     <AddNew
-      input-placeholder="Ввести заголовок для этой карточки"
-      button-title="Добавить карточку"
+      :input-placeholder="$t('labels.newTask')"
+      :button-title="$t('buttons.addTask')"
       buttonVariant="text"
       @create="createTask"
     />

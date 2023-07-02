@@ -5,8 +5,8 @@
       icon="account-multiple"
       class="invite-users__btn"
       size="small"
+      :title="$t('buttons.invite')"
     >
-      Пригласить
     </AppButton>
     <DropDownWindow
       :visible="showInviteWindow"
@@ -60,7 +60,7 @@
                 v-show="!filteredList.length"
                 class="invite-users__window-content--empty"
               >
-                Ничего не найдено
+                {{ $t("emptyList.noData") }}
               </div>
             </div>
           </div>
@@ -72,16 +72,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, computed } from "vue";
-import type {
-  INotification,
-  IServerDate,
-  IUserForList,
-  IWorkingBoardItem,
-} from "@/types/interfaces";
+import type { INotification, IUserForList, IWorkingBoardItem } from "@/types/interfaces";
 import { notify } from "@kyvg/vue3-notification";
 import { OpenPopup } from "@/helpers/methods";
-import { Colors, NotificationType, UserRole } from "@/types/enums";
+import { Colors, NotificationType } from "@/types/enums";
 
+import i18n from "@/i18n";
 import useStore from "@/composables/useStores";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useNewNotificationContent from "@/composables/useNotificationContent";
@@ -101,6 +97,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const { userStore, notificationStore } = useStore();
 
     const showInviteWindow = ref(false);
@@ -166,19 +164,19 @@ export default defineComponent({
 
     const invite = (invitedUser: IUserForList): void => {
       OpenPopup({
-        title: "Приглашение в рабочее пространство",
-        text: `Вы уверены, что хотите пригласить пользователя "${getFullName(
-          invitedUser
-        )}"? Пользователь получит уведомление о приглашении.`,
+        title: t("popup.invite.title"),
+        text: t("popup.invite.text", {
+          name: getFullName(invitedUser),
+        }),
         buttons: {
           yes: {
-            text: "Пригласить",
+            text: t("buttons.invite"),
             color: Colors.Success,
           },
         },
         callback: (): void => {
           notificationStore.getAllNotifications(invitedUser.uid).then((list) => {
-            const notificationList: INotification<IServerDate | Date>[] = list;
+            const notificationList: INotification[] = list;
 
             const board = props.board as IWorkingBoardItem;
 
@@ -192,8 +190,8 @@ export default defineComponent({
               .updateNotificationList(invitedUser.uid, notificationList)
               .then(() => {
                 notify({
-                  title: "Успешно!",
-                  text: "Приглашение в рабочее пространство было отправлено!",
+                  title: t("common.success"),
+                  text: t("notify.invitationSuccessful.text"),
                   type: "success",
                 });
 
@@ -216,7 +214,7 @@ export default defineComponent({
         (item) => item.uid === props.board.members[0].uid // 0 - board creator index.
       );
       if (adminRole) {
-        adminRole.role = UserRole.Admin;
+        adminRole.role = computed(() => t("role.admin"));
       }
     };
 
@@ -240,7 +238,7 @@ export default defineComponent({
               user.invited = true;
               // Not admin.
             } else if (user.uid !== props.board.members[0].uid) {
-              user.role = "Участник";
+              user.role = computed(() => t("role.member"));
             }
           }
         });
@@ -268,6 +266,7 @@ export default defineComponent({
   position: relative;
 
   &__btn {
+    width: 115px;
     text-transform: none;
     color: $color-white1;
     display: flex;

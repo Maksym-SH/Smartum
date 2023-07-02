@@ -1,13 +1,20 @@
 import { computed } from "vue";
 import type { IServerDate } from "@/types/interfaces";
 import { GetBetweenDateString } from "@/helpers/dateTime/getDate";
-import { Language, Numbers } from "@/types/enums";
+import { Numbers } from "@/types/enums";
+import type { I18nLanguage } from "@/types/types";
 
+import i18n from "@/i18n";
 import useTimestamp from "@/helpers/dateTime/stamp";
 
-export default function useDateParseToString(date: Date | IServerDate | string | null): string {
+export default function useDateParseToString(
+  date: Date | IServerDate | string | null,
+  lang: I18nLanguage = "eng"
+): string {
+  const { t } = i18n.global;
+
   const dateSent = computed((): string => {
-    if (!date) return ""
+    if (!date) return "";
 
     const dateParam = (date as IServerDate).seconds;
 
@@ -20,11 +27,11 @@ export default function useDateParseToString(date: Date | IServerDate | string |
     const dateBetween: string = GetBetweenDateString(recievedDate as Date);
     const time: string = useTimestamp(
       recievedDate as Date,
-      Language.Russian,
+      lang,
       (date as IServerDate).seconds
     ).time;
 
-    return `${dateBetween} в ${time}`; // 'Сегодня в 22:00:00' as an example.
+    return `${dateBetween} ${t("time.at")} ${time}`; // 'Сегодня в 22:00:00' as an example.
   });
 
   return dateSent.value;

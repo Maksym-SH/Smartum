@@ -26,17 +26,17 @@
               </v-tooltip>
             </div>
             <p class="task-info-modal__window-header-description">
-              В колонке
+              {{ $t("modal.taskStatus") }}
               <span class="task-info-modal__window-header-description--underline">
                 {{ columnName }}
               </span>
             </p>
             <small class="task-info-modal__window-header-date">
-              Дата создания: {{ dateSent }}
+              {{ $t("common.dateOfCreate") }} {{ dateSent }}
             </small>
             <div class="task-info-modal__window-actions">
               <div class="task-info-modal__window-action-item action">
-                <span class="action__title">Метки</span>
+                <span class="action__title">{{ $t("common.marks") }}</span>
                 <div class="action__marks" :class="{ empty: noMarks }">
                   <BackgroundItem
                     v-for="mark in currentTask.marks"
@@ -63,24 +63,23 @@
                 </div>
               </div>
               <div class="task-info-modal__window-action-item">
-                <span class="action__title">Уведомления</span>
-                <v-tooltip
-                  text="Подпишитесь на уведомления об обновлении этой карточки"
-                  location="bottom"
-                >
+                <span class="action__title">{{
+                  $t("navigation.notifications.title")
+                }}</span>
+                <v-tooltip :text="$t('task.tooltip')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <AppButton
                       v-bind="props"
                       icon="eye"
                       :color="Colors.LightGrey"
                       @click="subscribe"
-                      title="Подписаться"
+                      :title="$t('buttons.notificationSubscribe')"
                     />
                   </template>
                 </v-tooltip>
               </div>
               <div class="task-info-modal__window-action-item">
-                <span class="action__title">Участники</span>
+                <span class="action__title">{{ $t("modal.members") }}</span>
                 <MembersAssign
                   v-if="currentTask.assignedMembers"
                   :all-members="boardMembers"
@@ -95,7 +94,7 @@
               <div class="action">
                 <span class="action__title">
                   <InlineSvg class="icon" src="/images/icons/info-box-outline.svg" />
-                  Описание
+                  {{ $t("modal.description") }}
                 </span>
                 <transition name="toggle-content" mode="out-in">
                   <AppTextarea
@@ -105,7 +104,7 @@
                     v-model.trim="descriptionText"
                     :max="Length.Textarea"
                     name="taskDescription"
-                    placeholder="Добавить более подробное описание..."
+                    :placeholder="$t('labels.moreDetails')"
                   />
                   <p
                     v-else
@@ -122,7 +121,7 @@
               <div class="action">
                 <span class="action__title">
                   <InlineSvg class="icon" src="/images/icons/info-box-outline.svg" />
-                  Дополнительне задачи
+                  {{ $t("modal.additionalTasks") }}
                 </span>
                 <SubtasksList
                   v-if="currentTask.subtasks"
@@ -137,7 +136,7 @@
                     class="icon"
                     src="/images/icons/comment-account-outline.svg"
                   />
-                  Комментарии
+                  {{ $t("common.comments.title") }}
                 </span>
               </div>
               <NewComment
@@ -178,6 +177,7 @@ import type { ITaskComment, IUserForList } from "@/types/interfaces";
 import { ArrayHasValues } from "@/helpers/methods";
 import { Length } from "@/types/enums";
 
+import i18n from "@/i18n";
 import useTaskInfo from "@/composables/useTaskInfo";
 import InlineSvg from "vue-inline-svg";
 import ModalColorPicker from "./ModalColorPicker.vue";
@@ -215,6 +215,8 @@ export default defineComponent({
     SubtasksList,
   },
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const closeModal = (): void => {
       emit("update:taskModalActive", false);
     };
@@ -246,8 +248,8 @@ export default defineComponent({
       if (currentTask.value.marks) {
         if (currentTask.value.marks.includes(newMark.value)) {
           notify({
-            title: "Ошибка при добавлении метки",
-            text: "Выбранная вами метка задачи уже используется!",
+            title: t("notify.tooManyTaskMarks.title"),
+            text: t("notify.tooManyTaskMarks.text"),
           });
         } else {
           currentTask.value.marks.push(newMark.value);
@@ -282,7 +284,7 @@ export default defineComponent({
     // Notification actions. ToDo
     const subscribe = () => {
       notify({
-        title: "В разработке!",
+        title: t("notify.development.title"),
         type: "success",
       });
     };

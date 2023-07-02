@@ -42,6 +42,7 @@ import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfa
 import { Numbers } from "@/types/enums";
 import { notify } from "@kyvg/vue3-notification";
 
+import i18n from "@/i18n";
 import Task from "./TaskItem.vue";
 import AddNewTask from "./TaskAddNew.vue";
 import Draggable from "vuedraggable";
@@ -73,6 +74,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const categoryTitle = ref("");
 
     const showDropZone = ref(false);
@@ -108,7 +111,7 @@ export default defineComponent({
 
     const columnSettings = () => {
       notify({
-        title: "В разработке",
+        title: t("notify.development.title"),
         type: "success",
       });
     };

@@ -4,11 +4,14 @@ import { notify } from "@kyvg/vue3-notification";
 import type { ErrorCode } from "@/types/types";
 import { NotificationType, Numbers } from "@/types/enums";
 
+import i18n from "@/i18n";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 import ShowErrorMessage from "./firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 
 export default function VerifyEmail(userInfo: User): void {
+  const { t } = i18n.global;
+
   const { notificationStore, userStore } = useStores();
 
   if (!(userStore.currentUser as User).emailVerified) {
@@ -16,8 +19,8 @@ export default function VerifyEmail(userInfo: User): void {
     sendEmailVerification(userInfo)
       .then(() => {
         notify({
-          title: "Успешно!",
-          text: "Сообщение для подтверждения было отправлено вам на электронный адрес!",
+          title: t("common.success"),
+          text: t("notify.confirmEmail.text"),
         });
         const notification = useNewNotificationContent(
           NotificationType.EmailConfirm,
@@ -56,7 +59,7 @@ export default function VerifyEmail(userInfo: User): void {
       .catch((error: ErrorCode) => ShowErrorMessage(error));
   } else {
     notify({
-      text: "Ваш электронный адрес уже подтвержден.",
+      text: t("notify.emailConfirmed.title"),
       type: "success",
     });
   }

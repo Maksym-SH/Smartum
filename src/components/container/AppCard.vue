@@ -98,7 +98,7 @@ export default defineComponent({
 
     :deep(td) {
       color: var(--color-text);
-      text-align: start;
+      text-align: center;
       padding: 15px 30px;
     }
   }

@@ -10,7 +10,7 @@
         :first-name="member.firstName"
         :last-name="member.lastName"
       />
-      Оставить комментарий
+      {{ $t("common.comments.new") }}
     </span>
     <form class="new-comment__textarea-inner" @submit.prevent="createComment">
       <AppTextarea
@@ -19,12 +19,12 @@
         :min="newCommentMessage ? Length.Text : Length.None"
         @keyup.enter="createComment"
         name="taskDescription"
-        placeholder="Напишите комментарий"
+        :placeholder="$t('labels.newComment')"
       />
       <AppButton
         :disabled="!newCommentMessage"
         size="small"
-        title="Отправить"
+        :title="$t('buttons.send')"
         type="submit"
       />
     </form>
@@ -116,7 +116,7 @@ export default defineComponent({
     }
 
     .c-button {
-      width: fit-content;
+      width: 95px;
       text-transform: none;
       color: $color-white1 !important;
       align-self: flex-end;

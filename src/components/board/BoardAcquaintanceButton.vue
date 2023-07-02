@@ -15,7 +15,9 @@
     >
       <template #header>
         <div class="acquaintance__window-header">
-          <h2 class="acquaintance__window-header-title">Информация</h2>
+          <h2 class="acquaintance__window-header-title">
+            {{ $t("dropdown.accuaintance") }}
+          </h2>
           <AppButton
             class="acquaintance__window-header--close"
             variant="text"
@@ -35,16 +37,14 @@
               @load="showTemplate = true"
             />
             <div class="acquaintance__window-content-info">
-              <h4 class="acquaintance__window-content-title">Добро пожаловать</h4>
+              <h4 class="acquaintance__window-content-title">
+                {{ $t("common.welcome") }}
+              </h4>
               <p class="acquaintance__window-content-description">
-                Это рабочее пространство, в которое вы можете приглашать других
-                пользователей, взаимодействовать с задачами и участниками доски, оставлять
-                комментарии и многое другое.
+                {{ $t("acquaintance.mainDescription") }}
               </p>
               <p class="acquaintance__window-content-description">
-                В работе с доской предоставляется полная свобода действий: сколько будет
-                колонок, как они будут называться, какие метки будут у задач и тому
-                подобное.
+                {{ $t("acquaintance.secondaryDescription") }}
               </p>
             </div>
           </div>
@@ -52,10 +52,9 @@
             <AppButton
               class="acquaintance__window--confirm"
               size="large"
+              :title="$t('buttons.acquainted')"
               @click="showAcquaintanceWindow = false"
-            >
-              Ознакомлен
-            </AppButton>
+            />
           </footer>
         </div>
       </template>

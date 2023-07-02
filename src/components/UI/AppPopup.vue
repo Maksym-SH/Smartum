@@ -38,10 +38,13 @@ import { ObjectFull } from "@/helpers/methods";
 import type { IPopupParams } from "@/types/interfaces";
 import type { PopupButtons } from "@/types/types";
 
+import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 
 export default defineComponent({
   setup() {
+    const { t } = i18n.global;
+
     const { commonStore } = useStores();
 
     const params: IPopupParams = commonStore.popupParams as IPopupParams;
@@ -51,12 +54,12 @@ export default defineComponent({
     const btnParam = computed((): PopupButtons => {
       return {
         yes: {
-          text: params.buttons.yes?.text || "Подтвердить",
+          text: params.buttons.yes?.text || t("buttons.confirm"),
           variant: params.buttons.yes?.variant || "elevated",
           color: params.buttons.yes?.color || Colors.Info,
         },
         no: {
-          text: params.buttons.no?.text || "Отмена",
+          text: params.buttons.no?.text || t("buttons.cancel"),
           variant: params.buttons.no?.variant || "outlined",
           color: params.buttons.no?.color || Colors.Info,
         },

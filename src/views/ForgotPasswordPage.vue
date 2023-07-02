@@ -2,28 +2,27 @@
   <div class="forgot-page">
     <div class="forgot-page__window">
       <div class="forgot-page__window-header">
-        <h2 class="forgot-page__window-header__title">Восстановление пароля</h2>
+        <h2 class="forgot-page__window-header__title">{{ $t("recover.title") }}</h2>
         <p class="forgot-page__window-header__description">
-          Введите электронный адрес, который вы использовали при регистрации а затем мы
-          отправим вам письмо с инструкциями.
+          {{ $t("recover.description") }}
         </p>
       </div>
       <form class="forgot-page__window-content" @submit.prevent="submitForm">
         <AppInput
           v-model="email"
-          label="Введите адрес электронной почты"
+          :label="$t('labels.enterEmail')"
           name="userEmail"
           is-email
           required
           light-theme
           @invalid="errorEmail = true"
         />
-        <AppButton class="submit-form" title="Отправить" type="submit" />
+        <AppButton class="submit-form" :title="$t('buttons.send')" type="submit" />
       </form>
       <div class="forgot-page__window-link">
         <a class="forgot-page__window-link--go-back" @click="goBack">
           <InlineSvg src="/images/icons/arrow-left.svg" />
-          Вернуться назад
+          {{ $t("labels.goBack") }}
         </a>
       </div>
     </div>

@@ -1,10 +1,9 @@
 import type { EmailAuthCredential, User, UserCredential } from "firebase/auth";
 import type { ComputedRef } from "vue";
-import type { Colors, UserRole } from "./enums";
+import type { Colors, NotificationType } from "./enums";
 import type {
   AsideExpPanelNavigation,
   ButtonVariant,
-  ColorThemeText,
   NotificationCategory,
   NotificationStatus,
   OmitUserInfo,
@@ -14,23 +13,26 @@ export interface IServerDate {
   seconds: number;
   nanoseconds: number;
 }
-export interface DynamicDescription {
-  [key: string]: ILanguage;
+
+export interface ILanguageTextInfo {
+  title: "Русский" | "English";
+  icon: "russian" | "english";
 }
 
 // Components
 export interface ISelectElem {
-  title: string;
+  title: string | ComputedRef<string>;
   callback: () => void;
   icon?: string;
   color?: Colors;
   displaying: boolean | ComputedRef<boolean>;
+  active?: boolean | ComputedRef<boolean>;
 }
 export interface IAsideNavigationItem {
   id: number;
   showed: boolean;
   alwaysDisplay?: boolean;
-  title: string;
+  title: unknown;
   icon?: string;
   notify?: true;
   callback?: () => void;
@@ -54,19 +56,18 @@ export interface IPopupParams {
   callback: () => any;
 }
 export interface IModalContent {
-  ru: {
-    title: string;
-    text: string;
-  };
-  eng: {
-    title: string;
-    text: string;
-  };
+  title: string;
+  content: string;
 }
 export interface ILanguage {
   eng: string;
   ru: string;
 }
+export interface ITabInfo {
+  title: ComputedRef<string> | unknown;
+  description: ComputedRef<string> | unknown;
+}
+
 export interface FileResult {
   result: string;
   type: string;
@@ -151,7 +152,7 @@ export interface IWorkingBoardItem {
 }
 export interface IWorkingBoardMember {
   uid: string;
-  role?: UserRole;
+  role?: unknown;
   invited?: boolean;
 }
 
@@ -202,7 +203,7 @@ export interface IUserInfo extends Omit<IUserReg, "password"> {
 export interface IUserForList
   extends Omit<IUserInfo, "photoFile" | "emailVerified" | "newPassword" | "email"> {
   uid: string;
-  role?: string;
+  role?: unknown;
   invited?: boolean;
 }
 export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
@@ -210,17 +211,20 @@ export interface ICreateUser extends Omit<IUserInfo, OmitUserInfo> {
 }
 
 // Notification
-export interface INotification<T> {
+export interface INotification<T = Date | IServerDate> {
   id: number;
-  title: string;
+  title: unknown;
+  description: unknown;
   status: NotificationStatus;
   date: T;
   image?: string;
-  description: string;
   type: NotificationCategory;
   uid?: string;
+  textParams?: { title?: string };
+  textType: NotificationType;
   joinCode?: string;
 }
+export interface INotificationContent extends Pick<INotification, "title" | "description"> {}
 
 // Configuration
 export interface IConfiguration {
@@ -242,7 +246,7 @@ export interface IConfigurationAdditional {
 // Color picker.
 export interface IColorPickerParams {
   textColor: Colors;
-  target: ColorThemeText;
+  target: string;
 }
 
 // Response
@@ -263,7 +267,7 @@ export interface IUserCreated {
 // Router
 export interface IMetaName {
   protected: boolean;
-  tabName: ILanguage;
+  tabName: string;
 }
 
 // Colors

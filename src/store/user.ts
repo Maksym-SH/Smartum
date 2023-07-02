@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { User } from "firebase/auth";
 import { getAuth } from "firebase/auth";
-import { notify } from "@kyvg/vue3-notification";
 import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import {
   ref as Refference,
@@ -388,12 +387,7 @@ const useUserStore = defineStore("user", () => {
           localStorage.removeItem("smartumToken");
         }
       })
-      .catch((error: ErrorCode) =>
-        notify({
-          title: "Произошла ошибка!",
-          text: String(error),
-        })
-      )
+      .catch((error: ErrorCode) => ShowErrorMessage(error))
       .finally(() => commonStore.setLoadingStatus(false));
   };
 

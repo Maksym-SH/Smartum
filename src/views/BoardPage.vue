@@ -10,7 +10,7 @@
               {{ boardItem.title }}
             </h3>
             <p class="board-item-page__members-count">
-              Участников доски: {{ membersCount }}
+              {{ $t("common.boardMembersInfo") }} {{ membersCount }}
             </p>
           </div>
           <div class="board-item-page__board-info--additional">
@@ -28,7 +28,7 @@
                     :first-name="item.firstName"
                     :last-name="item.lastName"
                     :size="30"
-                    :class="{ admin: item.role === UserRole.Admin }"
+                    :class="{ admin: item.role === 'Admin' }"
                     v-bind="props"
                     circle
                   />
@@ -73,10 +73,11 @@ import type {
   IWorkingBoardTaskColumn,
 } from "@/types/interfaces";
 import { ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
-import { Colors, UserRole } from "@/types/enums";
+import { Colors } from "@/types/enums";
 import { notify } from "@kyvg/vue3-notification";
 import { storeToRefs } from "pinia";
 
+import i18n from "@/i18n";
 import useStore from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import BoardHeader from "@/components/board/BoardPageHeader.vue";
@@ -94,6 +95,8 @@ export default defineComponent({
     AddNewColumn,
   },
   setup() {
+    const { t } = i18n.global;
+
     const router = useRouter();
 
     const { commonStore, dashboardStore } = useStore();
@@ -136,19 +139,19 @@ export default defineComponent({
       );
       if (currentMember) {
         OpenPopup({
-          title: "Выйти из рабочего пространства?",
+          title: t("popup.boardLeaveMessage.title"),
           text: leaveMessage(currentMember),
           buttons: {
             yes: {
-              text: "Покинуть",
+              text: t("buttons.leave"),
               color: Colors.Danger,
             },
           },
           callback: (): void => {
             dashboardStore.leaveWorkingBoard(currentMember, boardItem.value).then(() => {
               notify({
-                title: "Вы успешно покинули пространство!",
-                text: "Пространство было удалено из вашего списка рабочих досок.",
+                title: t("notify.leavedBoardSuccess.title"),
+                text: t("notify.leavedBoardSuccess.text"),
                 type: "success",
               });
             });
@@ -158,15 +161,18 @@ export default defineComponent({
     };
 
     const leaveMessage = (currentMember: IWorkingBoardMember): string => {
+      const nextUserIsMember = !boardItem.value.members[1]?.invited;
+
       if (
         // Is Admin and members more than 1.
         currentMember.uid === boardItem.value.uid &&
-        boardItem.value.members.length > 1
+        boardItem.value.members.length > 1 &&
+        nextUserIsMember
       ) {
-        return "Вы являетесь администратором доски, если вы покинете рабочую доску администратором станет первый приглашенный вами пользователь. Продолжить?";
+        return t("popup.boardLeaveMessage.admin");
       } else {
         // Is member.
-        return "Вы можете снова присоединиться к доске если вам отправит приглашение один из её участников.";
+        return t("popup.boardLeaveMessage.member");
       }
     };
 
@@ -205,7 +211,6 @@ export default defineComponent({
       userInfo,
       showedCommonLoader,
       columnLength,
-      UserRole,
       boardLeave,
       getFullName,
       saveChanges,
@@ -276,6 +281,7 @@ export default defineComponent({
   }
 
   &__board-info {
+    margin-top: -2px;
     padding: 10px;
     display: flex;
     flex-wrap: wrap;

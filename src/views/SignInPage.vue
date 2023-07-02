@@ -13,7 +13,7 @@
               is-email
               type="email"
               name="userEmail"
-              label="Электронный адрес"
+              :label="$t('labels.email')"
               transparent
             />
             <AppInput
@@ -21,31 +21,45 @@
               required
               type="password"
               name="userPassword"
-              label="Пароль"
+              :label="$t('labels.password')"
               transparent
               :min="Length.Password"
             />
             <div class="auth__window-form__forgot">
-              Забыли пароль?
-              <router-link
-                :to="{ name: 'Forgot' }"
-                class="auth__window-form__forgot--link"
-              >
-                Восстановить
-              </router-link>
+              <i18n-t keypath="signIn.forgotPassword" scope="global" tag="span">
+                <template #recover>
+                  <router-link
+                    :to="{ name: 'Forgot' }"
+                    class="auth__window-form__forgot--link"
+                  >
+                    {{ $t("signIn.recover") }}
+                  </router-link>
+                </template>
+              </i18n-t>
             </div>
           </div>
           <div class="auth__window-form__inputs--send">
-            <AppButton title="Войти" type="submit" />
+            <AppButton :title="$t('buttons.signIn')" type="submit" />
           </div>
         </form>
         <div class="auth__window-form--actions">
           <div class="auth__swap-entry-type">
-            <span class="auth__description">
-              Нет аккаунта?
-              <router-link :to="{ name: 'SignUp' }"> Регистрация </router-link>
-            </span>
+            <i18n-t
+              keypath="signIn.noAccount"
+              scope="global"
+              tag="span"
+              class="auth__description"
+            >
+              <template #entry>
+                <router-link :to="{ name: 'SignUp' }">
+                  {{ $t("signIn.regLink") }}
+                </router-link>
+              </template>
+            </i18n-t>
           </div>
+        </div>
+        <div class="switch-language">
+          <SwitchLanguageButton type="button" variant="text" />
         </div>
       </div>
     </div>
@@ -57,10 +71,14 @@ import { computed, defineComponent, reactive } from "vue";
 import type { IUserLogin } from "@/types/interfaces";
 import { Length } from "@/types/enums";
 
+import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 import * as emailValidator from "email-validator";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 export default defineComponent({
+  components: {
+    SwitchLanguageButton,
+  },
   setup() {
     const userData: IUserLogin = reactive({
       email: "",
@@ -96,7 +114,6 @@ export default defineComponent({
     flex-direction: column;
     text-align: center;
     margin-top: 40px;
-    padding-bottom: 10px;
 
     .c-button {
       padding: 0;
@@ -110,7 +127,6 @@ export default defineComponent({
     }
 
     .auth__description {
-      margin-bottom: 20px;
       color: $color-white4;
     }
   }
@@ -162,7 +178,7 @@ export default defineComponent({
 
   @include mobile(max) {
     height: 100%;
-    min-height: 500px;
+    min-height: 525px;
 
     &__window {
       margin: 0;
@@ -172,7 +188,7 @@ export default defineComponent({
       &-form {
         display: flex;
         flex-direction: column;
-        height: calc(100% - 65px);
+        height: calc(100% - 70px);
 
         &-wrapper {
           display: flex;
@@ -187,10 +203,6 @@ export default defineComponent({
           }
         }
 
-        &--actions {
-          margin-top: 10px;
-        }
-
         &__inputs {
           &--send {
             .c-button {
@@ -203,6 +215,7 @@ export default defineComponent({
       .auth__swap-entry-type {
         font-size: 14px;
         margin-top: 20px;
+        padding-bottom: 10px;
       }
     }
   }

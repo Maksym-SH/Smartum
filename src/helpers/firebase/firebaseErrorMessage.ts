@@ -1,27 +1,31 @@
 import { notify } from "@kyvg/vue3-notification";
 import type { ErrorCode } from "@/types/types";
 
+import i18n from "@/i18n";
+
 export default function ShowErrorMessage(errorCode: ErrorCode): void {
+  const { t } = i18n.global;
+
   let errorText = "";
   if (typeof errorCode === "object") {
     switch (errorCode.code) {
       case "auth/internal-error":
-        errorText = "Произошла непредвиденная ошибка, повторите попытку позже!";
+        errorText = t("notify.errors.internal");
         break;
       case "auth/too-many-requests":
-        errorText = "Слишком много попыток, повторите попытку позже!";
+        errorText = t("notify.errors.tooManyRequests");
         break;
       case "auth/wrong-password":
-        errorText = "Пароль не верный, повторите попытку!";
+        errorText = t("notify.errors.wrongPassword");
         break;
       case "auth/invalid-email":
-        errorText = "Введённая почта невалидна!";
+        errorText = t("notify.errors.invalidEmail");
         break;
       case "auth/email-already-in-use":
-        errorText = "Введённая почта уже используется!";
+        errorText = t("notify.errors.emailAlreadyUse");
         break;
       case "auth/user-not-found":
-        errorText = "Такого пользователя не существует!";
+        errorText = t("notify.errors.userDoesNotExist");
         break;
       default:
         errorText = errorCode.code;
@@ -32,7 +36,7 @@ export default function ShowErrorMessage(errorCode: ErrorCode): void {
   }
 
   notify({
-    title: "Не удалось обработать действие",
+    title: t("notify.errors.title"),
     text: errorText,
     type: "error",
   });

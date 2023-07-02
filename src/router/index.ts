@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import { notify } from "@kyvg/vue3-notification";
 import type { Routes } from "@/types/types";
 
+import i18n from "@/i18n";
+
 const routes: Routes = [
   {
     name: "SignIn",
@@ -41,10 +43,7 @@ const routes: Routes = [
         name: "Profile",
         path: "/profile",
         meta: {
-          tabName: {
-            eng: "Profile",
-            ru: "Профиль",
-          },
+          tabName: "Profile",
           protected: true,
         },
         component: () => import("@/views/tabs/ProfileTab.vue"),
@@ -53,10 +52,8 @@ const routes: Routes = [
         name: "Notifications",
         path: "/notifications",
         meta: {
-          tabName: {
-            eng: "Notifications",
-            ru: "Уведомления",
-          },
+          tabName: "Notifications",
+
           protected: true,
         },
         component: () => import("@/views/tabs/NotificationsTab.vue"),
@@ -65,10 +62,8 @@ const routes: Routes = [
         name: "Reports",
         path: "/reports",
         meta: {
-          tabName: {
-            eng: "Reports",
-            ru: "Отчеты",
-          },
+          tabName: "Reports",
+
           protected: true,
         },
         component: () => import("@/views/tabs/ReportsTab.vue"),
@@ -77,10 +72,7 @@ const routes: Routes = [
         name: "Configuration",
         path: "/configuration",
         meta: {
-          tabName: {
-            eng: "Configuration",
-            ru: "Конфигурация",
-          },
+          tabName: "Configuration",
           protected: true,
         },
         component: () => import("@/views/tabs/ConfigurationTab.vue"),
@@ -89,10 +81,7 @@ const routes: Routes = [
         name: "Configuration",
         path: "/configuration",
         meta: {
-          tabName: {
-            eng: "Configuration",
-            ru: "Конфигурация",
-          },
+          tabName: "Configuration",
           protected: true,
         },
         component: () => import("@/views/tabs/ConfigurationTab.vue"),
@@ -101,10 +90,7 @@ const routes: Routes = [
         name: "Dashboard",
         path: "/dashboard",
         meta: {
-          tabName: {
-            eng: "Dashboard",
-            ru: "Рабочие доски",
-          },
+          tabName: "Dashboard",
           protected: true,
         },
         component: () => import("@/views/tabs/DashboardTab.vue"),
@@ -132,6 +118,8 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, _, next): Promise<void> => {
+  const { t } = i18n.global;
+
   const token = localStorage.getItem("smartumToken");
   const protectedRoute = to.meta.protected;
   const notAuthorizedRoute = to.meta.notAuthorized;
@@ -143,8 +131,8 @@ router.beforeEach(async (to, _, next): Promise<void> => {
       } else {
         next({ name: "SignIn" });
         notify({
-          title: "Срок вашей сессии истек",
-          text: "Требуется повторная авторизация",
+          title: t("notify.sessionExpired.title"),
+          text: t("notify.sessionExpired.text"),
         });
       }
     } else {

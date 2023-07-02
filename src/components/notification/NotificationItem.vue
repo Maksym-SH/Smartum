@@ -20,14 +20,14 @@
     <div class="notification-item__content">
       <div class="notification-item__content-info">
         <h3 class="notification-item__title">
-          {{ params.title }}
+          {{ content.title }}
         </h3>
         <time class="notification-item__date">
           {{ dateSent }}
         </time>
       </div>
       <p class="notification-item__description">
-        {{ params.description }}
+        {{ content.description }}
       </p>
     </div>
     <AppButton
@@ -40,14 +40,17 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
-import { defineComponent, reactive, ref } from "vue";
-import type { INotification, IPictureParams, IServerDate } from "@/types/interfaces";
+import { PropType } from "vue";
+import { defineComponent, reactive, ref, computed, onMounted } from "vue";
+import type { INotification, IPictureParams, INotificationContent } from "@/types/interfaces";
 import { NotificationActionType } from "@/types/enums";
+import type { I18nLanguage } from "@/types/types";
 
+import useNotificationText from "@/composables/useNotificationText";
 import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
 import useStore from "@/composables/useStores";
+import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import useDateParseToString from "@/composables/useDateParse";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import Avatar from "../user/AppAvatar.vue";
@@ -58,12 +61,14 @@ export default defineComponent({
   },
   props: {
     params: {
-      type: Object as PropType<INotification<IServerDate | Date>>,
+      type: Object as PropType<INotification>,
       required: true,
     },
   },
   emits: ["deleteNotification", "readNotification"],
   setup(props, { emit }) {
+    const { i18nLocale } = useCurrentLanguage();
+
     const { currentUser, unicID } = useCurrentUserInfo();
 
     const { dashboardStore } = useStore();
@@ -72,13 +77,20 @@ export default defineComponent({
       url: props.params.image || "",
     });
 
+    const content = ref<INotificationContent>({
+      title: computed(() => ""),
+      description: computed(() => ""),
+    });
+
     const deleteNotification = (): void => {
       emit("deleteNotification", props.params.id);
     };
 
     const failedImageLoad = ref(false);
 
-    const dateSent = useDateParseToString(props.params.date);
+    const dateSent = computed(() =>
+      useDateParseToString(props.params.date, i18nLocale.value as I18nLanguage)
+    );
 
     const readNotification = (): void => {
       emit("readNotification", props.params.id);
@@ -123,12 +135,17 @@ export default defineComponent({
       deleteNotification();
     };
 
+    onMounted(() => {
+      content.value = useNotificationText(props.params);
+    });
+
     return {
-      deleteNotification,
-      readNotification,
       image,
+      content,
       failedImageLoad,
       dateSent,
+      deleteNotification,
+      readNotification,
     };
   },
 });

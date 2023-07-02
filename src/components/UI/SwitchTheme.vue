@@ -53,7 +53,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .toggle-theme-switch {
   position: relative;
-  width: 50px;
+  min-width: 50px;
   height: 24px;
 
   &__label {

@@ -10,17 +10,20 @@ import type {
   IUserInfo,
 } from "@/types/interfaces";
 
+import i18n from "@/i18n";
 import useNewNotificationContent from "./useNotificationContent";
 import useStores from "./useStores";
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 
 export default function useConfiguration() {
+  const { t } = i18n.global;
+
   const { userStore, configurationStore, notificationStore } = useStores();
 
   const { unicID } = useCurrentUserInfo();
 
-  const showedNavigations = reactive<IAsideNavigationItem[]>([...useAsideNavigation()]);
+  const showedNavigations = ref<IAsideNavigationItem[]>([...useAsideNavigation()]);
 
   const notificationAdded = ref(false);
 
@@ -51,7 +54,7 @@ export default function useConfiguration() {
     userStore.updateUserBackgroundAvatar(avatarParams.bgAvatar, unicID.value).then(() => {
       userStore.updateUsersList({ ...userStore.userInfo, uid: unicID.value });
       notify({
-        title: "Фон вашего фото профиля был успешно обнолен!",
+        title: t("notify.saveBackgroundAvatar.title"),
       });
     });
   };
@@ -67,7 +70,7 @@ export default function useConfiguration() {
       )
       .then(() => {
         notify({
-          title: "Настройки конфигурации были успешно сохранены!",
+          title: t("notify.savedConfigurationSuccess.title"),
         });
 
         if (!notificationAdded.value) {
@@ -82,11 +85,11 @@ export default function useConfiguration() {
   };
 
   const saveNavigationList = () => {
-    const navigations = showedNavigations.map((item) => item.showed);
+    const navigations = showedNavigations.value.map((item) => item.showed);
 
     configurationStore.updateNavigateItem(navigations, unicID.value).then(() => {
       notify({
-        title: "Список отображаемых страниц был успешно сохранен!",
+        title: t("notify.savedShowingPages.title"),
       });
 
       if (!notificationAdded.value) {
@@ -107,7 +110,7 @@ export default function useConfiguration() {
       .getUserConfiguration(unicID.value)
       .then((configuration: Omit<IConfiguration, "navigations">) => {
         const navigationList: IAsideNavigationItem[] = configurationStore.asideNavigate;
-        showedNavigations.forEach(
+        showedNavigations.value.forEach(
           (item, index) => (item.showed = navigationList[index].showed)
         );
 

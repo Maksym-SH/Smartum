@@ -5,7 +5,7 @@
       :min="Length.Text"
       :maxLength="Length.Maximum"
       name="subtaskNew"
-      placeholder="Добавить новую подзадачу"
+      :placeholder="$t('labels.newSubTask')"
     />
     <AppButton icon="plus" type="submit" :disabled="!newSubtaskTitle" />
   </form>

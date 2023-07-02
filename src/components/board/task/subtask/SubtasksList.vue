@@ -21,6 +21,7 @@ import type { ISubTask } from "@/types/interfaces";
 import { Length, Colors } from "@/types/enums";
 import { OpenPopup } from "@/helpers/methods";
 
+import i18n from "@/i18n";
 import AddNewSubtask from "./SubtaskAddNew.vue";
 import Subtask from "./SubtaskItem.vue";
 
@@ -37,17 +38,21 @@ export default defineComponent({
   },
   emits: ["update:subtasks"],
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const createNewSubtask = (newSubtask: ISubTask): void => {
       props.subtasks.push(newSubtask);
     };
 
     const deleteSubtask = ({ id, title }: Omit<ISubTask, "done">) => {
       OpenPopup({
-        title: "Удаление подзадачи",
-        text: `Вы действительно хотите удалить задачу '${title}'?`,
+        title: t("popup.deleteSubtask.title"),
+        text: t("popup.deleteSubtask.text", {
+          subtask: title,
+        }),
         buttons: {
           yes: {
-            text: "Удалить",
+            text: t("buttons.delete"),
           },
         },
         callback: () => {

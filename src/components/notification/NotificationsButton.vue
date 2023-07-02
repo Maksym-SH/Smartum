@@ -22,14 +22,14 @@
     >
       <template #header>
         <div class="notifications__window-header">
-          <h2 class="notifications__window-title">Уведомления</h2>
+          <h2 class="notifications__window-title">{{ $t("dropdown.notifications") }}</h2>
           <nav class="notifications__window--actions">
             <AppCheckbox
               v-model="onlyUnread"
               :disabled="!notificationsSize"
               switch-box
               name="changeWatchType"
-              label="Только непрочитанные"
+              :label="$t('dropdown.notificationFilter')"
             ></AppCheckbox>
             <AppButton
               @click="showNotificationsWindow = false"
@@ -44,7 +44,7 @@
         <transition-group
           tag="div"
           name="notification-fade"
-          mode="in-out"
+          mode="out-in"
           class="notifications__window-items"
         >
           <NotificationItem

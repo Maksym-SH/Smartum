@@ -15,11 +15,7 @@
     </div>
   </transition>
   <Teleport to="body">
-    <div
-      v-if="visible"
-      class="dropdown-background"
-      @click.self="$emit('hideDropdown')"
-    ></div>
+    <div v-if="visible" class="full-page-lock" @click.self="$emit('hideDropdown')"></div>
   </Teleport>
 </template>
 
@@ -63,15 +59,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.dropdown-background {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-
 .dropdown-window {
   position: absolute;
   z-index: 3;

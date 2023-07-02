@@ -1,6 +1,7 @@
 import { notify } from "@kyvg/vue3-notification";
 import { /* FileFormat, */ Numbers } from "@/types/enums";
 import type { FileType } from "@/types/types";
+import i18n from "@/i18n";
 
 /* const Format = [
   FileFormat.APP_GZIP,
@@ -16,6 +17,8 @@ import type { FileType } from "@/types/types";
 ]; */
 
 export default function fileValidate(file: File, needType: FileType): boolean {
+  const { t } = i18n.global;
+
   const currentType: string = file.type.toLowerCase();
 
   if (needType === "image") {
@@ -23,7 +26,7 @@ export default function fileValidate(file: File, needType: FileType): boolean {
   }
 
   notify({
-    title: "Выбранный файл не поддерживается либо имеет слишком большой размер.",
+    title: t("notify.errors.invalidFile"),
     type: "error",
   });
   return false;

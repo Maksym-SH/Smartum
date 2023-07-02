@@ -1,8 +1,8 @@
 <template>
   <div class="add-new-column" :class="{ 'task-column': columnStyle }">
     <AddNew
-      input-placeholder="Ввести заголовок списка"
-      button-title="Добавить колонку"
+      :input-placeholder="$t('labels.newColumn')"
+      :button-title="$t('buttons.addColumn')"
       :new-id="columnLength"
       @create="createColumn"
       @click="columnStyle = true"

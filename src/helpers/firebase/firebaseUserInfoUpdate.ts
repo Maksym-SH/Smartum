@@ -4,8 +4,11 @@ import { notify } from "@kyvg/vue3-notification";
 
 import ShowErrorMessage from "./firebaseErrorMessage";
 import useStores from "@/composables/useStores";
+import i18n from "@/i18n";
 
 export function PasswordUpdate(user: User, password: string): Promise<void> {
+  const { t } = i18n.global;
+
   const { commonStore } = useStores();
 
   commonStore.setLoadingStatus(true);
@@ -13,7 +16,7 @@ export function PasswordUpdate(user: User, password: string): Promise<void> {
     updatePassword(user, password)
       .then(() => {
         notify({
-          title: "Ваш пароль был изменен!",
+          title: t("notify.passwordChanged.title"),
         });
         resolve();
       })
@@ -25,19 +28,21 @@ export function PasswordUpdate(user: User, password: string): Promise<void> {
   });
 }
 
-/* export function EmailUpdate(user: User, email: string): Promise<void> {
-  const { commonStore } = useStores()
+// export function EmailUpdate(user: User, email: string): Promise<void> {
+//   const { t } = i18n.global;
 
-  commonStore.setLoadingStatus(true)
-  return new Promise((resolve, reject) => {
-    updateEmail(user, email).then(() => {
-      notify({
-        title: 'Ваш электронный адрес был изменен!',
-      })
-      resolve()
-    }).catch((error) => {
-      ShowErrorMessage(error)
-      reject(error)
-    }).finally(() => commonStore.setLoadingStatus(false))
-  })
-} */
+//   const { commonStore } = useStores()
+
+//   commonStore.setLoadingStatus(true)
+//   return new Promise((resolve, reject) => {
+//     updateEmail(user, email).then(() => {
+//       notify({
+//         title: t('notify.emailChanged'),
+//       })
+//       resolve()
+//     }).catch((error) => {
+//       ShowErrorMessage(error)
+//       reject(error)
+//     }).finally(() => commonStore.setLoadingStatus(false))
+//   })
+// }

@@ -12,10 +12,10 @@
       <TheHeader lass="home-page__header" />
       <div class="home-page__tab-info">
         <h1 class="home-page__tab-info-title">
-          {{ tabName.ru }}
+          {{ tabInfo.title }}
         </h1>
         <p class="home-page__tab-info-description">
-          {{ tabDescription.ru }}
+          {{ tabInfo.description }}
         </p>
       </div>
       <div class="home-page__content">
@@ -30,14 +30,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, watch } from "vue";
+import { computed, defineComponent, ref, watch, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { Layout } from "@/types/enums";
 import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
-import type { DynamicDescription, ILanguage, IMetaName } from "@/types/interfaces";
-import type { RouterMeta } from "@/types/types";
+import type { IMetaName, ITabInfo } from "@/types/interfaces";
+import { RouterMeta } from "@/types/types";
 
-import * as DescriptionJSON from "@/helpers/content/TabsInfo.json";
+import i18n from "@/i18n";
 import useNotifications from "@/composables/useNotifications";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
@@ -50,6 +50,8 @@ export default defineComponent({
     TheHeader,
   },
   setup() {
+    const { t } = i18n.global;
+
     const { commonStore, userStore } = useStores();
 
     const router = useRoute();
@@ -58,11 +60,10 @@ export default defineComponent({
 
     const { notificationsSize } = useNotifications();
 
-    const tabName: ILanguage = reactive({ eng: "", ru: "" });
-
-    const Description: DynamicDescription = DescriptionJSON;
-
-    const tabDescription: ILanguage = reactive({ eng: "", ru: "" });
+    const tabInfo = reactive<ITabInfo>({
+      title: "",
+      description: "",
+    });
 
     const currentUserPresent = computed((): boolean => ObjectNotEmpty(currentUser.value));
     const additionalUserInfoPresent = computed((): boolean =>
@@ -79,28 +80,22 @@ export default defineComponent({
       else if (window.innerWidth <= Layout.Laptop) minimizeAside.value = capture;
     };
 
+    const translatePageInfo = (tabName: unknown): void => {
+      if (tabName) {
+        tabInfo.title = computed(() => t(`tab.${tabName}.title`));
+        tabInfo.description = computed(() => t(`tab.${tabName}.description`));
+      }
+    };
+
+    // Update route.
     watch(
       (): IMetaName | RouterMeta => router.meta,
-      (meta): void => {
-        const metaName: ILanguage = meta.tabName as ILanguage;
-
-        if (metaName) {
-          tabName.eng = metaName.eng;
-          tabName.ru = metaName.ru;
-
-          tabDescription.ru = Description[metaName.eng].ru;
-          tabDescription.eng = Description[metaName.eng].eng;
-        } else {
-          tabName.ru = tabName.eng = "";
-          tabDescription.eng = tabDescription.ru = "";
-        }
-      },
+      ({ tabName }): void => translatePageInfo(tabName),
       { immediate: true }
     );
 
     return {
-      tabName,
-      tabDescription,
+      tabInfo,
       minimizeAside,
       notificationsSize,
       showTabContent,

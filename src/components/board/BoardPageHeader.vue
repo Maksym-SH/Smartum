@@ -5,6 +5,7 @@
         <img class="board-header__logo-image" src="/images/icons/logo.svg" alt="" />
       </router-link>
       <div class="board-header__actions">
+        <SwitchLanguageButton :title="''" type="button" variant="tonal" />
         <AcquaintanceButton />
         <NotificationsButton />
         <SwitchTheme name="switchThemeBoard" />
@@ -23,15 +24,17 @@
 
 <script lang="ts">
 import type { PropType } from "vue";
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, computed } from "vue";
 import type { IUserCreated } from "@/types/interfaces";
 import { Colors } from "@/types/enums";
 
+import i18n from "@/i18n";
 import useSelectActions from "@/composables/useSelectActions";
 import Avatar from "../user/AppAvatar.vue";
 import NotificationsButton from "@/components/notification/NotificationsButton.vue";
 import SwitchTheme from "../UI/SwitchTheme.vue";
 import AcquaintanceButton from "./BoardAcquaintanceButton.vue";
+import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 
 export default defineComponent({
   components: {
@@ -39,6 +42,7 @@ export default defineComponent({
     NotificationsButton,
     AcquaintanceButton,
     SwitchTheme,
+    SwitchLanguageButton,
   },
   emits: ["boardLeave", "userMenuPicked"],
   props: {
@@ -48,15 +52,18 @@ export default defineComponent({
     },
   },
   setup(_, { emit }) {
+    const { t } = i18n.global;
+
     const { selected, actions, addNewAction } = useSelectActions();
 
     onMounted(() => {
       addNewAction({
-        title: "Покинуть доску",
+        title: computed(() => t("buttons.leaveBoard")),
         callback: () => emit("boardLeave"),
         icon: "clipboard-arrow-left-outline",
         color: Colors.Danger,
         displaying: true,
+        active: false,
       });
     });
 
@@ -93,6 +100,10 @@ export default defineComponent({
     display: flex;
     align-items: center;
     gap: 10px;
+
+    .switch-language {
+      width: 34px;
+    }
   }
 
   @include mobile(max) {
@@ -100,6 +111,18 @@ export default defineComponent({
 
     &__logo {
       width: 100px;
+    }
+  }
+
+  @include responsive($us, max) {
+    padding: 5px;
+
+    &__logo {
+      width: 80px;
+    }
+
+    &__actions {
+      gap: 6px;
     }
   }
 }

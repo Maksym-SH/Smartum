@@ -16,7 +16,9 @@
       >
         <template #header>
           <div class="assigned-members__window-header">
-            <h2 class="assigned-members__window-header-title">Добавить участников</h2>
+            <h2 class="assigned-members__window-header-title">
+              {{ $t("dropdown.assign") }}
+            </h2>
             <AppButton
               class="assigned-members__window-header--close mobile-only"
               variant="text"
@@ -74,7 +76,7 @@
               </transition-group>
               <span v-else class="assigned-members__window--empty-list" key="empty-list">
                 <InlineSvg src="/images/icons/clipboard-account-outline.svg" />
-                Все участники назначены!
+                {{ $t("dropdown.assignReady") }}
               </span>
             </transition>
           </div>

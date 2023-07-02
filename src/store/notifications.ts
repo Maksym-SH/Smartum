@@ -13,7 +13,7 @@ import useStores from "@/composables/useStores";
 const useNotificationStore = defineStore("notification", () => {
   const { commonStore, userStore } = useStores();
 
-  const allNotifications = ref<INotification<IServerDate | Date>[]>([]);
+  const allNotifications = ref<INotification[]>([]);
 
   const setAllNotification = (notifications: INotificationList): void => {
     allNotifications.value = notifications;
@@ -22,7 +22,7 @@ const useNotificationStore = defineStore("notification", () => {
   const createNotificationList = (
     notification: INotification<Date>,
     unicID: string
-  ): Promise<INotification<Date>> => {
+  ): Promise<INotification> => {
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
       setDoc(doc(database, DataCollection.Notifications, unicID), {
@@ -42,11 +42,11 @@ const useNotificationStore = defineStore("notification", () => {
   const getAllNotifications = (
     unicID: string,
     write = false
-  ): Promise<INotification<IServerDate>[]> => {
+  ): Promise<INotification[]> => {
     return new Promise((resolve) => {
       onSnapshot(doc(database, DataCollection.Notifications, unicID), (doc) => {
         const notifications = doc.data()?.collection as INotification<IServerDate>[];
-        if (doc.data()) {
+        if (notifications) {
           resolve(notifications);
           if (write) {
             setAllNotification(notifications);
@@ -58,8 +58,8 @@ const useNotificationStore = defineStore("notification", () => {
 
   const updateNotificationList = (
     unicID: string,
-    notifications?: INotification<IServerDate | Date>[]
-  ): Promise<INotification<IServerDate>[]> => {
+    notifications?: INotification[]
+  ): Promise<INotification[]> => {
     const notificationRef = doc(database, DataCollection.Notifications, unicID);
 
     commonStore.setLoadingStatus(true);
@@ -68,7 +68,7 @@ const useNotificationStore = defineStore("notification", () => {
         collection: notifications || allNotifications.value,
       }).then(() => {
         getAllNotifications(unicID)
-          .then((notifications: INotification<IServerDate>[]) => {
+          .then((notifications: INotification[]) => {
             resolve(notifications);
           })
           .catch((error: ErrorCode) => {
@@ -82,7 +82,7 @@ const useNotificationStore = defineStore("notification", () => {
 
   const sendNotificationToUser = (
     userTarget: IWorkingBoardMember,
-    notification: INotification<Date | IServerDate>,
+    notification: INotification,
     showLoading = true
   ): Promise<void> => {
     commonStore.setLoadingStatus(showLoading);
@@ -123,12 +123,11 @@ const useNotificationStore = defineStore("notification", () => {
   };
 
   const setNewNotification = async (
-    newNotification: INotification<IServerDate | Date>,
+    newNotification: INotification,
     notifications?: INotificationList,
     unicID?: string
-  ): Promise<INotification<IServerDate>[]> => {
+  ): Promise<INotification[]> => {
     const listTarget = notifications || allNotifications.value;
-
     listTarget.unshift(newNotification);
 
     const docID = unicID || (userStore.currentUser as User).uid;

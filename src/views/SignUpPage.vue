@@ -12,9 +12,9 @@
           src="/images/icons/list-task.svg"
           alt="Tasks"
         />
-        <h3 class="sign-up__window--welcome-title">Добро пожаловать!</h3>
+        <h3 class="sign-up__window--welcome-title">{{ $t("common.welcome") }}</h3>
         <h4 class="sign-up__window--welcome-description">
-          Заполните форму чтобы создать аккаунт.
+          {{ $t("signUp.description") }}
         </h4>
         <div class="sign-up__window--welcome-logo">
           <img
@@ -25,12 +25,12 @@
         </div>
       </div>
       <div class="sign-up__window-content content">
-        <h2 class="sign-up__window-content-title">Создание аккаунта</h2>
+        <h2 class="sign-up__window-content-title">{{ $t("signUp.title") }}</h2>
         <form class="sign-up__window-form-inputs" @submit.prevent="submitForm">
           <AppInput
             v-model.trim="userData.firstName"
             required
-            label="Имя"
+            :label="$t('labels.name')"
             name="userFirstName"
             :max-length="Length.Maximum"
             :min="Length.Text"
@@ -41,7 +41,7 @@
             :min="userData.lastName ? Length.Text : Length.None"
             name="userLastName"
             :max-length="Length.Maximum"
-            label="Фамилия"
+            :label="$t('labels.lastName')"
             transparent
           />
           <AppInput
@@ -51,7 +51,7 @@
             name="userEmail"
             is-email
             transparent
-            label="Электронный адрес"
+            :label="$t('labels.email')"
           />
           <AppInput
             v-model="userData.password"
@@ -60,31 +60,44 @@
             name="userPassword"
             transparent
             :min="Length.Password"
-            label="Пароль"
+            :label="$t('labels.password')"
             autocomplete="new-password"
           />
           <div class="sign-up__window-form-inputs__send">
-            <AppButton title="Регистрация" type="submit" />
+            <AppButton :title="$t('buttons.signUp')" type="submit" />
           </div>
           <small class="sign-up__window-description">
-            Нажав на кнопку "Регистрация" вы создаете Smartum аккаунт и даёте согласие на
-            <span class="sign-up__window-description--open-modal" @click="showTermsOfUse">
-              Правила использования
-            </span>
-            и
-            <span
-              class="sign-up__window-description--open-modal"
-              @click="showConfidentiality"
-            >
-              Политики конфиденциальности
-            </span>
+            <i18n-t keypath="signUp.agreement" scope="global">
+              <template #terms>
+                <span
+                  class="sign-up__window-description--open-modal"
+                  @click="showTermsOfUse"
+                >
+                  {{ $t("signUp.termsOfUse") }}
+                </span>
+              </template>
+              <template #confidentiality>
+                <span
+                  class="sign-up__window-description--open-modal"
+                  @click="showConfidentiality"
+                >
+                  {{ $t("signUp.confidentiality") }}
+                </span>
+              </template>
+            </i18n-t>
           </small>
         </form>
         <div class="content__swap-type-entry">
-          <span>
-            Уже зарегистрированы?
-            <router-link :to="{ name: 'SignIn' }"> Авторизация </router-link>
-          </span>
+          <i18n-t keypath="signUp.hasAccount" scope="global">
+            <template #entry>
+              <router-link :to="{ name: 'SignIn' }">
+                {{ $t("signUp.authLink") }}
+              </router-link>
+            </template>
+          </i18n-t>
+        </div>
+        <div class="switch-language">
+          <SwitchLanguageButton type="button" variant="text" />
         </div>
       </div>
     </div>
@@ -97,11 +110,15 @@ import type { IUserReg } from "@/types/interfaces";
 import type { ModalContentType } from "@/types/types";
 import { Length } from "@/types/enums";
 
+import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 import * as emailValidator from "email-validator";
 import useStores from "@/composables/useStores";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 export default defineComponent({
+  components: {
+    SwitchLanguageButton,
+  },
   setup() {
     const { commonStore } = useStores();
 
@@ -164,7 +181,7 @@ export default defineComponent({
       position: relative;
       background-color: $color-dark-blue;
       overflow: hidden;
-      min-width: 360px;
+      width: 360px;
       padding: 65px 30px 20px 30px;
       color: $color-white3;
 
@@ -172,7 +189,7 @@ export default defineComponent({
         outline: none;
         width: 70%;
         position: absolute;
-        top: -50px;
+        top: -42px;
         left: -65px;
         opacity: 0.1;
         user-select: none;
@@ -183,7 +200,7 @@ export default defineComponent({
         width: 85%;
         opacity: 0.15;
         position: absolute;
-        bottom: -95px;
+        bottom: -86px;
         right: -100px;
         user-select: none;
       }
@@ -218,6 +235,7 @@ export default defineComponent({
 
     &-content {
       width: 60%;
+      width: 400px;
       padding: 20px;
       color: $color-white3;
       background-color: rgba($color-grey, 0.8);
@@ -306,7 +324,6 @@ export default defineComponent({
         .sign-up__window-description {
           margin-top: 0;
           margin-bottom: 15px;
-          max-width: 80%;
           min-width: 280px;
           font-size: 12px;
           line-height: 17px;
@@ -315,7 +332,7 @@ export default defineComponent({
 
       &-form-inputs {
         display: flex;
-        min-height: calc(100% - 102px);
+        min-height: calc(100% - 140px);
         flex-direction: column;
 
         &__send {

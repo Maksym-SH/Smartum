@@ -29,7 +29,7 @@
     <div class="task-item__members">
       <v-tooltip
         v-if="currenUserInvited"
-        text="Вы назначены на эту карточку"
+        :text="$t('common.currentUserAssign')"
         location="bottom"
       >
         <template v-slot:activator="{ props }">

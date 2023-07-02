@@ -1,15 +1,14 @@
 <template>
   <div class="confirmation" @click.self="result(false)">
     <div class="confirmation__window">
-      <h2 class="confirmation__window-title">Подтверждение действия</h2>
+      <h2 class="confirmation__window-title">{{ $t("popup.confirmPassword.title") }}</h2>
       <p class="confirmation__window-description">
-        Нам нужно убедиться что это действительно вы, введите пароль указанный вами при
-        регистрации в поле ниже.
+        {{ $t("popup.confirmPassword.text") }}
       </p>
       <form class="confirmation__window-input-field" @submit.prevent>
         <AppInput
           v-model="password"
-          label="Ваш пароль"
+          :label="$t('popup.confirmPassword.yourPassword')"
           type="password"
           name="userPassword"
           :min="Length.Password"
@@ -20,24 +19,24 @@
             :to="{ name: 'Forgot' }"
             @click="result(false)"
           >
-            Забыли пароль?
+            {{ $t("common.forgotPassword") }}
           </router-link>
         </div>
         <div class="confirmation__button">
           <AppButton
             variant="outlined"
             class="confirmation__button--no"
+            :title="$t('buttons.cancel')"
             @click="result(false)"
           >
-            Отмена
           </AppButton>
           <AppButton
             type="submit"
             :disabled="btnConfirmDisable"
             class="confirmation__buttons--yes"
+            :title="$t('buttons.confirm')"
             @click="result(true)"
           >
-            Подтвердить
           </AppButton>
         </div>
       </form>

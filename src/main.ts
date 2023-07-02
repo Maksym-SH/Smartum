@@ -1,6 +1,8 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createVuetify } from "vuetify";
+import i18n from "./i18n";
+
 import router from "./router";
 
 // Packages
@@ -30,6 +32,7 @@ const vuetify = createVuetify({
 });
 
 const pinia = createPinia();
+
 const app = createApp(App);
 
 // Global components
@@ -45,6 +48,7 @@ app.component("AppExpansionPanel", AppExpansionPanel);
 app.use(router);
 app.use(pinia);
 app.use(vuetify);
+app.use(i18n);
 app.use(notifications);
 
 app.mount("#app");

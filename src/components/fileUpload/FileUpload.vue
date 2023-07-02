@@ -26,6 +26,7 @@ import type { FileType, ImageSource, RefElement } from "@/types/types";
 import { OpenPopup } from "@/helpers/methods";
 import { Colors } from "@/types/enums";
 
+import i18n from "@/i18n";
 import fileValidate from "@/helpers/file/validate";
 import useImageLoad from "@/composables/useImageLoad";
 
@@ -42,6 +43,8 @@ export default defineComponent({
   },
   emits: ["loaded", "deleted"],
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const upload = ref<RefElement>();
     // Image
     const { imageLoaded, imageLoad } = useImageLoad();
@@ -86,10 +89,10 @@ export default defineComponent({
 
     const deleteImgPopup = (): void => {
       OpenPopup({
-        title: "Удалить фото?",
+        title: t("popup.deletePhoto.title"),
         buttons: {
           yes: {
-            text: "Удалить",
+            text: t("buttons.delete"),
             color: Colors.Danger,
           },
         },

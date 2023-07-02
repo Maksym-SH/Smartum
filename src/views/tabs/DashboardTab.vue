@@ -43,6 +43,7 @@ import type { User } from "@firebase/auth";
 import type { IWorkingBoardItem } from "@/types/interfaces";
 import { NotificationType } from "@/types/enums";
 import { ArrayHasValues } from "@/helpers/methods";
+import i18n from "@/i18n";
 
 import newNotificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
@@ -60,6 +61,8 @@ export default defineComponent({
     BoardCard,
   },
   setup() {
+    const { t } = i18n.global;
+
     const router = useRouter();
 
     const { notificationStore, dashboardStore, commonStore } = useStores();
@@ -85,15 +88,16 @@ export default defineComponent({
         .createNewWorkingBoard(board, unicID.value)
         .then((newBoard: IWorkingBoardItem): void => {
           notify({
-            title: "Успешно!",
-            text: `Рабочая доска ${newBoard.title} была успешно создана!`,
+            title: t("common.success"),
+            text: t("notify.createdBoard.text", { board: newBoard.title }),
             type: "success",
           });
 
           // Add new notification.
           const notification = newNotificationContent(
             NotificationType.DashboardCreate,
-            newBoard.title
+            newBoard.title,
+            newBoard
           );
 
           notificationStore.setNewNotification(notification);

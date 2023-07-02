@@ -7,13 +7,16 @@
       <AppLoader v-if="!showContent" :size="defaultLoaderSize" inline />
       <template v-else>
         <div class="aside__mobile-content mobile-only">
-          <SwitchTheme class="aside__theme-switch" small name="switchThemeMobile" />
+          <span class="aside__mobile-content-wrapper">
+            <SwitchLanguageButton />
+            <SwitchTheme class="aside__theme-switch" small name="switchThemeMobile" />
+          </span>
           <AppInput
             v-model="searchInput"
             type="search"
             light-theme
             name="searchContentMobile"
-            label="Поиск"
+            :label="$t('labels.search')"
           />
         </div>
         <div class="aside__user">
@@ -99,6 +102,7 @@ import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 import UserInfo from "@/components/user/UserInfo.vue";
 import SwitchTheme from "@/components/UI/SwitchTheme.vue";
 import InlineSvg from "vue-inline-svg";
+import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 import useStores from "@/composables/useStores";
 import packageJson from "package.json";
 
@@ -107,6 +111,7 @@ export default defineComponent({
     UserInfo,
     SwitchTheme,
     InlineSvg,
+    SwitchLanguageButton,
   },
   props: {
     minimizeAside: {
@@ -334,11 +339,16 @@ export default defineComponent({
         border: 5px solid $color-white1 !important;
       }
     }
+    &-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
 
     .aside__theme-switch {
       transform: translateX(20px);
       z-index: 2;
-      margin-left: auto;
     }
   }
 
