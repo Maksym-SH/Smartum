@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "vue";
+import { computed, ComputedRef, defineComponent, ref, watch } from "vue";
 import * as emailValidator from "email-validator";
 import { useInputProps } from "./use/useProps";
 import type { AutoComplete, ModelValue, RefElement } from "@/types/types";
@@ -94,7 +94,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = i18n.global;
 
-    const errorText = ref("");
+    const errorText = ref<ComputedRef<string> | string>();
 
     const model = computed({
       get: () => props.modelValue,
@@ -114,13 +114,13 @@ export default defineComponent({
 
     const validator = (): void => {
       if (props.isEmail && !emailValidator.validate(model.value as string))
-        errorText.value = t("errors.email");
+        errorText.value = computed(() => t("errors.email"));
       else if (props.isPhone && !String(model.value).match(RegExp.Phone) && model.value)
-        errorText.value = t("errors.phone");
+        errorText.value = computed(() => t("errors.phone"));
       else if (props.min && String(model.value).length < props.min)
-        errorText.value = t("errors.min", { min: props.min });
+        errorText.value = computed(() => t("errors.min", { min: props.min }));
       else if (props.type === "password" && String(model.value).match(" "))
-        errorText.value = t("errors.spaces");
+        errorText.value = computed(() => t("errors.spaces"));
     };
 
     const toggleInputType = (): void => {
@@ -154,7 +154,7 @@ export default defineComponent({
     );
 
     return {
-      errorText,
+      errorText: computed(() => (errorText.value as ComputedRef<string>)?.value),
       isAutoComplete,
       inputRef,
       model,

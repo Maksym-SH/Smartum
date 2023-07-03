@@ -293,6 +293,7 @@ export default defineComponent({
     color: $color-black;
     background-color: v-bind(asideBackgroundColor);
     overflow: hidden scroll;
+    scrollbar-color: $color-dark-grey3 $color-grey;
 
     .c-loader {
       position: absolute !important;

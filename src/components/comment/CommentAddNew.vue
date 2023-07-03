@@ -90,7 +90,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .new-comment {
-  padding-left: 25px;
+  padding-left: 20px;
 
   &-title {
     position: relative;

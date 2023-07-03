@@ -13,7 +13,7 @@
       <div class="profile-tab__form-item first-name">
         <AppInput
           v-model.trim="userInfo.firstName"
-          :min="userInfo.firstName ? Length.Text : Length.None"
+          :min="Length.Text"
           :max-length="Length.Maximum"
           :label="$t('labels.name')"
           name="userFirstName"
@@ -142,7 +142,7 @@ export default defineComponent({
     const validForm = computed((): boolean => {
       if (
         (userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
-        (!userInfo.firstName || userInfo.firstName.length >= Length.Text) &&
+        userInfo.firstName.length >= Length.Text &&
         (!userInfo.lastName || userInfo.lastName.length >= Length.Text) &&
         (!userInfo.newPassword || userInfo.newPassword.length >= Length.Password)
       )

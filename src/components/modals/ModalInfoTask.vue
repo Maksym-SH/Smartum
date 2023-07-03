@@ -19,7 +19,6 @@
                     v-bind="props"
                     v-model="currentTask.title"
                     :name="currentTask.title"
-                    :min="Length.Text"
                     :maxLength="Length.Maximum"
                   />
                 </template>
@@ -367,6 +366,7 @@ export default defineComponent({
         color: var(--color-text);
 
         .c-input {
+          max-width: 460px;
           padding: 0 0 15px 0;
           height: 30px;
 

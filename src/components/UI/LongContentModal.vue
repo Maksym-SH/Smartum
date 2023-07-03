@@ -42,7 +42,6 @@ export default defineComponent({
     const { commonStore } = useStores();
 
     const dialog = ref(true);
-    const switchLanguage = ref(false); // "Русский" by default.
 
     const currentContent = computed((): IModalContent => {
       if (props.contentType === "termsOfUse")
@@ -68,7 +67,6 @@ export default defineComponent({
     return {
       dialog,
       currentContent,
-      switchLanguage,
       closeModal,
     };
   },

@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "vue";
+import { computed, ComputedRef, defineComponent, ref, watch } from "vue";
 import { useTextareaProps } from "./use/useProps";
 import type { ModelValue, RefElement } from "@/types/types";
 
@@ -54,7 +54,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = i18n.global;
 
-    const errorText = ref("");
+    const errorText = ref<ComputedRef<string> | string>();
 
     const isRequired = ref(false);
 
@@ -67,9 +67,9 @@ export default defineComponent({
 
     const validator = (): void => {
       if (props.min && String(model.value).length < props.min)
-        errorText.value = t("errors.min", { min: props.min });
+        errorText.value = computed(() => t("errors.min", { min: props.min }));
       else if (String(model.value).startsWith(" "))
-        errorText.value = t("erros.startEmpty");
+        errorText.value = computed(() => t("erros.startEmpty"));
     };
 
     watch(
@@ -78,14 +78,14 @@ export default defineComponent({
     );
 
     watch(
-      (): string => errorText.value,
+      () => errorText.value,
       (message): void => {
         if (message) emit("invalid");
       }
     );
 
     return {
-      errorText,
+      errorText: computed(() => (errorText.value as ComputedRef<string>)?.value),
       isRequired,
       textareaRef,
       model,

@@ -71,7 +71,7 @@ export default defineComponent({
 .user-info__name {
   display: flex;
   flex-direction: column;
-  max-width: 140px;
+  width: 140px;
 
   &--name {
     color: $color-white3;

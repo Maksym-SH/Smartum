@@ -95,7 +95,7 @@ export default defineComponent({
   }
 
   @include responsive($xs, max) {
-    padding: 10px 5px 10px 50px;
+    padding: 10px 10px 10px 50px;
 
     &__search-content {
       width: 40%;

@@ -63,9 +63,11 @@ body {
   background-color: $color-grey;
   font-family: $RobotoRG;
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: $color-dark-grey3 $color-grey;
 
   &::-webkit-scrollbar {
-    width: 5px;
+    width: 3px;
   }
 
   &::-webkit-scrollbar-track {
@@ -87,9 +89,8 @@ svg {
 
 // Notifications design.
 .vue-notification-wrapper {
-  margin-top: 8px;
-
   .vue-notification-template {
+    margin-top: 10px;
     cursor: pointer;
     border-radius: 4px;
   }
