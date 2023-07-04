@@ -22,7 +22,9 @@
     >
       <template #header>
         <div class="notifications__window-header">
-          <h2 class="notifications__window-title">{{ $t("dropdown.notifications") }}</h2>
+          <h2 class="notifications__window-title">
+            {{ $t("dropdown.notifications") }}
+          </h2>
           <nav class="notifications__window--actions">
             <AppCheckbox
               v-model="onlyUnread"
@@ -54,7 +56,11 @@
             @read-notification="notifyAction($event, 'readNotification')"
             @delete-notification="notifyAction($event, 'deleteNotification')"
           />
-          <EmptyList key="empty-list" v-show="!filteredList.length" type="notification" />
+          <EmptyList
+            key="empty-list"
+            v-show="!filteredList.length"
+            :type="EmptyListType.NOTIFICATIONS"
+          />
         </transition-group>
       </template>
     </DropdownWindow>
@@ -63,13 +69,15 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import type { NotifyAction } from "@/types/types";
 
 import useNotifications from "@/composables/useNotifications";
 import useStore from "@/composables/useStores";
 import NotificationItem from "./NotificationItem.vue";
 import DropdownWindow from "../container/DropdownWindow.vue";
 import EmptyList from "../UI/EmptyList.vue";
+
+import type { NotifyAction } from "@/types/types";
+import { EmptyListType, NotificationStatus } from "@/types/enums";
 
 export default defineComponent({
   components: {
@@ -103,7 +111,9 @@ export default defineComponent({
     const onlyUnread = ref(false);
 
     const unreadNotifications = computed(() =>
-      allNotifications.value.filter((notification) => notification.status === "not read")
+      allNotifications.value.filter(
+        (notification) => notification.status === NotificationStatus.NOT_READ
+      )
     );
 
     const filteredList = computed(() => {
@@ -118,6 +128,7 @@ export default defineComponent({
       filteredList,
       notificationsSize,
       showNotificationsWindow,
+      EmptyListType,
       notifyAction,
       toggleNotificationsWindow,
     };

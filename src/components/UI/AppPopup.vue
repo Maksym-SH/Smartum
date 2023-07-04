@@ -33,13 +33,14 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { Colors } from "@/types/enums";
 import { ObjectFull } from "@/helpers/methods";
-import type { IPopupParams } from "@/types/interfaces";
-import type { PopupButtons } from "@/types/types";
 
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
+
+import { Colors } from "@/types/enums";
+import type { IPopupParams } from "@/types/interfaces/components";
+import type { PopupButtons } from "@/types/types";
 
 export default defineComponent({
   setup() {
@@ -56,12 +57,12 @@ export default defineComponent({
         yes: {
           text: params.buttons.yes?.text || t("buttons.confirm"),
           variant: params.buttons.yes?.variant || "elevated",
-          color: params.buttons.yes?.color || Colors.Info,
+          color: params.buttons.yes?.color || Colors.INFO,
         },
         no: {
           text: params.buttons.no?.text || t("buttons.cancel"),
           variant: params.buttons.no?.variant || "outlined",
-          color: params.buttons.no?.color || Colors.Info,
+          color: params.buttons.no?.color || Colors.INFO,
         },
       };
     });

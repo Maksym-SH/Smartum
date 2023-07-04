@@ -106,14 +106,15 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import type { PropType } from "vue";
-import { IUserForList } from "@/types/interfaces";
 import { ArrayHasValues } from "@/helpers/methods";
 
 import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
 import InlineSvg from "vue-inline-svg";
 import DropdownWindow from "@/components/container/DropdownWindow.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
+
+import type { PropType } from "vue";
+import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
   props: {

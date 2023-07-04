@@ -22,12 +22,13 @@
 </template>
 
 <script lang="ts">
-import type { CSSProperties } from "vue";
 import { defineComponent, computed } from "vue";
 import { useBackgroundItemProps } from "./use/useProps";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 
 import useImageLoad from "@/composables/useImageLoad";
+
+import type { CSSProperties } from "vue";
 
 export default defineComponent({
   props: useBackgroundItemProps,

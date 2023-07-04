@@ -19,7 +19,7 @@
     </div>
     <Draggable
       v-model="column.tasks"
-      :animation="Numbers.AnimationTaskMove"
+      :animation="Numbers.ANIMATION_TASK_MOVE"
       group="tasks"
       class="task-column__tasks"
       item-key="tasks"
@@ -38,8 +38,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
-import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces";
-import { Numbers } from "@/types/enums";
 import { notify } from "@kyvg/vue3-notification";
 
 import i18n from "@/i18n";
@@ -47,18 +45,16 @@ import Task from "./TaskItem.vue";
 import AddNewTask from "./TaskAddNew.vue";
 import Draggable from "vuedraggable";
 
+import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
+import { Numbers } from "@/types/enums";
+
 export default defineComponent({
   components: {
     Task,
     AddNewTask,
     Draggable,
   },
-  emits: [
-    "taskCreatedInColumn",
-    "update:column-title",
-    "update:column-tasks",
-    "save-changes",
-  ],
+  emits: ["taskCreatedInColumn", "update:column-title", "update:column-tasks", "save-changes"],
   props: {
     column: {
       type: Object as PropType<IWorkingBoardTaskColumn>,

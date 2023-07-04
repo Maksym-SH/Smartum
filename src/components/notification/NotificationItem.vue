@@ -1,7 +1,7 @@
 <template>
   <div
     class="notification-item"
-    :class="{ 'not-read': params.status === 'not read' }"
+    :class="{ 'not-read': params.status === NotificationStatus.NOT_READ }"
     @click="readNotification"
   >
     <Avatar
@@ -42,9 +42,6 @@
 <script lang="ts">
 import { PropType } from "vue";
 import { defineComponent, reactive, ref, computed, onMounted } from "vue";
-import type { INotification, IPictureParams, INotificationContent } from "@/types/interfaces";
-import { NotificationActionType } from "@/types/enums";
-import type { I18nLanguage } from "@/types/types";
 
 import useNotificationText from "@/composables/useNotificationText";
 import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
@@ -54,6 +51,11 @@ import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import useDateParseToString from "@/composables/useDateParse";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import Avatar from "../user/AppAvatar.vue";
+
+import * as enums from "@/types/enums";
+import type { INotificationContent } from "@/types/types";
+import type { IPictureParams } from "@/types/interfaces/user";
+import type { INotification } from "@/types/interfaces/components";
 
 export default defineComponent({
   components: {
@@ -89,7 +91,7 @@ export default defineComponent({
     const failedImageLoad = ref(false);
 
     const dateSent = computed(() =>
-      useDateParseToString(props.params.date, i18nLocale.value as I18nLanguage)
+      useDateParseToString(props.params.date, i18nLocale.value as enums.Language)
     );
 
     const readNotification = (): void => {
@@ -97,30 +99,30 @@ export default defineComponent({
       // Action by notification type.
       switch (props.params.type) {
         // ToDo: Dashboard page.
-        // case NotificationActionType.Dashboard:
-        //  router.push({ name: "Dashboard" });
+        // case NotificationAction.DASHBOARD:
+        // router.push({ name: Route.DASHBOARD });
         //  break;
-        case NotificationActionType.Verify:
+        case enums.NotificationAction.VERIFY:
           VerifyEmail(currentUser.value);
           break;
-        case NotificationActionType.Profile:
-          router.push({ name: "Profile" });
+        case enums.NotificationAction.PROFILE:
+          router.push({ name: enums.Route.PROFILE });
           break;
-        case NotificationActionType.Reset:
-          router.push({ name: "Forgot" });
+        case enums.NotificationAction.RESET:
+          router.push({ name: enums.Route.FORGOT });
           break;
-        case NotificationActionType.Configuration:
-          router.push({ name: "Configuration" });
+        case enums.NotificationAction.CONFIGURATION:
+          router.push({ name: enums.Route.CONFIGURATION });
           break;
-        case NotificationActionType.InviteToBoard:
+        case enums.NotificationAction.INVITE_TO_BOARD:
           joinBoard();
           break;
-        case NotificationActionType.Default:
-        case NotificationActionType.Dashboard: // ToDo.
+        case enums.NotificationAction.DEFAULT:
+        case enums.NotificationAction.DASHBOARD: // ToDo.
 
         // ToDo: Users page.
-        // case NotificationActionType.User:
-        //  router.push({ name: "Dashboard/User" })
+        // case NotificationAction.USER:
+        //  ...
         //  break;
       }
     };
@@ -144,6 +146,7 @@ export default defineComponent({
       content,
       failedImageLoad,
       dateSent,
+      NotificationStatus: enums.NotificationStatus,
       deleteNotification,
       readNotification,
     };

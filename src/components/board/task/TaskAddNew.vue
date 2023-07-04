@@ -11,10 +11,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Length } from "@/types/enums";
-import { IWorkingBoardTask } from "@/types/interfaces";
 
 import AddNew from "./AddNew.vue";
+
+import { Length } from "@/types/enums";
+import { IWorkingBoardTask } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {

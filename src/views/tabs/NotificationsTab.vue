@@ -3,7 +3,7 @@
     <div v-if="showList" class="notifications-tab__filters full-width--tablet">
       <AppButton
         class="notifications-tab__filters--clear"
-        :color="Colors.Info"
+        :color="Colors.INFO"
         variant="flat"
         :title="$t('buttons.clearAll')"
         @click="clearAll"
@@ -27,7 +27,7 @@
     <transition name="fade">
       <EmptyList
         v-show="!showList && !showLoading"
-        type="notification"
+        :type="EmptyListType.NOTIFICATIONS"
         class="notifications-tab__empty-list"
       />
     </transition>
@@ -37,14 +37,15 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { storeToRefs } from "pinia";
-import type { NotifyAction } from "@/types/types";
-import { Colors } from "@/types/enums";
 import { ArrayHasValues, ObjectNotEmpty } from "@/helpers/methods";
 
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
 import NotificationItem from "@/components/notification/NotificationItem.vue";
 import NotificationEmptyList from "@/components/UI/EmptyList.vue";
+
+import type { NotifyAction } from "@/types/types";
+import { Colors, EmptyListType } from "@/types/enums";
 
 export default defineComponent({
   components: {
@@ -79,6 +80,7 @@ export default defineComponent({
       showLoading,
       Colors,
       allNotifications,
+      EmptyListType,
       clearAll,
       notifyAction,
     };

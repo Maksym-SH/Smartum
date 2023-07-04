@@ -15,8 +15,8 @@
     <form class="new-comment__textarea-inner" @submit.prevent="createComment">
       <AppTextarea
         v-model.trim="newCommentMessage"
-        :max="Length.Textarea"
-        :min="newCommentMessage ? Length.Text : Length.None"
+        :max="Length.TEXTAREA"
+        :min="newCommentMessage ? Length.TEXT : Length.NONE"
         @keyup.enter="createComment"
         name="taskDescription"
         :placeholder="$t('labels.newComment')"
@@ -33,11 +33,13 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import type { PropType } from "vue";
-import { Length } from "@/types/enums";
-import type { ITaskComment, IUserForList } from "@/types/interfaces";
 
 import Avatar from "../user/AppAvatar.vue";
+
+import type { PropType } from "vue";
+import { Length } from "@/types/enums";
+import type { ITaskComment } from "@/types/interfaces/board";
+import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
   props: {
@@ -62,7 +64,7 @@ export default defineComponent({
     const newCommentMessage = ref("");
 
     const createComment = (): void => {
-      if (newCommentMessage.value.length < Length.Text) return;
+      if (newCommentMessage.value.length < Length.TEXT) return;
 
       const newId = props.commentsSize;
 

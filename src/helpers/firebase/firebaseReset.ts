@@ -1,11 +1,13 @@
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import type { ErrorCode } from "@/types/types";
 
 import i18n from "@/i18n";
 import ShowErrorMessage from "./firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 import router from "@/router";
+
+import { Route } from "@/types/enums";
+import type { ErrorCode } from "@/types/types";
 
 export default function firebaseReset(email: string): void {
   const { t } = i18n.global;
@@ -23,12 +25,12 @@ export default function firebaseReset(email: string): void {
         text: t("notify.messageSent.text"),
         type: "success",
       });
-      if (window.history.length >= 2) {
+      if (window.history.length > 1) {
         router.go(-1); // Navigate to previous page.
       } else {
         getAuth().currentUser
-          ? router.push({ name: "Profile" })
-          : router.push({ name: "SignIn" });
+          ? router.push({ name: Route.PROFILE })
+          : router.push({ name: Route.SIGN_IN });
       }
     })
     .catch((error: ErrorCode) => ShowErrorMessage(error))

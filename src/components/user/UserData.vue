@@ -24,11 +24,12 @@
 import { computed, defineComponent } from "vue";
 import type { User } from "@firebase/auth";
 import { useInfoProps } from "./use/useProps";
-import type { StatusVueIcon } from "@/types/types";
 
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 import InlineSvg from "vue-inline-svg";
+
+import type { StatusVueIcon } from "@/types/types";
 
 export default defineComponent({
   props: useInfoProps,

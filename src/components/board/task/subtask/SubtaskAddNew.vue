@@ -2,8 +2,8 @@
   <form class="subtasks-new" @submit.prevent="addNewSubtask">
     <AppInput
       v-model="newSubtaskTitle"
-      :min="Length.Text"
-      :maxLength="Length.Maximum"
+      :min="Length.TEXT"
+      :maxLength="Length.MAX"
       name="subtaskNew"
       :placeholder="$t('labels.newSubTask')"
     />
@@ -13,8 +13,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+
 import { Length } from "@/types/enums";
-import { ISubTask } from "@/types/interfaces";
+import { ISubTask } from "@/types/interfaces/board";
 
 export default defineComponent({
   props: {
@@ -28,7 +29,7 @@ export default defineComponent({
     const newSubtaskTitle = ref("");
 
     const addNewSubtask = () => {
-      if (newSubtaskTitle.value.length < Length.Text) return;
+      if (newSubtaskTitle.value.length < Length.TEXT) return;
 
       const newSubtask: ISubTask = {
         id: props.newId,

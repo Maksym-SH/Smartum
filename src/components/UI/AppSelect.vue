@@ -44,10 +44,11 @@
 <script lang="ts">
 import type { CSSProperties } from "vue";
 import { computed, defineComponent, ref } from "vue";
-import { Colors } from "@/types/enums";
 import { useSelectProps } from "./use/useProps";
 
 import InlineSvg from "vue-inline-svg";
+
+import { Colors } from "@/types/enums";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -154,7 +155,7 @@ export default defineComponent({
       &.active {
         position: relative;
         color: $color-dark-green !important;
-        &::after {
+        &::before {
           content: "";
           display: inline-block;
           width: 8px;

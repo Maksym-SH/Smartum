@@ -95,8 +95,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
-import { Layout, Numbers } from "@/types/enums";
-import type { IAsideNavigationItem, IUserCreated } from "@/types/interfaces";
 import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 
 import UserInfo from "@/components/user/UserInfo.vue";
@@ -105,6 +103,10 @@ import InlineSvg from "vue-inline-svg";
 import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 import useStores from "@/composables/useStores";
 import packageJson from "package.json";
+
+import { Layout, Numbers } from "@/types/enums";
+import type { IAsideNavItem } from "@/types/interfaces/components";
+import { IUserCreated } from "@/types/interfaces/user";
 
 export default defineComponent({
   components: {
@@ -140,7 +142,7 @@ export default defineComponent({
       emit("update:minimizeAside", minimize.value);
     };
 
-    const navigationList = computed((): IAsideNavigationItem[] => {
+    const navigationList = computed((): IAsideNavItem[] => {
       return configurationStore.asideNavigate;
     });
 
@@ -162,8 +164,7 @@ export default defineComponent({
     });
 
     const showNotificationBadge = computed(
-      () =>
-        props.notificationCount > 0 && props.minimizeAside && notificationNavShowed.value
+      () => props.notificationCount > 0 && props.minimizeAside && notificationNavShowed.value
     );
 
     const userInfo = computed((): IUserCreated => userStore.userInfo);
@@ -171,17 +172,17 @@ export default defineComponent({
     const collapseToggle = (): void => setMinimizeValue(!minimize.value);
 
     const navigationCallbackHandler = (callback: void | (() => void)): void => {
-      setMinimizeValue(true, Layout.LargeTablet); // Close aside panel after click navigation item.
+      setMinimizeValue(true, Layout.LARGE_TABLET); // Close aside panel after click navigation item.
       callback?.();
     };
 
     const applicationVersion = `v ${packageJson.version}`;
 
     onMounted((): void => {
-      if (window.innerWidth > Layout.Laptop) {
+      if (window.innerWidth > Layout.LAPTOP) {
         setTimeout((): void => {
           setMinimizeValue(false);
-        }, Numbers.AppearElement);
+        }, Numbers.APPEAR_ELEMENT);
       }
     });
 
@@ -198,7 +199,7 @@ export default defineComponent({
       navigationCallbackHandler,
       setMinimizeValue,
       asideBackgroundColor,
-      LayoutLaptop: Layout.Laptop,
+      LayoutLaptop: Layout.LAPTOP,
     };
   },
 });

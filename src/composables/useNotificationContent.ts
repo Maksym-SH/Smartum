@@ -1,5 +1,6 @@
-import type { INotification, IWorkingBoardItem } from "@/types/interfaces";
-import { NotificationActionType, NotificationType } from "@/types/enums";
+import type { IWorkingBoardItem } from "@/types/interfaces/board";
+import type { INotification } from "@/types/interfaces/components";
+import { NotificationAction, NotificationType, NotificationStatus } from "@/types/enums";
 
 export default function useNewNotificationContent(
   type: NotificationType,
@@ -7,63 +8,61 @@ export default function useNewNotificationContent(
   info?: IWorkingBoardItem // | any smt else. ToDo.
 ): INotification<Date> | never {
   let currentContent: Partial<INotification<Date>>;
-  
+
   switch (type) {
-    case NotificationType.WelcomeText:
+    case NotificationType.WELCOME_TEXT:
       currentContent = {
         image: `${import.meta.env.BASE_URL}images/notifyIcons/mail.svg`,
-        type: NotificationActionType.Verify,
-        textType: NotificationType.WelcomeText,
+        type: NotificationAction.VERIFY,
+        textType: NotificationType.WELCOME_TEXT,
       };
       break;
-    case NotificationType.PasswordChange:
+    case NotificationType.PASSWORD_CHANGE:
       currentContent = {
         image: `${import.meta.env.BASE_URL}images/notifyIcons/guard.svg`,
-        type: NotificationActionType.Reset,
-        textType: NotificationType.PasswordChange,
+        type: NotificationAction.RESET,
+        textType: NotificationType.PASSWORD_CHANGE,
       };
       break;
-    case NotificationType.ConfigurationChange:
+    case NotificationType.CONFIGURATION_CHANGE:
       currentContent = {
         image: `${import.meta.env.BASE_URL}images/notifyIcons/settings.svg`,
-        type: NotificationActionType.Configuration,
-        textType: NotificationType.ConfigurationChange,
+        type: NotificationAction.CONFIGURATION,
+        textType: NotificationType.CONFIGURATION_CHANGE,
       };
       break;
-    case NotificationType.EmailConfirm:
+    case NotificationType.EMAIL_CONFIRM:
       currentContent = {
         textParams: { title },
-        status: "not read",
         image: `${import.meta.env.BASE_URL}images/notifyIcons/mail.svg`,
-        type: NotificationActionType.Default,
-        textType: NotificationType.EmailConfirm,
+        type: NotificationAction.DEFAULT,
+        textType: NotificationType.EMAIL_CONFIRM,
       };
       break;
-    case NotificationType.DashboardCreate:
+    case NotificationType.BOARD_CREATED:
       currentContent = {
         textParams: { title },
         image: info?.background,
-        type: NotificationActionType.Dashboard,
-        textType: NotificationType.DashboardCreate,
+        type: NotificationAction.DASHBOARD,
+        textType: NotificationType.BOARD_CREATED,
       };
       break;
-    case NotificationType.InviteToBoard:
+    case NotificationType.INVITE_TO_BOARD:
       currentContent = {
         textParams: { title },
         image: info?.background,
-        type: NotificationActionType.InviteToBoard,
+        type: NotificationAction.INVITE_TO_BOARD,
         uid: info?.uid,
         joinCode: info?.joinCode,
-        textType: NotificationType.InviteToBoard,
+        textType: NotificationType.INVITE_TO_BOARD,
       };
       break;
-    case NotificationType.SetAdmin:
+    case NotificationType.SET_ADMIN:
       currentContent = {
         textParams: { title: info?.title },
-        status: "not read",
         image: info?.background,
-        type: NotificationActionType.Default,
-        textType: NotificationType.SetAdmin,
+        type: NotificationAction.DEFAULT,
+        textType: NotificationType.SET_ADMIN,
       };
       break;
     default:
@@ -73,7 +72,7 @@ export default function useNewNotificationContent(
   return {
     ...(currentContent as Required<INotification<Date>>),
     id: Date.now(),
-    status: "not read",
+    status: NotificationStatus.NOT_READ,
     date: new Date(),
   };
 }

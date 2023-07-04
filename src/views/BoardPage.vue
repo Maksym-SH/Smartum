@@ -28,7 +28,7 @@
                     :first-name="item.firstName"
                     :last-name="item.lastName"
                     :size="30"
-                    :class="{ admin: item.role === 'Admin' }"
+                    :class="{ admin: item.role === UserRole.ADMIN }"
                     v-bind="props"
                     circle
                   />
@@ -67,15 +67,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, computed, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
-import type {
-  IWorkingBoardItem,
-  IWorkingBoardMember,
-  IWorkingBoardTaskColumn,
-} from "@/types/interfaces";
-import { ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
-import { Colors } from "@/types/enums";
 import { notify } from "@kyvg/vue3-notification";
 import { storeToRefs } from "pinia";
+import { ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useStore from "@/composables/useStores";
@@ -85,6 +79,9 @@ import InviteUserButton from "@/components/user/UserInviteButton.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
 import TaskColumn from "@/components/board/task/TaskColumn.vue";
 import AddNewColumn from "@/components/board/task/TaskColumnAddNew.vue";
+
+import { Colors, Route, UserRole } from "@/types/enums";
+import type * as boardType from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {
@@ -128,7 +125,7 @@ export default defineComponent({
       return boardItem.value.background;
     });
 
-    const setInviteUserToBoard = (user: IWorkingBoardMember): void => {
+    const setInviteUserToBoard = (user: boardType.IWorkingBoardMember): void => {
       boardItem.value.members.push(user);
       dashboardStore.updateWorkingBoard(boardItem.value, false);
     };
@@ -144,7 +141,7 @@ export default defineComponent({
           buttons: {
             yes: {
               text: t("buttons.leave"),
-              color: Colors.Danger,
+              color: Colors.DANGER,
             },
           },
           callback: (): void => {
@@ -160,7 +157,7 @@ export default defineComponent({
       }
     };
 
-    const leaveMessage = (currentMember: IWorkingBoardMember): string => {
+    const leaveMessage = (currentMember: boardType.IWorkingBoardMember): string => {
       const nextUserIsMember = !boardItem.value.members[1]?.invited;
 
       if (
@@ -177,7 +174,7 @@ export default defineComponent({
     };
 
     // Tasks
-    const createColumn = (column: IWorkingBoardTaskColumn): void => {
+    const createColumn = (column: boardType.IWorkingBoardTaskColumn): void => {
       boardItem.value.columns.push(column);
       saveChanges();
     };
@@ -194,12 +191,12 @@ export default defineComponent({
       const joinCode = router.currentRoute.value.params.code as string;
 
       dashboardStore.getWorkingBoardItem(unicID.value, joinCode).catch(() => {
-        router.push({ name: "Dashboard" });
+        router.push({ name: Route.DASHBOARD });
       });
     });
 
     onBeforeUnmount(() => {
-      boardItem.value = {} as IWorkingBoardItem;
+      boardItem.value = {} as boardType.IWorkingBoardItem;
     });
 
     return {
@@ -211,6 +208,7 @@ export default defineComponent({
       userInfo,
       showedCommonLoader,
       columnLength,
+      UserRole,
       boardLeave,
       getFullName,
       saveChanges,
@@ -224,7 +222,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .board-item-page {
   height: 100%;
-  min-height: 550px;
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto 1fr;

@@ -1,7 +1,8 @@
 import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { I18nLanguage } from "@/types/types";
+
 import { ILanguageTextInfo } from "@/types/interfaces";
+import { Language } from "@/types/enums";
 
 export default function useCurrentLanguage() {
   const i18nLocale = ref(useI18n().locale);
@@ -11,16 +12,16 @@ export default function useCurrentLanguage() {
     icon: "english",
   });
 
-  const changeLanguage = (language?: I18nLanguage): void => {
+  const changeLanguage = (language?: Language): void => {
     const currentLanguage = language;
 
     if (currentLanguage) {
       i18nLocale.value = currentLanguage;
     } else {
-      i18nLocale.value = i18nLocale.value === "ru" ? "eng" : "ru";
+      i18nLocale.value = i18nLocale.value === Language.RU ? Language.ENG : Language.RU;
     }
 
-    if (i18nLocale.value == "ru") {
+    if (i18nLocale.value == Language.RU) {
       languageTextInfo.icon = "russian";
       languageTextInfo.title = "Русский";
     } else {

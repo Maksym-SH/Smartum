@@ -12,11 +12,12 @@
 </template>
 
 <script lang="ts">
-import { Length } from "@/types/enums";
-import type { IWorkingBoardTaskColumn } from "@/types/interfaces";
 import { defineComponent, ref } from "vue";
 
 import AddNew from "./AddNew.vue";
+
+import { Length } from "@/types/enums";
+import type { IWorkingBoardTaskColumn } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {

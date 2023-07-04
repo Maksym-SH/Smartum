@@ -26,15 +26,16 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType } from "vue";
-import { defineComponent } from "vue";
-import type { IWorkingBoardItem } from "@/types/interfaces";
-import type { I18nLanguage } from "@/types/types";
+import { computed, defineComponent } from "vue";
 
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import InlineSvg from "vue-inline-svg";
 import useDateParseToString from "@/composables/useDateParse";
 import BoardImageResult from "@/components/board/BoardImageResult.vue";
+
+import { Language } from "@/types/enums";
+import type { PropType } from "vue";
+import type { IWorkingBoardItem } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {
@@ -51,7 +52,7 @@ export default defineComponent({
     const { i18nLocale } = useCurrentLanguage();
 
     const dateOfCreate = computed(() =>
-      useDateParseToString(props.element.dateOfCreation, i18nLocale.value as I18nLanguage)
+      useDateParseToString(props.element.dateOfCreation, i18nLocale.value as Language)
     );
 
     const membersCount = computed((): number => {

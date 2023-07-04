@@ -1,4 +1,4 @@
-import type { IDarkColors, ILightColors } from "@/types/interfaces";
+import type { IDarkColors, ILightColors } from "@/types/interfaces/colors";
 
 export function LightColors(): ILightColors {
   return {

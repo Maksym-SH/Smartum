@@ -1,8 +1,10 @@
 import { computed } from "vue";
-import type { INotification, INotificationContent } from "@/types/interfaces";
-import { NotificationType } from "@/types/enums";
 
 import i18n from "@/i18n";
+
+import type { INotificationContent } from "@/types/types";
+import type { INotification } from "@/types/interfaces/components";
+import { NotificationType } from "@/types/enums";
 
 export default function useNewNotificationTranslatedContent(
   notification: INotification
@@ -14,25 +16,25 @@ export default function useNewNotificationTranslatedContent(
   const paramTitle = notification?.textParams?.title;
 
   switch (notification.textType) {
-    case NotificationType.WelcomeText:
+    case NotificationType.WELCOME_TEXT:
       notificationText = {
         title: computed(() => t("notifications.welcome.title")),
         description: computed(() => t("notifications.welcome.description")),
       };
       break;
-    case NotificationType.PasswordChange:
+    case NotificationType.PASSWORD_CHANGE:
       notificationText = {
         title: computed(() => t("notifications.passwordChange.title")),
         description: computed(() => t("notifications.passwordChange.description")),
       };
       break;
-    case NotificationType.ConfigurationChange:
+    case NotificationType.CONFIGURATION_CHANGE:
       notificationText = {
         title: computed(() => t("notifications.configurationChange.title")),
         description: computed(() => t("notifications.configurationChange.description")),
       };
       break;
-    case NotificationType.EmailConfirm:
+    case NotificationType.EMAIL_CONFIRM:
       notificationText = {
         title: computed(() => t("notifications.emailConfirm.title")),
         description: computed(() =>
@@ -42,7 +44,7 @@ export default function useNewNotificationTranslatedContent(
         ),
       };
       break;
-    case NotificationType.DashboardCreate:
+    case NotificationType.BOARD_CREATED:
       notificationText = {
         title: computed(() => t("notifications.dashboardCreate.title")),
         description: computed(() =>
@@ -52,7 +54,7 @@ export default function useNewNotificationTranslatedContent(
         ),
       };
       break;
-    case NotificationType.InviteToBoard:
+    case NotificationType.INVITE_TO_BOARD:
       notificationText = {
         title: computed(() => t("notifications.inviteToBoard.title")),
         description: computed(() =>
@@ -60,7 +62,7 @@ export default function useNewNotificationTranslatedContent(
         ),
       };
       break;
-    case NotificationType.SetAdmin:
+    case NotificationType.SET_ADMIN:
       notificationText = {
         title: computed(() => t("notifications.setAdmin.title")),
         description: computed(() =>

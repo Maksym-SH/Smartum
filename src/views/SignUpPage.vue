@@ -32,15 +32,15 @@
             required
             :label="$t('labels.name')"
             name="userFirstName"
-            :max-length="Length.Maximum"
-            :min="Length.Text"
+            :max-length="Length.MAX"
+            :min="Length.TEXT"
             transparent
           />
           <AppInput
             v-model.trim="userData.lastName"
-            :min="userData.lastName ? Length.Text : Length.None"
+            :min="userData.lastName ? Length.TEXT : Length.NONE"
             name="userLastName"
-            :max-length="Length.Maximum"
+            :max-length="Length.MAX"
             :label="$t('labels.lastName')"
             transparent
           />
@@ -59,7 +59,7 @@
             type="password"
             name="userPassword"
             transparent
-            :min="Length.Password"
+            :min="Length.PASSWORD"
             :label="$t('labels.password')"
             autocomplete="new-password"
           />
@@ -69,10 +69,7 @@
           <small class="sign-up__window-description">
             <i18n-t keypath="signUp.agreement" scope="global">
               <template #terms>
-                <span
-                  class="sign-up__window-description--open-modal"
-                  @click="showTermsOfUse"
-                >
+                <span class="sign-up__window-description--open-modal" @click="showTermsOfUse">
                   {{ $t("signUp.termsOfUse") }}
                 </span>
               </template>
@@ -106,14 +103,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive } from "vue";
-import type { IUserReg } from "@/types/interfaces";
-import type { ModalContentType } from "@/types/types";
-import { Length } from "@/types/enums";
 
-import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 import * as emailValidator from "email-validator";
+import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 import useStores from "@/composables/useStores";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
+
+import type { IUserReg } from "@/types/interfaces/user";
+import { Length, ModalContentType } from "@/types/enums";
 
 export default defineComponent({
   components: {
@@ -129,14 +126,11 @@ export default defineComponent({
       password: "",
     });
 
-    const LengthPassword = Length.Password;
-    const LengthText = Length.Text;
-
     const validPersonDate = computed((): boolean => {
       return (
-        userData.firstName.length >= LengthText &&
-        (!userData.lastName.length || userData.lastName.length >= LengthText) &&
-        userData.password.length >= LengthPassword
+        userData.firstName.length >= Length.TEXT &&
+        (!userData.lastName.length || userData.lastName.length >= Length.TEXT) &&
+        userData.password.length >= Length.PASSWORD
       );
     });
 
@@ -149,12 +143,10 @@ export default defineComponent({
     const submitForm = (): void => signUp(userData, valid.value);
 
     const showTermsOfUse = () => {
-      const type: ModalContentType = "termsOfUse";
-      commonStore.setModalContentType(type);
+      commonStore.setModalContentType(ModalContentType.TERMS_OF_USE);
     };
     const showConfidentiality = () => {
-      const type: ModalContentType = "confidentiality";
-      commonStore.setModalContentType(type);
+      commonStore.setModalContentType(ModalContentType.CONFIDENTIALITY);
     };
 
     return {

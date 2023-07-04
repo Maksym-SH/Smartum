@@ -19,7 +19,7 @@
                     v-bind="props"
                     v-model="currentTask.title"
                     :name="currentTask.title"
-                    :maxLength="Length.Maximum"
+                    :maxLength="Length.MAX"
                   />
                 </template>
               </v-tooltip>
@@ -62,15 +62,13 @@
                 </div>
               </div>
               <div class="task-info-modal__window-action-item">
-                <span class="action__title">{{
-                  $t("navigation.notifications.title")
-                }}</span>
+                <span class="action__title">{{ $t("navigation.notifications.title") }}</span>
                 <v-tooltip :text="$t('task.tooltip')" location="bottom">
                   <template v-slot:activator="{ props }">
                     <AppButton
                       v-bind="props"
                       icon="eye"
-                      :color="Colors.LightGrey"
+                      :color="Colors.LIGHT_GREY"
                       @click="subscribe"
                       :title="$t('buttons.notificationSubscribe')"
                     />
@@ -101,7 +99,7 @@
                     key="textarea"
                     @blur="saveDescriptionText"
                     v-model.trim="descriptionText"
-                    :max="Length.Textarea"
+                    :max="Length.TEXTAREA"
                     name="taskDescription"
                     :placeholder="$t('labels.moreDetails')"
                   />
@@ -131,10 +129,7 @@
             <div class="task-info-modal__window-content-comments">
               <div class="action">
                 <span class="action__title has-icon">
-                  <InlineSvg
-                    class="icon"
-                    src="/images/icons/comment-account-outline.svg"
-                  />
+                  <InlineSvg class="icon" src="/images/icons/comment-account-outline.svg" />
                   {{ $t("common.comments.title") }}
                 </span>
               </div>
@@ -170,11 +165,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { Colors } from "@/types/enums";
 import { notify } from "@kyvg/vue3-notification";
-import type { ITaskComment, IUserForList } from "@/types/interfaces";
 import { ArrayHasValues } from "@/helpers/methods";
-import { Length } from "@/types/enums";
 
 import i18n from "@/i18n";
 import useTaskInfo from "@/composables/useTaskInfo";
@@ -186,6 +178,10 @@ import NewComment from "../comment/CommentAddNew.vue";
 import CommentItem from "../comment/CommentItem.vue";
 import MembersAssign from "../board/task/TaskAssign.vue";
 import SubtasksList from "../board/task/subtask/SubtasksList.vue";
+
+import { Length, Colors } from "@/types/enums";
+import type { ITaskComment } from "@/types/interfaces/board";
+import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
   emits: ["update:taskModalActive"],

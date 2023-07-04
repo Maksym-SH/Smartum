@@ -13,8 +13,8 @@
       <div class="profile-tab__form-item first-name">
         <AppInput
           v-model.trim="userInfo.firstName"
-          :min="Length.Text"
-          :max-length="Length.Maximum"
+          :min="Length.TEXT"
+          :max-length="Length.MAX"
           :label="$t('labels.name')"
           name="userFirstName"
           @keydown.enter.prevent
@@ -23,8 +23,8 @@
       <div class="profile-tab__form-item last-name">
         <AppInput
           v-model.trim="userInfo.lastName"
-          :min="userInfo.lastName ? Length.Text : Length.None"
-          :max-length="Length.Maximum"
+          :min="userInfo.lastName ? Length.TEXT : Length.NONE"
+          :max-length="Length.MAX"
           :label="$t('labels.lastName')"
           name="userLastName"
           @keydown.enter.prevent
@@ -33,7 +33,7 @@
       <div class="profile-tab__form-item textarea">
         <AppTextarea
           v-model.trim="userInfo.about"
-          :max="Length.Textarea"
+          :max="Length.TEXTAREA"
           :label="$t('labels.additional')"
           name="userAbout"
         />
@@ -67,7 +67,7 @@
           v-model.trim="userInfo.newPassword"
           type="password"
           :disabled="emailNotVerified"
-          :min="userInfo.newPassword ? Length.Password : Length.None"
+          :min="userInfo.newPassword ? Length.PASSWORD : Length.NONE"
           :label="$t('labels.newPassword')"
           name="userPassword"
           @keydown.enter.prevent
@@ -84,7 +84,7 @@
           <AppButton
             v-if="showDeleteAccountButton"
             class="btn-delete"
-            :color="Colors.Danger"
+            :color="Colors.DANGER"
             :title="$t('buttons.deleteAccount')"
             @click="deleteAccountConfirm"
           />
@@ -97,18 +97,19 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref } from "vue";
 import { notify } from "@kyvg/vue3-notification";
-import { Colors, Length, NotificationType } from "@/types/enums";
-import type { IUserInfo } from "@/types/interfaces";
 import { Confirmation, DeleteAccountPopup } from "@/helpers/methods";
 import { PasswordUpdate } from "@/helpers/firebase/firebaseUserInfoUpdate";
 
+import i18n from "@/i18n";
 import RegExp from "@/helpers/regExp";
 import newNotificationContent from "@/composables/useNotificationContent";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
 import FileUpload from "@/components/fileUpload/FileUpload.vue";
 import AppHint from "@/components/UI/AppHint.vue";
-import i18n from "@/i18n";
+
+import { Colors, Length, NotificationType } from "@/types/enums";
+import type { IUserInfo } from "@/types/interfaces/user";
 
 export default defineComponent({
   components: {
@@ -142,9 +143,9 @@ export default defineComponent({
     const validForm = computed((): boolean => {
       if (
         (userInfo.phone.match(RegExp.Phone) || !userInfo.phone) &&
-        userInfo.firstName.length >= Length.Text &&
-        (!userInfo.lastName || userInfo.lastName.length >= Length.Text) &&
-        (!userInfo.newPassword || userInfo.newPassword.length >= Length.Password)
+        userInfo.firstName.length >= Length.TEXT &&
+        (!userInfo.lastName || userInfo.lastName.length >= Length.TEXT) &&
+        (!userInfo.newPassword || userInfo.newPassword.length >= Length.PASSWORD)
       )
         return true;
 
@@ -184,7 +185,7 @@ export default defineComponent({
 
     const updatePassword = (): void => {
       PasswordUpdate(currentUser.value, userInfo.newPassword).then((): void => {
-        const notification = newNotificationContent(NotificationType.PasswordChange);
+        const notification = newNotificationContent(NotificationType.PASSWORD_CHANGE);
 
         notificationStore.setNewNotification(notification);
         userInfo.newPassword = ""; // After update password reset input value.

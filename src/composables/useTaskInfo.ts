@@ -2,13 +2,15 @@ import { ref, computed, watch, onMounted } from "vue";
 import { CreateDebounce, ObjectHasValues, TheSameObject } from "@/helpers/methods";
 import { storeToRefs } from "pinia";
 import { notify } from "@kyvg/vue3-notification";
-import { Numbers } from "@/types/enums";
-import { IUserForList, IWorkingBoardTask } from "@/types/interfaces";
 
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDateParseToString from "./useDateParse";
+
+import { Numbers } from "@/types/enums";
+import { IUserForList } from "@/types/interfaces/user";
+import { IWorkingBoardTask } from "@/types/interfaces/board";
 
 export default function useTaskInfo(columnId: number, taskId: number) {
   const { t } = i18n.global;
@@ -82,9 +84,7 @@ export default function useTaskInfo(columnId: number, taskId: number) {
   };
 
   watch(boardItem, (updatedBoard) => {
-    const updatedTask = updatedBoard.columns[columnId].tasks.find(
-      (task) => task.id === taskId
-    );
+    const updatedTask = updatedBoard.columns[columnId].tasks.find((task) => task.id === taskId);
     if (!updatedTask) {
       notify({
         title: t("notify.taskModalClosed.title"),
@@ -102,7 +102,7 @@ export default function useTaskInfo(columnId: number, taskId: number) {
 
   // Save changes.
 
-  const debounce = CreateDebounce(Numbers.Second);
+  const debounce = CreateDebounce(Numbers.SECOND / 2);
   watch(
     currentTask,
     (_, oldValue) => {

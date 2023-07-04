@@ -16,14 +16,15 @@
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
-import type { PropType } from "vue";
-import type { ISubTask } from "@/types/interfaces";
-import { Length, Colors } from "@/types/enums";
 import { OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import AddNewSubtask from "./SubtaskAddNew.vue";
 import Subtask from "./SubtaskItem.vue";
+
+import { Length, Colors } from "@/types/enums";
+import type { PropType } from "vue";
+import type { ISubTask } from "@/types/interfaces/board";
 
 export default defineComponent({
   props: {
@@ -56,9 +57,7 @@ export default defineComponent({
           },
         },
         callback: () => {
-          const foundSubtaskIndex = props.subtasks.findIndex(
-            (subtask) => subtask.id === id
-          );
+          const foundSubtaskIndex = props.subtasks.findIndex((subtask) => subtask.id === id);
 
           if (foundSubtaskIndex !== -1) {
             props.subtasks.splice(foundSubtaskIndex, 1); // Delete subtask item.

@@ -1,5 +1,6 @@
 import type { PropType } from "vue";
-import type { IPictureParams, IUserForList, IWorkingBoardItem } from "@/types/interfaces";
+import type { IPictureParams, IUserForList } from "@/types/interfaces/user";
+import type { IWorkingBoardItem } from "@/types/interfaces/board";
 
 // Avatar.vue
 export const useAvatarProps = {
@@ -83,5 +84,5 @@ export const useUserItemProps = {
   userInvited: {
     type: Boolean,
     default: false,
-  }
+  },
 };

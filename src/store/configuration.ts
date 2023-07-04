@@ -1,52 +1,52 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import type { ErrorCode } from "@/types/types";
 import { database } from "@/helpers/firebase/firebaseInitialize";
-import { Colors, DataCollection } from "@/types/enums";
-import type {
-  IAsideNavigationItem,
-  IConfiguration,
-  IConfigurationAdditional,
-  IConfigurationResponse,
-} from "@/types/interfaces";
 
+import * as fs from "firebase/firestore";
 import useStores from "@/composables/useStores";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import allAsideNavigations from "@/composables/useAsideNavigation";
 
+import type { ErrorCode } from "@/types/types";
+import type * as configType from "@/types/interfaces/components";
+import { Colors, DataCollection } from "@/types/enums";
+
 const useConfigurationStore = defineStore("configuration", () => {
   const { commonStore } = useStores();
 
-  const asideNavigate = ref<IAsideNavigationItem[]>([]);
+  const asideNavigate = ref<configType.IAsideNavItem[]>([]);
 
   const additionalParams = ref({
-    asideBackgroundColor: Colors.Grey as string,
+    asideBackgroundColor: Colors.GREY as string,
     showEmailConfirm: false,
     showCurrentDate: false, // Time and date in app header.
     showDeleteAccountButton: false,
   });
 
-  const setAdditionalParams = (params: Omit<IConfiguration, "navigations">): void => {
+  const setAdditionalParams = (
+    params: Omit<configType.IConfiguration, "navigations">
+  ): void => {
     additionalParams.value = params;
   };
-  const setNavigateList = (navigationList: IAsideNavigationItem[]): void => {
+
+  const setNavigateList = (navigationList: configType.IAsideNavItem[]): void => {
     asideNavigate.value = navigationList;
   };
+
   const createUserConfiguration = (unicID: string): Promise<void> => {
     const navigationsShow = allAsideNavigations().map((item) => item.showed);
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
-      const settings: IConfigurationResponse = {
+      const settings: configType.IConfigurationResponse = {
         navigationsShowValues: navigationsShow,
         showEmailConfirm: true,
-        asideBackgroundColor: Colors.Grey,
+        asideBackgroundColor: Colors.GREY,
         showCurrentDate: true, // Time and date in app header.
         showDeleteAccountButton: true,
       };
 
-      setDoc(doc(database, DataCollection.Configuration, unicID), settings)
+      fs.setDoc(fs.doc(database, DataCollection.CONFIGURATION, unicID), settings)
         .then(() => resolve())
         .catch((error: ErrorCode): void => {
           ShowErrorMessage(error);
@@ -55,13 +55,13 @@ const useConfigurationStore = defineStore("configuration", () => {
         .finally(() => commonStore.setLoadingStatus(false));
     });
   };
-  const getUserConfiguration = (unicID: string): Promise<IConfigurationResponse> => {
-    const configurationRef = doc(database, DataCollection.Configuration, unicID);
+  const getUserConfiguration = (unicID: string): Promise<configType.IConfigurationResponse> => {
+    const configurationRef = fs.doc(database, DataCollection.CONFIGURATION, unicID);
 
     return new Promise((resolve, reject) => {
-      getDoc(configurationRef)
+      fs.getDoc(configurationRef)
         .then((configuration): void => {
-          const responseData = configuration.data() as IConfigurationResponse;
+          const responseData = configuration.data() as configType.IConfigurationResponse;
 
           if (responseData) {
             const { navigationsShowValues, ...additionalParams } = responseData;
@@ -87,11 +87,11 @@ const useConfigurationStore = defineStore("configuration", () => {
     });
   };
   const deleteUserConfiguration = (unicID: string): Promise<void> => {
-    const configurationRef = doc(database, DataCollection.Configuration, unicID);
+    const configurationRef = fs.doc(database, DataCollection.CONFIGURATION, unicID);
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
-      deleteDoc(configurationRef)
+      fs.deleteDoc(configurationRef)
         .then(() => resolve())
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
@@ -101,14 +101,14 @@ const useConfigurationStore = defineStore("configuration", () => {
     });
   };
   const updateAdditionalParams = (
-    additional: IConfigurationAdditional,
+    additional: configType.IConfigAdditional,
     unicID: string
   ): Promise<void> => {
-    const configurationRef = doc(database, DataCollection.Configuration, unicID);
+    const configurationRef = fs.doc(database, DataCollection.CONFIGURATION, unicID);
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
-      updateDoc(configurationRef, {
+      fs.updateDoc(configurationRef, {
         ...additional,
       })
         .then(() => {
@@ -123,11 +123,11 @@ const useConfigurationStore = defineStore("configuration", () => {
     });
   };
   const updateNavigateItem = (navigations: boolean[], unicID: string): Promise<void> => {
-    const configurationRef = doc(database, DataCollection.Configuration, unicID);
+    const configurationRef = fs.doc(database, DataCollection.CONFIGURATION, unicID);
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
-      updateDoc(configurationRef, {
+      fs.updateDoc(configurationRef, {
         navigationsShowValues: navigations,
       })
         .then(() => {

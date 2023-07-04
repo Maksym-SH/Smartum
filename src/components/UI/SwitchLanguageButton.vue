@@ -22,13 +22,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, PropType, reactive } from "vue";
-import type { ButtonVariant, SelectElements, SwitchLanguageType } from "@/types/types";
-import { Colors } from "@/types/enums";
 import { LocalLanguage } from "@/helpers/methods";
 
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import useSelectActions from "@/composables/useSelectActions";
 import AppSelect from "./AppSelect.vue";
+
+import { Colors, Language } from "@/types/enums";
+import type { ButtonVariant, SelectElements, SwitchLanguageType } from "@/types/types";
 
 export default defineComponent({
   props: {
@@ -57,24 +58,24 @@ export default defineComponent({
     const selectItems = reactive<SelectElements>([
       {
         title: "Русский",
-        callback: () => changeLanguage("ru"),
+        callback: () => changeLanguage(Language.RU),
         icon: "russian",
-        color: Colors.Default,
+        color: Colors.DEFAULT,
         displaying: true,
         active: computed(() => languageTextInfo.title === "Русский"),
       },
       {
         title: "English",
-        callback: () => changeLanguage("eng"),
+        callback: () => changeLanguage(Language.ENG),
         icon: "english",
-        color: Colors.Default,
+        color: Colors.DEFAULT,
         displaying: true,
         active: computed(() => languageTextInfo.title === "English"),
       },
     ]);
 
     onMounted(() => {
-      if (LocalLanguage() === "ru") {
+      if (LocalLanguage() === Language.RU) {
         languageTextInfo.icon = "russian";
         languageTextInfo.title = "Русский";
       }

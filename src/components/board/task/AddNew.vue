@@ -15,8 +15,8 @@
         <AppInput
           class="add-new__params-input"
           v-model="title"
-          :maxLength="Length.Maximum"
-          :min="Length.Text"
+          :maxLength="Length.MAX"
+          :min="Length.TEXT"
           :placeholder="inputPlaceholder"
         />
         <div class="add-new__params-actions">
@@ -40,8 +40,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from "vue";
+
 import { Length } from "@/types/enums";
-import { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces";
+import { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
 import { ButtonVariant } from "@/types/types";
 
 export default defineComponent({
@@ -71,7 +72,7 @@ export default defineComponent({
     const showCreationTemplate = ref(false);
 
     const create = () => {
-      if (title.value.length < Length.Text) return;
+      if (title.value.length < Length.TEXT) return;
 
       const elementID = props.newId || Date.now();
       const element: Partial<IWorkingBoardTask | IWorkingBoardTaskColumn> = {

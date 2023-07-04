@@ -1,24 +1,24 @@
-import type { I18nLanguage, LangFormatType } from "@/types/types";
-import { LangFormat } from "@/types/enums";
+import type { LangFormatType } from "@/types/types";
+import { LangFormat, Language } from "@/types/enums";
 import type { IDateFormat } from "@/types/interfaces";
 
 import RegExp from "@/helpers/regExp";
 
 export default function Timestamp(
   date: Date | null,
-  lang: I18nLanguage = "eng",
+  lang: Language = Language.ENG,
   exaptDate?: number
 ): IDateFormat {
   const datestamp = date || new Date(Number(exaptDate));
 
-  const dateLang: LangFormatType = lang === "eng" ? LangFormat.Eng : LangFormat.Ru;
+  const dateLang: LangFormatType = lang === Language.ENG ? LangFormat.ENG : LangFormat.RU;
   const RuFormatTime = datestamp
-    .toLocaleString(LangFormat.Ru)
+    .toLocaleString(LangFormat.RU)
     .replace(",", "")
     .match(RegExp.RuFormatDate)![0];
 
   const EngFormatTime = datestamp
-    .toLocaleString(LangFormat.Eng)
+    .toLocaleString(LangFormat.ENG)
     .match(RegExp.EngFormatDate)![0];
 
   const dateString = new Intl.DateTimeFormat(dateLang, {

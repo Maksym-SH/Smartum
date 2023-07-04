@@ -1,43 +1,35 @@
 import type { EmailAuthCredential, User, UserCredential } from "firebase/auth";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  reauthenticateWithCredential,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import type {
-  INotification,
-  IUserAuth,
-  IUserLogin,
-  IUserReg,
-  IUserResponse,
-} from "@/types/interfaces";
 import { notify } from "@kyvg/vue3-notification";
-import type { ErrorCode } from "@/types/types";
 import { GenerateColorHexFormat } from "@/helpers/methods";
-import { NotificationType } from "@/types/enums";
 
+import * as auth from "firebase/auth";
 import i18n from "@/i18n";
 import ShowErrorMessage from "./firebaseErrorMessage";
 import router from "@/router";
 import notificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
 
-export default function firebaseAuth(): IUserAuth {
+import { NotificationType, Route } from "@/types/enums";
+import type { ErrorCode } from "@/types/types";
+import type { INotification } from "@/types/interfaces/components";
+import type * as authType from "@/types/interfaces/user";
+
+export default function firebaseAuth(): authType.IUserAuth {
   const { t } = i18n.global;
 
   const { commonStore, userStore, notificationStore, configurationStore } = useStores();
 
   const useAuth = {
-    signUp: (userData: IUserReg, validate: boolean): void => {
+    signUp: (userData: authType.IUserReg, validate: boolean): void => {
       if (!validate) return;
 
       commonStore.setLoadingStatus(true);
 
-      createUserWithEmailAndPassword(getAuth(), userData.email, userData.password)
+      auth
+        .createUserWithEmailAndPassword(auth.getAuth(), userData.email, userData.password)
         .then(async (response) => {
-          const responseUser: IUserResponse = response.user;
-          const currentUser = getAuth().currentUser;
+          const responseUser: authType.IUserResponse = response.user;
+          const currentUser = auth.getAuth().currentUser;
 
           if (responseUser.accessToken)
             localStorage.setItem("smartumToken", responseUser.accessToken);
@@ -54,7 +46,7 @@ export default function firebaseAuth(): IUserAuth {
             });
 
             const notification: INotification<Date> = notificationContent(
-              NotificationType.WelcomeText
+              NotificationType.WELCOME_TEXT
             );
             await notificationStore
               .createNotificationList(notification, currentUser.uid)
@@ -72,30 +64,31 @@ export default function firebaseAuth(): IUserAuth {
               type: "success",
             });
 
-            userStore.setCurrentUser(currentUser as User);
-            router.push({ name: "Notifications" });
+            userStore.setCurrentUser(currentUser);
+            router.push({ name: Route.NOTIFICATIONS });
           }
         })
         .catch((error: ErrorCode): void => ShowErrorMessage(error))
         .finally((): void => commonStore.setLoadingStatus(false));
     },
 
-    signIn: (userData: IUserLogin, validate: boolean): void => {
+    signIn: (userData: authType.IUserLogin, validate: boolean): void => {
       if (!validate) return;
 
       commonStore.setLoadingStatus(true);
-      signInWithEmailAndPassword(getAuth(), userData.email, userData.password)
+      auth
+        .signInWithEmailAndPassword(auth.getAuth(), userData.email, userData.password)
         .then((response) => {
-          const user: IUserResponse = response.user;
+          const user: authType.IUserResponse = response.user;
 
           if (user.accessToken) localStorage.setItem("smartumToken", user.accessToken);
 
-          userStore.setCurrentUser(getAuth().currentUser as User);
+          userStore.setCurrentUser(auth.getAuth().currentUser ?? {});
           notify({
             title: t("notify.authSuccess.title"),
             type: "success",
           });
-          router.push({ name: "Home" });
+          router.push({ name: Route.HOME });
         })
         .catch((error): void => ShowErrorMessage(error))
         .finally((): void => commonStore.setLoadingStatus(false));
@@ -107,7 +100,8 @@ export default function firebaseAuth(): IUserAuth {
       commonStore.setLoadingStatus(true);
 
       return new Promise((resolve, reject) => {
-        reauthenticateWithCredential(userInfo, credential)
+        auth
+          .reauthenticateWithCredential(userInfo, credential)
           .then((response: UserCredential) => resolve(response))
           .catch((error: ErrorCode): void => {
             ShowErrorMessage(error);

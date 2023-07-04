@@ -40,11 +40,7 @@
           />
         </template>
       </v-tooltip>
-      <transition-group
-        tag="div"
-        class="task-item__members-avatars"
-        name="toggle-content"
-      >
+      <transition-group tag="div" class="task-item__members-avatars" name="toggle-content">
         <template v-for="user in task.assignedMembers" :key="user.uid">
           <Avatar
             v-if="memebersIds.includes(user.uid)"
@@ -72,7 +68,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed, ref } from "vue";
-import { IWorkingBoardTask } from "@/types/interfaces";
 
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
@@ -80,6 +75,8 @@ import Avatar from "@/components/user/AppAvatar.vue";
 import TaskInfoModal from "@/components/modals/ModalInfoTask.vue";
 import InlineSvg from "vue-inline-svg";
 import BackgroundItem from "@/components/UI/BackgroundItem.vue";
+
+import { IWorkingBoardTask } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {
@@ -118,9 +115,7 @@ export default defineComponent({
 
     const subtasksCount = computed((): string | false => {
       if (props.task.subtasks && props.task.subtasks.length) {
-        const completedCount = props.task.subtasks.filter(
-          (subtask) => subtask.done
-        ).length;
+        const completedCount = props.task.subtasks.filter((subtask) => subtask.done).length;
         const substasksCount = props.task.subtasks.length;
 
         return `${completedCount} / ${substasksCount}`;

@@ -23,10 +23,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { defineComponent, onMounted, computed } from "vue";
-import type { IUserCreated } from "@/types/interfaces";
-import { Colors } from "@/types/enums";
 
 import i18n from "@/i18n";
 import useSelectActions from "@/composables/useSelectActions";
@@ -35,6 +32,10 @@ import NotificationsButton from "@/components/notification/NotificationsButton.v
 import SwitchTheme from "../UI/SwitchTheme.vue";
 import AcquaintanceButton from "./BoardAcquaintanceButton.vue";
 import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
+
+import { Colors } from "@/types/enums";
+import type { PropType } from "vue";
+import type { IUserCreated } from "@/types/interfaces/user";
 
 export default defineComponent({
   components: {
@@ -61,7 +62,7 @@ export default defineComponent({
         title: computed(() => t("buttons.leaveBoard")),
         callback: () => emit("boardLeave"),
         icon: "clipboard-arrow-left-outline",
-        color: Colors.Danger,
+        color: Colors.DANGER,
         displaying: true,
         active: false,
       });

@@ -4,7 +4,7 @@
     <AppButton
       v-if="showImageTemplate"
       class="file-upload--delete"
-      :color="Colors.Danger"
+      :color="Colors.DANGER"
       @click.stop="deleteImgPopup"
       icon="delete-outline"
     />
@@ -20,15 +20,16 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { computed, defineComponent, ref } from "vue";
 import type { FileType, ImageSource, RefElement } from "@/types/types";
 import { OpenPopup } from "@/helpers/methods";
-import { Colors } from "@/types/enums";
 
 import i18n from "@/i18n";
 import fileValidate from "@/helpers/file/validate";
 import useImageLoad from "@/composables/useImageLoad";
+
+import { Colors } from "@/types/enums";
+import type { PropType } from "vue";
 
 export default defineComponent({
   props: {
@@ -57,8 +58,7 @@ export default defineComponent({
       String(imageSource.value || props.avatarParams)
     );
     const showImageTemplate = computed(
-      (): string | boolean =>
-        (imageLoaded.value || props.avatarParams) && !imgDeleted.value
+      (): string | boolean => (imageLoaded.value || props.avatarParams) && !imgDeleted.value
     );
 
     // File load.
@@ -93,7 +93,7 @@ export default defineComponent({
         buttons: {
           yes: {
             text: t("buttons.delete"),
-            color: Colors.Danger,
+            color: Colors.DANGER,
           },
         },
         callback: (): void => {

@@ -42,9 +42,10 @@
 <script lang="ts">
 import { computed, ComputedRef, defineComponent, ref, watch } from "vue";
 import { useTextareaProps } from "./use/useProps";
-import type { ModelValue, RefElement } from "@/types/types";
 
 import i18n from "@/i18n";
+
+import type { ModelValue, RefElement } from "@/types/types";
 
 export default defineComponent({
   inheritAttrs: false,

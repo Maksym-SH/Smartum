@@ -20,7 +20,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, CSSProperties } from "vue";
+import { defineComponent, computed } from "vue";
+
+import type { CSSProperties } from "vue";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -74,6 +76,7 @@ export default defineComponent({
   &__content {
     overflow: hidden scroll;
     padding: 5px 5px 5px 10px;
+    max-height: 65vh;
 
     &.centering {
       height: 100%;
@@ -118,6 +121,7 @@ export default defineComponent({
       width: 100% !important;
       height: calc(100% - 76px) !important;
       padding: 7px;
+      max-height: auto;
 
       &.no-header {
         height: 100% !important;

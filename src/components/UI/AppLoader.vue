@@ -5,9 +5,10 @@
 </template>
 
 <script lang="ts">
-import type { CSSProperties } from "vue";
 import { defineComponent, reactive } from "vue";
 import { useLoaderProps } from "./use/useProps";
+
+import type { CSSProperties } from "vue";
 
 export default defineComponent({
   props: useLoaderProps,

@@ -11,7 +11,7 @@
           :label="$t('popup.confirmPassword.yourPassword')"
           type="password"
           name="userPassword"
-          :min="Length.Password"
+          :min="Length.PASSWORD"
         />
         <div class="confirmation__window-forgot-password">
           <router-link
@@ -45,15 +45,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import type { EmailAuthCredential, User } from "firebase/auth";
+import { defineComponent, ref, computed } from "vue";
 import { EmailAuthProvider } from "firebase/auth";
-import { computed } from "@vue/reactivity";
-import { Length } from "@/types/enums";
 import { Confirmation } from "@/helpers/methods";
 
 import firebaseAuth from "@/helpers/firebase/firebaseAuth";
 import useStores from "@/composables/useStores";
+
+import { Length } from "@/types/enums";
+import type { EmailAuthCredential, User } from "firebase/auth";
 
 export default defineComponent({
   setup() {
@@ -64,9 +64,7 @@ export default defineComponent({
     const userEmail = userInfo.email;
     const password = ref("");
 
-    const btnConfirmDisable = computed(
-      (): boolean => password.value.length < Length.Password
-    );
+    const btnConfirmDisable = computed((): boolean => password.value.length < Length.PASSWORD);
 
     const result = (value: boolean): void => {
       if (value && userEmail) {

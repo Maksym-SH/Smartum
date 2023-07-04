@@ -1,52 +1,52 @@
 import { computed } from "vue";
 import { notify } from "@kyvg/vue3-notification";
-import type { AsideNavigationItems, ModalContentType } from "@/types/types";
-import type { IAsideNavigationItem } from "@/types/interfaces";
-import { Links } from "@/types/enums";
 
 import i18n from "@/i18n";
 import useStores from "./useStores";
 import router from "@/router";
 
-export default function Navigation(): AsideNavigationItems {
+import type { IAsideNavItem } from "@/types/interfaces/components";
+import { Links, Route, ModalContentType } from "@/types/enums";
+
+export default function Navigation(): IAsideNavItem[] {
   const { t } = i18n.global;
 
   const { commonStore } = useStores();
 
-  const DashboardTab: IAsideNavigationItem = {
+  const DashboardTab: IAsideNavItem = {
     id: 0,
     showed: true,
     alwaysDisplay: true,
     title: computed(() => t("navigation.workBoards.title")),
     icon: "view-dashboard",
     callback() {
-      router.push({ name: "Dashboard" });
+      router.push({ name: Route.DASHBOARD });
     },
   };
 
-  const ConfigurationTab: IAsideNavigationItem = {
+  const ConfigurationTab: IAsideNavItem = {
     id: 2,
     showed: true,
     alwaysDisplay: true,
     title: computed(() => t("navigation.configuration.title")),
     icon: "tune-vertical-variant",
     callback() {
-      router.push({ name: "Configuration" });
+      router.push({ name: Route.CONFIGURATION });
     },
   };
 
-  const NotificationTab: IAsideNavigationItem = {
+  const NotificationTab: IAsideNavItem = {
     id: 1,
     showed: true,
     title: computed(() => t("navigation.notifications.title")),
     icon: "bell",
     notify: true,
     callback() {
-      router.push({ name: "Notifications" });
+      router.push({ name: Route.NOTIFICATIONS });
     },
   };
 
-  const ReportsTab: IAsideNavigationItem = {
+  const ReportsTab: IAsideNavItem = {
     id: 3,
     showed: true,
     title: computed(() => t("navigation.reports.title")),
@@ -73,7 +73,7 @@ export default function Navigation(): AsideNavigationItems {
     ],
   };
 
-  const StatisticsTab: IAsideNavigationItem = {
+  const StatisticsTab: IAsideNavItem = {
     id: 4,
     showed: true,
     title: computed(() => t("navigation.statistic.title")),
@@ -86,7 +86,7 @@ export default function Navigation(): AsideNavigationItems {
     },
   };
 
-  const AuthorTab: IAsideNavigationItem = {
+  const AuthorTab: IAsideNavItem = {
     id: 5,
     showed: true,
     title: computed(() => t("navigation.contact.title")),
@@ -95,19 +95,19 @@ export default function Navigation(): AsideNavigationItems {
       {
         title: computed(() => t("navigation.contact.panels[0].title")),
         callback(): void {
-          window.open(Links.GitHubAccount, "_blank");
+          window.open(Links.GIT_HUB_ACCOUNT, "_blank");
         },
       },
       {
         title: computed(() => t("navigation.contact.panels[1].title")),
         callback(): void {
-          window.open(Links.TelegramAccount, "_blank");
+          window.open(Links.TELEGRAM_ACCOUNT, "_blank");
         },
       },
     ],
   };
 
-  const ConditionUseTab: IAsideNavigationItem = {
+  const ConditionUseTab: IAsideNavItem = {
     id: 6,
     showed: true,
     title: computed(() => t("navigation.usage.title")),
@@ -116,15 +116,13 @@ export default function Navigation(): AsideNavigationItems {
       {
         title: computed(() => t("navigation.usage.panels[0].title")),
         callback(): void {
-          const termsOfUse: ModalContentType = "termsOfUse";
-          commonStore.setModalContentType(termsOfUse);
+          commonStore.setModalContentType(ModalContentType.TERMS_OF_USE);
         },
       },
       {
         title: computed(() => t("navigation.usage.panels[1].title")),
         callback(): void {
-          const confidentiality: ModalContentType = "confidentiality";
-          commonStore.setModalContentType(confidentiality);
+          commonStore.setModalContentType(ModalContentType.CONFIDENTIALITY);
         },
       },
     ],

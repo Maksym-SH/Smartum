@@ -1,24 +1,25 @@
 import { getAuth } from "@firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
-import { Colors } from "@/types/enums";
-import type { IPopupParams } from "@/types/interfaces";
-import type { I18nLanguage, Theme } from "@/types/types";
 
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 
-export function LocalLanguage(): I18nLanguage {
-  let language;
+import { Colors, Language } from "@/types/enums";
+import type { IPopupParams } from "@/types/interfaces/components";
+import type { Theme } from "@/types/types";
+
+export function LocalLanguage(): Language {
+  let language: Language;
 
   const savedLanguage = localStorage.getItem("smartumLanguage") ?? "";
 
   if (["ru", "eng"].includes(savedLanguage)) {
-    language = savedLanguage;
+    language = savedLanguage as Language;
   } else {
-    language = navigator.language === "ru-RU" ? "ru" : "eng";
+    language = navigator.language === "ru-RU" ? Language.RU : Language.ENG;
   }
 
-  return language as I18nLanguage;
+  return language;
 }
 
 export function ObjectFull(object: object): boolean {
@@ -97,10 +98,7 @@ export function GenerateRandomString(length: number) {
 }
 
 let ConfirmCallback: Function;
-export function Confirmation(
-  toggle: boolean,
-  callback?: Function | void
-): Promise<any> | void {
+export function Confirmation(toggle: boolean, callback?: Function | void): Promise<any> | void {
   const { commonStore } = useStores();
   commonStore.setConfirmPopupVisibillity(toggle);
 
@@ -113,10 +111,7 @@ export function Confirmation(
   }
 }
 
-export function DeleteAccountPopup(
-  uid: string,
-  params?: Partial<IPopupParams>
-): Function {
+export function DeleteAccountPopup(uid: string, params?: Partial<IPopupParams>): Function {
   const { t } = i18n.global;
 
   const { userStore } = useStores();
@@ -130,7 +125,7 @@ export function DeleteAccountPopup(
       buttons: {
         yes: {
           text: t("buttons.deleteAccount"),
-          color: Colors.Danger,
+          color: Colors.DANGER,
         },
       },
       callback: (): void => {

@@ -1,6 +1,5 @@
-import { I18nOptions } from "vue-i18n";
+import { I18nOptions, createI18n } from "vue-i18n";
 import { LocalLanguage } from "@/helpers/methods";
-import { createI18n } from "vue-i18n";
 
 import ru from "./ru.json";
 import eng from "./eng.json";
@@ -18,4 +17,4 @@ const config: I18nOptions = {
   warnHtmlMessage: false,
 };
 
-export default createI18n(config)
+export default createI18n(config);

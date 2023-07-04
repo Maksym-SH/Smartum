@@ -4,7 +4,7 @@
       <AppButton
         class="subtask__info--delete"
         icon="delete-outline"
-        :color="Colors.Danger"
+        :color="Colors.DANGER"
         @click="deleteSubtask"
       />
       <span class="subtask__info-count"> {{ count }}. </span>
@@ -20,10 +20,11 @@
 </template>
 
 <script lang="ts">
-import { ISubTask } from "@/types/interfaces";
 import { computed, defineComponent } from "vue";
-import type { PropType } from "vue";
+
 import { Colors } from "@/types/enums";
+import type { ISubTask } from "@/types/interfaces/board";
+import type { PropType } from "vue";
 
 export default defineComponent({
   props: {

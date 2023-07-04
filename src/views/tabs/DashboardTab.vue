@@ -1,10 +1,7 @@
 <template>
   <div class="dashboard-tab">
     <div class="dashboard-tab__content">
-      <div
-        v-if="!showLockAccess"
-        class="dashboard-tab__content--create-new full-width--tablet"
-      >
+      <div v-if="!showLockAccess" class="dashboard-tab__content--create-new full-width--tablet">
         <ModalCreateNewBoard @create-new="createNewBoard" />
       </div>
       <transition-group
@@ -14,11 +11,7 @@
         name="toggle-content"
       >
         <template v-for="board in dashboardStore.allBoards" :key="board.joinCode">
-          <BoardCard
-            v-if="board.members"
-            :element="board"
-            @click="openBoard(board.joinCode)"
-          />
+          <BoardCard v-if="board.members" :element="board" @click="openBoard(board.joinCode)" />
         </template>
       </transition-group>
       <transition name="fade">
@@ -28,7 +21,7 @@
           :class="{ centering: centeringContent }"
         >
           <LockAccess v-if="showLockAccess && !showPreload" />
-          <EmptyList v-else-if="listEmpty" type="dashboard" />
+          <EmptyList v-else-if="listEmpty" :type="EmptyListType.DASHBOARD" />
         </div>
       </transition>
     </div>
@@ -39,12 +32,9 @@
 import { computed, defineComponent, onBeforeMount, watch } from "vue";
 import { useRouter } from "vue-router";
 import { notify } from "@kyvg/vue3-notification";
-import type { User } from "@firebase/auth";
-import type { IWorkingBoardItem } from "@/types/interfaces";
-import { NotificationType } from "@/types/enums";
 import { ArrayHasValues } from "@/helpers/methods";
-import i18n from "@/i18n";
 
+import i18n from "@/i18n";
 import newNotificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
@@ -52,6 +42,10 @@ import LockAccess from "@/components/access/NeedEmailConfirmation.vue";
 import EmptyList from "@/components/UI/EmptyList.vue";
 import ModalCreateNewBoard from "@/components/modals/ModalCreateNewBoard.vue";
 import BoardCard from "@/components/board/BoardItem.vue";
+
+import type { User } from "@firebase/auth";
+import type { IWorkingBoardItem } from "@/types/interfaces/board";
+import { NotificationType, Route, EmptyListType } from "@/types/enums";
 
 export default defineComponent({
   components: {
@@ -71,9 +65,7 @@ export default defineComponent({
 
     const showPreload = computed(() => commonStore.loadingStatus);
 
-    const showLockAccess = computed(
-      (): boolean => !(currentUser.value as User).emailVerified
-    );
+    const showLockAccess = computed((): boolean => !(currentUser.value as User).emailVerified);
 
     const listEmpty = computed((): boolean => {
       return !ArrayHasValues(dashboardStore.allBoards) && !showPreload.value;
@@ -95,7 +87,7 @@ export default defineComponent({
 
           // Add new notification.
           const notification = newNotificationContent(
-            NotificationType.DashboardCreate,
+            NotificationType.BOARD_CREATED,
             newBoard.title,
             newBoard
           );
@@ -106,7 +98,7 @@ export default defineComponent({
 
     const openBoard = (joinCode: string) => {
       router.push({
-        name: "Board",
+        name: Route.BOARD,
         params: {
           code: joinCode,
         },
@@ -136,6 +128,7 @@ export default defineComponent({
       showLockAccess,
       listEmpty,
       dashboardStore,
+      EmptyListType,
       openBoard,
       createNewBoard,
     };

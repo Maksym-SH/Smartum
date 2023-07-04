@@ -78,11 +78,12 @@
 import { computed, ComputedRef, defineComponent, ref, watch } from "vue";
 import * as emailValidator from "email-validator";
 import { useInputProps } from "./use/useProps";
-import type { AutoComplete, ModelValue, RefElement } from "@/types/types";
 
 import i18n from "@/i18n";
 import InlineSvg from "vue-inline-svg";
 import RegExp from "@/helpers/regExp";
+
+import type { AutoComplete, ModelValue, RefElement } from "@/types/types";
 
 export default defineComponent({
   inheritAttrs: false,
@@ -143,8 +144,7 @@ export default defineComponent({
     });
 
     const isAutoComplete = computed((): AutoComplete => {
-      if (typeof props.autoComplete === "boolean")
-        return props.autoComplete ? "on" : "off";
+      if (typeof props.autoComplete === "boolean") return props.autoComplete ? "on" : "off";
 
       return "new-password";
     });

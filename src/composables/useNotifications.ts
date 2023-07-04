@@ -1,9 +1,9 @@
 import { computed, onBeforeMount } from "vue";
 import { storeToRefs } from "pinia";
+import { ArrayHasValues } from "@/helpers/methods";
 
 import useStores from "./useStores";
 import useCurrentUserInfo from "./useCurrentUserInfo";
-import { ArrayHasValues } from "@/helpers/methods";
 
 export default function useNotifications() {
   const { notificationStore, commonStore } = useStores();

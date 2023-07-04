@@ -11,14 +11,8 @@
           @click="showDialog = true"
         >
           <slot name="button-title">
-            <img
-              class="color-picker__palette"
-              src="/images/icons/color-palette.svg"
-              alt=""
-            />
-            <small class="color-picker__button-title">
-              {{ $t("modal.colorPickTitle") }}</small
-            >
+            <img class="color-picker__palette" src="/images/icons/color-palette.svg" alt="" />
+            <small class="color-picker__button-title"> {{ $t("modal.colorPickTitle") }}</small>
           </slot>
         </AppButton>
         <span v-if="regenerate" class="color-picker--generate" @click="generateColor">
@@ -76,17 +70,18 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { computed, defineComponent, ref } from "vue";
-import type { Theme } from "@/types/types";
 import { DarkColors, LightColors } from "@/helpers/colors";
-import { Colors } from "@/types/enums";
-import type { IColorPickerParams } from "@/types/interfaces";
 import { GenerateColorHexFormat } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import InlineSvg from "vue-inline-svg";
 import BackgroundItem from "../UI/BackgroundItem.vue";
+
+import { Colors } from "@/types/enums";
+import type { PropType } from "vue";
+import type { Theme } from "@/types/types";
+import type { IColorPickerParams } from "@/types/interfaces/colors";
 
 export default defineComponent({
   components: {
@@ -124,13 +119,13 @@ export default defineComponent({
     const colorPickParams = computed((): IColorPickerParams => {
       if (props.theme === "dark") {
         return {
-          textColor: Colors.White,
+          textColor: Colors.WHITE,
           target: t("common.dark"),
         };
       }
       // Light
       return {
-        textColor: Colors.Black,
+        textColor: Colors.BLACK,
         target: t("common.light"),
       };
     });
@@ -141,7 +136,7 @@ export default defineComponent({
       if (props.applyButtonColor) {
         return props.modelValue;
       }
-      return Colors.LightGrey;
+      return Colors.LIGHT_GREY;
     });
 
     const selectedColor = ref<string>("");

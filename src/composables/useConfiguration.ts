@@ -1,20 +1,16 @@
 import { computed, onMounted, reactive, ref } from "vue";
 import { notify } from "@kyvg/vue3-notification";
-import { Colors, NotificationType } from "@/types/enums";
-import type { UserName } from "@/types/types";
-import type {
-  IAsideNavigationItem,
-  IConfiguration,
-  IConfigurationAdditional,
-  IPictureParams,
-  IUserInfo,
-} from "@/types/interfaces";
 
 import i18n from "@/i18n";
 import useNewNotificationContent from "./useNotificationContent";
 import useStores from "./useStores";
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
+
+import { Colors, NotificationType } from "@/types/enums";
+import type { UserName } from "@/types/types";
+import type * as componentType from "@/types/interfaces/components";
+import type { IPictureParams, IUserInfo } from "@/types/interfaces/user";
 
 export default function useConfiguration() {
   const { t } = i18n.global;
@@ -23,12 +19,12 @@ export default function useConfiguration() {
 
   const { unicID } = useCurrentUserInfo();
 
-  const showedNavigations = ref<IAsideNavigationItem[]>([...useAsideNavigation()]);
+  const showedNavigations = ref<componentType.IAsideNavItem[]>([...useAsideNavigation()]);
 
   const notificationAdded = ref(false);
 
   // Params
-  const additionalParams = reactive<IConfigurationAdditional>({
+  const additionalParams = reactive<componentType.IConfigAdditional>({
     showEmailConfirm: true,
     showCurrentDate: false, // Time and date in app header.
     showDeleteAccountButton: false,
@@ -39,7 +35,7 @@ export default function useConfiguration() {
     url: "",
   });
 
-  const asideBackgroundColor = ref(Colors.Grey as string);
+  const asideBackgroundColor = ref(Colors.GREY as string);
 
   const userName = computed((): UserName => {
     const { firstName, lastName } = userStore.userInfo as Required<IUserInfo>;
@@ -74,9 +70,7 @@ export default function useConfiguration() {
         });
 
         if (!notificationAdded.value) {
-          const notification = useNewNotificationContent(
-            NotificationType.ConfigurationChange
-          );
+          const notification = useNewNotificationContent(NotificationType.CONFIGURATION_CHANGE);
 
           notificationStore.setNewNotification(notification);
         }
@@ -93,9 +87,7 @@ export default function useConfiguration() {
       });
 
       if (!notificationAdded.value) {
-        const notification = useNewNotificationContent(
-          NotificationType.ConfigurationChange
-        );
+        const notification = useNewNotificationContent(NotificationType.CONFIGURATION_CHANGE);
 
         notificationStore.setNewNotification(notification);
       }
@@ -108,8 +100,8 @@ export default function useConfiguration() {
   onMounted(() => {
     configurationStore
       .getUserConfiguration(unicID.value)
-      .then((configuration: Omit<IConfiguration, "navigations">) => {
-        const navigationList: IAsideNavigationItem[] = configurationStore.asideNavigate;
+      .then((configuration: Omit<componentType.IConfiguration, "navigations">) => {
+        const navigationList: componentType.IAsideNavItem[] = configurationStore.asideNavigate;
         showedNavigations.value.forEach(
           (item, index) => (item.showed = navigationList[index].showed)
         );

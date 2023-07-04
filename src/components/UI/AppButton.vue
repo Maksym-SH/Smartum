@@ -15,9 +15,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useButtonProps } from "./use/useProps";
-import { Colors } from "@/types/enums";
 
 import InlineSvg from "vue-inline-svg";
+
+import { Colors } from "@/types/enums";
 
 export default defineComponent({
   props: useButtonProps,

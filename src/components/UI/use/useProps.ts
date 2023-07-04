@@ -1,16 +1,8 @@
 import type { PropType } from "vue";
-import type {
-  AsideExpPanelNavigation,
-  ButtonSize,
-  ButtonVariant,
-  EmptyListType,
-  ExpansionPanelVariant,
-  ModalContentType,
-  Position,
-  SelectElements,
-  Variant,
-} from "@/types/types";
-import { Colors, Length } from "@/types/enums";
+
+import { Colors, Length, EmptyListType } from "@/types/enums";
+import { AsideExpPanelNavigation } from "@/types/interfaces/components";
+import type * as types from "@/types/types";
 
 // AppInput.vue
 export const useInputProps = {
@@ -64,7 +56,7 @@ export const useInputProps = {
   },
   min: {
     type: Number,
-    default: Length.None,
+    default: Length.NONE,
   },
   autoComplete: {
     type: [Boolean, String],
@@ -100,7 +92,7 @@ export const useTextareaProps = {
   },
   max: {
     type: Number,
-    default: Length.None,
+    default: Length.NONE,
   },
   label: {
     type: String,
@@ -108,7 +100,7 @@ export const useTextareaProps = {
   },
   min: {
     type: Number,
-    default: Length.None,
+    default: Length.NONE,
   },
   resize: {
     type: Boolean,
@@ -127,12 +119,12 @@ export const useButtonProps = {
     default: "",
   },
   variant: {
-    type: String as PropType<ButtonVariant>,
+    type: String as PropType<types.ButtonVariant>,
     default: "elevated",
   },
   color: {
     type: String as PropType<Colors>,
-    default: Colors.Info,
+    default: Colors.INFO,
   },
   transparent: {
     type: Boolean,
@@ -147,7 +139,7 @@ export const useButtonProps = {
     default: false,
   },
   size: {
-    type: String as PropType<ButtonSize>,
+    type: String as PropType<types.ButtonSize>,
     default: "default",
   },
 };
@@ -187,7 +179,7 @@ export const useCheckboxProps = {
 // AppExpansionPanel.vue
 export const useExpansionPanelProps = {
   variant: {
-    type: String as PropType<ExpansionPanelVariant>,
+    type: String as PropType<types.ExpansionPanelVariant>,
     default: "default",
   },
   name: {
@@ -235,7 +227,7 @@ export const useBackgroundItemProps = {
 // EmptyList.vue
 export const useEmptyListProps = {
   type: {
-    type: String as PropType<EmptyListType>,
+    type: Number as PropType<EmptyListType>,
     required: true,
   },
 };
@@ -247,7 +239,7 @@ export const useHintProps = {
     required: true,
   },
   variant: {
-    type: String as PropType<Variant>,
+    type: String as PropType<types.Variant>,
     required: true,
   },
 };
@@ -264,23 +256,14 @@ export const useLoaderProps = {
   },
 };
 
-// LongContentModal.vue
-export const useLongContentModalProps = {
-  contentType: {
-    type: String as PropType<ModalContentType>,
-    required: true,
-  },
-};
-
 // AppSelect.vue
 export const useSelectProps = {
   items: {
-    type: Array as PropType<SelectElements>,
+    type: Array as PropType<types.SelectElements>,
     default: () => [],
   },
   location: {
-    // ToDo
-    type: String as PropType<Position>,
+    type: String as PropType<types.Position>,
     default: "end",
   },
   size: {
@@ -302,7 +285,7 @@ export const useSelectProps = {
     default: "",
   },
   variant: {
-    type: String as PropType<ButtonVariant>,
+    type: String as PropType<types.ButtonVariant>,
     default: "text",
   },
   activeStyle: {

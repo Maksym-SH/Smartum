@@ -1,23 +1,20 @@
-import type { IDateFormat } from "@/types/interfaces";
-import { Language, Numbers } from "@/types/enums";
-import type { I18nLanguage } from "@/types/types";
-
 import i18n from "@/i18n";
 import useTimestamp from "./stamp";
 import RegExp from "@/helpers/regExp";
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 
+import type { IDateFormat } from "@/types/interfaces";
+import { Language, Numbers } from "@/types/enums";
+
 export function GetDate(date: string, onlyDate = false): IDateFormat {
   const { i18nLocale } = useCurrentLanguage();
 
   const dateFormat = Number(date);
-  const timestamp = useTimestamp(null, i18nLocale.value as I18nLanguage, dateFormat);
+  const timestamp = useTimestamp(null, i18nLocale.value as Language, dateFormat);
 
   if (onlyDate) {
     const regExp =
-      i18nLocale.value === Language.English
-        ? RegExp.TimeRegisteredEng
-        : RegExp.TimeRegisteredRu;
+      i18nLocale.value === Language.ENG ? RegExp.TimeRegisteredEng : RegExp.TimeRegisteredRu;
     timestamp.date = timestamp.date.match(regExp)![0];
   }
 
@@ -43,7 +40,7 @@ export function GetBetweenDateString(date: Date): string {
         return t("time.yesterday");
       case date >= weekAgo: {
         const dayAgo = Math.floor(
-          (Number(today) - Number(date)) / Numbers.MillisecondsInDay + 1
+          (Number(today) - Number(date)) / Numbers.DAY_MILLISECONDS + 1
         );
         return `${dayAgo} ${GetDayStringFormat(dayAgo)} ${t("time.ago")}`;
       }

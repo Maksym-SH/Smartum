@@ -36,6 +36,8 @@ import firebaseReset from "@/helpers/firebase/firebaseReset";
 import router from "@/router";
 import InlineSvg from "vue-inline-svg";
 
+import { Route } from "@/types/enums";
+
 export default defineComponent({
   components: {
     InlineSvg,
@@ -51,7 +53,7 @@ export default defineComponent({
 
     const goBack = () => {
       if (window.history.length >= 2) router.go(-1); // Navigate to previous page.
-      else router.push({ name: "Profile" });
+      else router.push({ name: Route.PROFILE });
     };
 
     watch(email, (): boolean => (errorEmail.value = false));

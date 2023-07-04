@@ -3,7 +3,7 @@
   <transition name="toggle-popup" mode="out-in">
     <AppPopup v-if="showPopup" />
   </transition>
-  <LongContentModal
+  <ModalContent
     v-if="commonStore.modalContentType"
     :content-type="commonStore.modalContentType"
   />
@@ -30,8 +30,8 @@ export default defineComponent({
     ConfirmationPopup: defineAsyncComponent(
       () => import("@/components/UI/ConfirmationPopup.vue")
     ),
-    LongContentModal: defineAsyncComponent(
-      () => import("@/components/UI/LongContentModal.vue")
+    ModalContent: defineAsyncComponent(
+      () => import("@/components/modals/ModalContent.vue")
     ),
   },
   setup() {

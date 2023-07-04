@@ -23,15 +23,12 @@
               name="userPassword"
               :label="$t('labels.password')"
               transparent
-              :min="Length.Password"
+              :min="Length.PASSWORD"
             />
             <div class="auth__window-form__forgot">
               <i18n-t keypath="signIn.forgotPassword" scope="global" tag="span">
                 <template #recover>
-                  <router-link
-                    :to="{ name: 'Forgot' }"
-                    class="auth__window-form__forgot--link"
-                  >
+                  <router-link :to="{ name: 'Forgot' }" class="auth__window-form__forgot--link">
                     {{ $t("signIn.recover") }}
                   </router-link>
                 </template>
@@ -68,12 +65,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive } from "vue";
-import type { IUserLogin } from "@/types/interfaces";
-import { Length } from "@/types/enums";
 
 import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 import * as emailValidator from "email-validator";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
+
+import type { IUserLogin } from "@/types/interfaces/user";
+import { Length } from "@/types/enums";
 
 export default defineComponent({
   components: {
@@ -89,8 +87,7 @@ export default defineComponent({
 
     const valid = computed((): boolean => {
       return (
-        emailValidator.validate(userData.email) &&
-        userData.password.length >= Length.Password
+        emailValidator.validate(userData.email) && userData.password.length >= Length.PASSWORD
       );
     });
 

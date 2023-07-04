@@ -30,6 +30,7 @@ import { CSSProperties, watch } from "vue";
 import { computed, defineComponent } from "vue";
 import { useAvatarProps } from "./use/useProps";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+
 import useImageLoad from "@/composables/useImageLoad";
 
 export default defineComponent({

@@ -1,15 +1,16 @@
 import type { ComponentInternalInstance } from "vue";
 import { computed, getCurrentInstance, reactive } from "vue";
 import { notify } from "@kyvg/vue3-notification";
-import { Colors } from "@/types/enums";
-import type { SelectElements } from "@/types/types";
-import { ISelectElem } from "@/types/interfaces";
 
 import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
 import useStores from "./useStores";
+
+import { Colors, Route } from "@/types/enums";
+import type { SelectElements } from "@/types/types";
+import { ISelectElem } from "@/types/interfaces/components";
 
 export default function useSelectActions() {
   const { t } = i18n.global;
@@ -30,16 +31,16 @@ export default function useSelectActions() {
   const actions = reactive<SelectElements>([
     {
       title: computed(() => t("buttons.myProfile")),
-      callback: () => router.push("/profile"),
+      callback: () => router.push({ name: Route.PROFILE }),
       icon: "account",
-      color: Colors.Default,
+      color: Colors.DEFAULT,
       displaying: true,
     },
     {
       title: computed(() => t("buttons.emailConfirm")),
       callback: () => verifyEmail(currentUser.value),
       icon: "email-check-outline",
-      color: Colors.Info,
+      color: Colors.INFO,
       displaying: computed(() => !emailVerified.value), // Not verified.
     },
     {
@@ -53,7 +54,7 @@ export default function useSelectActions() {
         });
       },
       icon: "logout",
-      color: Colors.Danger,
+      color: Colors.DANGER,
       displaying: true,
     },
   ]);

@@ -1,8 +1,9 @@
 import { computed } from "vue";
-import type { User } from "firebase/auth";
-import type { IUserCreated, IUserForList, IUserInfo } from "@/types/interfaces";
 
 import useStores from "./useStores";
+
+import type { User } from "firebase/auth";
+import type { IUserCreated, IUserForList, IUserInfo } from "@/types/interfaces/user";
 
 export default function useCurrentUserInfo() {
   const { userStore } = useStores();

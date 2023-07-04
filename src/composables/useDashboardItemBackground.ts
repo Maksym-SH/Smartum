@@ -1,5 +1,5 @@
 import { Colors } from "@/types/enums";
-import type { IBackgroundDashboard } from "@/types/interfaces";
+import type { IBackgroundDashboard } from "@/types/interfaces/colors";
 
 export default function useDashboardItemBackgroundTemplate(): IBackgroundDashboard {
   return {
@@ -13,12 +13,12 @@ export default function useDashboardItemBackgroundTemplate(): IBackgroundDashboa
       river: `${import.meta.env.BASE_URL}images/dashboardTemplates/river.jpeg`,
     },
     gradients: {
-      backgroundBlue: Colors.GradientBlue,
-      backgroundBluePink: Colors.GradientBluePink,
-      backgrondGreen: Colors.GradientGreen,
-      backgroundLightBlue: Colors.GradientLightBlue,
-      backgrondGray: Colors.GradientGray,
-      backgroundRedBlue: Colors.GradientRedBlue,
+      backgroundBlue: Colors.GRADIENT_BLUE,
+      backgroundBluePink: Colors.GRADIENT_BLUE_PINK,
+      backgrondGreen: Colors.GRADIENT_GREEN,
+      backgroundLightBlue: Colors.GRADIENT_LIGHT_BLUE,
+      backgrondGray: Colors.GRADIENT_GRAY,
+      backgroundRedBlue: Colors.GRADIENT_RED_BLUE,
     },
   };
 }

@@ -1,40 +1,28 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { User } from "firebase/auth";
 import { getAuth } from "firebase/auth";
-import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import {
-  ref as Refference,
-  deleteObject,
-  getDownloadURL,
-  getStorage,
-  listAll,
-  uploadBytes,
-} from "firebase/storage";
-import type {
-  ICreateUser,
-  IPictureParams,
-  IUserCreated,
-  IUserForList,
-  IUserInfo,
-} from "@/types/interfaces";
-import type { ErrorCode, IUserFieldsUpdate } from "@/types/types";
 import { database } from "@/helpers/firebase/firebaseInitialize";
-import { DataCollection } from "@/types/enums";
 import { SetTheme } from "@/helpers/methods";
 
+import * as fs from "firebase/firestore";
+import * as st from "firebase/storage";
 import router from "@/router";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 
-const useUserStore = defineStore("user", () => {
-  const { commonStore, notificationStore, configurationStore, dashboardStore } =
-    useStores();
+import type * as userType from "@/types/interfaces/user";
+import { DataCollection, Route } from "@/types/enums";
+import type { User } from "firebase/auth";
+import type { ErrorCode } from "@/types/types";
 
-  const storage = getStorage();
+const useUserStore = defineStore("user", () => {
+  const { commonStore, notificationStore, configurationStore, dashboardStore } = useStores();
+
+  const storage = st.getStorage();
 
   const currentUser = ref<User | {}>({});
-  const userInfo = ref<IUserCreated>({
+
+  const userInfo = ref<userType.IUserCreated>({
     firstName: "",
     lastName: "",
     about: "",
@@ -51,13 +39,14 @@ const useUserStore = defineStore("user", () => {
   };
 
   const getAllUserAvatars = (): Promise<string[]> => {
-    const storage = getStorage();
-    const listAvatarsRef = Refference(storage, import.meta.env.VITE_APP_ALL_AVATAR_PATH);
+    const storage = st.getStorage();
+
+    const listAvatarsRef = st.ref(storage, import.meta.env.VITE_APP_ALL_AVATAR_PATH);
 
     return new Promise((resolve, reject) => {
-      listAll(listAvatarsRef)
+      st.listAll(listAvatarsRef)
         .then((response) => {
-          const promises = response.items.map((item) => getDownloadURL(item));
+          const promises = response.items.map((item) => st.getDownloadURL(item));
 
           Promise.all(promises).then((photos: string[]) => resolve(photos));
         })
@@ -69,24 +58,24 @@ const useUserStore = defineStore("user", () => {
   };
 
   const getUserAvatar = (unicID: string): Promise<string> => {
-    const storage = getStorage();
-    const avatarRef = Refference(storage, unicID);
+    const avatarRef = st.ref(storage, unicID);
 
     return new Promise((resolve) => {
-      getDownloadURL(avatarRef).then((avatarParams) => {
+      st.getDownloadURL(avatarRef).then((avatarParams) => {
         resolve(avatarParams);
       });
     });
   };
+
   const updateUserAvatar = (
     file: File | null,
     unicID: string
-  ): Promise<string> | IPictureParams => {
+  ): Promise<string> | userType.IPictureParams => {
     if (!file) return userInfo.value.avatarParams;
 
-    const storageRef = Refference(storage, unicID);
+    const storageRef = st.ref(storage, unicID);
     return new Promise((resolve, reject) => {
-      uploadBytes(storageRef, file)
+      st.uploadBytes(storageRef, file)
         .then(() => {
           // Get image url after upload.
           getUserAvatar(unicID).then((url: string) => resolve(url));
@@ -97,10 +86,11 @@ const useUserStore = defineStore("user", () => {
         });
     });
   };
+
   const deleteUserAvatar = (unicID: string): Promise<void> => {
-    const deleteAvatarRef = Refference(storage, unicID);
+    const deleteAvatarRef = st.ref(storage, unicID);
     return new Promise((resolve, reject) => {
-      deleteObject(deleteAvatarRef)
+      st.deleteObject(deleteAvatarRef)
         .then(() => {
           resolve();
         })
@@ -110,24 +100,27 @@ const useUserStore = defineStore("user", () => {
         });
     });
   };
+
   // User settings.
   const setCurrentUser = (user: User | {}): void => {
     currentUser.value = user;
   };
-  const setUserInfo = (params: IUserCreated): void => {
+
+  const setUserInfo = (params: userType.IUserCreated): void => {
     userInfo.value = params;
   };
-  const getUserProfile = (unicID: string): Promise<IUserCreated> => {
+
+  const getUserProfile = (unicID: string): Promise<userType.IUserCreated> => {
     // Profile document by unicID in database.
-    const profileRef = doc(database, DataCollection.Profile, unicID);
+    const profileRef = fs.doc(database, DataCollection.PROFILE, unicID);
 
     commonStore.setLoadingStatus(true);
 
     return new Promise((resolve, reject) => {
       // Get profile info.
-      getDoc(profileRef)
+      fs.getDoc(profileRef)
         .then(async (response) => {
-          const info = response.data() as IUserCreated;
+          const info = response.data() as userType.IUserCreated;
           if (info) {
             // Get user avatar.
             if (info.avatarParams.url) {
@@ -146,13 +139,14 @@ const useUserStore = defineStore("user", () => {
         .finally(() => commonStore.setLoadingStatus(false));
     });
   };
-  const createUserProfile = (info: Partial<ICreateUser>): Promise<void> => {
+
+  const createUserProfile = (info: Partial<userType.ICreateUser>): Promise<void> => {
     const unicID = info.uid as string; // Unic id for database field access.
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
       // Create new profile collection.
-      setDoc(doc(database, DataCollection.Profile, unicID), {
+      fs.setDoc(fs.doc(database, DataCollection.PROFILE, unicID), {
         firstName: info.firstName,
         lastName: info.lastName || "",
         avatarParams: {
@@ -175,19 +169,19 @@ const useUserStore = defineStore("user", () => {
   const getUsersList = (
     loadPhotos?: boolean,
     showLoading = true
-  ): Promise<IUserForList[]> => {
-    const userListRef = doc(
+  ): Promise<userType.IUserForList[]> => {
+    const userListRef = fs.doc(
       database,
-      DataCollection.Users,
+      DataCollection.USERS,
       import.meta.env.VITE_APP_ALL_USER_COLLECTION
     );
 
     commonStore.setLoadingStatus(showLoading);
 
     return new Promise((resolve, reject) => {
-      getDoc(userListRef)
+      fs.getDoc(userListRef)
         .then((response) => {
-          const usersList = response.data()?.collection as IUserInfo[];
+          const usersList = response.data()?.collection as userType.IUserInfo[];
 
           if (loadPhotos) {
             getAllUserAvatars().then((list) => {
@@ -198,7 +192,7 @@ const useUserStore = defineStore("user", () => {
             });
           }
 
-          resolve(usersList as IUserForList[]);
+          resolve(usersList as userType.IUserForList[]);
         })
         .catch((error: ErrorCode) => {
           ShowErrorMessage(error);
@@ -209,12 +203,12 @@ const useUserStore = defineStore("user", () => {
   };
 
   const updateUsersList = (
-    newUserInfo: Partial<IUserForList> | string,
+    newUserInfo: Partial<userType.IUserForList> | string,
     deleteUser?: Boolean
-  ): Promise<IUserForList[]> => {
-    const usersListRef = doc(
+  ): Promise<userType.IUserForList[]> => {
+    const usersListRef = fs.doc(
       database,
-      DataCollection.Users,
+      DataCollection.USERS,
       import.meta.env.VITE_APP_ALL_USER_COLLECTION
     );
 
@@ -222,7 +216,7 @@ const useUserStore = defineStore("user", () => {
     return new Promise((resolve, reject) => {
       getUsersList().then((usersList) => {
         if (usersList) {
-          const userID = (newUserInfo as Partial<IUserForList>).uid || newUserInfo;
+          const userID = (newUserInfo as Partial<userType.IUserForList>).uid || newUserInfo;
 
           const foundUserIndex = usersList.findIndex((user) => user.uid === userID);
 
@@ -233,15 +227,15 @@ const useUserStore = defineStore("user", () => {
               usersList.splice(foundUserIndex, 1);
             } else {
               // Update user info.
-              usersList[foundUserIndex] = newUserInfo as IUserForList;
+              usersList[foundUserIndex] = newUserInfo as userType.IUserForList;
             }
           }
           // Add new user.
           else if ((currentUser.value as User).emailVerified) {
-            usersList.push(newUserInfo as IUserForList);
+            usersList.push(newUserInfo as userType.IUserForList);
           }
 
-          updateDoc(usersListRef, {
+          fs.updateDoc(usersListRef, {
             collection: usersList,
           })
             .then(() => resolve(usersList))
@@ -257,14 +251,14 @@ const useUserStore = defineStore("user", () => {
     });
   };
 
-  const updateUserInfo = async (data: IUserInfo): Promise<void> => {
+  const updateUserInfo = async (data: userType.IUserInfo): Promise<void> => {
     const unicID = data.uid as string; // Unic id for database field access.
-    const profileRef = doc(database, DataCollection.Profile, unicID);
+    const profileRef = fs.doc(database, DataCollection.PROFILE, unicID);
 
-    const { firstName, lastName, avatarParams, photoFile, about, phone }: IUserInfo =
+    const { firstName, lastName, avatarParams, photoFile, about, phone }: userType.IUserInfo =
       data;
 
-    const fieldsToUpdate: IUserFieldsUpdate = {
+    const fieldsToUpdate: userType.IUserFieldsUpdate = {
       firstName,
       lastName,
       avatarParams: {
@@ -278,11 +272,9 @@ const useUserStore = defineStore("user", () => {
     commonStore.setLoadingStatus(true);
     // New upload image.
     if (photoFile !== null) {
-      await (updateUserAvatar(photoFile, unicID) as Promise<string>).then(
-        (photo: string) => {
-          if (fieldsToUpdate.avatarParams) fieldsToUpdate.avatarParams.url = photo;
-        }
-      );
+      await (updateUserAvatar(photoFile, unicID) as Promise<string>).then((photo: string) => {
+        if (fieldsToUpdate.avatarParams) fieldsToUpdate.avatarParams.url = photo;
+      });
     }
     // Photo has been removed.
     else if (!avatarParams.url && userInfo.value.avatarParams.url) {
@@ -291,9 +283,9 @@ const useUserStore = defineStore("user", () => {
       });
     }
     return new Promise((resolve, reject) => {
-      updateDoc(profileRef, fieldsToUpdate)
+      fs.updateDoc(profileRef, fieldsToUpdate)
         .then(() => {
-          updateUsersList({ ...(fieldsToUpdate as IUserInfo), uid: unicID });
+          updateUsersList({ ...fieldsToUpdate, uid: unicID });
           getUserProfile(unicID).then(() => resolve());
         })
         .catch((error: ErrorCode) => {
@@ -302,14 +294,15 @@ const useUserStore = defineStore("user", () => {
         });
     });
   };
+
   const deleteUserProfile = (unicID: string): Promise<void> => {
     commonStore.setLoadingStatus(true);
 
     return new Promise((resolve, reject) => {
-      const deleteUserProfile = doc(database, DataCollection.Profile, unicID);
+      const deleteUserProfile = fs.doc(database, DataCollection.PROFILE, unicID);
       const currentUserAvatar = userInfo.value.avatarParams.url;
 
-      deleteDoc(deleteUserProfile)
+      fs.deleteDoc(deleteUserProfile)
         .then(() => {
           if (currentUserAvatar) deleteUserAvatar(unicID);
 
@@ -329,16 +322,13 @@ const useUserStore = defineStore("user", () => {
     });
   };
 
-  const updateUserBackgroundAvatar = (
-    bgAvatar: string,
-    unicID: string
-  ): Promise<void> => {
-    const profileRef = doc(database, DataCollection.Profile, unicID);
+  const updateUserBackgroundAvatar = (bgAvatar: string, unicID: string): Promise<void> => {
+    const profileRef = fs.doc(database, DataCollection.PROFILE, unicID);
 
     commonStore.setLoadingStatus(true);
 
     return new Promise((resolve, reject) => {
-      updateDoc(profileRef, {
+      fs.updateDoc(profileRef, {
         avatarParams: {
           url: userInfo.value.avatarParams.url,
           bgAvatar,
@@ -383,7 +373,7 @@ const useUserStore = defineStore("user", () => {
         dashboardStore.clearList(); // Clear any boards.
 
         if (!router.currentRoute.value.meta.notAuthorized) {
-          router.push({ name: "SignIn" });
+          router.push({ name: Route.SIGN_IN });
           localStorage.removeItem("smartumToken");
         }
       })

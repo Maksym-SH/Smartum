@@ -1,9 +1,6 @@
 <template>
   <div class="home-page">
-    <TheAside
-      v-model:minimizeAside="minimizeAside"
-      :notification-count="notificationsSize"
-    />
+    <TheAside v-model:minimizeAside="minimizeAside" :notification-count="notificationsSize" />
     <div
       class="home-page__wrapper"
       :class="{ 'minimize-info': minimizeAside }"
@@ -32,10 +29,6 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch, reactive } from "vue";
 import { useRoute } from "vue-router";
-import { Layout } from "@/types/enums";
-import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
-import type { IMetaName, ITabInfo } from "@/types/interfaces";
-import { RouterMeta } from "@/types/types";
 
 import i18n from "@/i18n";
 import useNotifications from "@/composables/useNotifications";
@@ -43,6 +36,11 @@ import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
 import TheHeader from "@/components/container/TheHeader.vue";
 import TheAside from "@/components/container/TheAside.vue";
+
+import { Layout } from "@/types/enums";
+import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
+import type { IMetaName, ITabInfo } from "@/types/interfaces";
+import { RouterMeta } from "@/types/types";
 
 export default defineComponent({
   components: {
@@ -77,7 +75,7 @@ export default defineComponent({
     const minimizeAside = ref(true);
     const toggleAsideVisible = (value: boolean, capture = false): void => {
       if (!capture) minimizeAside.value = value;
-      else if (window.innerWidth <= Layout.Laptop) minimizeAside.value = capture;
+      else if (window.innerWidth <= Layout.LAPTOP) minimizeAside.value = capture;
     };
 
     const translatePageInfo = (tabName: unknown): void => {

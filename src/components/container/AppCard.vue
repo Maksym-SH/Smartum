@@ -18,10 +18,7 @@
         </tr>
       </thead>
       <slot v-if="$slots['table-body']" name="table-body"></slot>
-      <tfoot
-        v-if="$slots['table-body'] || $slots['table-footer']"
-        class="card__table-footer"
-      >
+      <tfoot v-if="$slots['table-body'] || $slots['table-footer']" class="card__table-footer">
         <slot name="table-footer-titles"></slot>
         <slot name="table-footer"></slot>
       </tfoot>
@@ -31,8 +28,9 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { defineComponent } from "vue";
+
+import type { PropType } from "vue";
 import type { Variant } from "@/types/types";
 
 export default defineComponent({

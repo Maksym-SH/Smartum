@@ -1,7 +1,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import type { IPopupParams } from "@/types/interfaces";
-import type { ModalContentType } from "@/types/types";
+
+import type { IPopupParams } from "@/types/interfaces/components";
+import { ModalContentType } from "@/types/enums";
 
 const useCommonStore = defineStore("common", () => {
   const showTemplateApplication = ref(false);
@@ -12,7 +13,7 @@ const useCommonStore = defineStore("common", () => {
 
   const openConfirmPopup = ref(false);
 
-  const modalContentType = ref<ModalContentType>("");
+  const modalContentType = ref(ModalContentType.NONE);
 
   const setLoadingStatus = (status: boolean): void => {
     loadingStatus.value = status;
@@ -27,6 +28,7 @@ const useCommonStore = defineStore("common", () => {
   };
 
   const setModalContentType = (type: ModalContentType): void => {
+    console.log(type);
     modalContentType.value = type;
   };
 

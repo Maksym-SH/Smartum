@@ -1,12 +1,13 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { notify } from "@kyvg/vue3-notification";
-import type { Routes } from "@/types/types";
 
 import i18n from "@/i18n";
 
-const routes: Routes = [
+import { Route } from "@/types/enums";
+
+const routes: Readonly<RouteRecordRaw[]> = [
   {
-    name: "SignIn",
+    name: Route.SIGN_IN,
     path: "/sign-in",
     meta: {
       notAuthorized: true,
@@ -14,7 +15,7 @@ const routes: Routes = [
     component: () => import("@/views/SignInPage.vue"),
   },
   {
-    name: "SignUp",
+    name: Route.SIGN_UP,
     path: "/sign-up",
     meta: {
       notAuthorized: true,
@@ -22,7 +23,7 @@ const routes: Routes = [
     component: () => import("@/views/SignUpPage.vue"),
   },
   {
-    name: "Forgot",
+    name: Route.FORGOT,
     path: "/forgot-password",
     meta: {
       free: true,
@@ -31,7 +32,7 @@ const routes: Routes = [
     component: () => import("@/views/ForgotPasswordPage.vue"),
   },
   {
-    name: "Home",
+    name: Route.HOME,
     path: "/",
     redirect: "/dashboard",
     meta: {
@@ -40,7 +41,7 @@ const routes: Routes = [
     component: () => import("@/views/HomePage.vue"),
     children: [
       {
-        name: "Profile",
+        name: Route.PROFILE,
         path: "/profile",
         meta: {
           tabName: "Profile",
@@ -49,27 +50,25 @@ const routes: Routes = [
         component: () => import("@/views/tabs/ProfileTab.vue"),
       },
       {
-        name: "Notifications",
+        name: Route.NOTIFICATIONS,
         path: "/notifications",
         meta: {
           tabName: "Notifications",
-
           protected: true,
         },
         component: () => import("@/views/tabs/NotificationsTab.vue"),
       },
       {
-        name: "Reports",
+        name: Route.REPORTS,
         path: "/reports",
         meta: {
           tabName: "Reports",
-
           protected: true,
         },
         component: () => import("@/views/tabs/ReportsTab.vue"),
       },
       {
-        name: "Configuration",
+        name: Route.CONFIGURATION,
         path: "/configuration",
         meta: {
           tabName: "Configuration",
@@ -78,16 +77,7 @@ const routes: Routes = [
         component: () => import("@/views/tabs/ConfigurationTab.vue"),
       },
       {
-        name: "Configuration",
-        path: "/configuration",
-        meta: {
-          tabName: "Configuration",
-          protected: true,
-        },
-        component: () => import("@/views/tabs/ConfigurationTab.vue"),
-      },
-      {
-        name: "Dashboard",
+        name: Route.DASHBOARD,
         path: "/dashboard",
         meta: {
           tabName: "Dashboard",
@@ -98,7 +88,7 @@ const routes: Routes = [
     ],
   },
   {
-    name: "Board",
+    name: Route.BOARD,
     path: "/dashboards/board/:code",
     meta: {
       protected: true,
@@ -106,7 +96,7 @@ const routes: Routes = [
     component: () => import("@/views/BoardPage.vue"),
   },
   {
-    name: "NotFound",
+    name: Route.NOT_FOUND,
     path: "/:pathMath(.*)",
     redirect: "/dashboard",
   },

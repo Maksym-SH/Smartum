@@ -1,17 +1,9 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import * as fs from "firebase/firestore";
 import { notify } from "@kyvg/vue3-notification";
 import { database, RTDatabase } from "@/helpers/firebase/firebaseInitialize";
-import { child, get, onValue, ref as Refference, set, update } from "firebase/database";
-import { DataCollection, NotificationType, UserRole } from "@/types/enums";
-import type {
-  IUserForList,
-  IWorkingBoardItem,
-  IWorkingBoardMember,
-  IWorkingBoardResolve,
-} from "@/types/interfaces";
-import type { ErrorCode } from "@/types/types";
+import * as db from "firebase/database";
 
 import i18n from "@/i18n";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
@@ -19,23 +11,28 @@ import useStores from "@/composables/useStores";
 import router from "@/router";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 
+import * as enums from "@/types/enums";
+import type * as boardType from "@/types/interfaces/board";
+import type { ErrorCode } from "@/types/types";
+import type { IUserForList } from "@/types/interfaces/user";
+
 const useDashboardStore = defineStore("dashboard", () => {
   const { t } = i18n.global;
 
   const { commonStore, userStore, notificationStore } = useStores();
 
-  const allBoards = ref<IWorkingBoardItem[]>([]);
+  const allBoards = ref<boardType.IWorkingBoardItem[]>([]);
 
-  const boardItem = ref<IWorkingBoardItem>({} as IWorkingBoardItem);
+  const boardItem = ref<boardType.IWorkingBoardItem>({} as boardType.IWorkingBoardItem);
 
   const boardMembers = ref([] as IUserForList[]);
 
   const boardCodes = ref<string[]>([]);
 
-  const setAllDashboard = (dashboards: IWorkingBoardItem[]): void => {
+  const setAllDashboard = (dashboards: boardType.IWorkingBoardItem[]): void => {
     allBoards.value = dashboards;
   };
-  const addNewBoard = (item: IWorkingBoardItem): void => {
+  const addNewBoard = (item: boardType.IWorkingBoardItem): void => {
     allBoards.value.push(item);
   };
   const clearList = (): void => {
@@ -43,18 +40,18 @@ const useDashboardStore = defineStore("dashboard", () => {
     boardCodes.value = [];
   };
   const createNewWorkingBoard = (
-    board: IWorkingBoardItem,
+    board: boardType.IWorkingBoardItem,
     unicID: string
-  ): Promise<IWorkingBoardItem> => {
+  ): Promise<boardType.IWorkingBoardItem> => {
     commonStore.setLoadingStatus(true);
 
     return new Promise((resolve, reject) => {
       createJoinCode(unicID, board.joinCode)
         .then(() => {
-          const refference = Refference(RTDatabase, board.joinCode);
+          const refference = db.ref(RTDatabase, board.joinCode);
 
-          set(refference, board).then(() => {
-            onValue(
+          db.set(refference, board).then(() => {
+            db.onValue(
               refference,
               (boardSnapshot) => {
                 allBoards.value.push(boardSnapshot.val());
@@ -74,14 +71,14 @@ const useDashboardStore = defineStore("dashboard", () => {
 
   // Codes actions.
   const createJoinCode = (unicID: string, joinCode: string): Promise<string> => {
-    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+    const dashboardRef = fs.doc(database, enums.DataCollection.DASHBOARD, unicID);
 
     return new Promise((resolve, reject) => {
-      getDoc(dashboardRef).then((codesDoc) => {
+      fs.getDoc(dashboardRef).then((codesDoc) => {
         if (codesDoc.exists()) {
           boardCodes.value.push(joinCode);
 
-          updateDoc(dashboardRef, "collection", boardCodes.value)
+          fs.updateDoc(dashboardRef, "collection", boardCodes.value)
             .then(() => {
               resolve(joinCode);
             })
@@ -91,7 +88,7 @@ const useDashboardStore = defineStore("dashboard", () => {
             })
             .finally(() => commonStore.setLoadingStatus(false));
         } else {
-          setDoc(doc(database, DataCollection.Dashboard, unicID), {
+          fs.setDoc(fs.doc(database, enums.DataCollection.DASHBOARD, unicID), {
             collection: [joinCode],
           })
             .then(() => {
@@ -108,11 +105,11 @@ const useDashboardStore = defineStore("dashboard", () => {
     });
   };
   const deleteAllCodes = (unicID: string): Promise<void> => {
-    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+    const dashboardRef = fs.doc(database, enums.DataCollection.DASHBOARD, unicID);
 
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
-      deleteDoc(dashboardRef)
+      fs.deleteDoc(dashboardRef)
         .then(() => {
           clearList();
           resolve();
@@ -125,10 +122,10 @@ const useDashboardStore = defineStore("dashboard", () => {
     });
   };
   const getAllJoinCodes = (unicID: string): Promise<void> => {
-    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+    const dashboardRef = fs.doc(database, enums.DataCollection.DASHBOARD, unicID);
 
     return new Promise((resolve, reject) => {
-      getDoc(dashboardRef)
+      fs.getDoc(dashboardRef)
         .then((response) => {
           boardCodes.value = (response.data()?.collection as string[]) || [];
           resolve();
@@ -140,10 +137,10 @@ const useDashboardStore = defineStore("dashboard", () => {
     });
   };
   const updateAllJoinCodes = (unicID: string): Promise<void> => {
-    const dashboardRef = doc(database, DataCollection.Dashboard, unicID);
+    const dashboardRef = fs.doc(database, enums.DataCollection.DASHBOARD, unicID);
 
     return new Promise((resolve, reject) => {
-      updateDoc(dashboardRef, "collection", boardCodes.value)
+      fs.updateDoc(dashboardRef, "collection", boardCodes.value)
         .then(() => {
           resolve();
         })
@@ -154,22 +151,21 @@ const useDashboardStore = defineStore("dashboard", () => {
     });
   };
   // Board actions.
-  const getAllWorkingBoards = (unicID: string): Promise<IWorkingBoardItem[]> => {
+  const getAllWorkingBoards = (unicID: string): Promise<boardType.IWorkingBoardItem[]> => {
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
       getAllJoinCodes(unicID)
         .then(() => {
           if (boardCodes.value.length) {
             boardCodes.value.map((joinCode) => {
-              onValue(Refference(RTDatabase, joinCode), (boardSnapshot) => {
+              db.onValue(db.ref(RTDatabase, joinCode), (boardSnapshot) => {
                 if (boardSnapshot.val() !== null) {
                   const boardExistIndex = allBoards.value.findIndex(
                     (board) => board.joinCode === joinCode
                   );
 
                   if (boardExistIndex !== -1) {
-                    allBoards.value[boardExistIndex].members =
-                      boardSnapshot.val().members;
+                    allBoards.value[boardExistIndex].members = boardSnapshot.val().members;
                   } else {
                     allBoards.value.push(boardSnapshot.val());
                   }
@@ -196,14 +192,14 @@ const useDashboardStore = defineStore("dashboard", () => {
   const getWorkingBoardItem = (
     unicID: string,
     joinCode: string
-  ): Promise<IWorkingBoardItem> => {
+  ): Promise<boardType.IWorkingBoardItem | {}> => {
     commonStore.setLoadingStatus(true);
 
     return new Promise((resolve, reject) => {
       getAllJoinCodes(unicID).then(() => {
         if (boardCodes.value.includes(joinCode)) {
-          onValue(Refference(RTDatabase, joinCode), async (boardData) => {
-            const currentBoard = boardData.val() as IWorkingBoardItem;
+          db.onValue(db.ref(RTDatabase, joinCode), async (boardData) => {
+            const currentBoard = boardData.val() as boardType.IWorkingBoardItem;
 
             if (router.currentRoute.value.params?.code !== currentBoard.joinCode) return;
 
@@ -222,9 +218,7 @@ const useDashboardStore = defineStore("dashboard", () => {
                   });
 
                   sortedUsersAsMembers.forEach((item) => {
-                    const member = currentBoard.members.find(
-                      (user) => user.uid === item.uid
-                    );
+                    const member = currentBoard.members.find((user) => user.uid === item.uid);
                     if (member) {
                       item.role = member.role ?? "";
                       item.invited = member.invited ?? false;
@@ -242,7 +236,7 @@ const useDashboardStore = defineStore("dashboard", () => {
                   resolve(boardItem.value);
                 });
               } else {
-                set(Refference(RTDatabase, joinCode), null); // Delete board from database.
+                db.set(db.ref(RTDatabase, joinCode), null); // Delete board from database.
 
                 const currentBoardCodeIndex = boardCodes.value.findIndex(
                   (code) => code === joinCode
@@ -269,11 +263,12 @@ const useDashboardStore = defineStore("dashboard", () => {
   };
 
   const updateWorkingBoard = async (
-    updatedBoard: IWorkingBoardItem,
+    updatedBoard: boardType.IWorkingBoardItem,
     showLoading = true
   ): Promise<void> => {
     commonStore.setLoadingStatus(showLoading);
-    await update(Refference(RTDatabase, updatedBoard.joinCode), updatedBoard)
+    await db
+      .update(db.ref(RTDatabase, updatedBoard.joinCode), updatedBoard)
       .catch((error: ErrorCode) => {
         ShowErrorMessage(error);
       })
@@ -283,13 +278,13 @@ const useDashboardStore = defineStore("dashboard", () => {
   };
 
   const joinWorkingBoard = (
-    { joinCode }: Pick<IWorkingBoardItem, "uid" | "joinCode">,
+    { joinCode }: Pick<boardType.IWorkingBoardItem, "uid" | "joinCode">,
     unicID: string
   ) => {
-    get(child(Refference(RTDatabase), joinCode)).then((boardDoc) => {
+    db.get(db.child(db.ref(RTDatabase), joinCode)).then((boardDoc) => {
       if (boardDoc.exists()) {
         createJoinCode(unicID, joinCode).then(() => {
-          const board = boardDoc.val() as IWorkingBoardItem;
+          const board = boardDoc.val() as boardType.IWorkingBoardItem;
 
           // Set task arrays if none exist.
           board.columns.map((column) => {
@@ -301,7 +296,7 @@ const useDashboardStore = defineStore("dashboard", () => {
 
           if (currentInvitedUser) {
             delete currentInvitedUser.invited;
-            currentInvitedUser.role = UserRole.Member;
+            currentInvitedUser.role = enums.UserRole.MEMBER;
 
             updateWorkingBoard(board);
 
@@ -320,19 +315,17 @@ const useDashboardStore = defineStore("dashboard", () => {
           type: "error",
         });
 
-        router.push({ name: "Dashboard" });
+        router.push({ name: enums.Route.DASHBOARD });
       }
     });
   };
 
   const leaveWorkingBoard = (
-    member: IWorkingBoardMember,
-    fromBoard: IWorkingBoardItem
+    member: boardType.IWorkingBoardMember,
+    fromBoard: boardType.IWorkingBoardItem
   ): Promise<void> => {
     const memberID = member.uid;
-    const leavedMemberIndex = fromBoard.members.findIndex(
-      (user) => user.uid === memberID
-    );
+    const leavedMemberIndex = fromBoard.members.findIndex((user) => user.uid === memberID);
 
     if (leavedMemberIndex !== -1) {
       fromBoard.members.splice(leavedMemberIndex, 1); // Remove user.
@@ -341,10 +334,10 @@ const useDashboardStore = defineStore("dashboard", () => {
 
       if (fromBoard.uid === member.uid && firstMember && !firstMember.invited) {
         fromBoard.uid = firstMember.uid; // Set as admin the first invited user.
-        firstMember.role = UserRole.Admin;
+        firstMember.role = enums.UserRole.ADMIN;
 
         const notification = useNewNotificationContent(
-          NotificationType.SetAdmin,
+          enums.NotificationType.SET_ADMIN,
           fromBoard.title,
           fromBoard
         );
@@ -376,7 +369,7 @@ const useDashboardStore = defineStore("dashboard", () => {
           }
         }
 
-        router.push({ name: "Dashboard" });
+        router.push({ name: enums.Route.DASHBOARD });
 
         await updateAllJoinCodes(memberID);
 
@@ -391,14 +384,14 @@ const useDashboardStore = defineStore("dashboard", () => {
   };
 
   const membersExist = async (
-    boardInfo: IWorkingBoardResolve
-  ): Promise<IWorkingBoardResolve> => {
+    boardInfo: boardType.IWorkingBoardResolve
+  ): Promise<boardType.IWorkingBoardResolve> => {
     const loadedMembers = boardInfo.members;
 
     const savedMembers = boardInfo.value.members;
 
     if (loadedMembers.length !== savedMembers.length) {
-      const exist: IWorkingBoardMember[] = loadedMembers.map((item) => {
+      const exist: boardType.IWorkingBoardMember[] = loadedMembers.map((item) => {
         return {
           role: item.role,
           uid: item.uid,
@@ -406,18 +399,18 @@ const useDashboardStore = defineStore("dashboard", () => {
         };
       });
 
-      const adminExist = exist.some((member) => member.role === UserRole.Admin);
+      const adminExist = exist.some((member) => member.role === enums.UserRole.ADMIN);
 
       // Set new admin board for first invited user.
       if (!adminExist) {
         const newAdmin = exist[0];
-        newAdmin.role = UserRole.Admin;
+        newAdmin.role = enums.UserRole.ADMIN;
 
         // Set for saved members.
-        boardInfo.members[0].role = UserRole.Admin;
+        boardInfo.members[0].role = enums.UserRole.ADMIN;
 
         const newAdminNotification = useNewNotificationContent(
-          NotificationType.SetAdmin,
+          enums.NotificationType.SET_ADMIN,
           boardInfo.value.title,
           boardInfo.value
         );

@@ -28,14 +28,21 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
-import type { IModalContent } from "@/types/interfaces";
-import { useLongContentModalProps } from "./use/useProps";
 
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 
+import { ModalContentType } from "@/types/enums";
+import type { PropType } from "vue";
+import type { IModalContent } from "@/types/interfaces/components";
+
 export default defineComponent({
-  props: useLongContentModalProps,
+  props: {
+    contentType: {
+      type: String as PropType<ModalContentType>,
+      required: true,
+    },
+  },
   setup(props) {
     const { t } = i18n.global;
 
@@ -44,7 +51,7 @@ export default defineComponent({
     const dialog = ref(true);
 
     const currentContent = computed((): IModalContent => {
-      if (props.contentType === "termsOfUse")
+      if (props.contentType === ModalContentType.TERMS_OF_USE)
         return {
           title: t("termsOfUse.title"),
           content: t("termsOfUse.content"),
@@ -57,11 +64,11 @@ export default defineComponent({
     });
 
     const closeModal = (): void => {
-      commonStore.setModalContentType("");
+      commonStore.setModalContentType(ModalContentType.NONE);
     };
 
     watch(dialog, (value) => {
-      if (!value) commonStore.setModalContentType("");
+      if (!value) commonStore.setModalContentType(ModalContentType.NONE);
     });
 
     return {

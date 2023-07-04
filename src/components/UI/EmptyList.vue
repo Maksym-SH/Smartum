@@ -13,14 +13,16 @@ import { useEmptyListProps } from "./use/useProps";
 
 import i18n from "@/i18n";
 
+import { EmptyListType } from "@/types/enums";
+
 export default defineComponent({
   props: useEmptyListProps,
   setup(props) {
     const { t } = i18n.global;
 
     const descriptionContent = computed((): string => {
-      if (props.type === "dashboard") return t("emptyList.boards");
-      else if (props.type === "notification") return t("emptyList.notifications");
+      if (props.type === EmptyListType.DASHBOARD) return t("emptyList.boards");
+      else if (props.type === EmptyListType.NOTIFICATIONS) return t("emptyList.notifications");
 
       // ToDo: smt else
       return "";

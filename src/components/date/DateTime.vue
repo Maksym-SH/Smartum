@@ -3,11 +3,7 @@
     <div v-if="showTemplate" class="date__wrapper">
       <h3 class="date__title">
         <span class="date__icon">
-          <img
-            class="date__icon-picture"
-            :src="`/images/icons/${imageType}.svg`"
-            alt=""
-          />
+          <img class="date__icon-picture" :src="`/images/icons/${imageType}.svg`" alt="" />
         </span>
         {{ welcomeText }}
       </h3>
@@ -25,12 +21,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from "vue";
-import type { I18nLanguage, Icon } from "@/types/types";
-import { Numbers } from "@/types/enums";
 
 import i18n from "@/i18n";
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import timestamp from "@/helpers/dateTime/stamp";
+
+import { Numbers, Language } from "@/types/enums";
+import type { TimeIcon } from "@/types/types";
 
 export default defineComponent({
   setup() {
@@ -45,7 +42,7 @@ export default defineComponent({
     const time = ref("");
     const date = ref("");
 
-    const imageType = ref<Icon>("" as Icon);
+    const imageType = ref<TimeIcon>("");
 
     const showTemplate = computed((): boolean => Boolean(time.value && date.value));
 
@@ -55,10 +52,7 @@ export default defineComponent({
       const currentTimeHours = new Date().getHours();
 
       // If the time is later than 16:00 || 4 pm and later than 6:00 || 6 pm.
-      if (
-        currentTimeHours < Numbers.EveningTime &&
-        currentTimeHours > Numbers.MorningTime
-      ) {
+      if (currentTimeHours < Numbers.EVENING_TIME && currentTimeHours > Numbers.MORNING_TIME) {
         welcomeText.value = t("time.morning");
         imageType.value = "sun";
       } else {
@@ -71,9 +65,9 @@ export default defineComponent({
       updateTimeInterval.value = setInterval((): void => {
         const currentDate = new Date();
 
-        time.value = timestamp(currentDate, i18nLocale.value as I18nLanguage).time;
-        date.value = timestamp(currentDate, i18nLocale.value as I18nLanguage).date;
-      }, Numbers.Second);
+        time.value = timestamp(currentDate, i18nLocale.value as Language).time;
+        date.value = timestamp(currentDate, i18nLocale.value as Language).date;
+      }, Numbers.SECOND);
     });
 
     onUnmounted((): void => {

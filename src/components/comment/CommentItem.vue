@@ -24,8 +24,8 @@
           key="textarea"
           :name="dateOfCreate"
           v-model="messageValue"
-          :max="Length.Textarea"
-          :min="Length.Text"
+          :max="Length.TEXTAREA"
+          :min="Length.TEXT"
         />
         <p v-else key="text" class="comment__info-message">{{ commentMessage }}</p>
       </transition>
@@ -57,9 +57,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
-import type { PropType } from "vue";
-import { Colors, Length } from "@/types/enums";
-import { IEmoji, INewEmojiParams, ITaskComment } from "@/types/interfaces";
 import { ArrayHasValues, NewObjectLink, OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
@@ -67,6 +64,10 @@ import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDateParseToString from "@/composables/useDateParse";
 import Avatar from "../user/AppAvatar.vue";
 import EmojiPicker from "../UI/EmojiPicker.vue";
+
+import type { PropType } from "vue";
+import { Colors, Length } from "@/types/enums";
+import type { IEmoji, INewEmojiParams, ITaskComment } from "@/types/interfaces/board";
 
 export default defineComponent({
   props: {
@@ -91,12 +92,7 @@ export default defineComponent({
     Avatar,
     EmojiPicker,
   },
-  emits: [
-    "update:comment-message",
-    "update:comment-emoji",
-    "update:edited",
-    "deleteComment",
-  ],
+  emits: ["update:comment-message", "update:comment-emoji", "update:edited", "deleteComment"],
   setup(props, { emit }) {
     const { t } = i18n.global;
 
@@ -117,7 +113,7 @@ export default defineComponent({
     });
 
     const toggleEditMode = () => {
-      if (editMode.value && messageValue.value.length < Length.Text) {
+      if (editMode.value && messageValue.value.length < Length.TEXT) {
         return;
       } else {
         editMode.value = !editMode.value;
@@ -139,7 +135,7 @@ export default defineComponent({
         buttons: {
           yes: {
             text: t("buttons.delete"),
-            color: Colors.Danger,
+            color: Colors.DANGER,
           },
         },
         callback: () => {

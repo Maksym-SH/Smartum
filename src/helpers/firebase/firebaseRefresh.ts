@@ -1,8 +1,9 @@
 import { getAuth } from "firebase/auth";
-import type { ErrorCode } from "@/types/types";
 
 import ShowErrorMessage from "./firebaseErrorMessage";
 import useStores from "@/composables/useStores";
+
+import type { ErrorCode } from "@/types/types";
 
 export default async function refreshUserInfo(): Promise<void> {
   const { commonStore, userStore, configurationStore } = useStores();

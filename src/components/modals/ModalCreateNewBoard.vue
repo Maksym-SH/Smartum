@@ -1,11 +1,7 @@
 <template>
   <v-dialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
     <template #activator="{ props }">
-      <AppButton
-        class="create-dashboard-btn"
-        v-bind="props"
-        :title="$t('buttons.newBoard')"
-      />
+      <AppButton class="create-dashboard-btn" v-bind="props" :title="$t('buttons.newBoard')" />
     </template>
     <template #default>
       <v-card>
@@ -25,8 +21,8 @@
                 :label="$t('labels.boardTitle')"
                 required
                 name="DashboardHeader"
-                :min="Length.Text"
-                :maxLength="Length.Maximum"
+                :min="Length.TEXT"
+                :maxLength="Length.MAX"
               />
             </div>
             <div class="v-card__wrapper-background-select">
@@ -75,7 +71,6 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
-import type { IBackgroundDashboard, IWorkingBoardItem } from "@/types/interfaces";
 import { Colors, Length, Numbers, UserRole } from "@/types/enums";
 import { GenerateJoinCode } from "@/helpers/methods";
 
@@ -84,6 +79,9 @@ import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDashboardItemBackgroundTemplate from "@/composables/useDashboardItemBackground";
 import BoardImageResult from "../board/BoardImageResult.vue";
 import ImageBackgroundExample from "../UI/BackgroundItem.vue";
+
+import type { IBackgroundDashboard } from "@/types/interfaces/colors";
+import type { IWorkingBoardItem } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {
@@ -103,7 +101,7 @@ export default defineComponent({
 
     const newBoard = reactive<Partial<IWorkingBoardItem>>({
       title: "",
-      background: Colors.GradientBluePink,
+      background: Colors.GRADIENT_BLUE_PINK,
       columns: [
         {
           id: 0,
@@ -121,19 +119,19 @@ export default defineComponent({
           tasks: [],
         },
       ],
-      members: [{ role: UserRole.Admin, uid: unicID.value }],
+      members: [{ role: UserRole.ADMIN, uid: unicID.value }],
       uid: unicID.value,
     });
 
     const createNewBoard = () => {
-      if (newBoard.title!.length < Length.Text) return;
+      if (newBoard.title!.length < Length.TEXT) return;
 
       // Set date of creation working board.
       const dateOfCreation: Date = new Date();
       newBoard.dateOfCreation = dateOfCreation.toString();
 
       // Set unic code for board joining.
-      newBoard.joinCode = GenerateJoinCode(Numbers.JoinCodeSize);
+      newBoard.joinCode = GenerateJoinCode(Numbers.JOIN_CODE_SIZE);
 
       emit("createNew", Object.assign({}, newBoard));
 
@@ -141,7 +139,7 @@ export default defineComponent({
 
       // Set default value.
       newBoard.title = "";
-      newBoard.background = Colors.GradientBluePink;
+      newBoard.background = Colors.GRADIENT_BLUE_PINK;
     };
 
     return {
