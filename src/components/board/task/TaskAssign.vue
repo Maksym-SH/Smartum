@@ -11,8 +11,9 @@
       <DropdownWindow
         :visible="showWindowAssign"
         :centering="!notAssignedMembersExist"
-        :width="280"
+        :width="250"
         :height="275"
+        save-fix-height
       >
         <template #header>
           <div class="assigned-members__window-header">
@@ -106,8 +107,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { ArrayHasValues } from "@/helpers/methods";
+import { ArrayHasValues, OpenPopup } from "@/helpers/methods";
 
+import i18n from "@/i18n";
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
 import InlineSvg from "vue-inline-svg";
 import DropdownWindow from "@/components/container/DropdownWindow.vue";
@@ -126,6 +129,10 @@ export default defineComponent({
       type: Array as PropType<IUserForList[]>,
       required: true,
     },
+    taskName: {
+      type: String,
+      required: true,
+    },
   },
   emits: ["assign-new-member"],
   components: {
@@ -134,7 +141,11 @@ export default defineComponent({
     InlineSvg,
   },
   setup(props, { emit }) {
+    const { t } = i18n.global;
+
     const { memebersIds } = useBoardMembersInfo();
+
+    const { getFullName } = useCurrentUserInfo();
 
     const showWindowAssign = ref(false);
 
@@ -150,8 +161,22 @@ export default defineComponent({
     });
 
     const assignMember = (member: IUserForList): void => {
-      showWindowAssign.value = false;
-      emit("assign-new-member", member);
+      OpenPopup({
+        title: t("popup.assignMemberToTask.title"),
+        text: t("popup.assignMemberToTask.text", {
+          member: getFullName(member),
+          task: props.taskName,
+        }),
+        buttons: {
+          yes: {
+            text: t("buttons.assign"),
+          },
+        },
+        callback: (): void => {
+          showWindowAssign.value = false;
+          emit("assign-new-member", member);
+        },
+      });
     };
 
     return {
@@ -213,17 +238,15 @@ export default defineComponent({
       .member {
         display: flex;
         justify-content: space-between;
-        padding-left: 5px;
 
         &__info {
           display: inline-flex;
           align-items: center;
           gap: 5px;
-          width: 145px;
-          overflow: hidden;
           height: 40px;
 
           &-title {
+            width: 145px;
             color: var(--color-text);
             font-size: 13px;
             white-space: nowrap;
@@ -231,6 +254,8 @@ export default defineComponent({
         }
 
         &__actions {
+          display: flex;
+          align-items: center;
           .c-button {
             font-size: 18px;
           }
@@ -277,6 +302,12 @@ export default defineComponent({
 
       .member {
         padding-left: 0;
+
+        &__info {
+          &-title {
+            width: 180px;
+          }
+        }
 
         &__actions {
           .c-button {

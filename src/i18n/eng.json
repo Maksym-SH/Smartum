@@ -37,6 +37,7 @@
     "apply": "Apply",
     "notification": "notification",
     "confirm": "Confirm",
+    "assign": "Assign",
     "emailConfirm": "Confirm address",
     "signOut": "Sign out",
     "signIn": "Sign in",
@@ -155,7 +156,7 @@
   "dropdown": {
     "assign": "Add Members",
     "assignReady": "All members have been assigned!",
-    "accuaintance": "Information",
+    "accuaintance": "Acquaintance",
     "notifications": "Notifications",
     "notificationFilter": "Only unread"
   },
@@ -321,6 +322,10 @@
     "deleteSubtask": {
       "title": "Deleting a subtask",
       "text": "Are you sure you want to delete task '{subtask}'?"
+    },
+    "assignMemberToTask": {
+      "title": "Assigning members",
+      "text": "Assign member \"{member}\" to task {task}?"
     },
     "confirmPassword": {
       "title": "Confirmation",

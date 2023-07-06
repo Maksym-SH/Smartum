@@ -80,6 +80,7 @@
                 <MembersAssign
                   v-if="currentTask.assignedMembers"
                   :all-members="boardMembers"
+                  :task-name="currentTask.title"
                   :assigned-members="currentTask.assignedMembers"
                   @assign-new-member="assignNewMember"
                 />

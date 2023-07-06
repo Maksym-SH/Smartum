@@ -9,7 +9,7 @@
     <DropdownWindow
       :visible="showAcquaintanceWindow"
       :width="400"
-      :height="525"
+      :height="400"
       :centering="!showTemplate"
       @hide-dropdown="showAcquaintanceWindow = false"
     >
@@ -125,9 +125,9 @@ export default defineComponent({
 
       &-picture {
         width: 100%;
+        height: 180px;
         display: block;
         margin: 0 auto;
-        height: auto;
       }
 
       &-info {
@@ -159,6 +159,10 @@ export default defineComponent({
       &-content {
         display: flex;
         flex-direction: column;
+
+        &-picture {
+          height: auto;
+        }
 
         &-description {
           margin-top: 0;

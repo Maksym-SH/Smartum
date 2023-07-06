@@ -37,6 +37,7 @@
     "apply": "Применить",
     "notification": "Уведомления",
     "confirm": "Подтвердить",
+    "assign": "Назначить",
     "emailConfirm": "Подтвердить адрес",
     "signOut": "Выйти с аккаунта",
     "signIn": "Войти",
@@ -155,7 +156,7 @@
   "dropdown": {
     "assign": "Добавить участников",
     "assignReady": "Все участники назначены!",
-    "accuaintance": "Информация",
+    "accuaintance": "Знакомство",
     "notifications": "Уведомления",
     "notificationFilter": "Только непрочитанные"
   },
@@ -321,6 +322,10 @@
     "deleteSubtask": {
       "title": "Удаление подзадачи",
       "text": "Вы действительно хотите удалить задачу '{subtask}'?"
+    },
+    "assignMemberToTask": {
+      "title": "Назначение участников",
+      "text": "Назначить участника \"{member}\" на выполнение задачи {task}?"
     },
     "confirmPassword": {
       "title": "Подтверждение действия",

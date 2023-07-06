@@ -8,7 +8,11 @@
         v-if="$slots.content"
         class="dropdown-window__content"
         :style="windowSize"
-        :class="{ centering: centering, 'no-header': !$slots.header }"
+        :class="{
+          centering: centering,
+          'no-header': !$slots.header,
+          'save-fix-height': saveFixHeight,
+        }"
       >
         <slot name="content" />
       </div>
@@ -44,6 +48,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    saveFixHeight: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     const windowSize = computed((): CSSProperties => {
@@ -67,6 +75,7 @@ export default defineComponent({
   top: calc(100% + 15px);
   right: 0;
   background-color: var(--color-background);
+  box-shadow: 0 10px 10px rgba($color-transp-black, 0.3);
 
   &__header {
     padding: 5px;
@@ -77,6 +86,10 @@ export default defineComponent({
     overflow: hidden scroll;
     padding: 5px 5px 5px 10px;
     max-height: 65vh;
+
+    &.save-fix-height {
+      max-height: none;
+    }
 
     &.centering {
       height: 100%;
@@ -100,10 +113,6 @@ export default defineComponent({
 }
 
 @include mobile(max) {
-  .dropdown-background {
-    display: none;
-  }
-
   .dropdown-window {
     width: 100%;
     height: 100%;
@@ -112,6 +121,7 @@ export default defineComponent({
     left: 0;
     z-index: 3;
     border-radius: 0;
+    box-shadow: none;
 
     &__header {
       height: 76px;
@@ -121,7 +131,7 @@ export default defineComponent({
       width: 100% !important;
       height: calc(100% - 76px) !important;
       padding: 7px;
-      max-height: auto;
+      max-height: none;
 
       &.no-header {
         height: 100% !important;

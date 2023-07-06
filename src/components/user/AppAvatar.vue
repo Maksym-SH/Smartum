@@ -1,9 +1,5 @@
 <template>
-  <span
-    class="user-avatar"
-    :style="avatarStyles"
-    :class="{ 'user-avatar--circle': circle }"
-  >
+  <span class="user-avatar" :style="avatarStyles" :class="{ 'user-avatar--circle': circle }">
     <v-skeleton-loader
       v-show="showSkeletonLoader"
       color="info"
@@ -117,6 +113,7 @@ export default defineComponent({
   .v-skeleton-loader {
     width: 100%;
     height: 100%;
+    box-shadow: none !important;
 
     :deep(.v-skeleton-loader__bone) {
       border-radius: inherit;
