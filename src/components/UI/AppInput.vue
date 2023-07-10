@@ -23,7 +23,7 @@
         v-bind="$attrs"
         :required="required"
         :min="min"
-        @blur="validator()"
+        @blur="validator"
         @keyup.enter="pressEnter"
       />
       <label

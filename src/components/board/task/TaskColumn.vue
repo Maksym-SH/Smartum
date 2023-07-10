@@ -8,6 +8,7 @@
         class="task-column__header-title"
         contenteditable
         @keydown.enter.prevent
+        ref="columnNameRef"
       >
         {{ columnTitle }}
       </h3>

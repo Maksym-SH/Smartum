@@ -7,8 +7,9 @@ import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDateParseToString from "./useDateParse";
+import AppInput from "@/components/UI/AppInput.vue";
 
-import { Numbers } from "@/types/enums";
+import { Numbers, Length } from "@/types/enums";
 import { IUserForList } from "@/types/interfaces/user";
 import { IWorkingBoardTask } from "@/types/interfaces/board";
 
@@ -49,6 +50,19 @@ export default function useTaskInfo(columnId: number, taskId: number) {
     toggleEditDescriptionMode(false);
   };
 
+  // Task name actions.
+  const editableTaskTitle = ref("");
+
+  const taskTitleRef = ref<InstanceType<typeof AppInput> | null>(null);
+
+  const saveTaskName = (): void => {
+    if (editableTaskTitle.value.length < Length.TEXT) {
+      return taskTitleRef.value?.validator();
+    }
+
+    currentTask.value.title = editableTaskTitle.value;
+  };
+
   const getCurrentTask = (): void => {
     const currentColumn = boardItem.value.columns[columnId];
 
@@ -56,6 +70,9 @@ export default function useTaskInfo(columnId: number, taskId: number) {
 
     const taskIndex = currentColumn.tasks.findIndex((task) => task.id === taskId);
     currentTask.value = currentColumn.tasks[taskIndex];
+
+    // Set edit title.
+    editableTaskTitle.value = currentTask.value.title;
 
     // Set marks.
     const marksExist = currentTask.value.marks;
@@ -99,8 +116,8 @@ export default function useTaskInfo(columnId: number, taskId: number) {
   });
 
   // Save changes.
-
   const debounce = CreateDebounce(Numbers.SECOND / 2);
+
   watch(
     currentTask,
     (_, oldValue) => {
@@ -118,12 +135,15 @@ export default function useTaskInfo(columnId: number, taskId: number) {
 
   return {
     currentTask,
+    editableTaskTitle,
+    taskTitleRef,
     columnName,
     dateSent,
     editDescriptionMode,
     currentMember,
     boardMembers,
     descriptionText,
+    saveTaskName,
     saveDescriptionText,
     toggleEditDescriptionMode,
   };

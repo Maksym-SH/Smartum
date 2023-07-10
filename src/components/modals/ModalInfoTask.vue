@@ -17,9 +17,13 @@
                 <template v-slot:activator="{ props }">
                   <AppInput
                     v-bind="props"
-                    v-model="currentTask.title"
+                    @blur="saveTaskName"
+                    @keyup.enter.exact="saveTaskName"
+                    v-model="editableTaskTitle"
                     :name="currentTask.title"
                     :maxLength="Length.MAX"
+                    :min="Length.TEXT"
+                    ref="taskTitleRef"
                   />
                 </template>
               </v-tooltip>
@@ -225,7 +229,10 @@ export default defineComponent({
       editDescriptionMode,
       currentMember,
       boardMembers,
+      editableTaskTitle,
+      taskTitleRef,
       descriptionText,
+      saveTaskName,
       toggleEditDescriptionMode,
       saveDescriptionText,
     } = useTaskInfo(props.columnId, props.taskId);
@@ -300,6 +307,9 @@ export default defineComponent({
       currentMember,
       newComment,
       descriptionText,
+      editableTaskTitle,
+      taskTitleRef,
+      saveTaskName,
       deleteComment,
       createComment,
       addNewMark,
