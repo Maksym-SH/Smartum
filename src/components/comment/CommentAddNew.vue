@@ -17,7 +17,7 @@
         v-model.trim="newCommentMessage"
         :max="Length.TEXTAREA"
         :min="newCommentMessage ? Length.TEXT : Length.NONE"
-        @keyup.enter="createComment"
+        @keydown.enter.exact.prevent="createComment"
         name="taskDescription"
         :placeholder="$t('labels.newComment')"
       />

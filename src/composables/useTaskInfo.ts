@@ -46,8 +46,6 @@ export default function useTaskInfo(columnId: number, taskId: number) {
   const saveDescriptionText = (): void => {
     currentTask.value.description = descriptionText.value;
 
-    descriptionText.value = "";
-
     toggleEditDescriptionMode(false);
   };
 

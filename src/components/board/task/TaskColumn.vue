@@ -4,6 +4,7 @@
       <h3
         @input="changeColumnName"
         @blur="saveColumnName"
+        @keyup.enter.exact="saveColumnName"
         class="task-column__header-title"
         contenteditable
         @keydown.enter.prevent
@@ -47,6 +48,7 @@ import Draggable from "vuedraggable";
 
 import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
 import { Numbers } from "@/types/enums";
+import { RefElement } from "@/types/types";
 
 export default defineComponent({
   components: {
@@ -72,6 +74,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = i18n.global;
 
+    const columnNameRef = ref<RefElement>();
+
     const categoryTitle = ref("");
 
     const showDropZone = ref(false);
@@ -83,6 +87,10 @@ export default defineComponent({
     };
 
     const saveColumnName = () => {
+      if (columnNameRef.value) {
+        columnNameRef.value.blur();
+      }
+
       emit("save-changes");
     };
 
@@ -117,6 +125,7 @@ export default defineComponent({
       showDropZone,
       Numbers,
       dropZoneHeight,
+      columnNameRef,
       createTask,
       dragEnd,
       dragStart,

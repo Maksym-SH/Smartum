@@ -99,6 +99,7 @@
                     v-if="editDescriptionMode"
                     key="textarea"
                     @blur="saveDescriptionText"
+                    @keydown.enter.exact.prevent="saveDescriptionText"
                     v-model.trim="descriptionText"
                     :max="Length.TEXTAREA"
                     name="taskDescription"
@@ -503,6 +504,7 @@ export default defineComponent({
       .c-textarea {
         height: 122px;
         font-size: 18px;
+        line-height: 20px;
         padding: 0;
       }
 
