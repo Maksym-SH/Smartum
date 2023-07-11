@@ -16,7 +16,7 @@
       <span class="task-item__info-actions">
         <AppButton
           @click="taskModalActive = true"
-          class="task-item__info--edit initially-transparent"
+          class="task-item__info--edit"
           variant="text"
           icon="information-outline"
         />

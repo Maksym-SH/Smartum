@@ -1,17 +1,15 @@
 <template>
   <div class="task-column">
     <div class="task-column__header">
-      <h3
-        @input="changeColumnName"
-        @blur="saveColumnName"
-        @keyup.enter.exact="saveColumnName"
-        class="task-column__header-title"
-        contenteditable
-        @keydown.enter.prevent
-        ref="columnNameRef"
-      >
-        {{ columnTitle }}
-      </h3>
+      <div class="task-column__header-name">
+        <AppInput
+          @blur="saveColumnName"
+          @keyup.enter.exact="saveColumnName"
+          v-model="editableColumnName"
+          :min="Length.TEXT"
+          ref="columnNameRef"
+        />
+      </div>
       <AppButton
         @click="columnSettings"
         class="task-column__header-params"
@@ -39,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ref, watch } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 
 import i18n from "@/i18n";
@@ -48,8 +46,8 @@ import AddNewTask from "./TaskAddNew.vue";
 import Draggable from "vuedraggable";
 
 import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
-import { Numbers } from "@/types/enums";
-import { RefElement } from "@/types/types";
+import { Numbers, Length } from "@/types/enums";
+import { InputInstance } from "@/types/types";
 
 export default defineComponent({
   components: {
@@ -75,22 +73,22 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = i18n.global;
 
-    const columnNameRef = ref<RefElement>();
+    const columnNameRef = ref<InputInstance>();
 
-    const categoryTitle = ref("");
+    const editableColumnName = ref(props.columnTitle);
 
     const showDropZone = ref(false);
 
     const dropZoneHeight = ref(0);
 
-    const changeColumnName = (event: Event) => {
-      emit("update:column-title", (event.target as HTMLInputElement).innerText);
-    };
-
     const saveColumnName = () => {
-      if (columnNameRef.value) {
-        columnNameRef.value.blur();
+      if (columnNameRef.value && editableColumnName.value.length < Length.TEXT) {
+        return columnNameRef.value.validator();
       }
+      // Blur input;
+      columnNameRef.value.inputRef.blur();
+
+      emit("update:column-title", editableColumnName.value);
 
       emit("save-changes");
     };
@@ -121,17 +119,25 @@ export default defineComponent({
       });
     };
 
+    // Update column name.
+    watch(
+      () => props.columnTitle,
+      (newName) => {
+        editableColumnName.value = newName;
+      }
+    );
+
     return {
-      categoryTitle,
+      editableColumnName,
       showDropZone,
       Numbers,
       dropZoneHeight,
       columnNameRef,
+      Length,
       createTask,
       dragEnd,
       dragStart,
       saveColumnName,
-      changeColumnName,
       columnSettings,
     };
   },
@@ -165,23 +171,34 @@ export default defineComponent({
 
   &__header {
     max-width: 350px;
+    padding: 0 4px 12px 4px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
+    gap: 5px;
 
-    &-title {
-      font-size: 14px;
-      width: 80%;
-      font-family: $RobotoRG;
-      color: var(--color-text);
-      cursor: pointer;
+    &-name {
+      width: 100%;
 
-      &:focus {
-        border: 0;
-        outline: 1px solid var(--color-text);
-        cursor: text;
-        outline-offset: 1px;
-        border-radius: 4px;
+      :deep(.c-input) {
+        padding: 0;
+
+        .c-input__field {
+          font-size: 14px;
+          padding: 2px;
+          align-self: center;
+          width: 100%;
+          cursor: pointer;
+          border-color: transparent;
+          border-radius: 0;
+          line-height: 16px;
+
+          &:focus {
+            transition: all 0.2s ease;
+            border-color: var(--color-text);
+            outline-offset: 2px;
+          }
+        }
       }
     }
 

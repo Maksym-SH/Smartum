@@ -19,7 +19,7 @@ import { ISubTask } from "@/types/interfaces/board";
 
 export default defineComponent({
   props: {
-    newId: {
+    listLength: {
       type: Number,
       required: true,
     },
@@ -31,8 +31,10 @@ export default defineComponent({
     const addNewSubtask = () => {
       if (newSubtaskTitle.value.length < Length.TEXT) return;
 
+      const newId = props.listLength + 1;
+
       const newSubtask: ISubTask = {
-        id: props.newId,
+        id: newId,
         title: newSubtaskTitle.value,
         done: false,
       };

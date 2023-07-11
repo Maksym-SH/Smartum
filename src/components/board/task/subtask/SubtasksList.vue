@@ -1,9 +1,9 @@
 <template>
   <div class="subtasks">
-    <AddNewSubtask :new-id="subtasks.length" @create-new="createNewSubtask" />
+    <AddNewSubtask :list-length="subtasksList.length" @create-new="createNewSubtask" />
     <transition-group class="subtasks__items" tag="div" name="smooth-height">
       <Subtask
-        v-for="(subtask, index) in subtasks"
+        v-for="(subtask, index) in subtasksList"
         :key="subtask.id"
         :subtask="subtask"
         :count="index + 1"
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
@@ -41,8 +41,12 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = i18n.global;
 
+    const subtasksList = ref(props.subtasks);
+
     const createNewSubtask = (newSubtask: ISubTask): void => {
-      props.subtasks.push(newSubtask);
+      subtasksList.value.push(newSubtask);
+
+      emit("update:subtasks", subtasksList.value);
     };
 
     const deleteSubtask = ({ id, title }: Omit<ISubTask, "done">) => {
@@ -57,20 +61,33 @@ export default defineComponent({
           },
         },
         callback: () => {
-          const foundSubtaskIndex = props.subtasks.findIndex((subtask) => subtask.id === id);
+          const foundSubtaskIndex = subtasksList.value.findIndex(
+            (subtask) => subtask.id === id
+          );
 
           if (foundSubtaskIndex !== -1) {
-            props.subtasks.splice(foundSubtaskIndex, 1); // Delete subtask item.
+            subtasksList.value.splice(foundSubtaskIndex, 1); // Delete subtask item.
           }
+
+          emit("update:subtasks", subtasksList.value);
         },
       });
     };
 
-    watch(props.subtasks, (list) => {
-      emit("update:subtasks", list);
-    });
+    watch(
+      () => props.subtasks,
+      (list) => {
+        subtasksList.value = list;
+      }
+    );
 
-    return { Length, Colors, createNewSubtask, deleteSubtask };
+    return {
+      subtasksList,
+      Length,
+      Colors,
+      createNewSubtask,
+      deleteSubtask,
+    };
   },
 });
 </script>

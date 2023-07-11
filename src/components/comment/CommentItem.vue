@@ -22,6 +22,7 @@
         <AppTextarea
           v-if="editMode"
           key="textarea"
+          @keydown.enter.exact.prevent="toggleEditMode"
           :name="dateOfCreate"
           v-model="messageValue"
           :max="Length.TEXTAREA"
@@ -275,7 +276,7 @@ export default defineComponent({
     &-actions {
       display: flex;
       gap: 5px;
-      margin-top: 5px;
+      margin-top: 10px;
 
       &--scrolled {
         display: inline-flex;

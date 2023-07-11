@@ -7,11 +7,11 @@ import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDateParseToString from "./useDateParse";
-import AppInput from "@/components/UI/AppInput.vue";
 
-import { Numbers, Length } from "@/types/enums";
+import { Length } from "@/types/enums";
 import { IUserForList } from "@/types/interfaces/user";
 import { IWorkingBoardTask } from "@/types/interfaces/board";
+import { InputInstance } from "@/types/types";
 
 export default function useTaskInfo(columnId: number, taskId: number) {
   const { t } = i18n.global;
@@ -53,7 +53,7 @@ export default function useTaskInfo(columnId: number, taskId: number) {
   // Task name actions.
   const editableTaskTitle = ref("");
 
-  const taskTitleRef = ref<InstanceType<typeof AppInput> | null>(null);
+  const taskTitleRef = ref<InputInstance>(null);
 
   const saveTaskName = (): void => {
     if (editableTaskTitle.value.length < Length.TEXT) {
@@ -116,7 +116,7 @@ export default function useTaskInfo(columnId: number, taskId: number) {
   });
 
   // Save changes.
-  const debounce = CreateDebounce(Numbers.SECOND / 2);
+  const debounce = CreateDebounce(0); // 0s
 
   watch(
     currentTask,

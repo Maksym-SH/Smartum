@@ -1,7 +1,10 @@
 import { IUserReg } from "./interfaces/user";
 import * as components from "./interfaces/components";
+import AppInput from "@/componets/UI/AppInput.vue";
 
 // Components
+export type InputInstance = InstanceType<typeof AppInput> | null;
+
 export type Theme = "light" | "dark";
 
 export type RefElement = HTMLInputElement | null;
