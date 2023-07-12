@@ -219,5 +219,22 @@ export default defineComponent({
   .add-new-task {
     margin-top: 10px;
   }
+
+  @include mobile(max) {
+    max-width: 210px;
+    min-width: 210px;
+
+    &__header {
+      gap: 3px;
+
+      &-name {
+        :deep(.c-input) {
+          .c-input__field {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

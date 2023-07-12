@@ -154,6 +154,7 @@ export default defineComponent({
 
     :deep(.v-badge__badge) {
       background-color: $color-red;
+      height: 15px;
     }
   }
 

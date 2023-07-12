@@ -62,8 +62,8 @@ export default defineComponent({
     background-color: var(--color-background);
   }
 
-  .creation-mode {
-    min-height: 100px;
+  @include mobile(max) {
+    min-width: 210px;
   }
 }
 </style>

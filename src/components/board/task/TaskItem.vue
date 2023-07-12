@@ -179,6 +179,7 @@ export default defineComponent({
       gap: 5px;
       color: var(--color-text);
       font-size: 10px;
+      white-space: nowrap;
 
       svg {
         width: 12px;
@@ -202,6 +203,8 @@ export default defineComponent({
       font-size: 14px;
       color: var(--color-text);
       word-break: break-word;
+      display: inline-flex;
+      align-items: center;
     }
 
     &--edit {
@@ -237,6 +240,14 @@ export default defineComponent({
   @include tablet(max) {
     .initially-transparent {
       opacity: 1;
+    }
+  }
+
+  @include mobile(max) { 
+    &__info {
+      &-title {
+        font-size: 12px;
+      }
     }
   }
 }

@@ -149,5 +149,23 @@ export default defineComponent({
       }
     }
   }
+
+  @include mobile(max) {
+    &__params {
+      .c-input {
+        padding-top: 0;
+
+        :deep(.c-input__field) {
+          font-size: 10px;
+        }
+      }
+
+      &-actions {
+        &--create {
+          font-size: 11px;
+        }
+      }
+    }
+  }
 }
 </style>

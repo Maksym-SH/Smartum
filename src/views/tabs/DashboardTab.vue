@@ -186,18 +186,16 @@ export default defineComponent({
     }
   }
 
-  @include tablet(max) {
-    &__cards {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @include tablet(max) {
+  @include mobile(max) {
     height: 100%;
     padding-bottom: 45px;
 
     &__container {
       padding-top: 0;
+    }
+
+    &__cards {
+      grid-template-columns: 1fr;
     }
   }
 }
