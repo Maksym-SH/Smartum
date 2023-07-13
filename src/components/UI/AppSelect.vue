@@ -21,7 +21,7 @@
     </AppButton>
     <transition name="toggle-selectActive" mode="in-out">
       <div v-show="selectActive" class="c-select__picker">
-        <span class="c-select__picker--caret"></span>
+        <span class="c-select__picker--caret" />
         <div class="c-select__picker-actions-wrapper">
           <template v-for="item in items" :key="item.title">
             <AppButton
@@ -46,17 +46,12 @@ import type { CSSProperties } from "vue";
 import { computed, defineComponent, ref } from "vue";
 import { useSelectProps } from "./use/useProps";
 
-import InlineSvg from "vue-inline-svg";
-
 import { Colors } from "@/types/enums";
 
 export default defineComponent({
   inheritAttrs: false,
   props: useSelectProps,
   emits: ["selected"],
-  components: {
-    InlineSvg,
-  },
   setup(props, { emit }) {
     const selectActive = ref(false);
 

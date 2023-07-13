@@ -3,7 +3,7 @@
     <AddNew
       :input-placeholder="$t('labels.newTask')"
       :button-title="$t('buttons.addTask')"
-      buttonVariant="text"
+      button-variant="text"
       @create="createTask"
     />
   </div>
@@ -15,7 +15,7 @@ import { defineComponent } from "vue";
 import AddNew from "./AddNew.vue";
 
 import { Length } from "@/types/enums";
-import { IWorkingBoardTask } from "@/types/interfaces/board";
+import type { IWorkingBoardTask } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {

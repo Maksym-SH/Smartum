@@ -2,13 +2,13 @@
   <div class="background-result">
     <div class="background-result__wrapper" :style="{ background }">
       <img v-if="imageDecor" :src="imageDecor" class="background-result__decor" alt="" />
-      <v-skeleton-loader v-show="isImage && !imageLoaded" color="info" :elevation="24" />
+      <VSkeletonLoader v-show="isImage && !imageLoaded" color="info" :elevation="24" />
       <img
         v-show="isImage && imageLoaded"
         :src="image"
-        @load="imageLoad"
         class="background-result__image"
         alt=""
+        @load="imageLoad"
       />
     </div>
   </div>
@@ -21,6 +21,9 @@ import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import useImageLoad from "@/composables/useImageLoad";
 
 export default defineComponent({
+  components: {
+    VSkeletonLoader,
+  },
   props: {
     imageDecor: {
       type: String,
@@ -34,9 +37,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-  },
-  components: {
-    VSkeletonLoader,
   },
   setup(props) {
     const { imageLoad, imageLoaded } = useImageLoad();
@@ -73,7 +73,7 @@ export default defineComponent({
     .v-skeleton-loader {
       width: 100%;
       height: 100%;
-      border-radius: 4px 4px 0 0;
+      border-radius: 4px;
       box-shadow: none !important;
 
       :deep(.v-skeleton-loader__bone) {

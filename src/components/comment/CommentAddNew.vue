@@ -17,9 +17,9 @@
         v-model.trim="newCommentMessage"
         :max="Length.TEXTAREA"
         :min="newCommentMessage ? Length.TEXT : Length.NONE"
-        @keydown.enter.exact.prevent="createComment"
         name="taskDescription"
         :placeholder="$t('labels.newComment')"
+        @keydown.enter.exact.prevent="createComment"
       />
       <AppButton
         :disabled="!newCommentMessage"
@@ -34,14 +34,17 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
+import type { PropType } from "vue";
 import Avatar from "../user/AppAvatar.vue";
 
-import type { PropType } from "vue";
 import { Length } from "@/types/enums";
 import type { ITaskComment } from "@/types/interfaces/board";
 import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
+  components: {
+    Avatar,
+  },
   props: {
     member: {
       type: Object as PropType<IUserForList>,
@@ -56,15 +59,14 @@ export default defineComponent({
       default: true,
     },
   },
-  components: {
-    Avatar,
-  },
   emits: ["createComment", "update"],
   setup(props, { emit }) {
     const newCommentMessage = ref("");
 
     const createComment = (): void => {
-      if (newCommentMessage.value.length < Length.TEXT) return;
+      if (newCommentMessage.value.length < Length.TEXT) {
+        return;
+      }
 
       const newId = props.commentsSize;
 

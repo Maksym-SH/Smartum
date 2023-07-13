@@ -1,6 +1,6 @@
 import type { IWorkingBoardItem } from "@/types/interfaces/board";
 import type { INotification } from "@/types/interfaces/components";
-import { NotificationAction, NotificationType, NotificationStatus } from "@/types/enums";
+import { NotificationAction, NotificationStatus, NotificationType } from "@/types/enums";
 
 export default function useNewNotificationContent(
   type: NotificationType,

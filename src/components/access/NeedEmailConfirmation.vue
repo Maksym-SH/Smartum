@@ -2,7 +2,9 @@
   <div class="blocked-access">
     <div class="blocked-access__content">
       <img class="blocked-access__image" src="/images/icons/lock-red.svg" alt="" />
-      <h2 class="blocked-access__title">{{ $t("lockAccess.title") }}</h2>
+      <h2 class="blocked-access__title">
+        {{ $t("lockAccess.title") }}
+      </h2>
       <p class="blocked-access__description">
         {{ $t("lockAccess.description") }}
         <span class="blocked-access--email-confirm" @click="verifyEmail">

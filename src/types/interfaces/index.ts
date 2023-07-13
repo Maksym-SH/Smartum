@@ -35,4 +35,3 @@ export interface IMetaName {
   protected: boolean;
   tabName: string;
 }
-

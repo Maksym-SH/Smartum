@@ -2,7 +2,7 @@
   <div class="board-item-page">
     <BoardHeader :user-info="userInfo" @board-leave="boardLeave" />
     <div class="board-item-page__content" :style="{ background: boardBackground }">
-      <AppLoader v-if="!showedCommonLoader && !boardNotEmpty" />
+      <AppLoader v-if="!commonStore.loadingStatus && !boardNotEmpty" />
       <transition name="toggle-content">
         <div v-if="boardNotEmpty" class="board-item-page__board-info">
           <div class="board-item-page__board-info-about">
@@ -16,12 +16,12 @@
           <div class="board-item-page__board-info--additional">
             <div class="avatars-wrapper">
               <v-tooltip
-                :text="getFullName(item)"
-                location="left"
                 v-for="item in boardMembers"
                 :key="item.uid"
+                :text="getFullName(item)"
+                location="left"
               >
-                <template v-slot:activator="{ props }">
+                <template #activator="{ props }">
                   <Avatar
                     v-if="!item.invited"
                     :avatar="item.avatarParams"
@@ -48,16 +48,16 @@
         <TaskColumn
           v-for="column in boardItem.columns"
           :key="column.id"
-          :column="column"
           v-model:column-title="column.title"
           v-model:column-tasks="column.tasks"
+          :column="column"
           @save-changes="saveChanges"
         />
         <AddNewColumn
           v-show="boardNotEmpty"
           key="add-new"
           :column-length="columnLength"
-          @createColumn="createColumn"
+          @create-column="createColumn"
         />
       </transition-group>
     </div>
@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed, onBeforeUnmount } from "vue";
+import { computed, defineComponent, onBeforeUnmount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { notify } from "@kyvg/vue3-notification";
 import { storeToRefs } from "pinia";
@@ -98,13 +98,13 @@ export default defineComponent({
 
     const { commonStore, dashboardStore } = useStore();
 
-    const showedCommonLoader = computed((): boolean => {
-      return commonStore.loadingStatus;
-    });
-
     const { unicID, userInfo, getFullName } = useCurrentUserInfo();
 
     const { boardItem, boardMembers } = storeToRefs(dashboardStore);
+
+    const saveChanges = (): void => {
+      dashboardStore.updateWorkingBoard(boardItem.value, false);
+    };
 
     const membersCount = computed((): number => {
       return boardItem.value.members.filter((member) => !member.invited).length;
@@ -130,10 +130,27 @@ export default defineComponent({
       dashboardStore.updateWorkingBoard(boardItem.value, false);
     };
 
+    const leaveMessage = (currentMember: boardType.IWorkingBoardMember): string => {
+      const nextUserIsMember = !boardItem.value.members[1]?.invited;
+
+      if (
+        // Is Admin and members more than 1.
+        currentMember.uid === boardItem.value.uid &&
+        boardItem.value.members.length > 1 &&
+        nextUserIsMember
+      ) {
+        return t("popup.boardLeaveMessage.admin");
+      } else {
+        // Is member.
+        return t("popup.boardLeaveMessage.member");
+      }
+    };
+
     const boardLeave = () => {
       const currentMember = boardItem.value.members.find(
         (member) => member.uid === unicID.value
       );
+
       if (currentMember) {
         OpenPopup({
           title: t("popup.boardLeaveMessage.title"),
@@ -157,22 +174,6 @@ export default defineComponent({
       }
     };
 
-    const leaveMessage = (currentMember: boardType.IWorkingBoardMember): string => {
-      const nextUserIsMember = !boardItem.value.members[1]?.invited;
-
-      if (
-        // Is Admin and members more than 1.
-        currentMember.uid === boardItem.value.uid &&
-        boardItem.value.members.length > 1 &&
-        nextUserIsMember
-      ) {
-        return t("popup.boardLeaveMessage.admin");
-      } else {
-        // Is member.
-        return t("popup.boardLeaveMessage.member");
-      }
-    };
-
     // Tasks
     const createColumn = (column: boardType.IWorkingBoardTaskColumn): void => {
       boardItem.value.columns.push(column);
@@ -182,10 +183,6 @@ export default defineComponent({
     const columnLength = computed((): number => {
       return boardItem.value.columns?.length || 0;
     });
-
-    const saveChanges = (): void => {
-      dashboardStore.updateWorkingBoard(boardItem.value, false);
-    };
 
     onMounted((): void => {
       const joinCode = router.currentRoute.value.params.code as string;
@@ -200,13 +197,13 @@ export default defineComponent({
     });
 
     return {
+      commonStore,
       membersCount,
       boardNotEmpty,
       boardBackground,
       boardItem,
       boardMembers,
       userInfo,
-      showedCommonLoader,
       columnLength,
       UserRole,
       boardLeave,

@@ -25,10 +25,10 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 
+import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 import useStores from "@/composables/useStores";
 import Date from "@/components/date/DateTime.vue";
 import SwitchTheme from "@/components/UI/SwitchTheme.vue";
-import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 
 export default defineComponent({
   components: {

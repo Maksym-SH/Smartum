@@ -12,11 +12,11 @@
       />
     </transition>
     <AppButton
-      @click="openEmojiWindow = !openEmojiWindow"
       class="emoji-picker__add-new"
       rounded
       title="😀"
       :color="Colors.LIGHT_GREY"
+      @click="openEmojiWindow = !openEmojiWindow"
     />
   </span>
 </template>
@@ -24,13 +24,13 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 
-import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import EmojiPicker from "vue3-emoji-picker";
+import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import "vue3-emoji-picker/css";
 
 import { Colors } from "@/types/enums";
 import type { IEmoji } from "@/types/interfaces/board";
-import { Theme } from "@/types/types";
+import type { Theme } from "@/types/types";
 
 export default defineComponent({
   components: {

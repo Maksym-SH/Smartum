@@ -1,10 +1,10 @@
 <template>
   <div class="notifications">
     <AppButton
-      @click="toggleNotificationsWindow"
       icon="bell-outline"
       class="notifications__btn"
       variant="text"
+      @click="toggleNotificationsWindow"
     >
       <v-badge
         v-show="notificationsSize"
@@ -18,7 +18,7 @@
       :width="440"
       :height="355"
       :centering="!filteredList.length"
-      @hideDropdown="showNotificationsWindow = false"
+      @hide-dropdown="showNotificationsWindow = false"
     >
       <template #header>
         <div class="notifications__window-header">
@@ -32,12 +32,12 @@
               switch-box
               name="changeWatchType"
               :label="$t('dropdown.notificationFilter')"
-            ></AppCheckbox>
+            />
             <AppButton
-              @click="showNotificationsWindow = false"
               variant="text"
               class="notifications__window--close"
               icon="close"
+              @click="showNotificationsWindow = false"
             />
           </nav>
         </div>
@@ -57,8 +57,8 @@
             @delete-notification="notifyAction($event, 'deleteNotification')"
           />
           <EmptyList
-            key="empty-list"
             v-show="!filteredList.length"
+            key="empty-list"
             :type="EmptyListType.NOTIFICATIONS"
           />
         </transition-group>
@@ -70,11 +70,11 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 
-import useNotifications from "@/composables/useNotifications";
-import useStore from "@/composables/useStores";
-import NotificationItem from "./NotificationItem.vue";
 import DropdownWindow from "../container/DropdownWindow.vue";
 import EmptyList from "../UI/EmptyList.vue";
+import NotificationItem from "./NotificationItem.vue";
+import useNotifications from "@/composables/useNotifications";
+import useStore from "@/composables/useStores";
 
 import type { NotifyAction } from "@/types/types";
 import { EmptyListType, NotificationStatus } from "@/types/enums";
@@ -85,13 +85,13 @@ export default defineComponent({
     DropdownWindow,
     EmptyList,
   },
-  emits: ["windowOpened"],
   props: {
     closePanel: {
       type: Boolean,
       default: false,
     },
   },
+  emits: ["windowOpened"],
   setup() {
     const { notificationStore } = useStore();
 
@@ -120,6 +120,7 @@ export default defineComponent({
       if (onlyUnread.value) {
         return unreadNotifications.value;
       }
+
       return allNotifications.value;
     });
 

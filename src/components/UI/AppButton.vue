@@ -14,17 +14,16 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useButtonProps } from "./use/useProps";
-
 import InlineSvg from "vue-inline-svg";
+import { useButtonProps } from "./use/useProps";
 
 import { Colors } from "@/types/enums";
 
 export default defineComponent({
-  props: useButtonProps,
   components: {
     InlineSvg,
   },
+  props: useButtonProps,
   setup() {
     return {
       Colors,

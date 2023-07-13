@@ -4,7 +4,7 @@
       <v-expansion-panel-title>
         <InlineSvg v-if="icon" :src="`/images/icons/${icon}.svg`" class="icon" />
         <span class="text" :class="{ 'no-icon': !icon }">{{ name }}</span>
-        <template v-slot:actions="{ expanded }">
+        <template #actions="{ expanded }">
           <InlineSvg
             class="expansion-icon"
             :class="{ expanded }"
@@ -28,15 +28,14 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
+import InlineSvg from "vue-inline-svg";
 import { useExpansionPanelProps } from "./use/useProps";
 
-import InlineSvg from "vue-inline-svg";
-
 export default defineComponent({
-  props: useExpansionPanelProps,
   components: {
     InlineSvg,
   },
+  props: useExpansionPanelProps,
   setup(props) {
     const showExpansionPanelContent = computed((): number => props.content.length);
 

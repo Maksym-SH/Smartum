@@ -11,7 +11,9 @@ export default function fileValidate(file: File, needType: FileType): boolean {
   const currentType: string = file.type.toLowerCase();
 
   if (needType === "image") {
-    if (file.size < Numbers.IMAGE_SIZE && currentType.startsWith("image")) return true;
+    if (file.size < Numbers.IMAGE_SIZE && currentType.startsWith("image")) {
+      return true;
+    }
   }
 
   notify({

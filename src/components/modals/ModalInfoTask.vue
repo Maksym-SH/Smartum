@@ -14,16 +14,16 @@
             <div class="task-info-modal__window-header-title">
               <InlineSvg class="icon" src="/images/icons/task.svg" />
               <v-tooltip text="Нажмите чтобы редактировать" location="top">
-                <template v-slot:activator="{ props }">
+                <template #activator="{ props }">
                   <AppInput
                     v-bind="props"
-                    @blur="saveTaskName"
-                    @keyup.enter.exact="saveTaskName"
+                    ref="taskTitleRef"
                     v-model="editableTaskTitle"
                     :name="currentTask.title"
-                    :maxLength="Length.MAX"
+                    :max-length="Length.MAX"
                     :min="Length.TEXT"
-                    ref="taskTitleRef"
+                    @blur="saveTaskName"
+                    @keyup.enter.exact="saveTaskName"
                   />
                 </template>
               </v-tooltip>
@@ -50,11 +50,11 @@
                   />
                   <ModalColorPicker
                     v-if="showAddMarkBtn"
+                    v-model="newMark"
                     theme="light"
-                    :showColorsTarget="false"
+                    :show-colors-target="false"
                     :regenerate="false"
                     :apply-button-color="false"
-                    v-model="newMark"
                     @selected="addNewMark"
                   >
                     <template #button-title>
@@ -68,13 +68,13 @@
               <div class="task-info-modal__window-action-item">
                 <span class="action__title">{{ $t("navigation.notifications.title") }}</span>
                 <v-tooltip :text="$t('task.tooltip')" location="bottom">
-                  <template v-slot:activator="{ props }">
+                  <template #activator="{ props }">
                     <AppButton
                       v-bind="props"
                       icon="eye"
                       :color="Colors.LIGHT_GREY"
-                      @click="subscribe"
                       :title="$t('buttons.notificationSubscribe')"
+                      @click="subscribe"
                     />
                   </template>
                 </v-tooltip>
@@ -86,7 +86,7 @@
                   :all-members="boardMembers"
                   :task-name="currentTask.title"
                   :assigned-members="currentTask.assignedMembers"
-                  @assign-new-member="assignNewMember"
+                  @assign-member="assignNewMember"
                 />
               </div>
             </div>
@@ -102,18 +102,18 @@
                   <AppTextarea
                     v-if="editDescriptionMode"
                     key="textarea"
-                    @blur="saveDescriptionText"
-                    @keydown.enter.exact.prevent="saveDescriptionText"
                     v-model.trim="descriptionText"
                     :max="Length.TEXTAREA"
                     name="taskDescription"
                     :placeholder="$t('labels.moreDetails')"
+                    @blur="saveDescriptionText"
+                    @keydown.enter.exact.prevent="saveDescriptionText"
                   />
                   <p
                     v-else
+                    key="description"
                     class="action__decription"
                     @click="toggleEditDescriptionMode(true)"
-                    key="description"
                   >
                     {{ currentTask.description }}
                   </p>
@@ -154,11 +154,11 @@
                 <CommentItem
                   v-for="comment in currentTask.comments"
                   :key="comment.id"
-                  :comment="comment"
-                  @delete-comment="deleteComment"
                   v-model:comment-message="comment.message"
                   v-model:comment-emoji="comment.emoji"
                   v-model:edited="comment.edited"
+                  :comment="comment"
+                  @delete-comment="deleteComment"
                 />
               </transition-group>
             </div>
@@ -172,25 +172,32 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import { notify } from "@kyvg/vue3-notification";
-import { ArrayHasValues } from "@/helpers/methods";
 
-import i18n from "@/i18n";
-import useTaskInfo from "@/composables/useTaskInfo";
 import InlineSvg from "vue-inline-svg";
-import ModalColorPicker from "./ModalColorPicker.vue";
 import BackgroundItem from "../UI/BackgroundItem.vue";
-import Avatar from "../user/AppAvatar.vue";
 import NewComment from "../comment/CommentAddNew.vue";
 import CommentItem from "../comment/CommentItem.vue";
 import MembersAssign from "../board/task/TaskAssign.vue";
 import SubtasksList from "../board/task/subtask/SubtasksList.vue";
+import ModalColorPicker from "./ModalColorPicker.vue";
+import useTaskInfo from "@/composables/useTaskInfo";
+import i18n from "@/i18n";
+import { ArrayHasValues } from "@/helpers/methods";
 
-import { Length, Colors } from "@/types/enums";
+import { Colors, Length } from "@/types/enums";
 import type { ITaskComment } from "@/types/interfaces/board";
 import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
-  emits: ["update:taskModalActive"],
+  components: {
+    InlineSvg,
+    ModalColorPicker,
+    BackgroundItem,
+    NewComment,
+    CommentItem,
+    MembersAssign,
+    SubtasksList,
+  },
   props: {
     taskId: {
       type: Number,
@@ -205,16 +212,7 @@ export default defineComponent({
       required: true,
     },
   },
-  components: {
-    InlineSvg,
-    ModalColorPicker,
-    BackgroundItem,
-    Avatar,
-    NewComment,
-    CommentItem,
-    MembersAssign,
-    SubtasksList,
-  },
+  emits: ["update:taskModalActive"],
   setup(props, { emit }) {
     const { t } = i18n.global;
 

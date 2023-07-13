@@ -23,13 +23,13 @@ export default defineComponent({
   components: {
     AddNew,
   },
-  emits: ["createColumn"],
   props: {
     columnLength: {
       type: Number,
       required: true,
     },
   },
+  emits: ["createColumn"],
   setup(_, { emit }) {
     const columnTitle = ref("");
 

@@ -1,5 +1,5 @@
-import { IServerDate } from ".";
-import { IUserForList } from "./user";
+import type { IUserForList } from "./user";
+import type { IServerDate } from ".";
 
 export interface ITaskComment {
   id: number;

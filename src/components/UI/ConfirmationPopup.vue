@@ -1,7 +1,9 @@
 <template>
   <div class="confirmation" @click.self="result(false)">
     <div class="confirmation__window">
-      <h2 class="confirmation__window-title">{{ $t("popup.confirmPassword.title") }}</h2>
+      <h2 class="confirmation__window-title">
+        {{ $t("popup.confirmPassword.title") }}
+      </h2>
       <p class="confirmation__window-description">
         {{ $t("popup.confirmPassword.text") }}
       </p>
@@ -28,16 +30,14 @@
             class="confirmation__button--no"
             :title="$t('buttons.cancel')"
             @click="result(false)"
-          >
-          </AppButton>
+          />
           <AppButton
             type="submit"
             :disabled="btnConfirmDisable"
             class="confirmation__buttons--yes"
             :title="$t('buttons.confirm')"
             @click="result(true)"
-          >
-          </AppButton>
+          />
         </div>
       </form>
     </div>
@@ -45,15 +45,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { EmailAuthProvider } from "firebase/auth";
+import type { EmailAuthCredential, User } from "firebase/auth";
 import { Confirmation } from "@/helpers/methods";
 
 import firebaseAuth from "@/helpers/firebase/firebaseAuth";
 import useStores from "@/composables/useStores";
 
 import { Length } from "@/types/enums";
-import type { EmailAuthCredential, User } from "firebase/auth";
 
 export default defineComponent({
   setup() {

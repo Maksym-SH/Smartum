@@ -5,8 +5,8 @@
       v-if="showImageTemplate"
       class="file-upload--delete"
       :color="Colors.DANGER"
-      @click.stop="deleteImgPopup"
       icon="delete-outline"
+      @click.stop="deleteImgPopup"
     />
     <v-img
       v-if="showImageTemplate"
@@ -21,6 +21,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
+import type { PropType } from "vue";
 import type { FileType, ImageSource, RefElement } from "@/types/types";
 import { OpenPopup } from "@/helpers/methods";
 
@@ -29,7 +30,6 @@ import fileValidate from "@/helpers/file/validate";
 import useImageLoad from "@/composables/useImageLoad";
 
 import { Colors } from "@/types/enums";
-import type { PropType } from "vue";
 
 export default defineComponent({
   props: {
@@ -67,7 +67,9 @@ export default defineComponent({
       const file = upload.value?.files?.[0];
 
       if (file) {
-        if (props.fileType === "image") reader.readAsDataURL(file);
+        if (props.fileType === "image") {
+          reader.readAsDataURL(file);
+        }
 
         reader.onload = (): void => {
           if (fileValidate(file, props.fileType)) {

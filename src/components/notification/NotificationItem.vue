@@ -6,17 +6,17 @@
   >
     <Avatar
       v-if="image && !failedImageLoad"
-      @failed-load="failedImageLoad = true"
       :avatar="image"
       :size="45"
       circle
       no-background
+      @failed-load="failedImageLoad = true"
     />
     <div
       v-else
       :style="{ background: image.url }"
       class="notification-item__background-avatar"
-    ></div>
+    />
     <div class="notification-item__content">
       <div class="notification-item__content-info">
         <h3 class="notification-item__title">
@@ -40,9 +40,10 @@
 </template>
 
 <script lang="ts">
-import { PropType } from "vue";
-import { defineComponent, reactive, ref, computed, onMounted } from "vue";
+import { computed, defineComponent, onMounted, reactive, ref } from "vue";
+import type { PropType } from "vue";
 
+import Avatar from "../user/AppAvatar.vue";
 import useNotificationText from "@/composables/useNotificationText";
 import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
@@ -50,7 +51,6 @@ import useStore from "@/composables/useStores";
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import useDateParseToString from "@/composables/useDateParse";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
-import Avatar from "../user/AppAvatar.vue";
 
 import * as enums from "@/types/enums";
 import type { INotificationContent } from "@/types/types";
@@ -94,6 +94,16 @@ export default defineComponent({
       useDateParseToString(props.params.date, i18nLocale.value as enums.Language)
     );
 
+    const joinBoard = () => {
+      if (props.params.joinCode && props.params.uid) {
+        const { joinCode, uid } = props.params;
+
+        dashboardStore.joinWorkingBoard({ joinCode, uid }, unicID.value);
+      }
+
+      deleteNotification();
+    };
+
     const readNotification = (): void => {
       emit("readNotification", props.params.id);
       // Action by notification type.
@@ -125,16 +135,6 @@ export default defineComponent({
         //  ...
         //  break;
       }
-    };
-
-    const joinBoard = () => {
-      if (props.params.joinCode && props.params.uid) {
-        const { joinCode, uid } = props.params;
-
-        dashboardStore.joinWorkingBoard({ joinCode, uid }, unicID.value);
-      }
-
-      deleteNotification();
     };
 
     onMounted(() => {

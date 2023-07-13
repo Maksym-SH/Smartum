@@ -8,15 +8,15 @@
         class="toggle-theme-switch__input"
         type="checkbox"
       />
-      <span class="toggle-theme-switch__icon"></span>
+      <span class="toggle-theme-switch__icon" />
     </label>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
-import { SetTheme } from "@/helpers/methods";
 import { useSwitchThemeProps } from "./use/useProps";
+import { SetTheme } from "@/helpers/methods";
 
 import type { Theme } from "@/types/types";
 

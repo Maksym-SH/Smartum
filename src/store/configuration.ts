@@ -1,8 +1,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
+import * as fs from "firebase/firestore";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 
-import * as fs from "firebase/firestore";
 import useStores from "@/composables/useStores";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import allAsideNavigations from "@/composables/useAsideNavigation";

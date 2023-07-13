@@ -30,9 +30,7 @@ export default defineComponent({
     ConfirmationPopup: defineAsyncComponent(
       () => import("@/components/UI/ConfirmationPopup.vue")
     ),
-    ModalContent: defineAsyncComponent(
-      () => import("@/components/modals/ModalContent.vue")
-    ),
+    ModalContent: defineAsyncComponent(() => import("@/components/modals/ModalContent.vue")),
   },
   setup() {
     const { commonStore } = useStores();

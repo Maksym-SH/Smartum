@@ -1,5 +1,5 @@
-import i18n from "@/i18n";
 import useTimestamp from "./stamp";
+import i18n from "@/i18n";
 import RegExp from "@/helpers/regExp";
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 
@@ -55,8 +55,11 @@ export function GetBetweenDateString(date: Date): string {
 export function GetDayStringFormat(num: number): string {
   const { t } = i18n.global;
 
-  if (num === 1) return t("time.day");
-  else if (num >= 2 && num <= 4) return t("time.evenDay");
+  if (num === 1) {
+    return t("time.day");
+  } else if (num >= 2 && num <= 4) {
+    return t("time.evenDay");
+  }
 
   return t("time.days");
 }

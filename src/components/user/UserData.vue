@@ -23,19 +23,19 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import type { User } from "@firebase/auth";
+import InlineSvg from "vue-inline-svg";
 import { useInfoProps } from "./use/useProps";
 
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
-import InlineSvg from "vue-inline-svg";
 
 import type { StatusVueIcon } from "@/types/types";
 
 export default defineComponent({
-  props: useInfoProps,
   components: {
     InlineSvg,
   },
+  props: useInfoProps,
   setup() {
     const { t } = i18n.global;
 
@@ -51,9 +51,9 @@ export default defineComponent({
     const userStatusText = computed((): string => {
       if (emailVerified.value) {
         return t("userEmailStatus.confirmed");
-      } else {
-        return t("userEmailStatus.notConfirmed");
       }
+
+      return t("userEmailStatus.notConfirmed");
     });
 
     const statusIcon: StatusVueIcon = emailVerified.value ? "email-check" : "email-alert";

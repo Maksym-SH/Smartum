@@ -146,8 +146,9 @@ export default defineComponent({
         userInfo.firstName.length >= Length.TEXT &&
         (!userInfo.lastName || userInfo.lastName.length >= Length.TEXT) &&
         (!userInfo.newPassword || userInfo.newPassword.length >= Length.PASSWORD)
-      )
+      ) {
         return true;
+      }
 
       return false;
     });
@@ -196,13 +197,17 @@ export default defineComponent({
     };
 
     const saveChanges = (): void => {
-      if (!validForm.value) return;
+      if (!validForm.value) {
+        return;
+      }
 
       if (passwordChanged.value && showConfirmation.value) {
         Confirmation(true, updatePassword); // Show confirmation.
       } else {
         profileUpdate().then(() => {
-          if (passwordChanged.value) updatePassword();
+          if (passwordChanged.value) {
+            updatePassword();
+          }
         });
       }
     };
@@ -213,8 +218,11 @@ export default defineComponent({
     };
 
     const deleteAccountConfirm = (): void => {
-      if (showConfirmation.value) Confirmation(true, deleteAccountPopup);
-      else deleteAccountPopup();
+      if (showConfirmation.value) {
+        Confirmation(true, deleteAccountPopup);
+      } else {
+        deleteAccountPopup();
+      }
     };
 
     onMounted((): void => {

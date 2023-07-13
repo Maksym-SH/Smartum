@@ -13,10 +13,7 @@ export interface IUserReg extends IUserLogin {
 export interface IUserAuth {
   signUp: (userData: IUserReg, validate: boolean) => void;
   signIn: (userData: IUserLogin, validate: boolean) => void;
-  reauthorization: (
-    userInfo: User,
-    credential: EmailAuthCredential
-  ) => Promise<UserCredential>;
+  reauthorization: (userInfo: User, credential: EmailAuthCredential) => Promise<UserCredential>;
 }
 
 export interface IPictureParams {

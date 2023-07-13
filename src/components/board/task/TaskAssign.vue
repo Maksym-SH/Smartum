@@ -32,10 +32,10 @@
           <div class="assigned-members__window-content">
             <transition name="toggle-content" mode="out-in">
               <transition-group
-                tag="div"
-                class="assigned-members__elements"
                 v-if="notAssignedMembersExist"
                 key="members"
+                tag="div"
+                class="assigned-members__elements"
               >
                 <template v-for="member in notAssignedMembers" :key="member.uid">
                   <div
@@ -46,7 +46,7 @@
                       <Avatar
                         class="member__avatar"
                         :size="30"
-                        :firstName="member.firstName"
+                        :first-name="member.firstName"
                         :last-name="member.lastName"
                         :avatar="member.avatarParams"
                         circle
@@ -62,12 +62,12 @@
                     </div>
                     <div class="member__actions">
                       <v-tooltip text="Назначить" location="bottom">
-                        <template v-slot:activator="{ props }">
+                        <template #activator="{ props }">
                           <AppButton
                             v-bind="props"
-                            @click="assignMember(member)"
                             icon="clipboard-account-outline"
                             variant="text"
+                            @click="assignMember(member)"
                           />
                         </template>
                       </v-tooltip>
@@ -75,7 +75,7 @@
                   </div>
                 </template>
               </transition-group>
-              <span v-else class="assigned-members__window--empty-list" key="empty-list">
+              <span v-else key="empty-list" class="assigned-members__window--empty-list">
                 <InlineSvg src="/images/icons/clipboard-account-outline.svg" />
                 {{ $t("dropdown.assignReady") }}
               </span>
@@ -96,7 +96,7 @@
           class="avatar"
           circle
           :size="36"
-          :firstName="member.firstName"
+          :first-name="member.firstName"
           :last-name="member.lastName"
           :avatar="member.avatarParams"
         />
@@ -107,19 +107,24 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
+import InlineSvg from "vue-inline-svg";
+import type { PropType } from "vue";
 import { ArrayHasValues, OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
-import InlineSvg from "vue-inline-svg";
 import DropdownWindow from "@/components/container/DropdownWindow.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
 
-import type { PropType } from "vue";
 import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
+  components: {
+    DropdownWindow,
+    Avatar,
+    InlineSvg,
+  },
   props: {
     assignedMembers: {
       type: Array as PropType<IUserForList[]>,
@@ -134,12 +139,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["assign-new-member"],
-  components: {
-    DropdownWindow,
-    Avatar,
-    InlineSvg,
-  },
+  emits: ["assignMember"],
   setup(props, { emit }) {
     const { t } = i18n.global;
 
@@ -174,7 +174,7 @@ export default defineComponent({
         },
         callback: (): void => {
           showWindowAssign.value = false;
-          emit("assign-new-member", member);
+          emit("assignMember", member);
         },
       });
     };

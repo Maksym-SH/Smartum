@@ -20,7 +20,7 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-list>
-        <div class="modal__content" v-html="currentContent.content"></div>
+        <div class="modal__content" v-html="currentContent.content" />
       </v-list>
     </v-card>
   </v-dialog>
@@ -29,11 +29,11 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
 
+import type { PropType } from "vue";
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 
 import { ModalContentType } from "@/types/enums";
-import type { PropType } from "vue";
 import type { IModalContent } from "@/types/interfaces/components";
 
 export default defineComponent({
@@ -51,11 +51,12 @@ export default defineComponent({
     const dialog = ref(true);
 
     const currentContent = computed((): IModalContent => {
-      if (props.contentType === ModalContentType.TERMS_OF_USE)
+      if (props.contentType === ModalContentType.TERMS_OF_USE) {
         return {
           title: t("termsOfUse.title"),
           content: t("termsOfUse.content"),
         };
+      }
 
       return {
         title: t("confideniality.title"),
@@ -68,7 +69,9 @@ export default defineComponent({
     };
 
     watch(dialog, (value) => {
-      if (!value) commonStore.setModalContentType(ModalContentType.NONE);
+      if (!value) {
+        commonStore.setModalContentType(ModalContentType.NONE);
+      }
     });
 
     return {

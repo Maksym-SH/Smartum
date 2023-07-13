@@ -1,14 +1,13 @@
 <template>
   <div class="c-loader" :class="{ 'inline-transparent': inline }">
-    <span :style="loaderSize" class="c-loader__spinner"> </span>
+    <span :style="loaderSize" class="c-loader__spinner" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { useLoaderProps } from "./use/useProps";
-
 import type { CSSProperties } from "vue";
+import { useLoaderProps } from "./use/useProps";
 
 export default defineComponent({
   props: useLoaderProps,

@@ -4,18 +4,18 @@
       <AppButton
         v-if="!showCreationTemplate"
         v-bind="$attrs"
-        @click="showCreationTemplate = true"
         icon="plus"
         size="small"
         :title="buttonTitle"
         :variant="buttonVariant"
         class="add-new__button"
+        @click="showCreationTemplate = true"
       />
       <form v-else class="add-new__params" @submit.prevent="create">
         <AppInput
-          class="add-new__params-input"
           v-model="title"
-          :maxLength="Length.MAX"
+          class="add-new__params-input"
+          :max-length="Length.MAX"
           :min="Length.TEXT"
           :placeholder="inputPlaceholder"
         />
@@ -27,10 +27,10 @@
             :title="buttonTitle"
           />
           <AppButton
-            @click="closeCreateMode"
             class="add-new__params-actions--close"
             variant="text"
             icon="close"
+            @click="closeCreateMode"
           />
         </div>
       </form>
@@ -39,15 +39,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import type { PropType } from "vue";
+import { defineComponent, ref } from "vue";
 
 import { Length } from "@/types/enums";
-import { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
-import { ButtonVariant } from "@/types/types";
+import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
+import type { ButtonVariant } from "@/types/types";
 
 export default defineComponent({
   inheritAttrs: false,
-  emits: ["create", "close"],
   props: {
     newId: {
       type: Number,
@@ -66,13 +66,16 @@ export default defineComponent({
       default: "elevated",
     },
   },
+  emits: ["create", "close"],
   setup(props, { emit }) {
     const title = ref("");
 
     const showCreationTemplate = ref(false);
 
     const create = () => {
-      if (title.value.length < Length.TEXT) return;
+      if (title.value.length < Length.TEXT) {
+        return;
+      }
 
       const elementID = props.newId || Date.now();
       const element: Partial<IWorkingBoardTask | IWorkingBoardTaskColumn> = {

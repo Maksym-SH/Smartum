@@ -1,7 +1,7 @@
+import path from "node:path";
 import { defineConfig } from "vite";
 
 import Vue from "@vitejs/plugin-vue";
-import path from "node:path";
 
 export default defineConfig({
   server: {

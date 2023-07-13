@@ -1,4 +1,4 @@
-import { Colors } from "../enums";
+import type { Colors } from "../enums";
 
 export interface IBackgroundPhotos {
   forest: string;

@@ -2,23 +2,25 @@
   <div class="task-item">
     <div class="task-item__info">
       <div class="task-item__info-main">
-        <div class="task-item__info-marks" v-if="task.marks">
+        <div v-if="task.marks" class="task-item__info-marks">
           <BackgroundItem
             v-for="mark in task.marks"
+            :key="mark"
             :height="7"
             :width="25"
-            :key="mark"
             :background="mark"
           />
         </div>
-        <h3 class="task-item__info-title">{{ task.title }}</h3>
+        <h3 class="task-item__info-title">
+          {{ task.title }}
+        </h3>
       </div>
       <span class="task-item__info-actions">
         <AppButton
-          @click="taskModalActive = true"
           class="task-item__info--edit"
           variant="text"
           icon="information-outline"
+          @click="taskModalActive = true"
         />
         <span v-if="subtasksCount" class="task-item__info-subtasks">
           <InlineSvg src="/images/icons/task.svg" />
@@ -32,7 +34,7 @@
         :text="$t('common.currentUserAssign')"
         location="bottom"
       >
-        <template v-slot:activator="{ props }">
+        <template #activator="{ props }">
           <InlineSvg
             v-bind="props"
             src="/images/icons/eye-outline.svg"
@@ -57,9 +59,9 @@
       <transition name="toggle-content" mode="out-in">
         <TaskInfoModal
           v-if="taskModalActive"
+          v-model:taskModalActive="taskModalActive"
           :task-id="task.id"
           :column-id="columnId"
-          v-model:taskModalActive="taskModalActive"
         />
       </transition>
     </Teleport>
@@ -67,16 +69,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, ref } from "vue";
+import type { PropType } from "vue";
+import { computed, defineComponent, ref } from "vue";
 
+import InlineSvg from "vue-inline-svg";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
 import Avatar from "@/components/user/AppAvatar.vue";
 import TaskInfoModal from "@/components/modals/ModalInfoTask.vue";
-import InlineSvg from "vue-inline-svg";
 import BackgroundItem from "@/components/UI/BackgroundItem.vue";
 
-import { IWorkingBoardTask } from "@/types/interfaces/board";
+import type { IWorkingBoardTask } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {
@@ -243,7 +246,7 @@ export default defineComponent({
     }
   }
 
-  @include mobile(max) { 
+  @include mobile(max) {
     &__info {
       &-title {
         font-size: 12px;

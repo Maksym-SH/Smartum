@@ -1,7 +1,8 @@
 import type { PropType } from "vue";
 
-import { Colors, Length, EmptyListType } from "@/types/enums";
-import { AsideExpPanelNavigation } from "@/types/interfaces/components";
+import type { EmptyListType } from "@/types/enums";
+import { Colors, Length } from "@/types/enums";
+import type { AsideExpPanelNavigation } from "@/types/interfaces/components";
 import type * as types from "@/types/types";
 
 // AppInput.vue

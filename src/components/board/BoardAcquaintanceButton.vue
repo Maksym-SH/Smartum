@@ -1,10 +1,10 @@
 <template>
   <div class="acquaintance">
     <AppButton
-      @click="toggleAcquaintanceWindow"
       variant="text"
       icon="information-outline"
       class="acquaintance__btn"
+      @click="toggleAcquaintanceWindow"
     />
     <DropdownWindow
       :visible="showAcquaintanceWindow"

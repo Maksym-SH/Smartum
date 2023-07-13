@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch, reactive } from "vue";
+import { computed, defineComponent, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import i18n from "@/i18n";
@@ -40,7 +40,7 @@ import TheAside from "@/components/container/TheAside.vue";
 import { Layout } from "@/types/enums";
 import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 import type { IMetaName, ITabInfo } from "@/types/interfaces";
-import { RouterMeta } from "@/types/types";
+import type { RouterMeta } from "@/types/types";
 
 export default defineComponent({
   components: {
@@ -74,8 +74,11 @@ export default defineComponent({
     // Aside
     const minimizeAside = ref(true);
     const toggleAsideVisible = (value: boolean, capture = false): void => {
-      if (!capture) minimizeAside.value = value;
-      else if (window.innerWidth <= Layout.LAPTOP) minimizeAside.value = capture;
+      if (!capture) {
+        minimizeAside.value = value;
+      } else if (window.innerWidth <= Layout.LAPTOP) {
+        minimizeAside.value = capture;
+      }
     };
 
     const translatePageInfo = (tabName: unknown): void => {

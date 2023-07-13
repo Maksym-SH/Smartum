@@ -1,7 +1,7 @@
 import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { ILanguageTextInfo } from "@/types/interfaces";
+import type { ILanguageTextInfo } from "@/types/interfaces";
 import { Language } from "@/types/enums";
 
 export default function useCurrentLanguage() {
@@ -21,7 +21,7 @@ export default function useCurrentLanguage() {
       i18nLocale.value = i18nLocale.value === Language.RU ? Language.ENG : Language.RU;
     }
 
-    if (i18nLocale.value == Language.RU) {
+    if (i18nLocale.value === Language.RU) {
       languageTextInfo.icon = "russian";
       languageTextInfo.title = "Русский";
     } else {

@@ -5,33 +5,37 @@
     :variant="variant"
     :items="selectItems"
     location="start"
-    @selected="selected"
-    :selectIcon="languageTextInfo.icon"
+    :select-icon="languageTextInfo.icon"
     :active-style="false"
-    :buttonTitle="languageTextInfo.title"
+    :button-title="languageTextInfo.title"
+    @selected="selected"
   />
   <AppButton
     v-else
-    @click="changeLanguage()"
     :variant="variant"
     :icon="languageTextInfo.icon"
     :title="languageTextInfo.title"
     class="switch-language"
+    @click="changeLanguage()"
   />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, PropType, reactive } from "vue";
+import type { PropType } from "vue";
+import { computed, defineComponent, onMounted, reactive } from "vue";
+import AppSelect from "./AppSelect.vue";
 import { LocalLanguage } from "@/helpers/methods";
 
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import useSelectActions from "@/composables/useSelectActions";
-import AppSelect from "./AppSelect.vue";
 
 import { Colors, Language } from "@/types/enums";
 import type { ButtonVariant, SelectElements, SwitchLanguageType } from "@/types/types";
 
 export default defineComponent({
+  components: {
+    AppSelect,
+  },
   props: {
     type: {
       type: String as PropType<SwitchLanguageType>,
@@ -45,9 +49,6 @@ export default defineComponent({
       type: String as PropType<ButtonVariant>,
       default: "elevated",
     },
-  },
-  components: {
-    AppSelect,
   },
 
   setup() {

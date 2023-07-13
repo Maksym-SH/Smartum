@@ -1,8 +1,8 @@
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 
-import i18n from "@/i18n";
 import ShowErrorMessage from "./firebaseErrorMessage";
+import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 import router from "@/router";
 
@@ -14,7 +14,9 @@ export default function firebaseReset(email: string): void {
 
   const { commonStore } = useStores();
 
-  if (!email) return;
+  if (!email) {
+    return;
+  }
 
   commonStore.setLoadingStatus(true);
 

@@ -26,7 +26,8 @@ import i18n from "@/i18n";
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import timestamp from "@/helpers/dateTime/stamp";
 
-import { Numbers, Language } from "@/types/enums";
+import type { Language } from "@/types/enums";
+import { Numbers } from "@/types/enums";
 import type { TimeIcon } from "@/types/types";
 
 export default defineComponent({
@@ -71,7 +72,9 @@ export default defineComponent({
     });
 
     onUnmounted((): void => {
-      if (updateTimeInterval.value) clearInterval(updateTimeInterval.value);
+      if (updateTimeInterval.value) {
+        clearInterval(updateTimeInterval.value);
+      }
     });
 
     return {

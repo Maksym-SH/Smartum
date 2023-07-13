@@ -1,18 +1,18 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { getAuth } from "firebase/auth";
+import * as fs from "firebase/firestore";
+import * as st from "firebase/storage";
+import type { User } from "firebase/auth";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 import { SetTheme } from "@/helpers/methods";
 
-import * as fs from "firebase/firestore";
-import * as st from "firebase/storage";
 import router from "@/router";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 
 import type * as userType from "@/types/interfaces/user";
 import { DataCollection, Route } from "@/types/enums";
-import type { User } from "firebase/auth";
 import type { ErrorCode } from "@/types/types";
 
 const useUserStore = defineStore("user", () => {
@@ -20,7 +20,7 @@ const useUserStore = defineStore("user", () => {
 
   const storage = st.getStorage();
 
-  const currentUser = ref<User | {}>({});
+  const currentUser = ref<User | object>({});
 
   const userInfo = ref<userType.IUserCreated>({
     firstName: "",
@@ -71,7 +71,9 @@ const useUserStore = defineStore("user", () => {
     file: File | null,
     unicID: string
   ): Promise<string> | userType.IPictureParams => {
-    if (!file) return userInfo.value.avatarParams;
+    if (!file) {
+      return userInfo.value.avatarParams;
+    }
 
     const storageRef = st.ref(storage, unicID);
     return new Promise((resolve, reject) => {
@@ -102,7 +104,7 @@ const useUserStore = defineStore("user", () => {
   };
 
   // User settings.
-  const setCurrentUser = (user: User | {}): void => {
+  const setCurrentUser = (user: User | object): void => {
     currentUser.value = user;
   };
 
@@ -204,7 +206,7 @@ const useUserStore = defineStore("user", () => {
 
   const updateUsersList = (
     newUserInfo: Partial<userType.IUserForList> | string,
-    deleteUser?: Boolean
+    deleteUser?: boolean
   ): Promise<userType.IUserForList[]> => {
     const usersListRef = fs.doc(
       database,
@@ -273,13 +275,17 @@ const useUserStore = defineStore("user", () => {
     // New upload image.
     if (photoFile !== null) {
       await (updateUserAvatar(photoFile, unicID) as Promise<string>).then((photo: string) => {
-        if (fieldsToUpdate.avatarParams) fieldsToUpdate.avatarParams.url = photo;
+        if (fieldsToUpdate.avatarParams) {
+          fieldsToUpdate.avatarParams.url = photo;
+        }
       });
     }
     // Photo has been removed.
     else if (!avatarParams.url && userInfo.value.avatarParams.url) {
       await deleteUserAvatar(unicID).then(() => {
-        if (fieldsToUpdate.avatarParams) fieldsToUpdate.avatarParams.url = "";
+        if (fieldsToUpdate.avatarParams) {
+          fieldsToUpdate.avatarParams.url = "";
+        }
       });
     }
     return new Promise((resolve, reject) => {
@@ -304,7 +310,9 @@ const useUserStore = defineStore("user", () => {
 
       fs.deleteDoc(deleteUserProfile)
         .then(() => {
-          if (currentUserAvatar) deleteUserAvatar(unicID);
+          if (currentUserAvatar) {
+            deleteUserAvatar(unicID);
+          }
 
           notificationStore.deleteNotificationList(unicID);
           configurationStore.deleteUserConfiguration(unicID);

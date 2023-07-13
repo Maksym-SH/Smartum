@@ -1,11 +1,6 @@
 <template>
   <span class="user-avatar" :style="avatarStyles" :class="{ 'user-avatar--circle': circle }">
-    <v-skeleton-loader
-      v-show="showSkeletonLoader"
-      color="info"
-      :height="size"
-      :elevation="24"
-    />
+    <VSkeletonLoader v-show="showSkeletonLoader" color="info" :height="size" :elevation="24" />
     <span v-show="showInitials" class="user-avatar--initials" :style="sizeInitials">
       {{ initials }}
     </span>
@@ -13,28 +8,29 @@
       v-show="showPhoto"
       class="user-avatar__picture"
       :src="avatar.url"
+      alt=""
       @load="imageLoad"
       @error="$emit('failedLoad')"
-      alt=""
     />
-    <span v-show="online" class="user-avatar--online"></span>
+    <span v-show="online" class="user-avatar--online" />
   </span>
 </template>
 
 <script lang="ts">
-import { CSSProperties, watch } from "vue";
-import { computed, defineComponent } from "vue";
-import { useAvatarProps } from "./use/useProps";
+import type { CSSProperties } from "vue";
+import { computed, defineComponent, watch } from "vue";
+
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+import { useAvatarProps } from "./use/useProps";
 
 import useImageLoad from "@/composables/useImageLoad";
 
 export default defineComponent({
-  props: useAvatarProps,
-  emits: ["failedLoad"],
   components: {
     VSkeletonLoader,
   },
+  props: useAvatarProps,
+  emits: ["failedLoad"],
   setup(props) {
     const { imageLoaded, imageLoad } = useImageLoad();
 
@@ -118,6 +114,10 @@ export default defineComponent({
     :deep(.v-skeleton-loader__bone) {
       border-radius: inherit;
       height: 100%;
+
+      &::after {
+        z-index: 0;
+      }
     }
   }
 

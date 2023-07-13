@@ -12,9 +12,9 @@
 import { defineComponent } from "vue";
 import { useContainerProps } from "./use/useProps";
 
-import useSelectActions from "@/composables/useSelectActions";
 import Avatar from "./AppAvatar.vue";
 import UserData from "./UserData.vue";
+import useSelectActions from "@/composables/useSelectActions";
 
 export default defineComponent({
   components: {

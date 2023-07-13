@@ -1,10 +1,10 @@
 import type { EmailAuthCredential, User, UserCredential } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
+import * as auth from "firebase/auth";
+import ShowErrorMessage from "./firebaseErrorMessage";
 import { GenerateColorHexFormat } from "@/helpers/methods";
 
-import * as auth from "firebase/auth";
 import i18n from "@/i18n";
-import ShowErrorMessage from "./firebaseErrorMessage";
 import router from "@/router";
 import notificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
@@ -21,7 +21,9 @@ export default function firebaseAuth(): authType.IUserAuth {
 
   const useAuth = {
     signUp: (userData: authType.IUserReg, validate: boolean): void => {
-      if (!validate) return;
+      if (!validate) {
+        return;
+      }
 
       commonStore.setLoadingStatus(true);
 
@@ -73,7 +75,9 @@ export default function firebaseAuth(): authType.IUserAuth {
     },
 
     signIn: (userData: authType.IUserLogin, validate: boolean): void => {
-      if (!validate) return;
+      if (!validate) {
+        return;
+      }
 
       commonStore.setLoadingStatus(true);
       auth
@@ -81,7 +85,9 @@ export default function firebaseAuth(): authType.IUserAuth {
         .then((response) => {
           const user: authType.IUserResponse = response.user;
 
-          if (user.accessToken) localStorage.setItem("smartumToken", user.accessToken);
+          if (user.accessToken) {
+            localStorage.setItem("smartumToken", user.accessToken);
+          }
 
           userStore.setCurrentUser(auth.getAuth().currentUser ?? {});
           notify({

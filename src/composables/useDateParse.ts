@@ -14,7 +14,9 @@ export default function useDateParseToString(
   const { t } = i18n.global;
 
   const dateSent = computed((): string => {
-    if (!date) return "";
+    if (!date) {
+      return "";
+    }
 
     const dateParam = (date as IServerDate).seconds;
 

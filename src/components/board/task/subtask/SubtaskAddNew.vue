@@ -3,7 +3,7 @@
     <AppInput
       v-model="newSubtaskTitle"
       :min="Length.TEXT"
-      :maxLength="Length.MAX"
+      :max-length="Length.MAX"
       name="subtaskNew"
       :placeholder="$t('labels.newSubTask')"
     />
@@ -15,7 +15,7 @@
 import { defineComponent, ref } from "vue";
 
 import { Length } from "@/types/enums";
-import { ISubTask } from "@/types/interfaces/board";
+import type { ISubTask } from "@/types/interfaces/board";
 
 export default defineComponent({
   props: {
@@ -24,12 +24,14 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["create-new"],
+  emits: ["createNew"],
   setup(props, { emit }) {
     const newSubtaskTitle = ref("");
 
     const addNewSubtask = () => {
-      if (newSubtaskTitle.value.length < Length.TEXT) return;
+      if (newSubtaskTitle.value.length < Length.TEXT) {
+        return;
+      }
 
       const newId = props.listLength + 1;
 
@@ -39,7 +41,7 @@ export default defineComponent({
         done: false,
       };
 
-      emit("create-new", newSubtask);
+      emit("createNew", newSubtask);
 
       newSubtaskTitle.value = "";
     };

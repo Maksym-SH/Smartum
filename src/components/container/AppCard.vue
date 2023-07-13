@@ -2,28 +2,28 @@
   <div class="card">
     <template v-if="!table">
       <header v-if="$slots.header" class="card__header">
-        <slot name="header"></slot>
+        <slot name="header" />
       </header>
       <div v-if="$slots.content" class="card__content">
-        <slot name="content"></slot>
+        <slot name="content" />
       </div>
       <footer v-if="$slots.footer" class="card__footer">
-        <slot name="footer"></slot>
+        <slot name="footer" />
       </footer>
     </template>
     <table v-else class="card__table">
       <thead class="card__table-header">
         <tr>
-          <slot name="table-header"></slot>
+          <slot name="table-header" />
         </tr>
       </thead>
-      <slot v-if="$slots['table-body']" name="table-body"></slot>
+      <slot v-if="$slots['table-body']" name="table-body" />
       <tfoot v-if="$slots['table-body'] || $slots['table-footer']" class="card__table-footer">
-        <slot name="table-footer-titles"></slot>
-        <slot name="table-footer"></slot>
+        <slot name="table-footer-titles" />
+        <slot name="table-footer" />
       </tfoot>
     </table>
-    <slot name="custom"></slot>
+    <slot name="custom" />
   </div>
 </template>
 

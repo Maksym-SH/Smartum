@@ -1,23 +1,20 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createVuetify } from "vuetify";
-import i18n from "./i18n";
 
-import router from "./router";
-
-// Packages
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import notifications from "@kyvg/vue3-notification";
+import router from "./router";
+import i18n from "./i18n";
+import App from "./App.vue";
+import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 
 // Styles
 import "normalize.css";
 import "vuetify/styles";
 
-import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
-
 // Components
-import App from "./App.vue";
 import AppButton from "@/components/UI/AppButton.vue";
 import AppInput from "@/components/UI/AppInput.vue";
 import AppTextarea from "@/components/UI/AppTextarea.vue";

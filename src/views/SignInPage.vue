@@ -66,8 +66,8 @@
 <script lang="ts">
 import { computed, defineComponent, reactive } from "vue";
 
-import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 import * as emailValidator from "email-validator";
+import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 import type { IUserLogin } from "@/types/interfaces/user";

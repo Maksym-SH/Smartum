@@ -95,18 +95,18 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
+import InlineSvg from "vue-inline-svg";
+import packageJson from "package.json";
+import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 
 import UserInfo from "@/components/user/UserInfo.vue";
 import SwitchTheme from "@/components/UI/SwitchTheme.vue";
-import InlineSvg from "vue-inline-svg";
-import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 import useStores from "@/composables/useStores";
-import packageJson from "package.json";
 
 import { Layout, Numbers } from "@/types/enums";
 import type { IAsideNavItem } from "@/types/interfaces/components";
-import { IUserCreated } from "@/types/interfaces/user";
+import type { IUserCreated } from "@/types/interfaces/user";
 
 export default defineComponent({
   components: {
@@ -136,7 +136,9 @@ export default defineComponent({
     const defaultLoaderSize = 40;
 
     const setMinimizeValue = (value: boolean, layoutType?: Layout): void => {
-      if (layoutType && window.innerWidth > layoutType) return;
+      if (layoutType && window.innerWidth > layoutType) {
+        return;
+      }
 
       minimize.value = value;
       emit("update:minimizeAside", minimize.value);

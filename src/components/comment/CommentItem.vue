@@ -22,13 +22,15 @@
         <AppTextarea
           v-if="editMode"
           key="textarea"
-          @keydown.enter.exact.prevent="toggleEditMode"
-          :name="dateOfCreate"
           v-model="messageValue"
+          :name="dateOfCreate"
           :max="Length.TEXTAREA"
           :min="Length.TEXT"
+          @keydown.enter.exact.prevent="toggleEditMode"
         />
-        <p v-else key="text" class="comment__info-message">{{ commentMessage }}</p>
+        <p v-else key="text" class="comment__info-message">
+          {{ commentMessage }}
+        </p>
       </transition>
       <div class="comment__info-actions">
         <EmojiPicker @add-emoji="addEmoji" />
@@ -37,14 +39,14 @@
             <span
               v-for="(emoji, index) in commentEmoji"
               :key="emoji.smile"
-              @click="emojiAction(index, emoji as Required<IEmoji>)"
               class="comment__info-actions-smile"
               :class="{ active: emoji.authors?.includes(unicID) }"
+              @click="emojiAction(index, emoji as Required<IEmoji>)"
             >
               {{ emoji.smile }} {{ emoji.authors?.length }}
             </span>
           </span>
-          <span class="comment__info-actions-edit" v-if="authorCurrentUser">
+          <span v-if="authorCurrentUser" class="comment__info-actions-edit">
             <span class="edit-action" @click="deleteCommentPopup">{{
               $t("common.comments.commentEditor.delete")
             }}</span>
@@ -57,20 +59,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { computed, defineComponent, ref, watch } from "vue";
+import type { PropType } from "vue";
+import Avatar from "../user/AppAvatar.vue";
+import EmojiPicker from "../UI/EmojiPicker.vue";
 import { ArrayHasValues, NewObjectLink, OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDateParseToString from "@/composables/useDateParse";
-import Avatar from "../user/AppAvatar.vue";
-import EmojiPicker from "../UI/EmojiPicker.vue";
 
-import type { PropType } from "vue";
 import { Colors, Length } from "@/types/enums";
 import type { IEmoji, INewEmojiParams, ITaskComment } from "@/types/interfaces/board";
 
 export default defineComponent({
+  components: {
+    Avatar,
+    EmojiPicker,
+  },
   props: {
     comment: {
       type: Object as PropType<ITaskComment>,
@@ -89,10 +95,6 @@ export default defineComponent({
       default: false,
     },
   },
-  components: {
-    Avatar,
-    EmojiPicker,
-  },
   emits: ["update:comment-message", "update:comment-emoji", "update:edited", "deleteComment"],
   setup(props, { emit }) {
     const { t } = i18n.global;
@@ -107,6 +109,8 @@ export default defineComponent({
 
     const messageValue = ref(props.commentMessage);
 
+    const emojiList = ref(props.commentEmoji);
+
     const editModeTitle = computed(() => {
       const editModeName = editMode.value ? "save" : "edit";
 
@@ -114,9 +118,7 @@ export default defineComponent({
     });
 
     const toggleEditMode = () => {
-      if (editMode.value && messageValue.value.length < Length.TEXT) {
-        return;
-      } else {
+      if (messageValue.value.length >= Length.TEXT) {
         editMode.value = !editMode.value;
         if (!editMode.value) {
           // Edited.
@@ -151,9 +153,7 @@ export default defineComponent({
 
       if (foundEmoji) {
         // If this emoticon has already been added by the current user.
-        if (foundEmoji.authors?.includes(params.newAuthor)) {
-          return;
-        } else {
+        if (!foundEmoji.authors?.includes(params.newAuthor)) {
           foundEmoji.authors?.push(params.newAuthor);
         }
       } else {
@@ -184,11 +184,19 @@ export default defineComponent({
       }
 
       if (!ArrayHasValues(emoji.authors)) {
-        props.commentEmoji.splice(index, 1);
+        emojiList.value.splice(index, 1);
       }
 
-      emit("update:comment-emoji", props.commentEmoji);
+      emit("update:comment-emoji", emojiList.value);
     };
+
+    // Update emoji list
+    watch(
+      () => props.commentEmoji,
+      (value) => {
+        emojiList.value = value;
+      }
+    );
 
     return {
       editMode,

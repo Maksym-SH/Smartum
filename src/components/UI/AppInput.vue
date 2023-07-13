@@ -37,7 +37,7 @@
       >
         {{ label }}
       </label>
-      <span v-if="required" class="c-input--required"></span>
+      <span v-if="required" class="c-input--required" />
       <InlineSvg v-if="isPhone" src="/images/icons/phone.svg" class="phone" />
       <Transition name="error-message">
         <span v-show="errorText" class="c-input--error-text">{{ errorText }}</span>
@@ -75,23 +75,24 @@
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineComponent, ref, watch } from "vue";
+import type { ComputedRef } from "vue";
+import { computed, defineComponent, ref, watch } from "vue";
 import * as emailValidator from "email-validator";
+import InlineSvg from "vue-inline-svg";
 import { useInputProps } from "./use/useProps";
 
 import i18n from "@/i18n";
-import InlineSvg from "vue-inline-svg";
 import RegExp from "@/helpers/regExp";
 
 import type { AutoComplete, ModelValue, RefElement } from "@/types/types";
 
 export default defineComponent({
-  inheritAttrs: false,
-  props: useInputProps,
-  emits: ["invalid", "update:modelValue", "search"],
   components: {
     InlineSvg,
   },
+  inheritAttrs: false,
+  props: useInputProps,
+  emits: ["invalid", "update:modelValue", "search"],
   setup(props, { emit }) {
     const { t } = i18n.global;
 
@@ -107,9 +108,8 @@ export default defineComponent({
     const showPassword = ref(false);
 
     const pressEnter = () => {
-      if (props.type === "search") emit("search");
-      else {
-        return;
+      if (props.type === "search") {
+        emit("search");
       }
     };
 
@@ -140,11 +140,15 @@ export default defineComponent({
     );
 
     watch(errorText, (value): void => {
-      if (value) emit("invalid");
+      if (value) {
+        emit("invalid");
+      }
     });
 
     const isAutoComplete = computed((): AutoComplete => {
-      if (typeof props.autoComplete === "boolean") return props.autoComplete ? "on" : "off";
+      if (typeof props.autoComplete === "boolean") {
+        return props.autoComplete ? "on" : "off";
+      }
 
       return "new-password";
     });

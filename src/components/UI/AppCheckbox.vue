@@ -14,7 +14,7 @@
       class="label secondary-label"
       :class="{
         'not-selected': checked,
-        disabled: disabled,
+        disabled,
       }"
       @click="checkboxToggle(false)"
     >
@@ -22,7 +22,7 @@
     </span>
 
     <!-- Switch -->
-    <label class="checkbox-label" :for="name" :class="{ disabled }"></label>
+    <label class="checkbox-label" :for="name" :class="{ disabled }" />
 
     <!-- Text -->
     <span
@@ -30,7 +30,7 @@
       class="label main-label"
       :class="{
         'not-selected': !checked && switchBox,
-        disabled: disabled,
+        disabled,
         'line-through': lineThrough,
         active: checked && !switchBox,
       }"
@@ -181,6 +181,7 @@ export default defineComponent({
       position: relative;
       background-color: $color-dark-grey4;
       text-align: start !important;
+      cursor: pointer;
 
       &::before {
         content: "";

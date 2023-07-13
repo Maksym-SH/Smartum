@@ -3,28 +3,28 @@
     <div class="task-column__header">
       <div class="task-column__header-name">
         <AppInput
-          @blur="saveColumnName"
-          @keyup.enter.exact="saveColumnName"
+          ref="columnNameRef"
           v-model="editableColumnName"
           :min="Length.TEXT"
-          ref="columnNameRef"
+          @blur="saveColumnName"
+          @keyup.enter.exact="saveColumnName"
         />
       </div>
       <AppButton
-        @click="columnSettings"
         class="task-column__header-params"
         variant="text"
         icon="dots-horizontal"
+        @click="columnSettings"
       />
     </div>
     <Draggable
-      v-model="column.tasks"
+      v-model="columnTasksList"
       :animation="Numbers.ANIMATION_TASK_MOVE"
       group="tasks"
       class="task-column__tasks"
       item-key="tasks"
       :class="{ 'drop-zone': showDropZone }"
-      :style="{ height: showDropZone ? dropZoneHeight + 'px' : 'auto' }"
+      :style="{ height: showDropZone ? `${dropZoneHeight}px` : 'auto' }"
       @start="dragStart"
       @end="dragEnd"
     >
@@ -32,22 +32,23 @@
         <Task :task="element" :column-id="column.id" />
       </template>
     </Draggable>
-    <AddNewTask @createTask="createTask" />
+    <AddNewTask @create-task="createTask" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from "vue";
+import type { PropType } from "vue";
+import { computed, defineComponent, ref, watch } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 
-import i18n from "@/i18n";
+import Draggable from "vuedraggable";
 import Task from "./TaskItem.vue";
 import AddNewTask from "./TaskAddNew.vue";
-import Draggable from "vuedraggable";
+import i18n from "@/i18n";
 
 import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
-import { Numbers, Length } from "@/types/enums";
-import { InputInstance } from "@/types/types";
+import { Length, Numbers } from "@/types/enums";
+import type { InputInstance } from "@/types/types";
 
 export default defineComponent({
   components: {
@@ -55,7 +56,6 @@ export default defineComponent({
     AddNewTask,
     Draggable,
   },
-  emits: ["taskCreatedInColumn", "update:column-title", "update:column-tasks", "save-changes"],
   props: {
     column: {
       type: Object as PropType<IWorkingBoardTaskColumn>,
@@ -70,8 +70,18 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["taskCreatedInColumn", "update:columnTitle", "update:columnTasks", "saveChanges"],
   setup(props, { emit }) {
     const { t } = i18n.global;
+
+    const columnTasksList = computed<IWorkingBoardTask[]>({
+      get() {
+        return props.column.tasks;
+      },
+      set(value) {
+        emit("update:columnTasks", value);
+      },
+    });
 
     const columnNameRef = ref<InputInstance>();
 
@@ -85,12 +95,13 @@ export default defineComponent({
       if (columnNameRef.value && editableColumnName.value.length < Length.TEXT) {
         return columnNameRef.value.validator();
       }
+
       // Blur input;
       columnNameRef.value.inputRef.blur();
 
-      emit("update:column-title", editableColumnName.value);
+      emit("update:columnTitle", editableColumnName.value);
 
-      emit("save-changes");
+      emit("saveChanges");
     };
 
     // Drag handlers.
@@ -99,17 +110,17 @@ export default defineComponent({
       showDropZone.value = true;
     };
     const dragEnd = (): void => {
-      emit("update:column-tasks", props.columnTasks || []);
+      emit("update:columnTasks", columnTasksList.value);
       showDropZone.value = false;
 
-      emit("save-changes");
+      emit("saveChanges");
     };
 
     const createTask = (newTask: IWorkingBoardTask): void => {
-      props.columnTasks.push(newTask);
-      emit("update:column-tasks", props.columnTasks || []);
+      columnTasksList.value.push(newTask);
+      emit("update:columnTasks", columnTasksList.value);
 
-      emit("save-changes");
+      emit("saveChanges");
     };
 
     const columnSettings = () => {
@@ -128,6 +139,7 @@ export default defineComponent({
     );
 
     return {
+      columnTasksList,
       editableColumnName,
       showDropZone,
       Numbers,

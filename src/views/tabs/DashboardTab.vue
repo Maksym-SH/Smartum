@@ -32,6 +32,7 @@
 import { computed, defineComponent, onBeforeMount, watch } from "vue";
 import { useRouter } from "vue-router";
 import { notify } from "@kyvg/vue3-notification";
+import type { User } from "@firebase/auth";
 import { ArrayHasValues } from "@/helpers/methods";
 
 import i18n from "@/i18n";
@@ -43,9 +44,8 @@ import EmptyList from "@/components/UI/EmptyList.vue";
 import ModalCreateNewBoard from "@/components/modals/ModalCreateNewBoard.vue";
 import BoardCard from "@/components/board/BoardItem.vue";
 
-import type { User } from "@firebase/auth";
 import type { IWorkingBoardItem } from "@/types/interfaces/board";
-import { NotificationType, Route, EmptyListType } from "@/types/enums";
+import { EmptyListType, NotificationType, Route } from "@/types/enums";
 
 export default defineComponent({
   components: {
@@ -110,7 +110,7 @@ export default defineComponent({
       [dashboardStore.allBoards, () => showLockAccess.value],
       ([boards], [_, oldEmailConfirmValue]) => {
         if (!boards.length || typeof oldEmailConfirmValue !== "boolean") {
-          dashboardStore.allBoards.length = 0;
+          dashboardStore.allBoards = [];
         }
       }
     );

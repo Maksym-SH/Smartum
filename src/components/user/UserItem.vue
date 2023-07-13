@@ -30,10 +30,10 @@
         </span>
         <AppButton
           v-else-if="!user.role"
-          @click="$emit('invite')"
           variant="text"
           class="user-item__actions--add"
           icon="account-plus"
+          @click="$emit('invite')"
         />
         <span class="user-item__actions-caret">
           <InlineSvg src="/images/icons/chevron-down.svg" />
@@ -66,13 +66,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { computed, defineComponent } from "vue";
+import InlineSvg from "vue-inline-svg";
 import { useUserItemProps } from "./use/useProps";
 
 import Avatar from "./AppAvatar.vue";
-import InlineSvg from "vue-inline-svg";
 
-import { IUserForList } from "@/types/interfaces/user";
+import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
   components: {

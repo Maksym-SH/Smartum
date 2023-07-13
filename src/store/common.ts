@@ -9,7 +9,7 @@ const useCommonStore = defineStore("common", () => {
 
   const loadingStatus = ref(false);
 
-  const popupParams = ref<IPopupParams | {}>({});
+  const popupParams = ref<IPopupParams | object>({});
 
   const openConfirmPopup = ref(false);
 
@@ -19,7 +19,7 @@ const useCommonStore = defineStore("common", () => {
     loadingStatus.value = status;
   };
 
-  const setPopupParams = (params: IPopupParams | {}): void => {
+  const setPopupParams = (params: IPopupParams | object): void => {
     popupParams.value = params;
   };
 
@@ -28,7 +28,6 @@ const useCommonStore = defineStore("common", () => {
   };
 
   const setModalContentType = (type: ModalContentType): void => {
-    console.log(type);
     modalContentType.value = type;
   };
 

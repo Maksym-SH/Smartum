@@ -20,7 +20,7 @@
         :min="min"
         :maxlength="max"
         @blur="validator()"
-      ></textarea>
+      />
       <label
         v-if="label"
         :for="name"
@@ -31,7 +31,7 @@
       >
         {{ label }}
       </label>
-      <span v-if="required" class="c-textarea--required"></span>
+      <span v-if="required" class="c-textarea--required" />
       <Transition name="error-message">
         <span v-if="errorText" class="c-textarea--error-text">{{ errorText }}</span>
       </Transition>
@@ -40,7 +40,8 @@
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineComponent, ref, watch } from "vue";
+import type { ComputedRef } from "vue";
+import { computed, defineComponent, ref, watch } from "vue";
 import { useTextareaProps } from "./use/useProps";
 
 import i18n from "@/i18n";
@@ -67,10 +68,11 @@ export default defineComponent({
     });
 
     const validator = (): void => {
-      if (props.min && String(model.value).length < props.min)
+      if (props.min && String(model.value).length < props.min) {
         errorText.value = computed(() => t("errors.min", { min: props.min }));
-      else if (String(model.value).startsWith(" "))
+      } else if (String(model.value).startsWith(" ")) {
         errorText.value = computed(() => t("erros.startEmpty"));
+      }
     };
 
     watch(
@@ -81,7 +83,9 @@ export default defineComponent({
     watch(
       () => errorText.value,
       (message): void => {
-        if (message) emit("invalid");
+        if (message) {
+          emit("invalid");
+        }
       }
     );
 

@@ -2,7 +2,9 @@
   <div class="forgot-page">
     <div class="forgot-page__window">
       <div class="forgot-page__window-header">
-        <h2 class="forgot-page__window-header__title">{{ $t("recover.title") }}</h2>
+        <h2 class="forgot-page__window-header__title">
+          {{ $t("recover.title") }}
+        </h2>
         <p class="forgot-page__window-header__description">
           {{ $t("recover.description") }}
         </p>
@@ -32,9 +34,9 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 
+import InlineSvg from "vue-inline-svg";
 import firebaseReset from "@/helpers/firebase/firebaseReset";
 import router from "@/router";
-import InlineSvg from "vue-inline-svg";
 
 import { Route } from "@/types/enums";
 
@@ -48,12 +50,17 @@ export default defineComponent({
     const email = ref("");
 
     const submitForm = (): void => {
-      if (!errorEmail.value) firebaseReset(email.value);
+      if (!errorEmail.value) {
+        firebaseReset(email.value);
+      }
     };
 
     const goBack = () => {
-      if (window.history.length >= 2) router.go(-1); // Navigate to previous page.
-      else router.push({ name: Route.PROFILE });
+      if (window.history.length >= 2) {
+        router.go(-1); // Navigate to previous page.
+      } else {
+        router.push({ name: Route.PROFILE });
+      }
     };
 
     watch(email, (): boolean => (errorEmail.value = false));

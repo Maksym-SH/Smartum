@@ -1,13 +1,13 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
+import * as fs from "firebase/firestore";
+import type { User } from "firebase/auth";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 
-import * as fs from "firebase/firestore";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 
 import { DataCollection, NotificationStatus } from "@/types/enums";
-import type { User } from "firebase/auth";
 import type { IServerDate } from "@/types/interfaces";
 import type { INotification } from "@/types/interfaces/components";
 import type { IWorkingBoardMember } from "@/types/interfaces/board";
@@ -48,6 +48,7 @@ const useNotificationStore = defineStore("notification", () => {
         const notifications = doc.data()?.collection as INotification<IServerDate>[];
         if (notifications) {
           resolve(notifications);
+
           if (write) {
             setAllNotification(notifications);
           }
@@ -80,6 +81,19 @@ const useNotificationStore = defineStore("notification", () => {
     });
   };
 
+  const setNewNotification = async (
+    newNotification: INotification,
+    notifications?: INotification[],
+    unicID?: string
+  ): Promise<INotification[]> => {
+    const listTarget = notifications || allNotifications.value;
+    listTarget.unshift(newNotification);
+
+    const docID = unicID || (userStore.currentUser as User).uid;
+
+    return await updateNotificationList(docID, listTarget); // After local changes update database.
+  };
+
   const sendNotificationToUser = (
     userTarget: IWorkingBoardMember,
     notification: INotification,
@@ -87,11 +101,13 @@ const useNotificationStore = defineStore("notification", () => {
   ): Promise<void> => {
     commonStore.setLoadingStatus(showLoading);
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       try {
-        const userNotificationList = await getAllNotifications(userTarget.uid);
-        await setNewNotification(notification, userNotificationList, userTarget.uid);
-        resolve();
+        getAllNotifications(userTarget.uid).then((notifications) => {
+          setNewNotification(notification, notifications, userTarget.uid);
+
+          resolve();
+        });
       } catch (error: any) {
         ShowErrorMessage(error as ErrorCode);
         reject(error);
@@ -113,26 +129,16 @@ const useNotificationStore = defineStore("notification", () => {
 
     if (foundNotificationIndex !== -1) {
       // Delete notification.
-      if (action === "deleteNotification") listTarget.splice(foundNotificationIndex, 1);
-      else listTarget[foundNotificationIndex].status = NotificationStatus.READ;
+      if (action === "deleteNotification") {
+        listTarget.splice(foundNotificationIndex, 1);
+      } else {
+        listTarget[foundNotificationIndex].status = NotificationStatus.READ;
+      }
     }
 
     const docID: string = unicID || (userStore.currentUser as User).uid;
 
     updateNotificationList(docID, notifications || allNotifications.value); // After local changes update database.
-  };
-
-  const setNewNotification = async (
-    newNotification: INotification,
-    notifications?: INotification[],
-    unicID?: string
-  ): Promise<INotification[]> => {
-    const listTarget = notifications || allNotifications.value;
-    listTarget.unshift(newNotification);
-
-    const docID = unicID || (userStore.currentUser as User).uid;
-
-    return await updateNotificationList(docID, listTarget); // After local changes update database.
   };
 
   const deleteNotificationList = (unicID: string): Promise<void> => {

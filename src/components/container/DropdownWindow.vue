@@ -9,9 +9,9 @@
         class="dropdown-window__content"
         :style="windowSize"
         :class="{
-          centering: centering,
           'no-header': !$slots.header,
           'save-fix-height': saveFixHeight,
+          centering,
         }"
       >
         <slot name="content" />
@@ -19,18 +19,17 @@
     </div>
   </transition>
   <Teleport to="body">
-    <div v-if="visible" class="full-page-lock" @click.self="$emit('hideDropdown')"></div>
+    <div v-if="visible" class="full-page-lock" @click.self="$emit('hideDropdown')" />
   </Teleport>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { computed, defineComponent } from "vue";
 
 import type { CSSProperties } from "vue";
 
 export default defineComponent({
   inheritAttrs: false,
-  emits: ["hideDropdown"],
   props: {
     width: {
       type: Number,
@@ -53,6 +52,7 @@ export default defineComponent({
       default: false,
     },
   },
+  emits: ["hideDropdown"],
   setup(props) {
     const windowSize = computed((): CSSProperties => {
       return {

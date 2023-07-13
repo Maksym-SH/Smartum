@@ -12,7 +12,9 @@
           src="/images/icons/list-task.svg"
           alt="Tasks"
         />
-        <h3 class="sign-up__window--welcome-title">{{ $t("common.welcome") }}</h3>
+        <h3 class="sign-up__window--welcome-title">
+          {{ $t("common.welcome") }}
+        </h3>
         <h4 class="sign-up__window--welcome-description">
           {{ $t("signUp.description") }}
         </h4>
@@ -25,7 +27,9 @@
         </div>
       </div>
       <div class="sign-up__window-content content">
-        <h2 class="sign-up__window-content-title">{{ $t("signUp.title") }}</h2>
+        <h2 class="sign-up__window-content-title">
+          {{ $t("signUp.title") }}
+        </h2>
         <form class="sign-up__window-form-inputs" @submit.prevent="submitForm">
           <AppInput
             v-model.trim="userData.firstName"

@@ -7,13 +7,13 @@
         :color="Colors.DANGER"
         @click="deleteSubtask"
       />
-      <span class="subtask__info-count"> {{ count }}. </span>
+      <span class="subtask__info-count"> {{ count }}.</span>
       <AppCheckbox
+        v-model="statusModel"
         line-through
         :name="`subtask-${subtask.id}`"
         :label="subtask.title"
-        v-model="subtask.done"
-        :class="{ active: subtask.done }"
+        :class="{ active: status }"
       />
     </span>
   </span>
@@ -22,9 +22,9 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 
+import type { PropType } from "vue";
 import { Colors } from "@/types/enums";
 import type { ISubTask } from "@/types/interfaces/board";
-import type { PropType } from "vue";
 
 export default defineComponent({
   props: {
@@ -45,7 +45,9 @@ export default defineComponent({
   setup(props, { emit }) {
     const statusModel = computed({
       get: () => props.status,
-      set: (value) => emit("update:status", value),
+      set(value) {
+        emit("update:status", value);
+      },
     });
 
     const deleteSubtask = (): void => {

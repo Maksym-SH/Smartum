@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import * as fs from "firebase/firestore";
 import { notify } from "@kyvg/vue3-notification";
-import { database, RTDatabase } from "@/helpers/firebase/firebaseInitialize";
 import * as db from "firebase/database";
+import { RTDatabase, database } from "@/helpers/firebase/firebaseInitialize";
 
 import i18n from "@/i18n";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
@@ -38,35 +38,6 @@ const useDashboardStore = defineStore("dashboard", () => {
   const clearList = (): void => {
     allBoards.value = [];
     boardCodes.value = [];
-  };
-  const createNewWorkingBoard = (
-    board: boardType.IWorkingBoardItem,
-    unicID: string
-  ): Promise<boardType.IWorkingBoardItem> => {
-    commonStore.setLoadingStatus(true);
-
-    return new Promise((resolve, reject) => {
-      createJoinCode(unicID, board.joinCode)
-        .then(() => {
-          const refference = db.ref(RTDatabase, board.joinCode);
-
-          db.set(refference, board).then(() => {
-            db.onValue(
-              refference,
-              (boardSnapshot) => {
-                allBoards.value.push(boardSnapshot.val());
-              },
-              { onlyOnce: true }
-            );
-            resolve(board);
-          });
-        })
-        .catch((error: ErrorCode) => {
-          ShowErrorMessage(error);
-          commonStore.setLoadingStatus(false);
-          reject(error);
-        });
-    });
   };
 
   // Codes actions.
@@ -150,25 +121,111 @@ const useDashboardStore = defineStore("dashboard", () => {
         });
     });
   };
+
   // Board actions.
+  const createNewWorkingBoard = (
+    board: boardType.IWorkingBoardItem,
+    unicID: string
+  ): Promise<boardType.IWorkingBoardItem> => {
+    commonStore.setLoadingStatus(true);
+
+    return new Promise((resolve, reject) => {
+      createJoinCode(unicID, board.joinCode)
+        .then(() => {
+          const refference = db.ref(RTDatabase, board.joinCode);
+
+          db.set(refference, board).then(() => {
+            db.onValue(
+              refference,
+              (boardSnapshot) => {
+                allBoards.value.push(boardSnapshot.val());
+              },
+              { onlyOnce: true }
+            );
+            resolve(board);
+          });
+        })
+        .catch((error: ErrorCode) => {
+          ShowErrorMessage(error);
+          commonStore.setLoadingStatus(false);
+          reject(error);
+        });
+    });
+  };
+  const updateWorkingBoard = async (
+    updatedBoard: boardType.IWorkingBoardItem,
+    showLoading = true
+  ): Promise<void> => {
+    commonStore.setLoadingStatus(showLoading);
+    await db
+      .update(db.ref(RTDatabase, updatedBoard.joinCode), updatedBoard)
+      .catch((error: ErrorCode) => {
+        ShowErrorMessage(error);
+      })
+      .finally(() => {
+        commonStore.setLoadingStatus(false);
+      });
+  };
+
+  const membersExist = async (
+    boardInfo: boardType.IWorkingBoardResolve
+  ): Promise<boardType.IWorkingBoardResolve> => {
+    const loadedMembers = boardInfo.members;
+
+    const savedMembers = boardInfo.value.members;
+
+    if (loadedMembers.length !== savedMembers.length) {
+      const exist: boardType.IWorkingBoardMember[] = loadedMembers.map((item) => {
+        return {
+          role: item.role,
+          uid: item.uid,
+          invited: item?.invited,
+        };
+      });
+
+      const adminExist = exist.some((member) => member.role === enums.UserRole.ADMIN);
+
+      // Set new admin board for first invited user.
+      if (!adminExist) {
+        const newAdmin = exist[0];
+        newAdmin.role = enums.UserRole.ADMIN;
+
+        // Set for saved members.
+        boardInfo.members[0].role = enums.UserRole.ADMIN;
+
+        const newAdminNotification = useNewNotificationContent(
+          enums.NotificationType.SET_ADMIN,
+          boardInfo.value.title,
+          boardInfo.value
+        );
+        notificationStore.sendNotificationToUser(newAdmin, newAdminNotification);
+      }
+
+      boardInfo.value.members = exist;
+
+      await updateWorkingBoard(boardInfo.value);
+
+      return boardInfo;
+    } else {
+      return boardInfo;
+    }
+  };
   const getAllWorkingBoards = (unicID: string): Promise<boardType.IWorkingBoardItem[]> => {
     commonStore.setLoadingStatus(true);
     return new Promise((resolve, reject) => {
       getAllJoinCodes(unicID)
         .then(() => {
           if (boardCodes.value.length) {
-            boardCodes.value.map((joinCode) => {
+            boardCodes.value.forEach((joinCode) => {
               db.onValue(db.ref(RTDatabase, joinCode), (boardSnapshot) => {
                 if (boardSnapshot.val() !== null) {
                   const boardExistIndex = allBoards.value.findIndex(
                     (board) => board.joinCode === joinCode
                   );
 
-                  if (boardExistIndex !== -1) {
+                  if (boardExistIndex !== -1)
                     allBoards.value[boardExistIndex].members = boardSnapshot.val().members;
-                  } else {
-                    allBoards.value.push(boardSnapshot.val());
-                  }
+                  else allBoards.value.push(boardSnapshot.val());
 
                   commonStore.setLoadingStatus(false);
                 }
@@ -192,7 +249,7 @@ const useDashboardStore = defineStore("dashboard", () => {
   const getWorkingBoardItem = (
     unicID: string,
     joinCode: string
-  ): Promise<boardType.IWorkingBoardItem | {}> => {
+  ): Promise<boardType.IWorkingBoardItem | object> => {
     commonStore.setLoadingStatus(true);
 
     return new Promise((resolve, reject) => {
@@ -201,7 +258,9 @@ const useDashboardStore = defineStore("dashboard", () => {
           db.onValue(db.ref(RTDatabase, joinCode), async (boardData) => {
             const currentBoard = boardData.val() as boardType.IWorkingBoardItem;
 
-            if (router.currentRoute.value.params?.code !== currentBoard.joinCode) return;
+            if (router.currentRoute.value.params?.code !== currentBoard?.joinCode) {
+              return;
+            }
 
             if (currentBoard) {
               if (currentBoard.members?.length && !currentBoard.members[0].invited) {
@@ -213,8 +272,10 @@ const useDashboardStore = defineStore("dashboard", () => {
                   );
 
                   // Set tasks if none exist.
-                  currentBoard.columns.map((column) => {
-                    if (!column.tasks) column.tasks = [];
+                  currentBoard.columns.forEach((column) => {
+                    if (!column.tasks) {
+                      column.tasks = [];
+                    }
                   });
 
                   sortedUsersAsMembers.forEach((item) => {
@@ -262,21 +323,6 @@ const useDashboardStore = defineStore("dashboard", () => {
     });
   };
 
-  const updateWorkingBoard = async (
-    updatedBoard: boardType.IWorkingBoardItem,
-    showLoading = true
-  ): Promise<void> => {
-    commonStore.setLoadingStatus(showLoading);
-    await db
-      .update(db.ref(RTDatabase, updatedBoard.joinCode), updatedBoard)
-      .catch((error: ErrorCode) => {
-        ShowErrorMessage(error);
-      })
-      .finally(() => {
-        commonStore.setLoadingStatus(false);
-      });
-  };
-
   const joinWorkingBoard = (
     { joinCode }: Pick<boardType.IWorkingBoardItem, "uid" | "joinCode">,
     unicID: string
@@ -287,8 +333,10 @@ const useDashboardStore = defineStore("dashboard", () => {
           const board = boardDoc.val() as boardType.IWorkingBoardItem;
 
           // Set task arrays if none exist.
-          board.columns.map((column) => {
-            if (!column.tasks) column.tasks = [];
+          board.columns.forEach((column) => {
+            if (!column.tasks) {
+              column.tasks = [];
+            }
           });
 
           // Change invited status
@@ -345,35 +393,35 @@ const useDashboardStore = defineStore("dashboard", () => {
       }
     }
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       try {
-        await updateWorkingBoard(fromBoard);
+        updateWorkingBoard(fromBoard).then(async () => {
+          // Delete join code from own collection.
+          await getAllJoinCodes(memberID).then(() => {
+            const myBoardJoinCodeIndex = boardCodes.value.findIndex(
+              (code) => code === fromBoard.joinCode
+            );
+            if (myBoardJoinCodeIndex !== -1) {
+              boardCodes.value.splice(myBoardJoinCodeIndex, 1);
+            }
+          });
 
-        // Delete join code from own collection.
-        await getAllJoinCodes(memberID).then(() => {
-          const myBoardJoinCodeIndex = boardCodes.value.findIndex(
-            (code) => code === fromBoard.joinCode
-          );
-          if (myBoardJoinCodeIndex !== -1) {
-            boardCodes.value.splice(myBoardJoinCodeIndex, 1);
+          // Delete local board.
+          if (allBoards.value.length) {
+            const myBoardIndex = allBoards.value.findIndex(
+              (board) => board.joinCode === fromBoard.joinCode
+            );
+            if (myBoardIndex !== -1) {
+              allBoards.value.splice(myBoardIndex, 1);
+            }
           }
+
+          router.push({ name: enums.Route.DASHBOARD });
+
+          await updateAllJoinCodes(memberID);
+
+          resolve();
         });
-
-        // Delete local board.
-        if (allBoards.value.length) {
-          const myBoardIndex = allBoards.value.findIndex(
-            (board) => board.joinCode === fromBoard.joinCode
-          );
-          if (myBoardIndex !== -1) {
-            allBoards.value.splice(myBoardIndex, 1);
-          }
-        }
-
-        router.push({ name: enums.Route.DASHBOARD });
-
-        await updateAllJoinCodes(memberID);
-
-        resolve();
       } catch (error: unknown) {
         ShowErrorMessage(error as ErrorCode);
         reject(error);
@@ -381,50 +429,6 @@ const useDashboardStore = defineStore("dashboard", () => {
         commonStore.setLoadingStatus(false);
       }
     });
-  };
-
-  const membersExist = async (
-    boardInfo: boardType.IWorkingBoardResolve
-  ): Promise<boardType.IWorkingBoardResolve> => {
-    const loadedMembers = boardInfo.members;
-
-    const savedMembers = boardInfo.value.members;
-
-    if (loadedMembers.length !== savedMembers.length) {
-      const exist: boardType.IWorkingBoardMember[] = loadedMembers.map((item) => {
-        return {
-          role: item.role,
-          uid: item.uid,
-          invited: item?.invited,
-        };
-      });
-
-      const adminExist = exist.some((member) => member.role === enums.UserRole.ADMIN);
-
-      // Set new admin board for first invited user.
-      if (!adminExist) {
-        const newAdmin = exist[0];
-        newAdmin.role = enums.UserRole.ADMIN;
-
-        // Set for saved members.
-        boardInfo.members[0].role = enums.UserRole.ADMIN;
-
-        const newAdminNotification = useNewNotificationContent(
-          enums.NotificationType.SET_ADMIN,
-          boardInfo.value.title,
-          boardInfo.value
-        );
-        notificationStore.sendNotificationToUser(newAdmin, newAdminNotification);
-      }
-
-      boardInfo.value.members = exist;
-
-      await updateWorkingBoard(boardInfo.value);
-
-      return boardInfo;
-    } else {
-      return boardInfo;
-    }
   };
 
   return {

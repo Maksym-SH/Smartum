@@ -1,9 +1,9 @@
 import { computed, onMounted, reactive, ref } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 
-import i18n from "@/i18n";
 import useNewNotificationContent from "./useNotificationContent";
 import useStores from "./useStores";
+import i18n from "@/i18n";
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 

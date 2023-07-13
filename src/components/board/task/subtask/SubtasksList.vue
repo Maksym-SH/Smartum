@@ -5,9 +5,9 @@
       <Subtask
         v-for="(subtask, index) in subtasksList"
         :key="subtask.id"
+        v-model:status="subtask.done"
         :subtask="subtask"
         :count="index + 1"
-        :status="subtask.done"
         @delete="deleteSubtask"
       />
     </transition-group>
@@ -16,26 +16,26 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
+import type { PropType } from "vue";
+import AddNewSubtask from "./SubtaskAddNew.vue";
+import Subtask from "./SubtaskItem.vue";
 import { OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
-import AddNewSubtask from "./SubtaskAddNew.vue";
-import Subtask from "./SubtaskItem.vue";
 
-import { Length, Colors } from "@/types/enums";
-import type { PropType } from "vue";
+import { Colors, Length } from "@/types/enums";
 import type { ISubTask } from "@/types/interfaces/board";
 
 export default defineComponent({
+  components: {
+    AddNewSubtask,
+    Subtask,
+  },
   props: {
     subtasks: {
       type: Array as PropType<ISubTask[]>,
       required: true,
     },
-  },
-  components: {
-    AddNewSubtask,
-    Subtask,
   },
   emits: ["update:subtasks"],
   setup(props, { emit }) {

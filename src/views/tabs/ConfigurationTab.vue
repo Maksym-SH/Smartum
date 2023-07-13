@@ -4,8 +4,12 @@
       <div class="configuration-tab__content-navigation-filter">
         <AppCard table>
           <template #table-header>
-            <th class="card-info__title">{{ $t("configuration.card.pages") }}</th>
-            <th class="card-info__title center">{{ $t("configuration.card.action") }}</th>
+            <th class="card-info__title">
+              {{ $t("configuration.card.pages") }}
+            </th>
+            <th class="card-info__title center">
+              {{ $t("configuration.card.action") }}
+            </th>
           </template>
           <template #table-body>
             <tr
@@ -150,11 +154,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import InlineSvg from "vue-inline-svg";
 import useConfiguration from "@/composables/useConfiguration";
 import AppCard from "@/components/container/AppCard.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
 import ModalColorPicker from "@/components/modals/ModalColorPicker.vue";
-import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({
   components: {

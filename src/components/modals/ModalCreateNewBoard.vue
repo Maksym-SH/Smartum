@@ -6,7 +6,9 @@
     <template #default>
       <v-card>
         <v-toolbar color="primary">
-          <h4 class="v-card-header__title">{{ $t("modal.createBoard") }}</h4>
+          <h4 class="v-card-header__title">
+            {{ $t("modal.createBoard") }}
+          </h4>
         </v-toolbar>
         <form class="v-card__form" @submit.prevent="createNewBoard">
           <v-card-text>
@@ -22,11 +24,13 @@
                 required
                 name="DashboardHeader"
                 :min="Length.TEXT"
-                :maxLength="Length.MAX"
+                :max-length="Length.MAX"
               />
             </div>
             <div class="v-card__wrapper-background-select">
-              <h5 class="v-card__title">{{ $t("labels.background") }}</h5>
+              <h5 class="v-card__title">
+                {{ $t("labels.background") }}
+              </h5>
               <div class="v-card__backgrounds">
                 <ImageBackgroundExample
                   v-for="photo in backgrounds.photos"
@@ -71,14 +75,14 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
+import BoardImageResult from "../board/BoardImageResult.vue";
+import ImageBackgroundExample from "../UI/BackgroundItem.vue";
 import { Colors, Length, Numbers, UserRole } from "@/types/enums";
 import { GenerateJoinCode } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDashboardItemBackgroundTemplate from "@/composables/useDashboardItemBackground";
-import BoardImageResult from "../board/BoardImageResult.vue";
-import ImageBackgroundExample from "../UI/BackgroundItem.vue";
 
 import type { IBackgroundDashboard } from "@/types/interfaces/colors";
 import type { IWorkingBoardItem } from "@/types/interfaces/board";
@@ -124,7 +128,9 @@ export default defineComponent({
     });
 
     const createNewBoard = () => {
-      if (newBoard.title!.length < Length.TEXT) return;
+      if (newBoard.title!.length < Length.TEXT) {
+        return;
+      }
 
       // Set date of creation working board.
       const dateOfCreation: Date = new Date();

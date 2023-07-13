@@ -7,12 +7,12 @@
   >
     <img
       v-show="image && imageLoaded"
-      @load="imageLoad"
       :src="image"
       class="image-example__picture"
       alt=""
+      @load="imageLoad"
     />
-    <v-skeleton-loader
+    <VSkeletonLoader
       v-if="image && !imageLoaded"
       :height="height"
       :elevation="24"
@@ -22,20 +22,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useBackgroundItemProps } from "./use/useProps";
+import { computed, defineComponent } from "vue";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+import type { CSSProperties } from "vue";
+import { useBackgroundItemProps } from "./use/useProps";
 
 import useImageLoad from "@/composables/useImageLoad";
 
-import type { CSSProperties } from "vue";
-
 export default defineComponent({
-  props: useBackgroundItemProps,
-  emits: ["select"],
   components: {
     VSkeletonLoader,
   },
+  props: useBackgroundItemProps,
+  emits: ["select"],
   setup(props, { emit }) {
     const { imageLoaded, imageLoad } = useImageLoad();
 

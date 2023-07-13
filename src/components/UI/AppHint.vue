@@ -1,6 +1,6 @@
 <template>
   <div class="c-hint" :class="`c-hint-variant--${variant}`">
-    <span v-html="content"></span>
+    <span v-html="content" />
   </div>
 </template>
 

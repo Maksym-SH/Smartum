@@ -1,13 +1,12 @@
 <template>
   <div class="invite-users">
     <AppButton
-      @click="toggleInviteWindow"
       icon="account-multiple"
       class="invite-users__btn"
       size="small"
       :title="$t('buttons.invite')"
-    >
-    </AppButton>
+      @click="toggleInviteWindow"
+    />
     <DropDownWindow
       :visible="showInviteWindow"
       class="invite-users__window"
@@ -68,15 +67,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, computed } from "vue";
+import type { PropType } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { notify } from "@kyvg/vue3-notification";
+import UserListItem from "./UserItem.vue";
 import { OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useStore from "@/composables/useStores";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useNewNotificationContent from "@/composables/useNotificationContent";
-import UserListItem from "./UserItem.vue";
 import DropDownWindow from "@/components/container/DropdownWindow.vue";
 
 import { Colors, NotificationType } from "@/types/enums";
@@ -89,13 +89,13 @@ export default defineComponent({
     UserListItem,
     DropDownWindow,
   },
-  emits: ["invited"],
   props: {
     board: {
       type: Object as PropType<IWorkingBoardItem>,
       required: true,
     },
   },
+  emits: ["invited"],
   setup(props, { emit }) {
     const { t } = i18n.global;
 
@@ -113,6 +113,14 @@ export default defineComponent({
     const searchText = ref("");
     const isSearching = ref(false);
 
+    const filteredList = computed((): IUserForList[] => {
+      if (isSearching.value) {
+        return usersListFiltered.value;
+      }
+
+      return usersList.value;
+    });
+
     const emptyList = computed((): boolean => !filteredList.value.length && !showLoader.value);
 
     const searchUser = (): void => {
@@ -126,12 +134,41 @@ export default defineComponent({
       }
     };
 
-    const filteredList = computed((): IUserForList[] => {
-      if (isSearching.value) {
-        return usersListFiltered.value;
+    // Set roles.
+    const setAdminRole = (list: IUserForList[]): void => {
+      const adminRole = list.find(
+        (item) => item.uid === props.board.members[0].uid // 0 - board creator index.
+      );
+      if (adminRole) {
+        adminRole.role = computed(() => t("role.admin"));
       }
-      return usersList.value;
-    });
+    };
+
+    const setUserRoles = (list: IUserForList[]): void => {
+      const boardMembers = list.filter((item) => {
+        const member = props.board.members.find((user) => user.uid === item.uid);
+
+        return member ?? false;
+      });
+
+      if (boardMembers.length) {
+        list.forEach((user) => {
+          if (boardMembers.includes(user)) {
+            const invitedUsers = props.board.members.filter((item) => item.invited);
+
+            const currentUserInvited = invitedUsers.find((invited) => invited.uid === user.uid);
+
+            if (currentUserInvited) {
+              user.invited = true;
+            }
+            // Not admin.
+            else if (user.uid !== props.board.members[0].uid) {
+              user.role = computed(() => t("role.member"));
+            }
+          }
+        });
+      }
+    };
 
     // Window actions.
     const refreshUsers = (): void => {
@@ -157,7 +194,9 @@ export default defineComponent({
     const toggleInviteWindow = (): void => {
       showInviteWindow.value = !showInviteWindow.value;
 
-      if (!usersList.value.length) refreshUsers();
+      if (!usersList.value.length) {
+        refreshUsers();
+      }
     };
 
     const invite = (invitedUser: IUserForList): void => {
@@ -204,41 +243,6 @@ export default defineComponent({
           });
         },
       });
-    };
-
-    // Set roles.
-    const setAdminRole = (list: IUserForList[]): void => {
-      const adminRole = list.find(
-        (item) => item.uid === props.board.members[0].uid // 0 - board creator index.
-      );
-      if (adminRole) {
-        adminRole.role = computed(() => t("role.admin"));
-      }
-    };
-
-    const setUserRoles = (list: IUserForList[]): void => {
-      const boardMembers = list.filter((item) => {
-        const member = props.board.members.find((user) => user.uid === item.uid);
-
-        return member ?? false;
-      });
-
-      if (boardMembers.length) {
-        list.forEach((user) => {
-          if (boardMembers.includes(user)) {
-            const invitedUsers = props.board.members.filter((item) => item.invited);
-
-            const currentUserInvited = invitedUsers.find((invited) => invited.uid === user.uid);
-
-            if (currentUserInvited) {
-              user.invited = true;
-              // Not admin.
-            } else if (user.uid !== props.board.members[0].uid) {
-              user.role = computed(() => t("role.member"));
-            }
-          }
-        });
-      }
     };
 
     return {

@@ -1,6 +1,6 @@
-import { IUserReg } from "./interfaces/user";
-import * as components from "./interfaces/components";
-import AppInput from "@/componets/UI/AppInput.vue";
+import type { IUserReg } from "./interfaces/user";
+import type * as components from "./interfaces/components";
+import type AppInput from "@/componets/UI/AppInput.vue";
 
 // Components
 export type InputInstance = InstanceType<typeof AppInput> | null;

@@ -26,16 +26,17 @@ export function ObjectFull(object: object): boolean {
   return Object.values(object).every((item) => item);
 }
 
-export function ObjectHasValues(object: Object): boolean {
+export function ObjectHasValues(object: object): boolean {
   return Object.values(object).some((value) => {
-    if (typeof value === "object" && value !== null)
+    if (typeof value === "object" && value !== null) {
       return Object.values(value).some((nestedValue) => !!nestedValue);
+    }
 
     return !!value;
   });
 }
 
-export function TheSameObject(firstObject: Object, secondObject: Object): boolean {
+export function TheSameObject(firstObject: object, secondObject: object): boolean {
   return JSON.stringify(firstObject) === JSON.stringify(secondObject);
 }
 
@@ -90,9 +91,8 @@ export function GenerateRandomString(length: number) {
   let result = "";
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < length; i++)
     result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
 
   return result;
 }
@@ -105,9 +105,7 @@ export function Confirmation(toggle: boolean, callback?: Function | void): Promi
   if (callback && toggle) {
     ConfirmCallback = callback;
   } else {
-    return new Promise((resolve) => {
-      resolve(ConfirmCallback());
-    });
+    ConfirmCallback();
   }
 }
 

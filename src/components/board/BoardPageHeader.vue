@@ -5,7 +5,7 @@
         <img class="board-header__logo-image" src="/images/icons/logo.svg" alt="" />
       </router-link>
       <div class="board-header__actions">
-        <SwitchLanguageButton :title="''" type="button" variant="tonal" />
+        <SwitchLanguageButton title="" type="button" variant="tonal" />
         <AcquaintanceButton />
         <NotificationsButton />
         <SwitchTheme name="switchThemeBoard" />
@@ -23,18 +23,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 
+import type { PropType } from "vue";
+import Avatar from "../user/AppAvatar.vue";
+import SwitchTheme from "../UI/SwitchTheme.vue";
+import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
+import AcquaintanceButton from "./BoardAcquaintanceButton.vue";
 import i18n from "@/i18n";
 import useSelectActions from "@/composables/useSelectActions";
-import Avatar from "../user/AppAvatar.vue";
 import NotificationsButton from "@/components/notification/NotificationsButton.vue";
-import SwitchTheme from "../UI/SwitchTheme.vue";
-import AcquaintanceButton from "./BoardAcquaintanceButton.vue";
-import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 
 import { Colors } from "@/types/enums";
-import type { PropType } from "vue";
 import type { IUserCreated } from "@/types/interfaces/user";
 
 export default defineComponent({
@@ -45,13 +45,13 @@ export default defineComponent({
     SwitchTheme,
     SwitchLanguageButton,
   },
-  emits: ["boardLeave", "userMenuPicked"],
   props: {
     userInfo: {
       type: Object as PropType<IUserCreated>,
       required: true,
     },
   },
+  emits: ["boardLeave", "userMenuPicked"],
   setup(_, { emit }) {
     const { t } = i18n.global;
 

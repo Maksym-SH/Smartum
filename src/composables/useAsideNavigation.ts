@@ -1,12 +1,12 @@
 import { computed } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 
-import i18n from "@/i18n";
 import useStores from "./useStores";
+import i18n from "@/i18n";
 import router from "@/router";
 
 import type { IAsideNavItem } from "@/types/interfaces/components";
-import { Links, Route, ModalContentType } from "@/types/enums";
+import { Links, ModalContentType, Route } from "@/types/enums";
 
 export default function Navigation(): IAsideNavItem[] {
   const { t } = i18n.global;

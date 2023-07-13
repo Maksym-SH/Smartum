@@ -71,15 +71,15 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
+import InlineSvg from "vue-inline-svg";
+import type { PropType } from "vue";
+import BackgroundItem from "../UI/BackgroundItem.vue";
 import { DarkColors, LightColors } from "@/helpers/colors";
 import { GenerateColorHexFormat } from "@/helpers/methods";
 
 import i18n from "@/i18n";
-import InlineSvg from "vue-inline-svg";
-import BackgroundItem from "../UI/BackgroundItem.vue";
 
 import { Colors } from "@/types/enums";
-import type { PropType } from "vue";
 import type { Theme } from "@/types/types";
 import type { IColorPickerParams } from "@/types/interfaces/colors";
 
@@ -136,6 +136,7 @@ export default defineComponent({
       if (props.applyButtonColor) {
         return props.modelValue;
       }
+
       return Colors.LIGHT_GREY;
     });
 

@@ -2,9 +2,9 @@ import type { User } from "firebase/auth";
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 
+import ShowErrorMessage from "./firebaseErrorMessage";
 import i18n from "@/i18n";
 import useNewNotificationContent from "@/composables/useNotificationContent";
-import ShowErrorMessage from "./firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 
 import type { ErrorCode } from "@/types/types";
@@ -35,19 +35,27 @@ export default function VerifyEmail(userInfo: User): void {
           getAuth()
             .currentUser?.reload()
             .then(() => {
-              if (getAuth().currentUser && getAuth().currentUser?.emailVerified) {
-                const emailVerified = getAuth().currentUser?.emailVerified;
+              const emailVerified = getAuth().currentUser?.emailVerified;
+
+              if (getAuth().currentUser && emailVerified) {
+                const unicID = getAuth().currentUser?.uid;
 
                 userStore.setCurrentUser({
                   ...getAuth().currentUser,
                   emailVerified,
                 });
-                // Add to search users list new user after verify email.
-                const userInfo = {
-                  ...userStore.userInfo,
-                  uid: getAuth().currentUser?.uid,
-                };
-                userStore.updateUsersList(userInfo);
+
+                if (unicID) {
+                  // Add to search users list new user after verify email.
+                  const userInfo = {
+                    ...userStore.userInfo,
+                    uid: unicID,
+                  };
+                  userStore.updateUsersList(userInfo);
+
+                  // Get notifications for real-time updates.
+                  notificationStore.getAllNotifications(unicID, true);
+                }
 
                 clearInterval(checkForVerifiedInterval);
               }

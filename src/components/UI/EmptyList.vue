@@ -21,11 +21,15 @@ export default defineComponent({
     const { t } = i18n.global;
 
     const descriptionContent = computed((): string => {
-      if (props.type === EmptyListType.DASHBOARD) return t("emptyList.boards");
-      else if (props.type === EmptyListType.NOTIFICATIONS) return t("emptyList.notifications");
-
-      // ToDo: smt else
-      return "";
+      switch (props.type) {
+        case EmptyListType.DASHBOARD:
+          return t("emptyList.boards");
+        case EmptyListType.NOTIFICATIONS:
+          return t("emptyList.notifications");
+        // ToDo: smt else
+        default:
+          return "";
+      }
     });
 
     return {
