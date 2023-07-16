@@ -1,10 +1,10 @@
-import type { RouteRecordRaw } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import { notify } from "@kyvg/vue3-notification";
 
 import i18n from "@/i18n";
 
 import { Route } from "@/types/enums";
+import type { RouteRecordRaw } from "vue-router";
 
 const routes: Readonly<RouteRecordRaw[]> = [
   {

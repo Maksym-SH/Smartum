@@ -1,7 +1,7 @@
-import useTimestamp from "./stamp";
 import i18n from "@/i18n";
-import RegExp from "@/helpers/regExp";
+import useTimestamp from "./stamp";
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
+import RegExp from "@/helpers/regExp";
 
 import type { IDateFormat } from "@/types/interfaces";
 import { Language, Numbers } from "@/types/enums";
@@ -14,7 +14,10 @@ export function GetDate(date: string, onlyDate = false): IDateFormat {
 
   if (onlyDate) {
     const regExp =
-      i18nLocale.value === Language.ENG ? RegExp.TimeRegisteredEng : RegExp.TimeRegisteredRu;
+      i18nLocale.value === Language.ENG
+        ? RegExp.TimeRegisteredEng
+        : RegExp.TimeRegisteredRu;
+
     timestamp.date = timestamp.date.match(regExp)![0];
   }
 
@@ -32,6 +35,7 @@ export function GetBetweenDateString(date: Date): string {
 
   const weekAgo = new Date(today);
   weekAgo.setDate(today.getDate() - 7);
+
   if (date) {
     switch (true) {
       case date >= today:
@@ -48,6 +52,7 @@ export function GetBetweenDateString(date: Date): string {
         return date.toLocaleDateString();
     }
   }
+
   return "";
 }
 

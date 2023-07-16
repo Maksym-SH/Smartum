@@ -29,14 +29,19 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
 
-import type { PropType } from "vue";
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 
+import AppButton from "../UI/AppButton.vue";
+
+import type { PropType } from "vue";
 import { ModalContentType } from "@/types/enums";
 import type { IModalContent } from "@/types/interfaces/components";
 
 export default defineComponent({
+  components: {
+    AppButton,
+  },
   props: {
     contentType: {
       type: String as PropType<ModalContentType>,

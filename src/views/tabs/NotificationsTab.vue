@@ -41,16 +41,19 @@ import { ArrayHasValues, ObjectNotEmpty } from "@/helpers/methods";
 
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
-import NotificationItem from "@/components/notification/NotificationItem.vue";
-import NotificationEmptyList from "@/components/UI/EmptyList.vue";
 
-import type { NotifyAction } from "@/types/types";
+import AppButton from "@/components/UI/AppButton.vue";
+import Notification from "@/components/notification/NotificationItem.vue";
+import EmptyList from "@/components/UI/EmptyList.vue";
+
+import type { NotifyAction } from "@/types";
 import { Colors, EmptyListType } from "@/types/enums";
 
 export default defineComponent({
   components: {
-    Notification: NotificationItem,
-    EmptyList: NotificationEmptyList,
+    AppButton,
+    Notification,
+    EmptyList,
   },
   props: {},
   setup() {

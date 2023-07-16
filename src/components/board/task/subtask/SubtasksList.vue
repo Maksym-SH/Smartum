@@ -16,13 +16,14 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
-import type { PropType } from "vue";
-import AddNewSubtask from "./SubtaskAddNew.vue";
-import Subtask from "./SubtaskItem.vue";
 import { OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 
+import AddNewSubtask from "./SubtaskAddNew.vue";
+import Subtask from "./SubtaskItem.vue";
+
+import type { PropType } from "vue";
 import { Colors, Length } from "@/types/enums";
 import type { ISubTask } from "@/types/interfaces/board";
 

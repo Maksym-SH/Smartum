@@ -3,11 +3,11 @@ import { notify } from "@kyvg/vue3-notification";
 
 import ShowErrorMessage from "./firebaseErrorMessage";
 import i18n from "@/i18n";
-import useStores from "@/composables/useStores";
 import router from "@/router";
+import useStores from "@/composables/useStores";
 
 import { Route } from "@/types/enums";
-import type { ErrorCode } from "@/types/types";
+import type { ErrorCode } from "@/types";
 
 export default function firebaseReset(email: string): void {
   const { t } = i18n.global;

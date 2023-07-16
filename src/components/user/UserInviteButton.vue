@@ -55,7 +55,10 @@
                   @invite="invite(user)"
                 />
               </template>
-              <div v-show="!filteredList.length" class="invite-users__window-content--empty">
+              <div
+                v-show="!filteredList.length"
+                class="invite-users__window-content--empty"
+              >
                 {{ $t("emptyList.noData") }}
               </div>
             </div>
@@ -67,25 +70,32 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { computed, defineComponent, ref } from "vue";
 import { notify } from "@kyvg/vue3-notification";
-import UserListItem from "./UserItem.vue";
 import { OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useStore from "@/composables/useStores";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useNewNotificationContent from "@/composables/useNotificationContent";
+
+import AppLoader from "../UI/AppLoader.vue";
+import AppButton from "../UI/AppButton.vue";
+import AppInput from "../UI/AppInput.vue";
+import UserListItem from "./UserItem.vue";
 import DropDownWindow from "@/components/container/DropdownWindow.vue";
 
 import { Colors, NotificationType } from "@/types/enums";
+import type { PropType } from "vue";
 import type { INotification } from "@/types/interfaces/components";
 import type { IUserForList } from "@/types/interfaces/user";
 import type { IWorkingBoardItem } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {
+    AppLoader,
+    AppButton,
+    AppInput,
     UserListItem,
     DropDownWindow,
   },
@@ -121,7 +131,9 @@ export default defineComponent({
       return usersList.value;
     });
 
-    const emptyList = computed((): boolean => !filteredList.value.length && !showLoader.value);
+    const emptyList = computed(
+      (): boolean => !filteredList.value.length && !showLoader.value
+    );
 
     const searchUser = (): void => {
       isSearching.value = true;
@@ -156,7 +168,9 @@ export default defineComponent({
           if (boardMembers.includes(user)) {
             const invitedUsers = props.board.members.filter((item) => item.invited);
 
-            const currentUserInvited = invitedUsers.find((invited) => invited.uid === user.uid);
+            const currentUserInvited = invitedUsers.find(
+              (invited) => invited.uid === user.uid
+            );
 
             if (currentUserInvited) {
               user.invited = true;

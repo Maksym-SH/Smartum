@@ -1,9 +1,8 @@
-import type { PropType } from "vue";
-
-import type { EmptyListType } from "@/types/enums";
 import { Colors, Length } from "@/types/enums";
-import type { AsideExpPanelNavigation } from "@/types/interfaces/components";
-import type * as types from "@/types/types";
+import type { ComputedRef, PropType } from "vue";
+import type { EmptyListType } from "@/types/enums";
+import type { AsideExpPanelNav } from "@/types/interfaces/components";
+import type * as types from "@/types";
 
 // AppInput.vue
 export const useInputProps = {
@@ -112,7 +111,7 @@ export const useTextareaProps = {
 // AppButton.vue
 export const useButtonProps = {
   title: {
-    type: String,
+    type: String as PropType<ComputedRef<string> | string>,
     default: "",
   },
   icon: {
@@ -183,8 +182,8 @@ export const useExpansionPanelProps = {
     type: String as PropType<types.ExpansionPanelVariant>,
     default: "default",
   },
-  name: {
-    type: String,
+  title: {
+    type: String as PropType<ComputedRef<string> | string>,
     required: true,
   },
   icon: {
@@ -196,7 +195,7 @@ export const useExpansionPanelProps = {
     default: null,
   },
   content: {
-    type: Array as PropType<AsideExpPanelNavigation[]>,
+    type: Array as PropType<AsideExpPanelNav[]>,
     default: () => [],
   },
 };

@@ -16,9 +16,10 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 
 import useImageLoad from "@/composables/useImageLoad";
+
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 
 export default defineComponent({
   components: {

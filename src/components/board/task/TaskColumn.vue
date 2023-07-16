@@ -41,20 +41,25 @@ import type { PropType } from "vue";
 import { computed, defineComponent, ref, watch } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 
+import i18n from "@/i18n";
+
 import Draggable from "vuedraggable";
 import Task from "./TaskItem.vue";
 import AddNewTask from "./TaskAddNew.vue";
-import i18n from "@/i18n";
+import AppInput from "@/components/UI/AppInput.vue";
+import AppButton from "@/components/UI/AppButton.vue";
 
 import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
 import { Length, Numbers } from "@/types/enums";
-import type { InputInstance } from "@/types/types";
+import type { InputInstance } from "@/types";
 
 export default defineComponent({
   components: {
     Task,
     AddNewTask,
     Draggable,
+    AppInput,
+    AppButton,
   },
   props: {
     column: {

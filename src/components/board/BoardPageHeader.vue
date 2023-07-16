@@ -6,9 +6,13 @@
       </router-link>
       <div class="board-header__actions">
         <SwitchLanguageButton title="" type="button" variant="tonal" />
+
         <AcquaintanceButton />
+
         <NotificationsButton />
+
         <SwitchTheme name="switchThemeBoard" />
+
         <AppSelect :items="actions" :size="42" rounded @selected="selected">
           <Avatar
             circle
@@ -25,15 +29,17 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted } from "vue";
 
-import type { PropType } from "vue";
-import Avatar from "../user/AppAvatar.vue";
-import SwitchTheme from "../UI/SwitchTheme.vue";
-import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
-import AcquaintanceButton from "./BoardAcquaintanceButton.vue";
 import i18n from "@/i18n";
 import useSelectActions from "@/composables/useSelectActions";
+
+import Avatar from "../user/AppAvatar.vue";
+import SwitchTheme from "../UI/SwitchTheme.vue";
+import AppSelect from "../UI/AppSelect.vue";
+import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
+import AcquaintanceButton from "./BoardAcquaintanceButton.vue";
 import NotificationsButton from "@/components/notification/NotificationsButton.vue";
 
+import type { PropType } from "vue";
 import { Colors } from "@/types/enums";
 import type { IUserCreated } from "@/types/interfaces/user";
 
@@ -44,6 +50,7 @@ export default defineComponent({
     AcquaintanceButton,
     SwitchTheme,
     SwitchLanguageButton,
+    AppSelect,
   },
   props: {
     userInfo: {

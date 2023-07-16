@@ -75,20 +75,25 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
-import BoardImageResult from "../board/BoardImageResult.vue";
-import ImageBackgroundExample from "../UI/BackgroundItem.vue";
-import { Colors, Length, Numbers, UserRole } from "@/types/enums";
 import { GenerateJoinCode } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDashboardItemBackgroundTemplate from "@/composables/useDashboardItemBackground";
 
+import AppButton from "../UI/AppButton.vue";
+import AppInput from "../UI/AppInput.vue";
+import BoardImageResult from "../board/BoardImageResult.vue";
+import ImageBackgroundExample from "../UI/BackgroundItem.vue";
+
+import { Colors, Length, Numbers, UserRole } from "@/types/enums";
 import type { IBackgroundDashboard } from "@/types/interfaces/colors";
 import type { IWorkingBoardItem } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {
+    AppButton,
+    AppInput,
     BoardImageResult,
     ImageBackgroundExample,
   },

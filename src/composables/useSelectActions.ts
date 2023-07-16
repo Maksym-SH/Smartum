@@ -1,15 +1,15 @@
-import type { ComponentInternalInstance } from "vue";
 import { computed, getCurrentInstance, reactive } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 
-import useStores from "./useStores";
 import i18n from "@/i18n";
+import router from "@/router";
+import useStores from "./useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import verifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
-import router from "@/router";
 
 import { Colors, Route } from "@/types/enums";
-import type { SelectElements } from "@/types/types";
+import type { ComponentInternalInstance } from "vue";
+import type { SelectElements } from "@/types";
 import type { ISelectElem } from "@/types/interfaces/components";
 
 export default function useSelectActions() {

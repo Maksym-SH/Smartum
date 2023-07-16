@@ -21,20 +21,23 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { computed, defineComponent, onMounted, reactive } from "vue";
-import AppSelect from "./AppSelect.vue";
 import { LocalLanguage } from "@/helpers/methods";
 
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import useSelectActions from "@/composables/useSelectActions";
 
+import AppSelect from "./AppSelect.vue";
+import AppButton from "./AppButton.vue";
+
 import { Colors, Language } from "@/types/enums";
-import type { ButtonVariant, SelectElements, SwitchLanguageType } from "@/types/types";
+import type { PropType } from "vue";
+import type { ButtonVariant, SelectElements, SwitchLanguageType } from "@/types";
 
 export default defineComponent({
   components: {
     AppSelect,
+    AppButton,
   },
   props: {
     type: {

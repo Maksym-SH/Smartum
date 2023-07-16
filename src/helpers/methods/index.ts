@@ -6,7 +6,7 @@ import useStores from "@/composables/useStores";
 
 import { Colors, Language } from "@/types/enums";
 import type { IPopupParams } from "@/types/interfaces/components";
-import type { Theme } from "@/types/types";
+import type { Theme } from "@/types";
 
 export function LocalLanguage(): Language {
   let language: Language;
@@ -75,19 +75,19 @@ export function GenerateColorHexFormat(Theme: Theme): string {
   return colorHex;
 
   // Helper function to convert component values to HEX.
-  function componentToHex(c: number) {
+  function componentToHex(c: number): string {
     const hex = c.toString(16);
     return hex.length === 1 ? `0${hex}` : hex;
   }
 }
 
-export function GenerateJoinCode(length: number) {
+export function GenerateJoinCode(length: number): string {
   const joinCode = GenerateRandomString(length);
 
   return joinCode;
 }
 
-export function GenerateRandomString(length: number) {
+export function GenerateRandomString(length: number): string {
   let result = "";
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -98,7 +98,7 @@ export function GenerateRandomString(length: number) {
 }
 
 let ConfirmCallback: Function;
-export function Confirmation(toggle: boolean, callback?: Function | void): Promise<any> | void {
+export function Confirmation(toggle: boolean, callback?: Function | void): void {
   const { commonStore } = useStores();
   commonStore.setConfirmPopupVisibillity(toggle);
 

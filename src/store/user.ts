@@ -1,22 +1,23 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { getAuth } from "firebase/auth";
-import * as fs from "firebase/firestore";
-import * as st from "firebase/storage";
-import type { User } from "firebase/auth";
 import { database } from "@/helpers/firebase/firebaseInitialize";
 import { SetTheme } from "@/helpers/methods";
+import * as fs from "firebase/firestore";
+import * as st from "firebase/storage";
 
 import router from "@/router";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
 
 import type * as userType from "@/types/interfaces/user";
+import type { User } from "firebase/auth";
 import { DataCollection, Route } from "@/types/enums";
-import type { ErrorCode } from "@/types/types";
+import type { ErrorCode } from "@/types";
 
 const useUserStore = defineStore("user", () => {
-  const { commonStore, notificationStore, configurationStore, dashboardStore } = useStores();
+  const { commonStore, notificationStore, configurationStore, dashboardStore } =
+    useStores();
 
   const storage = st.getStorage();
 
@@ -257,8 +258,14 @@ const useUserStore = defineStore("user", () => {
     const unicID = data.uid as string; // Unic id for database field access.
     const profileRef = fs.doc(database, DataCollection.PROFILE, unicID);
 
-    const { firstName, lastName, avatarParams, photoFile, about, phone }: userType.IUserInfo =
-      data;
+    const {
+      firstName,
+      lastName,
+      avatarParams,
+      photoFile,
+      about,
+      phone,
+    }: userType.IUserInfo = data;
 
     const fieldsToUpdate: userType.IUserFieldsUpdate = {
       firstName,
@@ -274,11 +281,13 @@ const useUserStore = defineStore("user", () => {
     commonStore.setLoadingStatus(true);
     // New upload image.
     if (photoFile !== null) {
-      await (updateUserAvatar(photoFile, unicID) as Promise<string>).then((photo: string) => {
-        if (fieldsToUpdate.avatarParams) {
-          fieldsToUpdate.avatarParams.url = photo;
+      await (updateUserAvatar(photoFile, unicID) as Promise<string>).then(
+        (photo: string) => {
+          if (fieldsToUpdate.avatarParams) {
+            fieldsToUpdate.avatarParams.url = photo;
+          }
         }
-      });
+      );
     }
     // Photo has been removed.
     else if (!avatarParams.url && userInfo.value.avatarParams.url) {

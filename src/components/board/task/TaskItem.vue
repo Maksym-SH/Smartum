@@ -72,12 +72,14 @@
 import type { PropType } from "vue";
 import { computed, defineComponent, ref } from "vue";
 
-import InlineSvg from "vue-inline-svg";
 import useUserInfo from "@/composables/useCurrentUserInfo";
 import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
+
+import InlineSvg from "vue-inline-svg";
 import Avatar from "@/components/user/AppAvatar.vue";
 import TaskInfoModal from "@/components/modals/ModalInfoTask.vue";
 import BackgroundItem from "@/components/UI/BackgroundItem.vue";
+import AppButton from "@/components/UI/AppButton.vue";
 
 import type { IWorkingBoardTask } from "@/types/interfaces/board";
 
@@ -87,6 +89,7 @@ export default defineComponent({
     InlineSvg,
     TaskInfoModal,
     BackgroundItem,
+    AppButton,
   },
   props: {
     task: {

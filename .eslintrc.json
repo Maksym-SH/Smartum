@@ -23,6 +23,7 @@
     "semi": [2, "always"],
     "no-console": 1,
     // Off config properties.
+    "import/order": 0,
     "@typescript-eslint/quotes": 0,
     "@typescript-eslint/ban-types": 0,
     "@typescript-eslint/semi": 0

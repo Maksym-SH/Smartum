@@ -1,13 +1,13 @@
-import type { User } from "firebase/auth";
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 
-import ShowErrorMessage from "./firebaseErrorMessage";
 import i18n from "@/i18n";
+import ShowErrorMessage from "./firebaseErrorMessage";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
 
-import type { ErrorCode } from "@/types/types";
+import type { ErrorCode } from "@/types";
+import type { User } from "firebase/auth";
 import { NotificationType, Numbers } from "@/types/enums";
 
 export default function VerifyEmail(userInfo: User): void {

@@ -1,6 +1,9 @@
 <template>
   <div class="home-page">
-    <TheAside v-model:minimizeAside="minimizeAside" :notification-count="notificationsSize" />
+    <TheAside
+      v-model:minimizeAside="minimizeAside"
+      :notification-count="notificationsSize"
+    />
     <div
       class="home-page__wrapper"
       :class="{ 'minimize-info': minimizeAside }"
@@ -28,19 +31,20 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, watch } from "vue";
+import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 import { useRoute } from "vue-router";
 
 import i18n from "@/i18n";
 import useNotifications from "@/composables/useNotifications";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
+
 import TheHeader from "@/components/container/TheHeader.vue";
 import TheAside from "@/components/container/TheAside.vue";
 
 import { Layout } from "@/types/enums";
-import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 import type { IMetaName, ITabInfo } from "@/types/interfaces";
-import type { RouterMeta } from "@/types/types";
+import type { RouterMeta } from "@/types";
 
 export default defineComponent({
   components: {

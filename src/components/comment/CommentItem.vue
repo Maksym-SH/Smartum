@@ -60,22 +60,25 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
-import type { PropType } from "vue";
-import Avatar from "../user/AppAvatar.vue";
-import EmojiPicker from "../UI/EmojiPicker.vue";
 import { ArrayHasValues, NewObjectLink, OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDateParseToString from "@/composables/useDateParse";
 
+import Avatar from "../user/AppAvatar.vue";
+import EmojiPicker from "../UI/EmojiPicker.vue";
+import AppTextarea from "../UI/AppTextarea.vue";
+
 import { Colors, Length } from "@/types/enums";
+import type { PropType } from "vue";
 import type { IEmoji, INewEmojiParams, ITaskComment } from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {
     Avatar,
     EmojiPicker,
+    AppTextarea,
   },
   props: {
     comment: {

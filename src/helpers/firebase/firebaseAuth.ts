@@ -1,16 +1,16 @@
-import type { EmailAuthCredential, User, UserCredential } from "firebase/auth";
-import { notify } from "@kyvg/vue3-notification";
 import * as auth from "firebase/auth";
-import ShowErrorMessage from "./firebaseErrorMessage";
+import { notify } from "@kyvg/vue3-notification";
 import { GenerateColorHexFormat } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import router from "@/router";
 import notificationContent from "@/composables/useNotificationContent";
 import useStores from "@/composables/useStores";
+import ShowErrorMessage from "./firebaseErrorMessage";
 
 import { NotificationType, Route } from "@/types/enums";
-import type { ErrorCode } from "@/types/types";
+import type { EmailAuthCredential, User, UserCredential } from "firebase/auth";
+import type { ErrorCode } from "@/types";
 import type { INotification } from "@/types/interfaces/components";
 import type * as authType from "@/types/interfaces/user";
 

@@ -1,8 +1,8 @@
-import type { LangFormatType } from "@/types/types";
+import RegExp from "@/helpers/regExp";
+
+import type { LangFormatType } from "@/types";
 import { LangFormat, Language } from "@/types/enums";
 import type { IDateFormat } from "@/types/interfaces";
-
-import RegExp from "@/helpers/regExp";
 
 export default function Timestamp(
   date: Date | null,

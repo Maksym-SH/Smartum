@@ -38,11 +38,16 @@ import { ObjectFull } from "@/helpers/methods";
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 
+import AppButton from "./AppButton.vue";
+
 import { Colors } from "@/types/enums";
 import type { IPopupParams } from "@/types/interfaces/components";
-import type { PopupButtons } from "@/types/types";
+import type { PopupButtons } from "@/types";
 
 export default defineComponent({
+  components: {
+    AppButton,
+  },
   setup() {
     const { t } = i18n.global;
 

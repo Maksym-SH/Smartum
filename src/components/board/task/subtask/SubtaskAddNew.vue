@@ -14,10 +14,17 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
+import AppInput from "@/components/UI/AppInput.vue";
+import AppButton from "@/components/UI/AppButton.vue";
+
 import { Length } from "@/types/enums";
 import type { ISubTask } from "@/types/interfaces/board";
 
 export default defineComponent({
+  components: {
+    AppInput,
+    AppButton,
+  },
   props: {
     listLength: {
       type: Number,

@@ -1,8 +1,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import * as fs from "firebase/firestore";
 import type { User } from "firebase/auth";
 import { database } from "@/helpers/firebase/firebaseInitialize";
+import * as fs from "firebase/firestore";
 
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
@@ -11,7 +11,7 @@ import { DataCollection, NotificationStatus } from "@/types/enums";
 import type { IServerDate } from "@/types/interfaces";
 import type { INotification } from "@/types/interfaces/components";
 import type { IWorkingBoardMember } from "@/types/interfaces/board";
-import type { ErrorCode, NotifyAction } from "@/types/types";
+import type { ErrorCode, NotifyAction } from "@/types";
 
 const useNotificationStore = defineStore("notification", () => {
   const { commonStore, userStore } = useStores();

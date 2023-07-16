@@ -18,7 +18,7 @@ import { defineComponent, onMounted, ref, watch } from "vue";
 import { useSwitchThemeProps } from "./use/useProps";
 import { SetTheme } from "@/helpers/methods";
 
-import type { Theme } from "@/types/types";
+import type { Theme } from "@/types";
 
 export default defineComponent({
   props: useSwitchThemeProps,

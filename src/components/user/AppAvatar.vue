@@ -17,13 +17,14 @@
 </template>
 
 <script lang="ts">
-import type { CSSProperties } from "vue";
 import { computed, defineComponent, watch } from "vue";
-
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import { useAvatarProps } from "./use/useProps";
 
 import useImageLoad from "@/composables/useImageLoad";
+
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+
+import type { CSSProperties } from "vue";
 
 export default defineComponent({
   components: {

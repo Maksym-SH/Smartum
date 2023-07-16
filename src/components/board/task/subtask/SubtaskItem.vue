@@ -21,12 +21,19 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-
 import type { PropType } from "vue";
+
+import AppButton from "@/components/UI/AppButton.vue";
+import AppCheckbox from "@/components/UI/AppCheckbox.vue";
+
 import { Colors } from "@/types/enums";
 import type { ISubTask } from "@/types/interfaces/board";
 
 export default defineComponent({
+  components: {
+    AppButton,
+    AppCheckbox,
+  },
   props: {
     count: {
       type: Number,
@@ -45,9 +52,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const statusModel = computed({
       get: () => props.status,
-      set(value) {
-        emit("update:status", value);
-      },
+      set: (value) => emit("update:status", value),
     });
 
     const deleteSubtask = (): void => {

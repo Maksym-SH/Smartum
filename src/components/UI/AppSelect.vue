@@ -42,13 +42,18 @@
 </template>
 
 <script lang="ts">
-import type { CSSProperties } from "vue";
 import { computed, defineComponent, ref } from "vue";
 import { useSelectProps } from "./use/useProps";
 
+import AppButton from "./AppButton.vue";
+
 import { Colors } from "@/types/enums";
+import type { CSSProperties } from "vue";
 
 export default defineComponent({
+  components: {
+    AppButton,
+  },
   inheritAttrs: false,
   props: useSelectProps,
   emits: ["selected"],

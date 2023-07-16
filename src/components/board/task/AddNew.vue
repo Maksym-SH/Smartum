@@ -39,14 +39,21 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { defineComponent, ref } from "vue";
 
+import AppButton from "@/components/UI/AppButton.vue";
+import AppInput from "@/components/UI/AppInput.vue";
+
 import { Length } from "@/types/enums";
+import type { PropType } from "vue";
 import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
-import type { ButtonVariant } from "@/types/types";
+import type { ButtonVariant } from "@/types";
 
 export default defineComponent({
+  components: {
+    AppInput,
+    AppButton,
+  },
   inheritAttrs: false,
   props: {
     newId: {

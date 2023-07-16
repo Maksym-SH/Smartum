@@ -34,16 +34,20 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import type { PropType } from "vue";
 import Avatar from "../user/AppAvatar.vue";
+import AppTextarea from "../UI/AppTextarea.vue";
+import AppButton from "../UI/AppButton.vue";
 
 import { Length } from "@/types/enums";
+import type { PropType } from "vue";
 import type { ITaskComment } from "@/types/interfaces/board";
 import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
   components: {
     Avatar,
+    AppTextarea,
+    AppButton,
   },
   props: {
     member: {

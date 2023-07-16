@@ -70,17 +70,22 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 
+import useStore from "@/composables/useStores";
+import useNotifications from "@/composables/useNotifications";
+
+import AppButton from "../UI/AppButton.vue";
+import AppCheckbox from "../UI/AppCheckbox.vue";
 import DropdownWindow from "../container/DropdownWindow.vue";
 import EmptyList from "../UI/EmptyList.vue";
 import NotificationItem from "./NotificationItem.vue";
-import useNotifications from "@/composables/useNotifications";
-import useStore from "@/composables/useStores";
 
-import type { NotifyAction } from "@/types/types";
+import type { NotifyAction } from "@/types";
 import { EmptyListType, NotificationStatus } from "@/types/enums";
 
 export default defineComponent({
   components: {
+    AppButton,
+    AppCheckbox,
     NotificationItem,
     DropdownWindow,
     EmptyList,

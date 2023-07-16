@@ -1,8 +1,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-import type { IPopupParams } from "@/types/interfaces/components";
 import { ModalContentType } from "@/types/enums";
+import type { IPopupParams } from "@/types/interfaces/components";
 
 const useCommonStore = defineStore("common", () => {
   const showTemplateApplication = ref(false);

@@ -1,6 +1,6 @@
 import type { ComputedRef } from "vue";
 import type * as enums from "../enums";
-import type { ButtonVariant, OmitAsideNavigation } from "../types";
+import type { ButtonVariant } from "..";
 import type { IServerDate } from ".";
 
 export interface ISelectElem {
@@ -11,19 +11,19 @@ export interface ISelectElem {
   displaying: boolean | ComputedRef<boolean>;
   active?: boolean | ComputedRef<boolean>;
 }
-
-export type AsideExpPanelNavigation = Required<OmitAsideNavigation>;
-
 export interface IAsideNavItem {
   id: number;
   showed: boolean;
   alwaysDisplay?: boolean;
-  title: unknown;
+  title: string | ComputedRef<string>;
   icon?: string;
   notify?: true;
   callback?: () => void;
-  panels?: Omit<AsideExpPanelNavigation, "id" | "showed" | "alwaysDisplay">[];
+  panels?: AsideExpPanelNav[];
 }
+
+export interface AsideExpPanelNav
+  extends Pick<Required<IAsideNavItem>, "title" | "callback"> {}
 
 export interface IPopupParams {
   title?: string;

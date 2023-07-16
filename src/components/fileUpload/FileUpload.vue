@@ -21,17 +21,22 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import type { PropType } from "vue";
-import type { FileType, ImageSource, RefElement } from "@/types/types";
 import { OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import fileValidate from "@/helpers/file/validate";
 import useImageLoad from "@/composables/useImageLoad";
 
+import AppButton from "../UI/AppButton.vue";
+
+import type { PropType } from "vue";
+import type { FileType, ImageSource, RefElement } from "@/types";
 import { Colors } from "@/types/enums";
 
 export default defineComponent({
+  components: {
+    AppButton,
+  },
   props: {
     fileType: {
       type: String as PropType<FileType>,

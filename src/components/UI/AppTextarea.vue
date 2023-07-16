@@ -40,13 +40,13 @@
 </template>
 
 <script lang="ts">
-import type { ComputedRef } from "vue";
 import { computed, defineComponent, ref, watch } from "vue";
 import { useTextareaProps } from "./use/useProps";
 
 import i18n from "@/i18n";
 
-import type { ModelValue, RefElement } from "@/types/types";
+import type { ComputedRef } from "vue";
+import type { ModelValue, RefElement } from "@/types";
 
 export default defineComponent({
   inheritAttrs: false,

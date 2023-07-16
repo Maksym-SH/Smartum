@@ -1,14 +1,14 @@
 import { computed, onMounted, reactive, ref } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 
+import i18n from "@/i18n";
 import useNewNotificationContent from "./useNotificationContent";
 import useStores from "./useStores";
-import i18n from "@/i18n";
 import useAsideNavigation from "@/composables/useAsideNavigation";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 
 import { Colors, NotificationType } from "@/types/enums";
-import type { UserName } from "@/types/types";
+import type { UserName } from "@/types";
 import type * as componentType from "@/types/interfaces/components";
 import type { IPictureParams, IUserInfo } from "@/types/interfaces/user";
 
@@ -70,7 +70,9 @@ export default function useConfiguration() {
         });
 
         if (!notificationAdded.value) {
-          const notification = useNewNotificationContent(NotificationType.CONFIGURATION_CHANGE);
+          const notification = useNewNotificationContent(
+            NotificationType.CONFIGURATION_CHANGE
+          );
 
           notificationStore.setNewNotification(notification);
         }
@@ -87,7 +89,9 @@ export default function useConfiguration() {
       });
 
       if (!notificationAdded.value) {
-        const notification = useNewNotificationContent(NotificationType.CONFIGURATION_CHANGE);
+        const notification = useNewNotificationContent(
+          NotificationType.CONFIGURATION_CHANGE
+        );
 
         notificationStore.setNewNotification(notification);
       }
@@ -101,10 +105,14 @@ export default function useConfiguration() {
     configurationStore
       .getUserConfiguration(unicID.value)
       .then((configuration: Omit<componentType.IConfiguration, "navigations">) => {
-        const navigationList: componentType.IAsideNavItem[] = configurationStore.asideNavigate;
-        showedNavigations.value.forEach(
-          (item, index) => (item.showed = navigationList[index].showed)
-        );
+        if (configurationStore.asideNavigate) {
+          const navigationList: componentType.IAsideNavItem[] =
+            configurationStore.asideNavigate;
+
+          showedNavigations.value.forEach(
+            (item, index) => (item.showed = navigationList[index].showed)
+          );
+        }
 
         // Set backgrond avatar.
         const currentBackgrondAvatar = userStore.userInfo.avatarParams

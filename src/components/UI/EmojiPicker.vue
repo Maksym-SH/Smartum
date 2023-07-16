@@ -24,16 +24,19 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 
-import EmojiPicker from "vue3-emoji-picker";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import "vue3-emoji-picker/css";
 
+import AppButton from "./AppButton.vue";
+import EmojiPicker from "vue3-emoji-picker";
+
 import { Colors } from "@/types/enums";
 import type { IEmoji } from "@/types/interfaces/board";
-import type { Theme } from "@/types/types";
+import type { Theme } from "@/types";
 
 export default defineComponent({
   components: {
+    AppButton,
     EmojiPicker,
   },
   emits: ["addEmoji"],

@@ -28,7 +28,7 @@ import timestamp from "@/helpers/dateTime/stamp";
 
 import type { Language } from "@/types/enums";
 import { Numbers } from "@/types/enums";
-import type { TimeIcon } from "@/types/types";
+import type { TimeIcon } from "@/types";
 
 export default defineComponent({
   setup() {
@@ -53,7 +53,10 @@ export default defineComponent({
       const currentTimeHours = new Date().getHours();
 
       // If the time is later than 16:00 || 4 pm and later than 6:00 || 6 pm.
-      if (currentTimeHours < Numbers.EVENING_TIME && currentTimeHours > Numbers.MORNING_TIME) {
+      if (
+        currentTimeHours < Numbers.EVENING_TIME &&
+        currentTimeHours > Numbers.MORNING_TIME
+      ) {
         welcomeText.value = t("time.morning");
         imageType.value = "sun";
       } else {

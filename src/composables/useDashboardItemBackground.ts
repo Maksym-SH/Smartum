@@ -2,15 +2,15 @@ import { Colors } from "@/types/enums";
 import type { IBackgroundDashboard } from "@/types/interfaces/colors";
 
 export default function useDashboardItemBackgroundTemplate(): IBackgroundDashboard {
+  const baseUrl = import.meta.env.BASE_URL;
+
   return {
     photos: {
-      forest: `${import.meta.env.BASE_URL}images/dashboardTemplates/forest.jpeg`,
-      lake: `${import.meta.env.BASE_URL}images/dashboardTemplates/lake.jpeg`,
-      lakeWithForest: `${
-        import.meta.env.BASE_URL
-      }images/dashboardTemplates/lakeWithForest.jpeg`,
-      mountains: `${import.meta.env.BASE_URL}images/dashboardTemplates/mountains.jpeg`,
-      river: `${import.meta.env.BASE_URL}images/dashboardTemplates/river.jpeg`,
+      forest: `${baseUrl}images/dashboardTemplates/forest.jpeg`,
+      lake: `${baseUrl}images/dashboardTemplates/lake.jpeg`,
+      lakeWithForest: `${baseUrl}images/dashboardTemplates/lakeWithForest.jpeg`,
+      mountains: `${baseUrl}images/dashboardTemplates/mountains.jpeg`,
+      river: `${baseUrl}images/dashboardTemplates/river.jpeg`,
     },
     gradients: {
       backgroundBlue: Colors.GRADIENT_BLUE,

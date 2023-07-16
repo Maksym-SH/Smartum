@@ -75,19 +75,22 @@
 </template>
 
 <script lang="ts">
-import type { ComputedRef } from "vue";
 import { computed, defineComponent, ref, watch } from "vue";
-import * as emailValidator from "email-validator";
-import InlineSvg from "vue-inline-svg";
 import { useInputProps } from "./use/useProps";
 
 import i18n from "@/i18n";
 import RegExp from "@/helpers/regExp";
+import * as emailValidator from "email-validator";
 
-import type { AutoComplete, ModelValue, RefElement } from "@/types/types";
+import InlineSvg from "vue-inline-svg";
+import AppButton from "./AppButton.vue";
+
+import type { AutoComplete, ModelValue, RefElement } from "@/types";
+import type { ComputedRef } from "vue";
 
 export default defineComponent({
   components: {
+    AppButton,
     InlineSvg,
   },
   inheritAttrs: false,

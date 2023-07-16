@@ -34,14 +34,19 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 
-import InlineSvg from "vue-inline-svg";
-import firebaseReset from "@/helpers/firebase/firebaseReset";
 import router from "@/router";
+import firebaseReset from "@/helpers/firebase/firebaseReset";
+
+import AppInput from "@/components/UI/AppInput.vue";
+import AppButton from "@/components/UI/AppButton.vue";
+import InlineSvg from "vue-inline-svg";
 
 import { Route } from "@/types/enums";
 
 export default defineComponent({
   components: {
+    AppButton,
+    AppInput,
     InlineSvg,
   },
   setup() {

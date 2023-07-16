@@ -1,19 +1,19 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import * as fs from "firebase/firestore";
 import { notify } from "@kyvg/vue3-notification";
-import * as db from "firebase/database";
 import { RTDatabase, database } from "@/helpers/firebase/firebaseInitialize";
+import * as db from "firebase/database";
+import * as fs from "firebase/firestore";
 
 import i18n from "@/i18n";
+import router from "@/router";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import useStores from "@/composables/useStores";
-import router from "@/router";
 import useNewNotificationContent from "@/composables/useNotificationContent";
 
 import * as enums from "@/types/enums";
 import type * as boardType from "@/types/interfaces/board";
-import type { ErrorCode } from "@/types/types";
+import type { ErrorCode } from "@/types";
 import type { IUserForList } from "@/types/interfaces/user";
 
 const useDashboardStore = defineStore("dashboard", () => {
@@ -279,7 +279,9 @@ const useDashboardStore = defineStore("dashboard", () => {
                   });
 
                   sortedUsersAsMembers.forEach((item) => {
-                    const member = currentBoard.members.find((user) => user.uid === item.uid);
+                    const member = currentBoard.members.find(
+                      (user) => user.uid === item.uid
+                    );
                     if (member) {
                       item.role = member.role ?? "";
                       item.invited = member.invited ?? false;

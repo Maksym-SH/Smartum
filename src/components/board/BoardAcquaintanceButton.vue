@@ -65,10 +65,14 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
+import AppLoader from "../UI/AppLoader.vue";
+import AppButton from "../UI/AppButton.vue";
 import DropdownWindow from "../container/DropdownWindow.vue";
 
 export default defineComponent({
   components: {
+    AppLoader,
+    AppButton,
     DropdownWindow,
   },
   setup() {

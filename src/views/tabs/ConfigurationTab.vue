@@ -154,15 +154,20 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import InlineSvg from "vue-inline-svg";
 import useConfiguration from "@/composables/useConfiguration";
+
 import AppCard from "@/components/container/AppCard.vue";
+import AppButton from "@/components/UI/AppButton.vue";
+import AppCheckbox from "@/components/UI/AppCheckbox.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
 import ModalColorPicker from "@/components/modals/ModalColorPicker.vue";
+import InlineSvg from "vue-inline-svg";
 
 export default defineComponent({
   components: {
     AppCard,
+    AppCheckbox,
+    AppButton,
     Avatar,
     ModalColorPicker,
     InlineSvg,

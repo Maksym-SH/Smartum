@@ -25,16 +25,19 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 
-import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 import useStores from "@/composables/useStores";
+
+import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 import Date from "@/components/date/DateTime.vue";
-import SwitchTheme from "@/components/UI/SwitchTheme.vue";
+import SwitchTheme from "../UI/SwitchTheme.vue";
+import AppInput from "../UI/AppInput.vue";
 
 export default defineComponent({
   components: {
     Date,
     SwitchTheme,
     SwitchLanguageButton,
+    AppInput,
   },
   setup() {
     const { configurationStore } = useStores();

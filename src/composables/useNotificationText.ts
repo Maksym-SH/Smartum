@@ -2,9 +2,9 @@ import { computed } from "vue";
 
 import i18n from "@/i18n";
 
-import type { INotificationContent } from "@/types/types";
-import type { INotification } from "@/types/interfaces/components";
 import { NotificationType } from "@/types/enums";
+import type { INotificationContent } from "@/types";
+import type { INotification } from "@/types/interfaces/components";
 
 export default function useNewNotificationTranslatedContent(
   notification: INotification

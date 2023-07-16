@@ -37,7 +37,7 @@
             <template v-if="item.showed">
               <AppExpansionPanel
                 v-if="item.panels"
-                :name="item.title"
+                :title="item.title"
                 :icon="item.icon"
                 :content="item.panels"
               />
@@ -95,14 +95,18 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
-import InlineSvg from "vue-inline-svg";
-import packageJson from "package.json";
-import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 import { ObjectHasValues, ObjectNotEmpty } from "@/helpers/methods";
 
-import UserInfo from "@/components/user/UserInfo.vue";
-import SwitchTheme from "@/components/UI/SwitchTheme.vue";
 import useStores from "@/composables/useStores";
+import packageJson from "package.json";
+
+import AppLoader from "../UI/AppLoader.vue";
+import AppInput from "../UI/AppInput.vue";
+import AppExpansionPanel from "../UI/AppExpansionPanel.vue";
+import InlineSvg from "vue-inline-svg";
+import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
+import UserInfo from "../user/UserInfo.vue";
+import SwitchTheme from "../UI/SwitchTheme.vue";
 
 import { Layout, Numbers } from "@/types/enums";
 import type { IAsideNavItem } from "@/types/interfaces/components";
@@ -114,6 +118,9 @@ export default defineComponent({
     SwitchTheme,
     InlineSvg,
     SwitchLanguageButton,
+    AppInput,
+    AppLoader,
+    AppExpansionPanel,
   },
   props: {
     minimizeAside: {
@@ -144,8 +151,8 @@ export default defineComponent({
       emit("update:minimizeAside", minimize.value);
     };
 
-    const navigationList = computed((): IAsideNavItem[] => {
-      return configurationStore.asideNavigate;
+    const navigationList = computed((): IAsideNavItem[] | [] => {
+      return configurationStore.asideNavigate || [];
     });
 
     const asideBackgroundColor = computed((): string => {
@@ -162,11 +169,17 @@ export default defineComponent({
 
     const notificationNavShowed = computed(() => {
       const notificationNavIndex = 2;
-      return configurationStore.asideNavigate[notificationNavIndex]?.showed ?? true;
+
+      if (configurationStore.asideNavigate) {
+        return configurationStore.asideNavigate[notificationNavIndex]?.showed ?? true;
+      }
+
+      return [];
     });
 
     const showNotificationBadge = computed(
-      () => props.notificationCount > 0 && props.minimizeAside && notificationNavShowed.value
+      () =>
+        props.notificationCount > 0 && props.minimizeAside && notificationNavShowed.value
     );
 
     const userInfo = computed((): IUserCreated => userStore.userInfo);

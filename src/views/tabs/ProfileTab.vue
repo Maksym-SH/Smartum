@@ -105,16 +105,23 @@ import RegExp from "@/helpers/regExp";
 import newNotificationContent from "@/composables/useNotificationContent";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useStores from "@/composables/useStores";
-import FileUpload from "@/components/fileUpload/FileUpload.vue";
+
 import AppHint from "@/components/UI/AppHint.vue";
+import AppTextarea from "@/components/UI/AppTextarea.vue";
+import AppInput from "@/components/UI/AppInput.vue";
+import AppButton from "@/components/UI/AppButton.vue";
+import FileUpload from "@/components/fileUpload/FileUpload.vue";
 
 import { Colors, Length, NotificationType } from "@/types/enums";
 import type { IUserInfo } from "@/types/interfaces/user";
 
 export default defineComponent({
   components: {
-    ImageUpload: FileUpload,
+    AppButton,
+    AppInput,
     AppHint,
+    AppTextarea,
+    ImageUpload: FileUpload,
   },
   setup() {
     const { t } = i18n.global;

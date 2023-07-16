@@ -4,7 +4,6 @@
       <AppButton
         class="assigned-members__btn"
         icon="plus"
-        color="info"
         :class="{ active: showWindowAssign }"
         @click="showWindowAssign = !showWindowAssign"
       />
@@ -107,16 +106,18 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import InlineSvg from "vue-inline-svg";
-import type { PropType } from "vue";
 import { ArrayHasValues, OpenPopup } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useBoardMembersInfo from "@/composables/useBoardMembersInfo";
+
 import DropdownWindow from "@/components/container/DropdownWindow.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
+import AppButton from "@/components/UI/AppButton.vue";
+import InlineSvg from "vue-inline-svg";
 
+import type { PropType } from "vue";
 import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
@@ -124,6 +125,7 @@ export default defineComponent({
     DropdownWindow,
     Avatar,
     InlineSvg,
+    AppButton,
   },
   props: {
     assignedMembers: {
@@ -150,10 +152,13 @@ export default defineComponent({
     const showWindowAssign = ref(false);
 
     const notAssignedMembers = computed((): IUserForList[] => {
-      return props.allMembers.filter(
-        (boardMember) =>
-          !props.assignedMembers.some((assigned) => assigned.uid === boardMember.uid)
-      );
+      return props.allMembers.filter((boardMember) => {
+        const notAssigned = !props.assignedMembers.some(
+          (assigned) => assigned.uid === boardMember.uid
+        );
+
+        return notAssigned && !boardMember.invited;
+      });
     });
 
     const notAssignedMembersExist = computed((): boolean => {
@@ -212,6 +217,7 @@ export default defineComponent({
   &__btn {
     font-size: 25px;
     width: 20px;
+    color: $color-white1;
 
     &.active {
       filter: brightness(90%);
@@ -267,6 +273,8 @@ export default defineComponent({
       display: inline-flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
+      font-size: 13px;
       color: var(--color-text);
 
       svg {

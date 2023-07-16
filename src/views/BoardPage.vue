@@ -74,9 +74,11 @@ import { ObjectNotEmpty, OpenPopup } from "@/helpers/methods";
 import i18n from "@/i18n";
 import useStore from "@/composables/useStores";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
+
+import Avatar from "@/components/user/AppAvatar.vue";
+import AppLoader from "@/components/UI/AppLoader.vue";
 import BoardHeader from "@/components/board/BoardPageHeader.vue";
 import InviteUserButton from "@/components/user/UserInviteButton.vue";
-import Avatar from "@/components/user/AppAvatar.vue";
 import TaskColumn from "@/components/board/task/TaskColumn.vue";
 import AddNewColumn from "@/components/board/task/TaskColumnAddNew.vue";
 
@@ -85,6 +87,7 @@ import type * as boardType from "@/types/interfaces/board";
 
 export default defineComponent({
   components: {
+    AppLoader,
     BoardHeader,
     Avatar,
     InviteUserButton,

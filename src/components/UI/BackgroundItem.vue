@@ -23,11 +23,13 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
-import type { CSSProperties } from "vue";
 import { useBackgroundItemProps } from "./use/useProps";
 
 import useImageLoad from "@/composables/useImageLoad";
+
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+
+import type { CSSProperties } from "vue";
 
 export default defineComponent({
   components: {

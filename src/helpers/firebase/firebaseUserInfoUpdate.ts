@@ -1,10 +1,11 @@
-import type { User } from "firebase/auth";
 import { updatePassword } from "firebase/auth";
 import { notify } from "@kyvg/vue3-notification";
 
+import i18n from "@/i18n";
 import ShowErrorMessage from "./firebaseErrorMessage";
 import useStores from "@/composables/useStores";
-import i18n from "@/i18n";
+
+import type { User } from "firebase/auth";
 
 export function PasswordUpdate(user: User, password: string): Promise<void> {
   const { t } = i18n.global;

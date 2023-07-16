@@ -41,25 +41,28 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref } from "vue";
-import type { PropType } from "vue";
 
-import Avatar from "../user/AppAvatar.vue";
-import useNotificationText from "@/composables/useNotificationText";
-import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
 import router from "@/router";
 import useStore from "@/composables/useStores";
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import useDateParseToString from "@/composables/useDateParse";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
+import useNotificationText from "@/composables/useNotificationText";
+import VerifyEmail from "@/helpers/firebase/firebaseVerifyEmail";
+
+import Avatar from "../user/AppAvatar.vue";
+import AppButton from "../UI/AppButton.vue";
 
 import * as enums from "@/types/enums";
-import type { INotificationContent } from "@/types/types";
+import type { PropType } from "vue";
+import type { INotificationContent } from "@/types";
 import type { IPictureParams } from "@/types/interfaces/user";
 import type { INotification } from "@/types/interfaces/components";
 
 export default defineComponent({
   components: {
     Avatar,
+    AppButton,
   },
   props: {
     params: {

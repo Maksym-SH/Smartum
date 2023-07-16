@@ -3,7 +3,7 @@ import { notify } from "@kyvg/vue3-notification";
 import i18n from "@/i18n";
 
 import { Numbers } from "@/types/enums";
-import type { FileType } from "@/types/types";
+import type { FileType } from "@/types";
 
 export default function fileValidate(file: File, needType: FileType): boolean {
   const { t } = i18n.global;

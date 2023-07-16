@@ -1,5 +1,6 @@
 import type { IUserReg } from "./interfaces/user";
 import type * as components from "./interfaces/components";
+
 import type AppInput from "@/componets/UI/AppInput.vue";
 
 // Components
@@ -26,11 +27,6 @@ export type AutoComplete = "on" | "off" | "new-password";
 export type ButtonSize = "x-small" | "small" | "large" | "x-large" | "default";
 
 export type ExpansionPanelVariant = "accordion" | "default" | "inset" | "popout";
-
-export type OmitAsideNavigation = Omit<
-  components.IAsideNavItem,
-  "icon" | "notify" | "panels" | "avatar"
->;
 
 export type Variant = "info" | "danger" | "success";
 

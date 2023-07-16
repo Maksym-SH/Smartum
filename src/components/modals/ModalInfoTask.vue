@@ -172,17 +172,21 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import { notify } from "@kyvg/vue3-notification";
+import { ArrayHasValues } from "@/helpers/methods";
 
-import InlineSvg from "vue-inline-svg";
+import i18n from "@/i18n";
+import useTaskInfo from "@/composables/useTaskInfo";
+
+import AppButton from "../UI/AppButton.vue";
+import AppInput from "../UI/AppInput.vue";
+import AppTextarea from "../UI/AppTextarea.vue";
 import BackgroundItem from "../UI/BackgroundItem.vue";
 import NewComment from "../comment/CommentAddNew.vue";
 import CommentItem from "../comment/CommentItem.vue";
 import MembersAssign from "../board/task/TaskAssign.vue";
 import SubtasksList from "../board/task/subtask/SubtasksList.vue";
 import ModalColorPicker from "./ModalColorPicker.vue";
-import useTaskInfo from "@/composables/useTaskInfo";
-import i18n from "@/i18n";
-import { ArrayHasValues } from "@/helpers/methods";
+import InlineSvg from "vue-inline-svg";
 
 import { Colors, Length } from "@/types/enums";
 import type { ITaskComment } from "@/types/interfaces/board";
@@ -190,6 +194,9 @@ import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
   components: {
+    AppButton,
+    AppInput,
+    AppTextarea,
     InlineSvg,
     ModalColorPicker,
     BackgroundItem,

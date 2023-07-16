@@ -28,12 +28,13 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 
-import InlineSvg from "vue-inline-svg";
-import type { PropType } from "vue";
 import useCurrentLanguage from "@/composables/useCurrentLanguage";
 import useDateParseToString from "@/composables/useDateParse";
+
+import InlineSvg from "vue-inline-svg";
 import BoardImageResult from "@/components/board/BoardImageResult.vue";
 
+import type { PropType } from "vue";
 import type { Language } from "@/types/enums";
 import type { IWorkingBoardItem } from "@/types/interfaces/board";
 

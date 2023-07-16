@@ -28,7 +28,10 @@
             <div class="auth__window-form__forgot">
               <i18n-t keypath="signIn.forgotPassword" scope="global" tag="span">
                 <template #recover>
-                  <router-link :to="{ name: 'Forgot' }" class="auth__window-form__forgot--link">
+                  <router-link
+                    :to="{ name: 'Forgot' }"
+                    class="auth__window-form__forgot--link"
+                  >
                     {{ $t("signIn.recover") }}
                   </router-link>
                 </template>
@@ -67,14 +70,19 @@
 import { computed, defineComponent, reactive } from "vue";
 
 import * as emailValidator from "email-validator";
-import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
+
+import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
+import AppInput from "@/components/UI/AppInput.vue";
+import AppButton from "@/components/UI/AppButton.vue";
 
 import type { IUserLogin } from "@/types/interfaces/user";
 import { Length } from "@/types/enums";
 
 export default defineComponent({
   components: {
+    AppInput,
+    AppButton,
     SwitchLanguageButton,
   },
   setup() {
@@ -87,7 +95,8 @@ export default defineComponent({
 
     const valid = computed((): boolean => {
       return (
-        emailValidator.validate(userData.email) && userData.password.length >= Length.PASSWORD
+        emailValidator.validate(userData.email) &&
+        userData.password.length >= Length.PASSWORD
       );
     });
 

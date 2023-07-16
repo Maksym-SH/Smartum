@@ -73,7 +73,10 @@
           <small class="sign-up__window-description">
             <i18n-t keypath="signUp.agreement" scope="global">
               <template #terms>
-                <span class="sign-up__window-description--open-modal" @click="showTermsOfUse">
+                <span
+                  class="sign-up__window-description--open-modal"
+                  @click="showTermsOfUse"
+                >
                   {{ $t("signUp.termsOfUse") }}
                 </span>
               </template>
@@ -109,15 +112,20 @@
 import { computed, defineComponent, reactive } from "vue";
 
 import * as emailValidator from "email-validator";
-import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 import useStores from "@/composables/useStores";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
+
+import AppInput from "@/components/UI/AppInput.vue";
+import AppButton from "@/components/UI/AppButton.vue";
+import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
 
 import type { IUserReg } from "@/types/interfaces/user";
 import { Length, ModalContentType } from "@/types/enums";
 
 export default defineComponent({
   components: {
+    AppInput,
+    AppButton,
     SwitchLanguageButton,
   },
   setup() {

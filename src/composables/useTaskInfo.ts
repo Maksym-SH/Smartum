@@ -1,17 +1,17 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { notify } from "@kyvg/vue3-notification";
-import useDateParseToString from "./useDateParse";
 import { CreateDebounce, ObjectHasValues, TheSameObject } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
+import useDateParseToString from "./useDateParse";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 
 import { Length } from "@/types/enums";
 import type { IUserForList } from "@/types/interfaces/user";
 import type { IWorkingBoardTask } from "@/types/interfaces/board";
-import type { InputInstance } from "@/types/types";
+import type { InputInstance } from "@/types";
 
 export default function useTaskInfo(columnId: number, taskId: number) {
   const { t } = i18n.global;
@@ -99,7 +99,9 @@ export default function useTaskInfo(columnId: number, taskId: number) {
   };
 
   watch(boardItem, (updatedBoard) => {
-    const updatedTask = updatedBoard.columns[columnId].tasks.find((task) => task.id === taskId);
+    const updatedTask = updatedBoard.columns[columnId].tasks.find(
+      (task) => task.id === taskId
+    );
     if (!updatedTask) {
       notify({
         title: t("notify.taskModalClosed.title"),

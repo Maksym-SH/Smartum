@@ -47,15 +47,22 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import { EmailAuthProvider } from "firebase/auth";
-import type { EmailAuthCredential, User } from "firebase/auth";
 import { Confirmation } from "@/helpers/methods";
 
 import firebaseAuth from "@/helpers/firebase/firebaseAuth";
 import useStores from "@/composables/useStores";
 
+import AppInput from "./AppInput.vue";
+import AppButton from "./AppButton.vue";
+
 import { Length } from "@/types/enums";
+import type { EmailAuthCredential, User } from "firebase/auth";
 
 export default defineComponent({
+  components: {
+    AppButton,
+    AppInput,
+  },
   setup() {
     const { commonStore, userStore } = useStores();
 

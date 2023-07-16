@@ -1,20 +1,20 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import * as fs from "firebase/firestore";
 import { database } from "@/helpers/firebase/firebaseInitialize";
+import * as fs from "firebase/firestore";
 
-import useStores from "@/composables/useStores";
 import ShowErrorMessage from "@/helpers/firebase/firebaseErrorMessage";
 import allAsideNavigations from "@/composables/useAsideNavigation";
+import useStores from "@/composables/useStores";
 
-import type { ErrorCode } from "@/types/types";
+import type { ErrorCode } from "@/types";
 import type * as configType from "@/types/interfaces/components";
 import { Colors, DataCollection } from "@/types/enums";
 
 const useConfigurationStore = defineStore("configuration", () => {
   const { commonStore } = useStores();
 
-  const asideNavigate = ref<configType.IAsideNavItem[]>([]);
+  const asideNavigate = ref<configType.IAsideNavItem[]>();
 
   const additionalParams = ref({
     asideBackgroundColor: Colors.GREY as string,
@@ -55,7 +55,9 @@ const useConfigurationStore = defineStore("configuration", () => {
         .finally(() => commonStore.setLoadingStatus(false));
     });
   };
-  const getUserConfiguration = (unicID: string): Promise<configType.IConfigurationResponse> => {
+  const getUserConfiguration = (
+    unicID: string
+  ): Promise<configType.IConfigurationResponse> => {
     const configurationRef = fs.doc(database, DataCollection.CONFIGURATION, unicID);
 
     return new Promise((resolve, reject) => {

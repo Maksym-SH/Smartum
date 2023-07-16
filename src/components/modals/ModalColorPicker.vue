@@ -11,8 +11,14 @@
           @click="showDialog = true"
         >
           <slot name="button-title">
-            <img class="color-picker__palette" src="/images/icons/color-palette.svg" alt="" />
-            <small class="color-picker__button-title"> {{ $t("modal.colorPickTitle") }}</small>
+            <img
+              class="color-picker__palette"
+              src="/images/icons/color-palette.svg"
+              alt=""
+            />
+            <small class="color-picker__button-title">
+              {{ $t("modal.colorPickTitle") }}</small
+            >
           </slot>
         </AppButton>
         <span v-if="regenerate" class="color-picker--generate" @click="generateColor">
@@ -71,22 +77,26 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import InlineSvg from "vue-inline-svg";
-import type { PropType } from "vue";
-import BackgroundItem from "../UI/BackgroundItem.vue";
+
 import { DarkColors, LightColors } from "@/helpers/colors";
 import { GenerateColorHexFormat } from "@/helpers/methods";
 
 import i18n from "@/i18n";
 
+import InlineSvg from "vue-inline-svg";
+import BackgroundItem from "../UI/BackgroundItem.vue";
+import AppButton from "../UI/AppButton.vue";
+
 import { Colors } from "@/types/enums";
-import type { Theme } from "@/types/types";
+import type { Theme } from "@/types";
+import type { PropType } from "vue";
 import type { IColorPickerParams } from "@/types/interfaces/colors";
 
 export default defineComponent({
   components: {
     BackgroundItem,
     InlineSvg,
+    AppButton,
   },
   props: {
     modelValue: {

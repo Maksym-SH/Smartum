@@ -46,20 +46,30 @@
           <InlineSvg class="info-item__icon" src="/images/icons/phone-outline.svg" />
           {{ $t("labels.phone") }}
         </h5>
-        <a v-if="user.phone" :href="`tel:${user.phone}`" class="info-item__description phone"
+        <a
+          v-if="user.phone"
+          :href="`tel:${user.phone}`"
+          class="info-item__description phone"
           >{{ user.phone }}
         </a>
-        <span v-else class="info-item__description">{{ $t("emptyList.noData") }}</span>
+        <span v-else class="info-item__description">{{
+          $t("emptyList.noData")
+        }}</span>
       </div>
       <div class="info-item">
         <h5 class="info-item__name">
-          <InlineSvg class="info-item__icon" src="/images/icons/information-outline.svg" />
+          <InlineSvg
+            class="info-item__icon"
+            src="/images/icons/information-outline.svg"
+          />
           {{ $t("labels.about") }}
         </h5>
         <span v-if="user.about" class="info-item__description about">
           {{ user.about }}
         </span>
-        <span v-else class="info-item__description">{{ $t("emptyList.noData") }}</span>
+        <span v-else class="info-item__description">{{
+          $t("emptyList.noData")
+        }}</span>
       </div>
     </div>
   </details>
@@ -67,16 +77,18 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import InlineSvg from "vue-inline-svg";
 import { useUserItemProps } from "./use/useProps";
 
+import AppButton from "../UI/AppButton.vue";
 import Avatar from "./AppAvatar.vue";
+import InlineSvg from "vue-inline-svg";
 
 import type { IUserForList } from "@/types/interfaces/user";
 
 export default defineComponent({
   components: {
     Avatar,
+    AppButton,
     InlineSvg,
   },
   props: useUserItemProps,
