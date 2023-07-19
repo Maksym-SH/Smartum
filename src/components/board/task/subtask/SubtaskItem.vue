@@ -21,12 +21,12 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import type { PropType } from "vue";
 
 import AppButton from "@/components/UI/AppButton.vue";
 import AppCheckbox from "@/components/UI/AppCheckbox.vue";
 
 import { Colors } from "@/types/enums";
+import type { PropType } from "vue";
 import type { ISubTask } from "@/types/interfaces/board";
 
 export default defineComponent({

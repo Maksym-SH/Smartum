@@ -98,7 +98,12 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ["update:comment-message", "update:comment-emoji", "update:edited", "deleteComment"],
+  emits: [
+    "update:comment-message",
+    "update:comment-emoji",
+    "update:edited",
+    "deleteComment",
+  ],
   setup(props, { emit }) {
     const { t } = i18n.global;
 
@@ -326,7 +331,6 @@ export default defineComponent({
         user-select: none;
         display: inline-block;
         white-space: nowrap;
-        cursor: pointer;
         color: var(--color-text);
         padding: 2.5px 4px;
         border-radius: 15px;

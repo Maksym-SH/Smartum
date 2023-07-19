@@ -23,8 +23,8 @@ import i18n from "@/i18n";
 import AddNewSubtask from "./SubtaskAddNew.vue";
 import Subtask from "./SubtaskItem.vue";
 
-import type { PropType } from "vue";
 import { Colors, Length } from "@/types/enums";
+import type { PropType } from "vue";
 import type { ISubTask } from "@/types/interfaces/board";
 
 export default defineComponent({

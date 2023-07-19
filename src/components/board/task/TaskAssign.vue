@@ -91,7 +91,7 @@
     >
       <template v-for="member in assignedMembers" :key="member.uid">
         <Avatar
-          v-if="memebersIds.includes(member.uid)"
+          v-if="membersIds.includes(member.uid)"
           class="avatar"
           circle
           :size="36"
@@ -145,7 +145,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = i18n.global;
 
-    const { memebersIds } = useBoardMembersInfo();
+    const { membersIds } = useBoardMembersInfo();
 
     const { getFullName } = useCurrentUserInfo();
 
@@ -185,7 +185,7 @@ export default defineComponent({
     };
 
     return {
-      memebersIds,
+      membersIds,
       showWindowAssign,
       notAssignedMembers,
       notAssignedMembersExist,

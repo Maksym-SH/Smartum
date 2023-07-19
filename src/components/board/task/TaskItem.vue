@@ -45,7 +45,7 @@
       <transition-group tag="div" class="task-item__members-avatars" name="toggle-content">
         <template v-for="user in task.assignedMembers" :key="user.uid">
           <Avatar
-            v-if="memebersIds.includes(user.uid)"
+            v-if="membersIds.includes(user.uid)"
             :size="30"
             :avatar="user.avatarParams"
             :first-name="user.firstName"
@@ -104,7 +104,7 @@ export default defineComponent({
   setup(props) {
     const { getFullName, unicID } = useUserInfo();
 
-    const { memebersIds } = useBoardMembersInfo();
+    const { membersIds } = useBoardMembersInfo();
 
     const taskModalActive = ref(false);
 
@@ -134,7 +134,7 @@ export default defineComponent({
       taskModalActive,
       currenUserInvited,
       subtasksCount,
-      memebersIds,
+      membersIds,
       getFullName,
     };
   },
