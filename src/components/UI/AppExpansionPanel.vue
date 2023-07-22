@@ -1,7 +1,7 @@
 <template>
-  <v-expansion-panels :variant="variant">
-    <v-expansion-panel>
-      <v-expansion-panel-title>
+  <VExpansionPanels :variant="variant">
+    <VExpansionPanel>
+      <VExpansionPanelTitle>
         <InlineSvg v-if="icon" :src="`/images/icons/${icon}.svg`" class="icon" />
         <span class="text" :class="{ 'no-icon': !icon }">{{ title }}</span>
         <template #actions="{ expanded }">
@@ -12,18 +12,18 @@
             v-bind="expanded"
           />
         </template>
-      </v-expansion-panel-title>
+      </VExpansionPanelTitle>
       <template v-if="showExpansionPanelContent">
-        <v-expansion-panel-text
+        <VExpansionPanelText
           v-for="(item, index) in content"
           :key="index"
           @click="item.callback()"
         >
           {{ item.title }}
-        </v-expansion-panel-text>
+        </VExpansionPanelText>
       </template>
-    </v-expansion-panel>
-  </v-expansion-panels>
+    </VExpansionPanel>
+  </VExpansionPanels>
 </template>
 
 <script lang="ts">
@@ -31,10 +31,20 @@ import { computed, defineComponent } from "vue";
 import { useExpansionPanelProps } from "./use/useProps";
 
 import InlineSvg from "vue-inline-svg";
+import {
+  VExpansionPanel,
+  VExpansionPanelText,
+  VExpansionPanelTitle,
+  VExpansionPanels,
+} from "vuetify/components";
 
 export default defineComponent({
   components: {
     InlineSvg,
+    VExpansionPanels,
+    VExpansionPanel,
+    VExpansionPanelTitle,
+    VExpansionPanelText,
   },
   props: useExpansionPanelProps,
   setup(props) {

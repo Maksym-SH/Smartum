@@ -94,7 +94,7 @@ export default defineComponent({
     const failedImageLoad = ref(false);
 
     const dateSent = computed(() =>
-      useDateParseToString(props.params.date, i18nLocale.value as enums.Language)
+      useDateParseToString(props.params.date, i18nLocale.value)
     );
 
     const joinBoard = () => {

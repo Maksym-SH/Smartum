@@ -399,7 +399,6 @@ export default defineComponent({
         }
 
         .file-upload {
-          max-width: none;
           max-height: none;
           height: 320px;
           max-width: 320px;

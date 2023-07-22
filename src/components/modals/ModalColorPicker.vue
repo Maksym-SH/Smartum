@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
+  <VDialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
     <template #activator="{ props }">
       <div class="color-picker">
         <AppButton
@@ -28,8 +28,8 @@
       </div>
     </template>
     <template #default>
-      <v-card>
-        <v-toolbar class="v-card__header">
+      <VCard>
+        <VToolbar class="v-card__header">
           <h4 class="v-card__header-title">
             {{ $t("modal.colorPickTitle") }}
             <p v-if="showColorsTarget" class="v-card__header-title--additional">
@@ -40,8 +40,8 @@
               }}
             </p>
           </h4>
-        </v-toolbar>
-        <v-card-text class="v-card-colors__content">
+        </VToolbar>
+        <VCardText class="v-card-colors__content">
           <div class="v-card-colors__content-grid">
             <BackgroundItem
               v-for="color in colorsCollection"
@@ -53,8 +53,8 @@
               @select="selectedColor = $event"
             />
           </div>
-        </v-card-text>
-        <v-card-actions class="v-card__footer">
+        </VCardText>
+        <VCardActions class="v-card__footer">
           <AppButton
             class="v-card__footer--cancel"
             :title="$t('buttons.cancel')"
@@ -69,10 +69,10 @@
             :disabled="!selectedColor"
             @click="changeColor()"
           />
-        </v-card-actions>
-      </v-card>
+        </VCardActions>
+      </VCard>
     </template>
-  </v-dialog>
+  </VDialog>
 </template>
 
 <script lang="ts">
@@ -86,6 +86,7 @@ import i18n from "@/i18n";
 import InlineSvg from "vue-inline-svg";
 import BackgroundItem from "../UI/BackgroundItem.vue";
 import AppButton from "../UI/AppButton.vue";
+import { VCard, VCardActions, VCardText, VDialog, VToolbar } from "vuetify/components";
 
 import { Colors } from "@/types/enums";
 import type { Theme } from "@/types";
@@ -97,6 +98,11 @@ export default defineComponent({
     BackgroundItem,
     InlineSvg,
     AppButton,
+    VDialog,
+    VCard,
+    VToolbar,
+    VCardActions,
+    VCardText,
   },
   props: {
     modelValue: {
@@ -191,7 +197,6 @@ export default defineComponent({
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
   width: 145px;
 
   .c-button {

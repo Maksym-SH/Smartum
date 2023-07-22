@@ -6,7 +6,7 @@ import type { IDateFormat } from "@/types/interfaces";
 
 export default function Timestamp(
   date: Date | null,
-  lang: Language = Language.ENG,
+  lang: String = Language.ENG,
   exaptDate?: number
 ): IDateFormat {
   const datestamp = date || new Date(Number(exaptDate));

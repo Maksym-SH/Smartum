@@ -118,6 +118,7 @@ export default defineComponent({
         margin-top: 20px;
         width: 100%;
         padding: 7px 0;
+        color: $color-white1;
       }
     }
 

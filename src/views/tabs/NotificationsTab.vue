@@ -112,6 +112,10 @@ export default defineComponent({
     display: flex;
     justify-content: flex-end;
     color: $color-white1;
+
+    &--clear {
+      color: $color-white1;
+    }
   }
 
   @include tablet(max) {

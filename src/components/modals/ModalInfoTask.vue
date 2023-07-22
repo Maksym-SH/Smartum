@@ -13,7 +13,7 @@
             />
             <div class="task-info-modal__window-header-title">
               <InlineSvg class="icon" src="/images/icons/task.svg" />
-              <v-tooltip text="Нажмите чтобы редактировать" location="top">
+              <VTooltip :text="$t('task.editTitleTooltip')" location="top">
                 <template #activator="{ props }">
                   <AppInput
                     v-bind="props"
@@ -26,7 +26,7 @@
                     @keyup.enter.exact="saveTaskName"
                   />
                 </template>
-              </v-tooltip>
+              </VTooltip>
             </div>
             <p class="task-info-modal__window-header-description">
               {{ $t("modal.taskStatus") }}
@@ -66,8 +66,10 @@
                 </div>
               </div>
               <div class="task-info-modal__window-action-item">
-                <span class="action__title">{{ $t("navigation.notifications.title") }}</span>
-                <v-tooltip :text="$t('task.tooltip')" location="bottom">
+                <span class="action__title">{{
+                  $t("navigation.notifications.title")
+                }}</span>
+                <VTooltip :text="$t('task.tooltip')" location="bottom">
                   <template #activator="{ props }">
                     <AppButton
                       v-bind="props"
@@ -77,7 +79,7 @@
                       @click="subscribe"
                     />
                   </template>
-                </v-tooltip>
+                </VTooltip>
               </div>
               <div class="task-info-modal__window-action-item">
                 <span class="action__title">{{ $t("modal.members") }}</span>
@@ -187,6 +189,7 @@ import MembersAssign from "../board/task/TaskAssign.vue";
 import SubtasksList from "../board/task/subtask/SubtasksList.vue";
 import ModalColorPicker from "./ModalColorPicker.vue";
 import InlineSvg from "vue-inline-svg";
+import { VTooltip } from "vuetify/components";
 
 import { Colors, Length } from "@/types/enums";
 import type { ITaskComment } from "@/types/interfaces/board";
@@ -204,6 +207,7 @@ export default defineComponent({
     CommentItem,
     MembersAssign,
     SubtasksList,
+    VTooltip,
   },
   props: {
     taskId: {
@@ -412,6 +416,7 @@ export default defineComponent({
       display: flex;
       flex-direction: column;
       padding: 8px;
+      margin-top: 10px;
 
       &-description {
         margin-top: 10px;

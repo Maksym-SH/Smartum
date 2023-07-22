@@ -65,6 +65,7 @@ import { ArrayHasValues, NewObjectLink, OpenPopup } from "@/helpers/methods";
 import i18n from "@/i18n";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 import useDateParseToString from "@/composables/useDateParse";
+import useCurrentLanguage from "@/composables/useCurrentLanguage";
 
 import Avatar from "../user/AppAvatar.vue";
 import EmojiPicker from "../UI/EmojiPicker.vue";
@@ -106,6 +107,8 @@ export default defineComponent({
   ],
   setup(props, { emit }) {
     const { t } = i18n.global;
+
+    const { i18nLocale } = useCurrentLanguage();
 
     const { getFullName, unicID } = useCurrentUserInfo();
 
@@ -174,7 +177,7 @@ export default defineComponent({
       }
     };
 
-    const dateOfCreate = useDateParseToString(props.comment.dateOfCreate);
+    const dateOfCreate = useDateParseToString(props.comment.dateOfCreate, i18nLocale.value);
 
     const authorCurrentUser = computed((): boolean => {
       return props.comment.member.uid === unicID.value;

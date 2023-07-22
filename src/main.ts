@@ -2,8 +2,6 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createVuetify } from "vuetify";
 
-import * as components from "vuetify/components";
-import * as directives from "vuetify/directives";
 import notifications from "@kyvg/vue3-notification";
 import router from "./router";
 import i18n from "./i18n";
@@ -14,10 +12,7 @@ import refreshUserInfo from "@/helpers/firebase/firebaseRefresh";
 import "normalize.css";
 import "vuetify/styles";
 
-const vuetify = createVuetify({
-  components,
-  directives,
-});
+const vuetify = createVuetify();
 
 const pinia = createPinia();
 

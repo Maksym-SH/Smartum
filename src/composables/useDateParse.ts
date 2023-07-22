@@ -9,7 +9,7 @@ import type { IServerDate } from "@/types/interfaces";
 
 export default function useDateParseToString(
   date: Date | IServerDate | string | null,
-  lang: Language = Language.ENG
+  lang: String = Language.ENG
 ): string {
   const { t } = i18n.global;
 

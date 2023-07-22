@@ -35,7 +35,6 @@ import InlineSvg from "vue-inline-svg";
 import BoardImageResult from "@/components/board/BoardImageResult.vue";
 
 import type { PropType } from "vue";
-import type { Language } from "@/types/enums";
 import type { IWorkingBoardItem } from "@/types/interfaces/board";
 
 export default defineComponent({
@@ -53,7 +52,7 @@ export default defineComponent({
     const { i18nLocale } = useCurrentLanguage();
 
     const dateOfCreate = computed(() =>
-      useDateParseToString(props.element.dateOfCreation, i18nLocale.value as Language)
+      useDateParseToString(props.element.dateOfCreation, i18nLocale.value)
     );
 
     const membersCount = computed((): number => {

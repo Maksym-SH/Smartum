@@ -29,7 +29,7 @@
       </span>
     </div>
     <div class="task-item__members">
-      <v-tooltip
+      <VTooltip
         v-if="currenUserInvited"
         :text="$t('common.currentUserAssign')"
         location="bottom"
@@ -41,7 +41,7 @@
             class="task-item__members--icon-assign initially-transparent"
           />
         </template>
-      </v-tooltip>
+      </VTooltip>
       <transition-group tag="div" class="task-item__members-avatars" name="toggle-content">
         <template v-for="user in task.assignedMembers" :key="user.uid">
           <Avatar
@@ -80,6 +80,7 @@ import Avatar from "@/components/user/AppAvatar.vue";
 import TaskInfoModal from "@/components/modals/ModalInfoTask.vue";
 import BackgroundItem from "@/components/UI/BackgroundItem.vue";
 import AppButton from "@/components/UI/AppButton.vue";
+import { VTooltip } from "vuetify/components";
 
 import type { IWorkingBoardTask } from "@/types/interfaces/board";
 
@@ -90,6 +91,7 @@ export default defineComponent({
     TaskInfoModal,
     BackgroundItem,
     AppButton,
+    VTooltip,
   },
   props: {
     task: {

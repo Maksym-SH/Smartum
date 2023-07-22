@@ -69,7 +69,7 @@
 <script lang="ts">
 import { computed, defineComponent, reactive } from "vue";
 
-import * as emailValidator from "email-validator";
+import { validate as emailValidate } from "email-validator";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
 import SwitchLanguageButton from "@/components/UI/SwitchLanguageButton.vue";
@@ -94,10 +94,7 @@ export default defineComponent({
     const { signIn } = FirebaseAuth();
 
     const valid = computed((): boolean => {
-      return (
-        emailValidator.validate(userData.email) &&
-        userData.password.length >= Length.PASSWORD
-      );
+      return emailValidate(userData.email) && userData.password.length >= Length.PASSWORD;
     });
 
     const submitForm = (): void => signIn(userData, valid.value);
@@ -149,7 +146,11 @@ export default defineComponent({
       display: flex;
       justify-content: center;
       margin-bottom: 50px;
-      height: 40px;
+
+      &-picture {
+        width: 110px;
+        height: 40px;
+      }
     }
 
     &--title {

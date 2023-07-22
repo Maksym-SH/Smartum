@@ -6,7 +6,7 @@
       variant="text"
       @click="toggleNotificationsWindow"
     >
-      <v-badge
+      <VBadge
         v-show="notificationsSize"
         class="notifications__badge"
         :content="notificationsSize"
@@ -78,6 +78,7 @@ import AppCheckbox from "../UI/AppCheckbox.vue";
 import DropdownWindow from "../container/DropdownWindow.vue";
 import EmptyList from "../UI/EmptyList.vue";
 import NotificationItem from "./NotificationItem.vue";
+import { VBadge } from "vuetify/components";
 
 import type { NotifyAction } from "@/types";
 import { EmptyListType, NotificationStatus } from "@/types/enums";
@@ -89,6 +90,7 @@ export default defineComponent({
     NotificationItem,
     DropdownWindow,
     EmptyList,
+    VBadge,
   },
   props: {
     closePanel: {

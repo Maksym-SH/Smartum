@@ -60,7 +60,7 @@
                       </div>
                     </div>
                     <div class="member__actions">
-                      <v-tooltip text="Назначить" location="bottom">
+                      <VTooltip :text="$t('buttons.assign')" location="bottom">
                         <template #activator="{ props }">
                           <AppButton
                             v-bind="props"
@@ -69,7 +69,7 @@
                             @click="assignMember(member)"
                           />
                         </template>
-                      </v-tooltip>
+                      </VTooltip>
                     </div>
                   </div>
                 </template>
@@ -116,6 +116,7 @@ import DropdownWindow from "@/components/container/DropdownWindow.vue";
 import Avatar from "@/components/user/AppAvatar.vue";
 import AppButton from "@/components/UI/AppButton.vue";
 import InlineSvg from "vue-inline-svg";
+import { VTooltip } from "vuetify/components";
 
 import type { PropType } from "vue";
 import type { IUserForList } from "@/types/interfaces/user";
@@ -126,6 +127,7 @@ export default defineComponent({
     Avatar,
     InlineSvg,
     AppButton,
+    VTooltip,
   },
   props: {
     assignedMembers: {

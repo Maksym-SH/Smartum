@@ -1,28 +1,5 @@
 import i18n from "@/i18n";
-import useTimestamp from "./stamp";
-import useCurrentLanguage from "@/composables/useCurrentLanguage";
-import RegExp from "@/helpers/regExp";
-
-import type { IDateFormat } from "@/types/interfaces";
-import { Language, Numbers } from "@/types/enums";
-
-export function GetDate(date: string, onlyDate = false): IDateFormat {
-  const { i18nLocale } = useCurrentLanguage();
-
-  const dateFormat = Number(date);
-  const timestamp = useTimestamp(null, i18nLocale.value as Language, dateFormat);
-
-  if (onlyDate) {
-    const regExp =
-      i18nLocale.value === Language.ENG
-        ? RegExp.TimeRegisteredEng
-        : RegExp.TimeRegisteredRu;
-
-    timestamp.date = timestamp.date.match(regExp)![0];
-  }
-
-  return timestamp;
-}
+import { Numbers } from "@/types/enums";
 
 export function GetBetweenDateString(date: Date): string {
   const { t } = i18n.global;

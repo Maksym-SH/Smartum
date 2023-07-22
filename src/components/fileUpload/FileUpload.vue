@@ -8,7 +8,7 @@
       icon="delete-outline"
       @click.stop="deleteImgPopup"
     />
-    <v-img
+    <VImg
       v-if="showImageTemplate"
       class="file-upload--image"
       cover
@@ -28,6 +28,7 @@ import fileValidate from "@/helpers/file/validate";
 import useImageLoad from "@/composables/useImageLoad";
 
 import AppButton from "../UI/AppButton.vue";
+import { VImg } from "vuetify/components";
 
 import type { PropType } from "vue";
 import type { FileType, ImageSource, RefElement } from "@/types";
@@ -36,6 +37,7 @@ import { Colors } from "@/types/enums";
 export default defineComponent({
   components: {
     AppButton,
+    VImg,
   },
   props: {
     fileType: {

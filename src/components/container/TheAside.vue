@@ -41,7 +41,7 @@
                 :icon="item.icon"
                 :content="item.panels"
               />
-              <v-list-item
+              <VListItem
                 v-else
                 class="aside__navigation-list-item"
                 @click="navigationCallbackHandler(item?.callback?.())"
@@ -56,13 +56,13 @@
                     {{ item.title }}
                   </span>
                 </div>
-                <v-badge
+                <VBadge
                   v-show="notificationCount >= 0 && item.notify"
                   class="notify"
                   :class="{ 'empty-list': notificationCount === 0 }"
                   :content="notificationCount"
                 />
-              </v-list-item>
+              </VListItem>
             </template>
           </template>
         </transition-group>
@@ -83,7 +83,7 @@
         </span>
       </div>
       <transition name="toggle-content">
-        <v-badge
+        <VBadge
           v-show="showNotificationBadge"
           class="aside__collapse--notify-badge"
           :content="notificationCount"
@@ -107,6 +107,7 @@ import InlineSvg from "vue-inline-svg";
 import SwitchLanguageButton from "../UI/SwitchLanguageButton.vue";
 import UserInfo from "../user/UserInfo.vue";
 import SwitchTheme from "../UI/SwitchTheme.vue";
+import { VBadge, VListItem } from "vuetify/components";
 
 import { Layout, Numbers } from "@/types/enums";
 import type { IAsideNavItem } from "@/types/interfaces/components";
@@ -121,6 +122,8 @@ export default defineComponent({
     AppInput,
     AppLoader,
     AppExpansionPanel,
+    VBadge,
+    VListItem,
   },
   props: {
     minimizeAside: {

@@ -24,13 +24,13 @@
 
 .not-mobile {
   @include mobile(max) {
-    display: none;
+    display: none !important;
   }
 }
 
 .mobile-only {
   @include mobile(min) {
-    display: none;
+    display: none !important;
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="board-item-page">
     <BoardHeader :user-info="userInfo" @board-leave="boardLeave" />
-    <div class="board-item-page__content" :style="{ background: boardBackground }">
+    <div class="board-item-page__content">
       <AppLoader v-if="!commonStore.loadingStatus && !boardNotEmpty" />
       <transition name="toggle-content">
         <div v-if="boardNotEmpty" class="board-item-page__board-info">
@@ -15,7 +15,7 @@
           </div>
           <div class="board-item-page__board-info--additional">
             <div class="avatars-wrapper">
-              <v-tooltip
+              <VTooltip
                 v-for="item in boardMembers"
                 :key="item.uid"
                 :text="getFullName(item)"
@@ -33,7 +33,7 @@
                     circle
                   />
                 </template>
-              </v-tooltip>
+              </VTooltip>
             </div>
             <InviteUserButton :board="boardItem" @invited="setInviteUserToBoard" />
           </div>
@@ -81,6 +81,7 @@ import BoardHeader from "@/components/board/BoardPageHeader.vue";
 import InviteUserButton from "@/components/user/UserInviteButton.vue";
 import TaskColumn from "@/components/board/task/TaskColumn.vue";
 import AddNewColumn from "@/components/board/task/TaskColumnAddNew.vue";
+import { VTooltip } from "vuetify/components";
 
 import { Colors, Route, UserRole } from "@/types/enums";
 import type * as boardType from "@/types/interfaces/board";
@@ -93,6 +94,7 @@ export default defineComponent({
     InviteUserButton,
     TaskColumn,
     AddNewColumn,
+    VTooltip,
   },
   setup() {
     const { t } = i18n.global;
@@ -238,10 +240,9 @@ export default defineComponent({
 
   &__content {
     width: 100%;
-    background-repeat: no-repeat !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-attachment: fixed !important;
+    background: v-bind(boardBackground) center center no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto 1fr;

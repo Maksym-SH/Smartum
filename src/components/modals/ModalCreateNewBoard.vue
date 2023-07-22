@@ -1,17 +1,21 @@
 <template>
-  <v-dialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
+  <VDialog v-model="showDialog" transition="dialog-bottom-transition" width="auto">
     <template #activator="{ props }">
-      <AppButton class="create-dashboard-btn" v-bind="props" :title="$t('buttons.newBoard')" />
+      <AppButton
+        class="create-dashboard-btn"
+        v-bind="props"
+        :title="$t('buttons.newBoard')"
+      />
     </template>
     <template #default>
-      <v-card>
-        <v-toolbar color="primary">
+      <VCard>
+        <VToolbar color="primary">
           <h4 class="v-card-header__title">
             {{ $t("modal.createBoard") }}
           </h4>
-        </v-toolbar>
+        </VToolbar>
         <form class="v-card__form" @submit.prevent="createNewBoard">
-          <v-card-text>
+          <VCardText>
             <div class="v-card__wrapper">
               <BoardImageResult
                 :background="String(newBoard.background)"
@@ -52,8 +56,8 @@
                 />
               </div>
             </div>
-          </v-card-text>
-          <v-card-actions class="v-card__footer-action">
+          </VCardText>
+          <VCardActions class="v-card__footer-action">
             <AppButton
               class="v-card--cancel-create"
               variant="text"
@@ -66,11 +70,11 @@
               type="submit"
               :title="$t('buttons.create')"
             />
-          </v-card-actions>
+          </VCardActions>
         </form>
-      </v-card>
+      </VCard>
     </template>
-  </v-dialog>
+  </VDialog>
 </template>
 
 <script lang="ts">
@@ -85,6 +89,7 @@ import AppButton from "../UI/AppButton.vue";
 import AppInput from "../UI/AppInput.vue";
 import BoardImageResult from "../board/BoardImageResult.vue";
 import ImageBackgroundExample from "../UI/BackgroundItem.vue";
+import { VCard, VCardActions, VCardText, VDialog, VToolbar } from "vuetify/components";
 
 import { Colors, Length, Numbers, UserRole } from "@/types/enums";
 import type { IBackgroundDashboard } from "@/types/interfaces/colors";
@@ -96,6 +101,11 @@ export default defineComponent({
     AppInput,
     BoardImageResult,
     ImageBackgroundExample,
+    VCard,
+    VCardActions,
+    VCardText,
+    VDialog,
+    VToolbar,
   },
   emits: ["createNew"],
 

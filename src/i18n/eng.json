@@ -86,6 +86,7 @@
     "members": "Members"
   },
   "task": {
+    "editTitleTooltip": "Click to edit",
     "tooltip": "Subscribe to be notified when this card is updated"
   },
   "recover": {

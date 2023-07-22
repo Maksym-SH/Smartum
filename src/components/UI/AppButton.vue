@@ -1,5 +1,5 @@
 <template>
-  <v-btn
+  <VBtn
     class="c-button"
     :color="color"
     :variant="variant"
@@ -9,7 +9,7 @@
   >
     <InlineSvg v-if="icon" :src="`/images/icons/${icon}.svg`" class="c-button__icon" />
     <slot>{{ title }}</slot>
-  </v-btn>
+  </VBtn>
 </template>
 
 <script lang="ts">
@@ -17,12 +17,14 @@ import { defineComponent } from "vue";
 import { useButtonProps } from "./use/useProps";
 
 import InlineSvg from "vue-inline-svg";
+import { VBtn } from "vuetify/components";
 
 import { Colors } from "@/types/enums";
 
 export default defineComponent({
   components: {
     InlineSvg,
+    VBtn,
   },
   props: useButtonProps,
   setup() {

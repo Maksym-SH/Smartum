@@ -6,6 +6,7 @@ import { CreateDebounce, ObjectHasValues, TheSameObject } from "@/helpers/method
 import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 import useDateParseToString from "./useDateParse";
+import useCurrentLanguage from "./useCurrentLanguage";
 import useCurrentUserInfo from "@/composables/useCurrentUserInfo";
 
 import { Length } from "@/types/enums";
@@ -17,6 +18,8 @@ export default function useTaskInfo(columnId: number, taskId: number) {
   const { t } = i18n.global;
 
   const { dashboardStore } = useStores();
+
+  const { i18nLocale } = useCurrentLanguage();
 
   const { unicID } = useCurrentUserInfo();
 
@@ -114,7 +117,7 @@ export default function useTaskInfo(columnId: number, taskId: number) {
 
   onMounted(() => {
     getCurrentTask();
-    dateSent.value = useDateParseToString(currentTask.value.dateOfCreate);
+    dateSent.value = useDateParseToString(currentTask.value.dateOfCreate, i18nLocale.value);
   });
 
   // Save changes.

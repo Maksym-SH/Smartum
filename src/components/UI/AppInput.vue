@@ -80,7 +80,7 @@ import { useInputProps } from "./use/useProps";
 
 import i18n from "@/i18n";
 import RegExp from "@/helpers/regExp";
-import * as emailValidator from "email-validator";
+import { validate as emailValidate } from "email-validator";
 
 import InlineSvg from "vue-inline-svg";
 import AppButton from "./AppButton.vue";
@@ -117,7 +117,7 @@ export default defineComponent({
     };
 
     const validator = (): void => {
-      if (props.isEmail && !emailValidator.validate(model.value as string))
+      if (props.isEmail && !emailValidate(model.value as string))
         errorText.value = computed(() => t("errors.email"));
       else if (props.isPhone && !String(model.value).match(RegExp.Phone) && model.value)
         errorText.value = computed(() => t("errors.phone"));
@@ -217,8 +217,8 @@ export default defineComponent({
     &:-webkit-autofill:focus {
       border: 1px solid $color-blue;
       border-radius: 4px;
+      box-shadow: 0 0 0 1000px var(--color-background) inset;
       -webkit-text-fill-color: var(--color-text);
-      -webkit-box-shadow: 0 0 0 1000px var(--color-background) inset;
 
       & + .label {
         color: $color-blue;

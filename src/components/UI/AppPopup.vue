@@ -143,9 +143,9 @@ export default defineComponent({
     display: flex;
     gap: 15px;
     justify-content: center;
-    color: $color-white1;
 
     .c-button {
+      color: $color-white1;
       text-transform: none;
       width: 49%;
     }

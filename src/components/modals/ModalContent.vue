@@ -1,13 +1,13 @@
 <template>
-  <v-dialog
+  <VDialog
     v-model="dialog"
     class="modal"
     persistent
     fullscreen
     transition="dialog-bottom-transition"
   >
-    <v-card>
-      <v-toolbar color="indigo" class="modal__actions">
+    <VCard>
+      <VToolbar color="indigo" class="modal__actions">
         <AppButton
           class="modal__actions--close"
           icon="close"
@@ -15,15 +15,15 @@
           rounded
           @click="closeModal"
         />
-        <v-toolbar-title class="modal__header-title">
+        <VToolbarTitle class="modal__header-title">
           {{ currentContent.title }}
-        </v-toolbar-title>
-      </v-toolbar>
-      <v-list>
+        </VToolbarTitle>
+      </VToolbar>
+      <VList>
         <div class="modal__content" v-html="currentContent.content" />
-      </v-list>
-    </v-card>
-  </v-dialog>
+      </VList>
+    </VCard>
+  </VDialog>
 </template>
 
 <script lang="ts">
@@ -33,6 +33,7 @@ import i18n from "@/i18n";
 import useStores from "@/composables/useStores";
 
 import AppButton from "../UI/AppButton.vue";
+import { VCard, VDialog, VList, VToolbar, VToolbarTitle } from "vuetify/components";
 
 import type { PropType } from "vue";
 import { ModalContentType } from "@/types/enums";
@@ -41,6 +42,11 @@ import type { IModalContent } from "@/types/interfaces/components";
 export default defineComponent({
   components: {
     AppButton,
+    VCard,
+    VDialog,
+    VToolbar,
+    VList,
+    VToolbarTitle,
   },
   props: {
     contentType: {

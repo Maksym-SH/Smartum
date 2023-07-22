@@ -111,7 +111,7 @@
 <script lang="ts">
 import { computed, defineComponent, reactive } from "vue";
 
-import * as emailValidator from "email-validator";
+import { validate as emailValidate } from "email-validator";
 import useStores from "@/composables/useStores";
 import FirebaseAuth from "@/helpers/firebase/firebaseAuth";
 
@@ -149,7 +149,7 @@ export default defineComponent({
     const { signUp } = FirebaseAuth();
 
     const valid = computed((): boolean => {
-      return emailValidator.validate(userData.email) && validPersonDate.value;
+      return emailValidate(userData.email) && validPersonDate.value;
     });
 
     const submitForm = (): void => signUp(userData, valid.value);
@@ -238,7 +238,6 @@ export default defineComponent({
     }
 
     &-content {
-      width: 60%;
       width: 400px;
       padding: 20px;
       color: $color-white3;
@@ -286,7 +285,8 @@ export default defineComponent({
       &__send {
         margin-top: auto;
 
-        :deep(.c-button) {
+        .c-button {
+          color: $color-white1;
           width: 100%;
         }
       }
