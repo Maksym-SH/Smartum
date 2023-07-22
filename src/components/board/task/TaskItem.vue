@@ -62,6 +62,7 @@
           v-model:taskModalActive="taskModalActive"
           :task-id="task.id"
           :column-id="columnId"
+          @show-column="$emit('showColumn')"
         />
       </transition>
     </Teleport>
@@ -103,6 +104,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["showColumn"],
   setup(props) {
     const { getFullName, unicID } = useUserInfo();
 

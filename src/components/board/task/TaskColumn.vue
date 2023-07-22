@@ -1,5 +1,5 @@
 <template>
-  <div class="task-column">
+  <div ref="columnRef" class="task-column" :class="{ active: activeColumn }">
     <div class="task-column__header">
       <div class="task-column__header-name">
         <AppInput
@@ -29,7 +29,11 @@
       @end="dragEnd"
     >
       <template #item="{ element }">
-        <Task :task="element" :column-id="column.id" />
+        <Task
+          :task="element"
+          :column-id="column.id"
+          @show-column="setActiveCurrentColumn"
+        />
       </template>
     </Draggable>
     <AddNewTask @create-task="createTask" />
@@ -109,6 +113,20 @@ export default defineComponent({
       emit("saveChanges");
     };
 
+    // Active column handlers.
+    const columnRef = ref<HTMLDivElement>();
+
+    const activeColumn = ref(false);
+
+    const setActiveCurrentColumn = (): void => {
+      if (columnRef.value) {
+        columnRef.value.scrollIntoView({ behavior: "smooth", block: "center", inline:"center" });
+      }
+
+      activeColumn.value = true;
+      setTimeout(() => (activeColumn.value = false), Numbers.SECOND * 2);
+    };
+
     // Drag handlers.
     const dragStart = (e: Event): void => {
       dropZoneHeight.value = (e.target as HTMLDivElement).clientHeight;
@@ -149,13 +167,16 @@ export default defineComponent({
       showDropZone,
       Numbers,
       dropZoneHeight,
+      columnRef,
       columnNameRef,
+      activeColumn,
       Length,
       createTask,
       dragEnd,
       dragStart,
       saveColumnName,
       columnSettings,
+      setActiveCurrentColumn,
     };
   },
 });
@@ -170,6 +191,10 @@ export default defineComponent({
   height: fit-content;
   background-color: var(--color-background);
   transition: all 0.3s;
+
+  &.active {
+    background-color: $color-dark-blue;
+  }
 
   &__tasks {
     display: flex;

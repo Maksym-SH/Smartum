@@ -30,7 +30,10 @@
             </div>
             <p class="task-info-modal__window-header-description">
               {{ $t("modal.taskStatus") }}
-              <span class="task-info-modal__window-header-description--underline">
+              <span
+                class="task-info-modal__window-header-description--underline"
+                @click="showColumn"
+              >
                 {{ columnName }}
               </span>
             </p>
@@ -223,7 +226,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["update:taskModalActive"],
+  emits: ["update:taskModalActive", "showColumn"],
   setup(props, { emit }) {
     const { t } = i18n.global;
 
@@ -268,6 +271,12 @@ export default defineComponent({
           currentTask.value.marks.push(newMark.value);
         }
       }
+    };
+
+    // Task actions.
+    const showColumn = (): void => {
+      emit("showColumn");
+      closeModal();
     };
 
     // Comment actions.
@@ -326,6 +335,7 @@ export default defineComponent({
       saveDescriptionText,
       toggleEditDescriptionMode,
       subscribe,
+      showColumn,
       closeModal,
     };
   },
@@ -405,6 +415,7 @@ export default defineComponent({
         color: var(--color-text);
 
         &--underline {
+          cursor: pointer;
           font-style: italic;
           text-decoration: underline;
           text-underline-offset: 5px;
