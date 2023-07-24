@@ -28,7 +28,7 @@
                 required
                 name="DashboardHeader"
                 :min="Length.TEXT"
-                :max-length="Length.MAX"
+                :max="Length.MAX"
               />
             </div>
             <div class="v-card__wrapper-background-select">

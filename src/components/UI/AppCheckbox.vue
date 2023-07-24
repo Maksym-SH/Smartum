@@ -81,6 +81,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .c-checkbox {
   position: relative;
+  display: inline-flex;
+  align-items: center;
 
   &__input {
     display: none;
@@ -104,26 +106,16 @@ export default defineComponent({
   .main-label {
     color: var(--color-text);
     padding-left: 5px;
+    word-break: break-word;
 
     &.line-through {
       position: relative;
-
-      &::before {
-        content: "";
-        width: 0;
-        height: 2px;
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        background-color: var(--color-text);
-        transition: width 0.3s;
-      }
+      text-decoration: line-through;
+      text-decoration-color: transparent;
+      transition: all 0.2s ease-in-out;
 
       &.active {
-        &::before {
-          width: calc(100% + 5px);
-        }
+        text-decoration-color: inherit;
       }
     }
   }
@@ -134,6 +126,7 @@ export default defineComponent({
       padding-left: 20px;
       cursor: pointer;
       font-size: 12px;
+      height: 20px;
       user-select: none;
       color: $color-white1;
 
@@ -144,8 +137,8 @@ export default defineComponent({
         top: 50%;
         transform: translate(0, -50%);
         display: inline-block;
-        width: 15px;
-        height: 15px;
+        width: 20px;
+        height: 100%;
         border-radius: 3px;
         background-color: $color-white4;
         border: 1px solid $color-dark-grey;

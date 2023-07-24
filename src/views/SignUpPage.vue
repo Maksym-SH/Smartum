@@ -36,7 +36,7 @@
             required
             :label="$t('labels.name')"
             name="userFirstName"
-            :max-length="Length.MAX"
+            :max="Length.MAX"
             :min="Length.TEXT"
             transparent
           />
@@ -44,7 +44,7 @@
             v-model.trim="userData.lastName"
             :min="userData.lastName ? Length.TEXT : Length.NONE"
             name="userLastName"
-            :max-length="Length.MAX"
+            :max="Length.MAX"
             :label="$t('labels.lastName')"
             transparent
           />

@@ -1,6 +1,6 @@
 <template>
   <span class="subtask">
-    <span class="subtaks__info">
+    <span class="subtask__info">
       <AppButton
         class="subtask__info--delete"
         icon="delete-outline"
@@ -74,11 +74,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .subtask {
   display: inline-flex;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 20px;
-  white-space: nowrap;
 
   &__info {
+    display: inline-flex;
+    align-items: center;
+
     &--delete {
       width: 15px;
       height: 22px;
@@ -94,6 +96,7 @@ export default defineComponent({
 
   @include mobile(max) {
     .c-checkbox {
+      width: 100%;
       font-size: 13px;
     }
   }
@@ -106,12 +109,11 @@ export default defineComponent({
       }
 
       &--delete {
-        padding: 0 10px;
-        margin-right: 5px;
+        padding: 0 18px;
       }
 
       .c-checkbox {
-        font-size: 10.7px;
+        font-size: 11px;
       }
     }
   }

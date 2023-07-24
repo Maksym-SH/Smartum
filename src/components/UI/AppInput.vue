@@ -23,6 +23,7 @@
         v-bind="$attrs"
         :required="required"
         :min="min"
+        :maxlength="max"
         @blur="validator"
         @keyup.enter="pressEnter"
       />
@@ -110,12 +111,6 @@ export default defineComponent({
 
     const showPassword = ref(false);
 
-    const pressEnter = () => {
-      if (props.type === "search") {
-        emit("search");
-      }
-    };
-
     const validator = (): void => {
       if (props.isEmail && !emailValidate(model.value as string))
         errorText.value = computed(() => t("errors.email"));
@@ -125,6 +120,14 @@ export default defineComponent({
         errorText.value = computed(() => t("errors.min", { min: props.min }));
       else if (props.type === "password" && String(model.value).match(" "))
         errorText.value = computed(() => t("errors.spaces"));
+    };
+
+    const pressEnter = () => {
+      if (props.type === "search") {
+        emit("search");
+      } else {
+        validator();
+      }
     };
 
     const toggleInputType = (): void => {

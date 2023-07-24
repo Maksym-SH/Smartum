@@ -3,7 +3,7 @@
     <AppInput
       v-model="newSubtaskTitle"
       :min="Length.TEXT"
-      :max-length="Length.MAX"
+      :max="Length.MAX"
       name="subtaskNew"
       :placeholder="$t('labels.newSubTask')"
     />

@@ -135,6 +135,7 @@ export default defineComponent({
     text-align: center;
     line-height: 20px;
     opacity: 0.9;
+    word-break: break-word;
   }
 
   &__button {

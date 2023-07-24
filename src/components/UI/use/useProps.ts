@@ -58,6 +58,9 @@ export const useInputProps = {
     type: Number,
     default: Length.NONE,
   },
+  max: {
+    type: Number,
+  },
   autoComplete: {
     type: [Boolean, String],
     default: true,
@@ -92,7 +95,6 @@ export const useTextareaProps = {
   },
   max: {
     type: Number,
-    default: Length.NONE,
   },
   label: {
     type: String,

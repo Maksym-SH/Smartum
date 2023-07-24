@@ -14,20 +14,20 @@
         <AppInput
           v-model.trim="userInfo.firstName"
           :min="Length.TEXT"
-          :max-length="Length.MAX"
+          :max="Length.MAX"
           :label="$t('labels.name')"
           name="userFirstName"
-          @keydown.enter.prevent
+          @keydown.enter.prevent="saveChanges"
         />
       </div>
       <div class="profile-tab__form-item last-name">
         <AppInput
           v-model.trim="userInfo.lastName"
           :min="userInfo.lastName ? Length.TEXT : Length.NONE"
-          :max-length="Length.MAX"
+          :max="Length.MAX"
           :label="$t('labels.lastName')"
           name="userLastName"
-          @keydown.enter.prevent
+          @keydown.enter.prevent="saveChanges"
         />
       </div>
       <div class="profile-tab__form-item textarea">
@@ -36,6 +36,7 @@
           :max="Length.TEXTAREA"
           :label="$t('labels.additional')"
           name="userAbout"
+          @keydown.enter.exact.prevent="saveChanges"
         />
       </div>
       <div class="profile-tab__form-item phone">
@@ -45,7 +46,7 @@
           is-phone
           :label="$t('labels.phone')"
           name="userPhone"
-          @keydown.enter.prevent
+          @keydown.enter.prevent="saveChanges"
         />
       </div>
       <div class="profile-tab__form-item email">
@@ -70,7 +71,7 @@
           :min="userInfo.newPassword ? Length.PASSWORD : Length.NONE"
           :label="$t('labels.newPassword')"
           name="userPassword"
-          @keydown.enter.prevent
+          @keydown.enter.prevent="saveChanges"
         />
       </div>
       <div class="profile-tab__form-buttons-wrapper">

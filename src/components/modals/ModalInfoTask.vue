@@ -20,7 +20,7 @@
                     ref="taskTitleRef"
                     v-model="editableTaskTitle"
                     :name="currentTask.title"
-                    :max-length="Length.MAX"
+                    :max="Length.MAX"
                     :min="Length.TEXT"
                     @blur="saveTaskName"
                     @keyup.enter.exact="saveTaskName"
@@ -393,8 +393,8 @@ export default defineComponent({
         color: var(--color-text);
 
         .c-input {
-          max-width: 460px;
-          padding: 0 0 15px 0;
+          max-width: 480px;
+          padding: 0 10px 15px 0;
           height: 30px;
 
           :deep(.c-input__field) {

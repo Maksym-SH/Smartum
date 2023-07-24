@@ -15,7 +15,7 @@
         <AppInput
           v-model="title"
           class="add-new__params-input"
-          :max-length="Length.MAX"
+          :max="Length.MAX"
           :min="Length.TEXT"
           :placeholder="inputPlaceholder"
         />
