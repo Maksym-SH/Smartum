@@ -234,10 +234,10 @@ export default defineComponent({
     };
 
     onMounted((): void => {
-      const profileInfo = userStore.userInfo as Required<IUserInfo>;
+      const profileInfo = userStore.userInfo;
 
       userInfo.firstName = profileInfo.firstName;
-      userInfo.lastName = profileInfo.lastName;
+      userInfo.lastName = profileInfo.lastName || "";
       userInfo.about = profileInfo.about;
       userInfo.avatarParams.url = profileInfo.avatarParams.url || "";
       userInfo.phone = profileInfo.phone;

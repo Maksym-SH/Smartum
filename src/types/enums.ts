@@ -10,6 +10,7 @@ export enum Route {
   DASHBOARD = "Dashboard",
   BOARD = "Board",
   NOT_FOUND = "NotFound",
+  STATISTICS = "Statistics",
 }
 
 export enum EmptyListType {
@@ -71,6 +72,7 @@ export enum DataCollection {
   NOTIFICATIONS = "notifications",
   CONFIGURATION = "configuration",
   USERS = "users",
+  STATISTICS = "statistics",
 }
 
 export enum Links {
@@ -120,4 +122,13 @@ export enum Colors {
 export enum UserRole {
   ADMIN = "Admin",
   MEMBER = "Member",
+}
+
+export enum Activity {
+  CREATED_BOARDS = 0,
+  LEFT_COMMENTS = 1,
+  INVITED_USERS = 2,
+  CREATED_TASKS = 3,
+  CREATED_COLUMNS = 4,
+  MOVED_TASKS = 5,
 }

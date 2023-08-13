@@ -86,6 +86,15 @@ const routes: Readonly<RouteRecordRaw[]> = [
         },
         component: () => import("@/views/tabs/DashboardTab.vue"),
       },
+      {
+        name: Route.STATISTICS,
+        path: "/statistics",
+        meta: {
+          tabName: "Statistics",
+          protected: true,
+        },
+        component: () => import("@/views/tabs/StatisticTab.vue"),
+      },
     ],
   },
   {

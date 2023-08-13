@@ -141,7 +141,7 @@ export default defineComponent({
     const validPersonDate = computed((): boolean => {
       return (
         userData.firstName.length >= Length.TEXT &&
-        (!userData.lastName.length || userData.lastName.length >= Length.TEXT) &&
+        (!userData.lastName?.length || userData.lastName.length >= Length.TEXT) &&
         userData.password.length >= Length.PASSWORD
       );
     });

@@ -112,7 +112,6 @@ export default defineComponent({
   background-color: $color-transp-black;
 
   &__window {
-    width: fit-content;
     border-radius: 10px;
     padding: 20px 40px;
     width: 100%;
@@ -161,9 +160,9 @@ export default defineComponent({
       display: flex;
       gap: 15px;
       justify-content: center;
-      color: $color-white1;
-
+      
       .c-button {
+        color: $color-white1;
         text-transform: none;
         min-width: 49% !important;
       }

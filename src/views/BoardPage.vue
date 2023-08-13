@@ -83,7 +83,7 @@ import TaskColumn from "@/components/board/task/TaskColumn.vue";
 import AddNewColumn from "@/components/board/task/TaskColumnAddNew.vue";
 import { VTooltip } from "vuetify/components";
 
-import { Colors, Route, UserRole } from "@/types/enums";
+import { Activity, Colors, Route, UserRole } from "@/types/enums";
 import type * as boardType from "@/types/interfaces/board";
 
 export default defineComponent({
@@ -101,7 +101,7 @@ export default defineComponent({
 
     const router = useRouter();
 
-    const { commonStore, dashboardStore } = useStore();
+    const { commonStore, dashboardStore, statisticsStore } = useStore();
 
     const { unicID, userInfo, getFullName } = useCurrentUserInfo();
 
@@ -182,6 +182,8 @@ export default defineComponent({
     // Tasks
     const createColumn = (column: boardType.IWorkingBoardTaskColumn): void => {
       boardItem.value.columns.push(column);
+
+      statisticsStore.incrementStatisticItem(Activity.CREATED_COLUMNS);
       saveChanges();
     };
 

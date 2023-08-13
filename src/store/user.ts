@@ -16,8 +16,13 @@ import { DataCollection, Route } from "@/types/enums";
 import type { ErrorCode } from "@/types";
 
 const useUserStore = defineStore("user", () => {
-  const { commonStore, notificationStore, configurationStore, dashboardStore } =
-    useStores();
+  const {
+    commonStore,
+    notificationStore,
+    configurationStore,
+    dashboardStore,
+    statisticsStore,
+  } = useStores();
 
   const storage = st.getStorage();
 
@@ -326,6 +331,7 @@ const useUserStore = defineStore("user", () => {
           notificationStore.deleteNotificationList(unicID);
           configurationStore.deleteUserConfiguration(unicID);
           dashboardStore.deleteAllCodes(unicID);
+          statisticsStore.deleteStatistic(unicID);
 
           updateUsersList(unicID, true); // Delete user from list.
 
@@ -388,6 +394,7 @@ const useUserStore = defineStore("user", () => {
 
         notificationStore.clearList(); // Clear any notifications.
         dashboardStore.clearList(); // Clear any boards.
+        statisticsStore.clearList(); // Clear statistics.
 
         if (!router.currentRoute.value.meta.notAuthorized) {
           router.push({ name: Route.SIGN_IN });

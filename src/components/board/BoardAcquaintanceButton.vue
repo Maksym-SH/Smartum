@@ -4,14 +4,15 @@
       variant="text"
       icon="information-outline"
       class="acquaintance__btn"
+      :class="{ active: showedAcquaintanceWindow }"
       @click="toggleAcquaintanceWindow"
     />
     <DropdownWindow
-      :visible="showAcquaintanceWindow"
+      :visible="showedAcquaintanceWindow"
       :width="400"
       :height="400"
       :centering="!showTemplate"
-      @hide-dropdown="showAcquaintanceWindow = false"
+      @hide-dropdown="showedAcquaintanceWindow = false"
     >
       <template #header>
         <div class="acquaintance__window-header">
@@ -22,7 +23,7 @@
             class="acquaintance__window-header--close"
             variant="text"
             icon="close"
-            @click="showAcquaintanceWindow = false"
+            @click="showedAcquaintanceWindow = false"
           />
         </div>
       </template>
@@ -53,7 +54,7 @@
               class="acquaintance__window--confirm"
               size="large"
               :title="$t('buttons.acquainted')"
-              @click="showAcquaintanceWindow = false"
+              @click="showedAcquaintanceWindow = false"
             />
           </footer>
         </div>
@@ -78,15 +79,15 @@ export default defineComponent({
   setup() {
     const showTemplate = ref(false);
 
-    const showAcquaintanceWindow = ref(false);
+    const showedAcquaintanceWindow = ref(false);
 
     const toggleAcquaintanceWindow = () => {
-      showAcquaintanceWindow.value = !showAcquaintanceWindow.value;
+      showedAcquaintanceWindow.value = !showedAcquaintanceWindow.value;
     };
 
     return {
       showTemplate,
-      showAcquaintanceWindow,
+      showedAcquaintanceWindow,
       toggleAcquaintanceWindow,
     };
   },
@@ -100,6 +101,11 @@ export default defineComponent({
   &__btn {
     padding: 0 5px;
     font-size: 20px;
+
+    &.active {
+      pointer-events: none;
+      background-color: rgba($color-blue, 0.4);
+    }
   }
 
   &__window {

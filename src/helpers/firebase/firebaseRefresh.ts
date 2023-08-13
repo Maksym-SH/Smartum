@@ -6,7 +6,7 @@ import useStores from "@/composables/useStores";
 import type { ErrorCode } from "@/types";
 
 export default async function refreshUserInfo(): Promise<void> {
-  const { commonStore, userStore, configurationStore } = useStores();
+  const { commonStore, userStore, configurationStore, statisticsStore } = useStores();
 
   commonStore.setLoadingStatus(true);
 
@@ -19,6 +19,7 @@ export default async function refreshUserInfo(): Promise<void> {
 
           await userStore.getUserProfile(user.uid).then(() => {
             configurationStore.getUserConfiguration(user.uid);
+            statisticsStore.getStatistic();
           });
 
           const userInfo = {

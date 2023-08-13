@@ -19,7 +19,7 @@ import type { IUserForList } from "@/types/interfaces/user";
 const useDashboardStore = defineStore("dashboard", () => {
   const { t } = i18n.global;
 
-  const { commonStore, userStore, notificationStore } = useStores();
+  const { commonStore, userStore, notificationStore, statisticsStore } = useStores();
 
   const allBoards = ref<boardType.IWorkingBoardItem[]>([]);
 
@@ -139,6 +139,9 @@ const useDashboardStore = defineStore("dashboard", () => {
               refference,
               (boardSnapshot) => {
                 allBoards.value.push(boardSnapshot.val());
+
+                // Update statistics.
+                statisticsStore.incrementStatisticItem(enums.Activity.CREATED_BOARDS);
               },
               { onlyOnce: true }
             );

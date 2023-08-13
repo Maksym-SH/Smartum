@@ -1,7 +1,7 @@
 import i18n from "@/i18n";
 import { Numbers } from "@/types/enums";
 
-export function GetBetweenDateString(date: Date): string {
+export function GetBetweenDateString(date: Date, dynamic = true): string {
   const { t } = i18n.global;
 
   const today: Date = new Date();
@@ -13,6 +13,10 @@ export function GetBetweenDateString(date: Date): string {
   const weekAgo = new Date(today);
   weekAgo.setDate(today.getDate() - 7);
 
+  if (date && !dynamic) {
+    return date.toLocaleDateString();
+  }
+
   if (date) {
     switch (true) {
       case date >= today:
@@ -20,10 +24,10 @@ export function GetBetweenDateString(date: Date): string {
       case date >= yesterday:
         return t("time.yesterday");
       case date >= weekAgo: {
-        const dayAgo = Math.floor(
+        const daysAgo = Math.floor(
           (Number(today) - Number(date)) / Numbers.DAY_MILLISECONDS + 1
         );
-        return `${dayAgo} ${GetDayStringFormat(dayAgo)} ${t("time.ago")}`;
+        return `${daysAgo} ${GetDayStringFormat(daysAgo)} ${t("time.ago")}`;
       }
       default:
         return date.toLocaleDateString();

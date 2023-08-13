@@ -4,6 +4,7 @@
       icon="bell-outline"
       class="notifications__btn"
       variant="text"
+      :class="{ active: showedNotificationsWindow }"
       @click="toggleNotificationsWindow"
     >
       <VBadge
@@ -13,12 +14,12 @@
       />
     </AppButton>
     <DropdownWindow
-      :visible="showNotificationsWindow"
+      :visible="showedNotificationsWindow"
       class="notifications__window"
       :width="440"
       :height="355"
       :centering="!filteredList.length"
-      @hide-dropdown="showNotificationsWindow = false"
+      @hide-dropdown="showedNotificationsWindow = false"
     >
       <template #header>
         <div class="notifications__window-header">
@@ -37,7 +38,7 @@
               variant="text"
               class="notifications__window--close"
               icon="close"
-              @click="showNotificationsWindow = false"
+              @click="showedNotificationsWindow = false"
             />
           </nav>
         </div>
@@ -102,12 +103,12 @@ export default defineComponent({
   setup() {
     const { notificationStore } = useStore();
 
-    const showNotificationsWindow = ref(false);
+    const showedNotificationsWindow = ref(false);
 
     const { notificationsSize, allNotifications } = useNotifications();
 
     const toggleNotificationsWindow = (): void => {
-      showNotificationsWindow.value = !showNotificationsWindow.value;
+      showedNotificationsWindow.value = !showedNotificationsWindow.value;
     };
 
     const notifyAction = (id: number, action: NotifyAction): void => {
@@ -135,7 +136,7 @@ export default defineComponent({
       onlyUnread,
       filteredList,
       notificationsSize,
-      showNotificationsWindow,
+      showedNotificationsWindow,
       EmptyListType,
       notifyAction,
       toggleNotificationsWindow,
@@ -151,6 +152,11 @@ export default defineComponent({
   &__btn {
     font-size: 20px;
     padding: 0 5px;
+
+    &.active {
+      pointer-events: none;
+      background-color: rgba($color-blue, 0.4);
+    }
   }
 
   &__badge {

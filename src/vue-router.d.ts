@@ -1,6 +1,12 @@
 import "vue-router";
 
-type TabName = "Profile" | "Notifications" | "Reports" | "Configuration" | "Dashboard";
+type TabName =
+  | "Profile"
+  | "Notifications"
+  | "Reports"
+  | "Configuration"
+  | "Dashboard"
+  | "Statistics";
 
 declare module "vue-router" {
   interface RouteMeta {

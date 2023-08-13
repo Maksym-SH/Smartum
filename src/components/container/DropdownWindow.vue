@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div v-if="visible" v-bind="$attrs" class="dropdown-window">
+    <div v-if="visible" v-bind="$attrs" ref="dropdownRef" class="dropdown-window">
       <header v-if="$slots.header" class="dropdown-window__header">
         <slot name="header" />
       </header>
@@ -18,14 +18,11 @@
       </div>
     </div>
   </transition>
-  <Teleport to="body">
-    <div v-if="visible" class="full-page-lock" @click.self="$emit('hideDropdown')" />
-  </Teleport>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-
+import { computed, defineComponent, ref } from "vue";
+import { onClickOutside } from "@vueuse/core";
 import type { CSSProperties } from "vue";
 
 export default defineComponent({
@@ -53,7 +50,7 @@ export default defineComponent({
     },
   },
   emits: ["hideDropdown"],
-  setup(props) {
+  setup(props, { emit }) {
     const windowSize = computed((): CSSProperties => {
       return {
         width: `${props.width}px`,
@@ -61,8 +58,12 @@ export default defineComponent({
       };
     });
 
+    const dropdownRef = ref<HTMLDivElement>();
+    onClickOutside(dropdownRef, () => emit("hideDropdown"));
+
     return {
       windowSize,
+      dropdownRef,
     };
   },
 });

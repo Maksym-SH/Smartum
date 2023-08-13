@@ -46,6 +46,7 @@ import { computed, defineComponent, ref, watch } from "vue";
 import { notify } from "@kyvg/vue3-notification";
 
 import i18n from "@/i18n";
+import useStores from "@/composables/useStores";
 
 import Draggable from "vuedraggable";
 import Task from "./TaskItem.vue";
@@ -54,7 +55,7 @@ import AppInput from "@/components/UI/AppInput.vue";
 import AppButton from "@/components/UI/AppButton.vue";
 
 import type { IWorkingBoardTask, IWorkingBoardTaskColumn } from "@/types/interfaces/board";
-import { Length, Numbers } from "@/types/enums";
+import { Activity, Length, Numbers } from "@/types/enums";
 import type { InputInstance } from "@/types";
 
 export default defineComponent({
@@ -82,6 +83,8 @@ export default defineComponent({
   emits: ["taskCreatedInColumn", "update:columnTitle", "update:columnTasks", "saveChanges"],
   setup(props, { emit }) {
     const { t } = i18n.global;
+
+    const { statisticsStore } = useStores();
 
     const columnTasksList = computed<IWorkingBoardTask[]>({
       get() {
@@ -120,7 +123,11 @@ export default defineComponent({
 
     const setActiveCurrentColumn = (): void => {
       if (columnRef.value) {
-        columnRef.value.scrollIntoView({ behavior: "smooth", block: "center", inline:"center" });
+        columnRef.value.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
       }
 
       activeColumn.value = true;
@@ -136,6 +143,7 @@ export default defineComponent({
       emit("update:columnTasks", columnTasksList.value);
       showDropZone.value = false;
 
+      statisticsStore.incrementStatisticItem(Activity.MOVED_TASKS);
       emit("saveChanges");
     };
 
@@ -143,6 +151,7 @@ export default defineComponent({
       columnTasksList.value.push(newTask);
       emit("update:columnTasks", columnTasksList.value);
 
+      statisticsStore.incrementStatisticItem(Activity.CREATED_TASKS);
       emit("saveChanges");
     };
 

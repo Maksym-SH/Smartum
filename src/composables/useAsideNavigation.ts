@@ -76,13 +76,10 @@ export default function Navigation(): IAsideNavItem[] {
   const StatisticsTab: IAsideNavItem = {
     id: 4,
     showed: true,
-    title: computed(() => t("navigation.statistic.title")),
+    title: computed(() => t("navigation.statistics.title")),
     icon: "chart-bar",
     callback(): void {
-      notify({
-        title: t("notify.development.title"),
-        type: "success",
-      });
+      router.push({ name: Route.STATISTICS });
     },
   };
 

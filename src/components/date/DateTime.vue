@@ -94,7 +94,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .date {
   position: relative;
-  width: 235px;
   color: var(--color-text);
   padding-left: 25px;
 

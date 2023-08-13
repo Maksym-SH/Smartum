@@ -19,6 +19,10 @@
     "Dashboard": {
       "title": "Work boards",
       "description": "Manage your workspace and invite other users."
+    },
+    "Statistics": {
+      "title": "Statistics",
+      "description": "Here is your Smartum app usage statistics."
     }
   },
   "userEmailStatus": {
@@ -49,7 +53,9 @@
     "leaveBoard": "Leave the board",
     "leave": "Leave",
     "notificationSubscribe": "Subscribe",
-    "acquainted": "Familiarized"
+    "acquainted": "Familiarized",
+    "hover": "Hover",
+    "tap": "Tap"
   },
   "columnsName": [
     {
@@ -116,6 +122,27 @@
         "delete": "Delete",
         "edit": "Edit"
       }
+    }
+  },
+  "charts": {
+    "visits": {
+      "title": "Number of visits",
+      "tooltip": "Number of visits per day"
+    },
+    "boardActive": {
+      "title": "Board statistics",
+      "subtitle": "{action} to see the details",
+      "tooltip": {
+        "boards": "Number of boards created:",
+        "comments": "Number of commentaries left:",
+        "users": "Number of invited users:",
+        "tasks": "Number of tasks created:",
+        "columns": "Number of task columns created:",
+        "taskMoved": "Number of task cards moved:"
+      }
+    },
+    "notAvaliable": {
+      "title": "This chart is not available, keep using the app to see the statistics."
     }
   },
   "time": {
@@ -368,7 +395,7 @@
         }
       ]
     },
-    "statistic": {
+    "statistics": {
       "title": "Statistics"
     },
     "usage": {

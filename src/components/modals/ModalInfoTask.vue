@@ -194,9 +194,10 @@ import ModalColorPicker from "./ModalColorPicker.vue";
 import InlineSvg from "vue-inline-svg";
 import { VTooltip } from "vuetify/components";
 
-import { Colors, Length } from "@/types/enums";
+import { Activity, Colors, Length } from "@/types/enums";
 import type { ITaskComment } from "@/types/interfaces/board";
 import type { IUserForList } from "@/types/interfaces/user";
+import useStores from "@/composables/useStores";
 
 export default defineComponent({
   components: {
@@ -229,6 +230,8 @@ export default defineComponent({
   emits: ["update:taskModalActive", "showColumn"],
   setup(props, { emit }) {
     const { t } = i18n.global;
+
+    const { statisticsStore } = useStores();
 
     const closeModal = (): void => {
       emit("update:taskModalActive", false);
@@ -284,6 +287,8 @@ export default defineComponent({
 
     const createComment = (comment: ITaskComment): void => {
       currentTask.value.comments.unshift(comment);
+
+      statisticsStore.incrementStatisticItem(Activity.LEFT_COMMENTS);
     };
 
     const deleteComment = (id: number): void => {

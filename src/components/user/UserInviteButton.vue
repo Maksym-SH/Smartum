@@ -85,7 +85,7 @@ import AppInput from "../UI/AppInput.vue";
 import UserListItem from "./UserItem.vue";
 import DropDownWindow from "@/components/container/DropdownWindow.vue";
 
-import { Colors, NotificationType } from "@/types/enums";
+import { Activity, Colors, NotificationType } from "@/types/enums";
 import type { PropType } from "vue";
 import type { INotification } from "@/types/interfaces/components";
 import type { IUserForList } from "@/types/interfaces/user";
@@ -109,7 +109,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const { t } = i18n.global;
 
-    const { userStore, notificationStore } = useStore();
+    const { userStore, notificationStore, statisticsStore } = useStore();
 
     const showInviteWindow = ref(false);
 
@@ -248,6 +248,8 @@ export default defineComponent({
 
                 // Update status for invited user.
                 invitedUser.invited = true;
+
+                statisticsStore.incrementStatisticItem(Activity.INVITED_USERS);
 
                 emit("invited", {
                   uid: invitedUser.uid,
